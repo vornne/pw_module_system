@@ -146,7 +146,7 @@ multiplayer_round_max_seconds_max            = 901
 multiplayer_respawn_period_min               = 3
 multiplayer_respawn_period_max               = 31 #can only be 30 seconds max (due to agent deletion after that period)
 
-multiplayer_siege_mod_defender_team_extra_respawn_time = 15
+multiplayer_siege_mod_defender_team_extra_respawn_time = 20
 multiplayer_new_agents_finish_spawning_time = 30
 multiplayer_max_possible_player_id = 1000
 

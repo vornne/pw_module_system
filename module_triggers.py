@@ -370,7 +370,7 @@ triggers = [
   (1.0, 0, 0.0, [],
    [(try_for_range, ":cur_kingdom", kingdoms_begin, kingdoms_end),
       (faction_slot_eq, ":cur_kingdom", slot_faction_state, sfs_active),
-      (neq, ":cur_kingdom", "fac_player_supporters_faction"),
+##      (neq, ":cur_kingdom", "fac_player_supporters_faction"),
 ##      (try_begin),
 ##        (store_random_in_range, ":random_no", 0, 100),
 ##        (lt, ":random_no", 10),

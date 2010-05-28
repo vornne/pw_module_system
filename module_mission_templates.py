@@ -726,10 +726,10 @@ common_siege_question_answered = (
        (neq, "$attacker_team", ":agent_team"),
        (neq, "$attacker_team_2", ":agent_team"),
        (str_store_string, s5, "str_siege_continues"),
-       (call_script, "script_simulate_retreat", 8, 15, 1),
+       (call_script, "script_simulate_retreat", 8, 15, 0),
      (else_try),
        (str_store_string, s5, "str_retreat"),
-       (call_script, "script_simulate_retreat", 5, 20, 2),
+       (call_script, "script_simulate_retreat", 5, 20, 0),
      (try_end),
      (call_script, "script_count_mission_casualties_from_agents"),
      (finish_mission,0),
@@ -808,10 +808,15 @@ common_siege_defender_reinforcement_check = (
    (store_mission_timer_a,":mission_time"),
    (ge,":mission_time",10),
    (store_normalized_team_count,":num_defenders",0),
-   (lt,":num_defenders",10),
+   (lt,":num_defenders",8),
    (add_reinforcements_to_entry,4, 7),
    (val_add,"$defender_reinforcement_stage",1),
    (try_begin),
+     (gt, ":mission_time", 300), #5 minutes, don't let small armies charge
+     (get_player_agent_no, ":player_agent"),
+     (agent_get_team, ":player_team", ":player_agent"),
+     (neq, ":player_team", "$defender_team"), #player should be the attacker
+     (neq, ":player_team", "$defender_team_2"), #player should be the attacker
      (ge, "$defender_reinforcement_stage", 2),
      (set_show_messages, 0),
      (team_give_order, "$defender_team", grc_infantry, mordr_charge), #AI desperate charge:infantry!!!
@@ -921,10 +926,10 @@ common_siege_check_defeat_condition = (
       (neq, "$attacker_team", ":agent_team"),
       (neq, "$attacker_team_2", ":agent_team"),
       (str_store_string, s5, "str_siege_continues"),
-      (call_script, "script_simulate_retreat", 8, 15, 3),
+      (call_script, "script_simulate_retreat", 8, 15, 0),
     (else_try),
       (str_store_string, s5, "str_retreat"),
-      (call_script, "script_simulate_retreat", 5, 20, 4),
+      (call_script, "script_simulate_retreat", 5, 20, 0),
     (try_end),
     (assign, "$g_battle_result", -1),
     (set_mission_result,-1),
@@ -1578,23 +1583,20 @@ mission_templates = [
       [
         (store_trigger_param_1, ":agent_no"),
         (call_script, "script_init_town_agent", ":agent_no"),
-         
         (try_begin),
           (this_or_next|eq, "$talk_context", tc_escape),
           (eq, "$talk_context", tc_prison_break),
-	      (agent_get_troop_id, ":troop_no", ":agent_no"),		  
-          (troop_get_slot, ":will_join_prison_break", ":troop_no", slot_troop_will_join_prison_break),
-          (eq, ":will_join_prison_break", 1),
-		  (agent_set_team, ":agent_no", 0),
-		  (agent_ai_set_aggressiveness, ":agent_no", 5),
+          (agent_get_troop_id, ":troop_no", ":agent_no"),		  
+          (troop_slot_eq, ":troop_no", slot_troop_will_join_prison_break, 1),
+          (agent_set_team, ":agent_no", 0),
+          (agent_ai_set_aggressiveness, ":agent_no", 5),
           (troop_set_slot, ":troop_no", slot_troop_will_join_prison_break, 0),
-          
           (try_begin),
             (troop_slot_eq, ":troop_no", slot_troop_mission_participation, mp_prison_break_stand_back),
             (agent_get_position, pos1, ":agent_no"),            
-            (agent_set_scripted_destination, pos1),
+            (agent_set_scripted_destination, ":agent_no", pos1),
           (try_end),
-	    (try_end),         
+        (try_end),         
       ]),
 
       (ti_before_mission_start, 0, 0, [],
@@ -1735,18 +1737,25 @@ mission_templates = [
           (store_current_scene, ":cur_scene"),
           (modify_visitors_at_site, ":cur_scene"),                      
           (add_visitors_to_current_scene, 24, ":prisoner", 1, 0, 0),
-          (troop_set_slot, ":prisoner", slot_troop_will_join_prison_break, 1),					
-          (display_message, "str_helper_is_spawned"),
+          (troop_set_slot, ":prisoner", slot_troop_will_join_prison_break, 1),					          
         (try_end),
 	  ]),
 	
    (3, 0, 0, 
    [
-     (main_hero_fallen,0),
+     (this_or_next|eq, "$talk_context", tc_prison_break),
+     (eq, "$talk_context", tc_escape),
+     
+     (main_hero_fallen, 0),
    ],	  
    [
      (call_script, "script_deduct_casualties_from_garrison"),
 	 (jump_to_menu,"mnu_captivity_start_castle_defeat"), 
+	 
+	 (assign, ":end_cond", kingdom_ladies_end),
+     (try_for_range, ":prisoner", active_npcs_begin, ":end_cond"),
+	   (troop_set_slot, ":prisoner", slot_troop_mission_participation, 0), #new	  
+	 (try_end),  
 	 
 	 (mission_enable_talk),
 	 (finish_mission,0)
@@ -1765,12 +1774,12 @@ mission_templates = [
      (call_script, "script_deduct_casualties_from_garrison"),
 	 (try_for_agents, ":agent"),
 	 (agent_get_troop_id, ":troop", ":agent"),
-     (troop_slot_ge, ":troop", slot_troop_mission_participation, mp_prison_break_fight),
-     (try_begin),
-       (agent_is_alive, ":agent"),
-       (troop_set_slot, ":troop", slot_troop_mission_participation, mp_prison_break_escaped),
-     (else_try),	
-       (troop_set_slot, ":troop", slot_troop_mission_participation, mp_prison_break_caught),
+       (troop_slot_ge, ":troop", slot_troop_mission_participation, mp_prison_break_fight),
+       (try_begin),
+         (agent_is_alive, ":agent"),
+         (troop_set_slot, ":troop", slot_troop_mission_participation, mp_prison_break_escaped),
+       (else_try),	
+         (troop_set_slot, ":troop", slot_troop_mission_participation, mp_prison_break_caught),
        (try_end),
      (try_end),
      (jump_to_menu,"mnu_sneak_into_town_caught_ran_away"),
@@ -2255,7 +2264,7 @@ mission_templates = [
           (store_mission_timer_a, ":elapsed_time"),
           (gt, ":elapsed_time", 20),
           (str_store_string, s5, "str_retreat"),
-          (call_script, "script_simulate_retreat", 10, 20, 5),
+          (call_script, "script_simulate_retreat", 10, 20, 1),
         (try_end),
         (call_script, "script_count_mission_casualties_from_agents"),
         (finish_mission,0),]),
@@ -2341,7 +2350,7 @@ mission_templates = [
           [
               (assign, "$pin_player_fallen", 1),
               (str_store_string, s5, "str_retreat"),
-              (call_script, "script_simulate_retreat", 10, 20, 6),
+              (call_script, "script_simulate_retreat", 10, 20, 1),
               (assign, "$g_battle_result", -1),
               (set_mission_result,-1),
               (call_script, "script_count_mission_casualties_from_agents"),
@@ -2404,7 +2413,7 @@ mission_templates = [
         (eq,":answer",0),
         (assign, "$pin_player_fallen", 0),
         (str_store_string, s5, "str_retreat"),
-        (call_script, "script_simulate_retreat", 10, 20, 7),
+        (call_script, "script_simulate_retreat", 10, 20, 1),
         (assign, "$g_battle_result", -1),
         (call_script, "script_count_mission_casualties_from_agents"),
         (finish_mission,0),]),
@@ -2430,7 +2439,7 @@ mission_templates = [
           [
               (assign, "$pin_player_fallen", 1),
               (str_store_string, s5, "str_retreat"),
-              (call_script, "script_simulate_retreat", 10, 20, 8),
+              (call_script, "script_simulate_retreat", 10, 20, 1),
               (assign, "$g_battle_result", -1),
               (set_mission_result, -1),
               (call_script, "script_count_mission_casualties_from_agents"),
@@ -2463,7 +2472,7 @@ mission_templates = [
         (eq,":answer",0),
         (assign, "$pin_player_fallen", 0),
         (str_store_string, s5, "str_retreat"),
-        (call_script, "script_simulate_retreat", 10, 20, 9),
+        (call_script, "script_simulate_retreat", 10, 20, 1),
         (call_script, "script_count_mission_casualties_from_agents"),
         (finish_mission,0),]),
 
@@ -2517,7 +2526,7 @@ mission_templates = [
           [
               (assign, "$pin_player_fallen", 1),
               (str_store_string, s5, "str_retreat"),
-              (call_script, "script_simulate_retreat", 10, 20, 10),
+              (call_script, "script_simulate_retreat", 10, 20, 1),
               (assign, "$g_battle_result", -1),
               (set_mission_result,-1),
               (call_script, "script_count_mission_casualties_from_agents"),
@@ -2722,7 +2731,7 @@ mission_templates = [
         (eq,":answer",0),
         (assign, "$pin_player_fallen", 0),
         (str_store_string, s5, "str_retreat"),
-        (call_script, "script_simulate_retreat", 5, 20, 10),
+        (call_script, "script_simulate_retreat", 5, 20, 0),
         (assign, "$g_battle_result", -1),
         (set_mission_result,-1),
         (call_script, "script_count_mission_casualties_from_agents"),
@@ -2749,7 +2758,7 @@ mission_templates = [
           [
               (assign, "$pin_player_fallen", 1),
               (str_store_string, s5, "str_retreat"),
-              (call_script, "script_simulate_retreat", 5, 20, 11),
+              (call_script, "script_simulate_retreat", 5, 20, 0),
               (assign, "$g_battle_result", -1),
               (set_mission_result,-1),
               (call_script, "script_count_mission_casualties_from_agents"),
@@ -2786,7 +2795,7 @@ mission_templates = [
         (eq,":answer",0),
         (assign, "$pin_player_fallen", 0),
         (str_store_string, s5, "str_retreat"),
-        (call_script, "script_simulate_retreat", 5, 20, 12),
+        (call_script, "script_simulate_retreat", 5, 20, 0),
         (assign, "$g_battle_result", -1),
         (set_mission_result,-1),
         (call_script, "script_count_mission_casualties_from_agents"),
@@ -2813,7 +2822,7 @@ mission_templates = [
           [
               (assign, "$pin_player_fallen", 1),
               (str_store_string, s5, "str_retreat"),
-              (call_script, "script_simulate_retreat", 5, 20, 13),
+              (call_script, "script_simulate_retreat", 5, 20, 0),
               (assign, "$g_battle_result", -1),
               (set_mission_result,-1),
               (call_script, "script_count_mission_casualties_from_agents"),
@@ -2858,7 +2867,7 @@ mission_templates = [
         (eq,":answer",0),
         (assign, "$pin_player_fallen", 0),
         (str_store_string, s5, "str_retreat"),
-        (call_script, "script_simulate_retreat", 5, 20, 14),
+        (call_script, "script_simulate_retreat", 5, 20, 0),
         (call_script, "script_count_mission_casualties_from_agents"),
         (finish_mission,0),]),
         
@@ -2890,7 +2899,7 @@ mission_templates = [
           [
               (assign, "$pin_player_fallen", 1),
               (str_store_string, s5, "str_retreat"),
-              (call_script, "script_simulate_retreat", 5, 20, 15),
+              (call_script, "script_simulate_retreat", 5, 20, 0),
               (assign, "$g_battle_result", -1),
               (set_mission_result, -1),
               (call_script, "script_count_mission_casualties_from_agents"),
@@ -3088,6 +3097,11 @@ mission_templates = [
       [
         (store_trigger_param_1, ":agent_no"),
         (call_script, "script_init_town_agent", ":agent_no"),
+        (get_player_agent_no, ":player_agent"),
+        (try_begin),
+          (neq, ":player_agent", ":agent_no"),
+          (agent_set_team, ":agent_no", 7),
+        (try_end),
         
         (try_begin),
           (this_or_next|eq, "$talk_context", tc_escape),
@@ -3101,7 +3115,7 @@ mission_templates = [
 
           (try_begin),
             (troop_slot_eq, ":troop_no", slot_troop_mission_participation, mp_prison_break_stand_back),
-            (agent_get_position, pos1, ":agent_no"),            
+            (agent_get_position, pos1, ":agent_no"),                        
             (agent_set_scripted_destination, ":agent_no", pos1),
           (try_end),
         (try_end),
@@ -3171,8 +3185,7 @@ mission_templates = [
           (modify_visitors_at_site, ":cur_scene"),
           (assign, ":nearest_entry_no", 24),
           (add_visitors_to_current_scene, ":nearest_entry_no", ":prisoner", 1, 0, 0),
-          (troop_set_slot, ":prisoner", slot_troop_will_join_prison_break, 1),
-          (display_message, "str_helper_is_spawned"),
+          (troop_set_slot, ":prisoner", slot_troop_will_join_prison_break, 1),          
         (try_end),
 	  ]),
 
@@ -7809,6 +7822,13 @@ mission_templates = [
 
       (ti_before_mission_start, 0, 0, [],
        [
+         (try_begin),
+           (scene_allows_mounted_units),
+           (assign, "$g_horses_are_avaliable", 1),         
+         (else_try),  
+           (assign, "$g_horses_are_avaliable", 0),         
+         (try_end),
+       
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_deathmatch),
 
          (scene_set_day_time, 15),
@@ -8207,6 +8227,13 @@ mission_templates = [
 
       (ti_before_mission_start, 0, 0, [],
        [
+         (try_begin),
+           (scene_allows_mounted_units),
+           (assign, "$g_horses_are_avaliable", 1),         
+         (else_try),  
+           (assign, "$g_horses_are_avaliable", 0),         
+         (try_end),
+
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_team_deathmatch),
 
          (scene_set_day_time, 15),
@@ -8557,6 +8584,13 @@ mission_templates = [
 
       (ti_before_mission_start, 0, 0, [],
        [
+         (try_begin),
+           (scene_allows_mounted_units),
+           (assign, "$g_horses_are_avaliable", 1),         
+         (else_try),  
+           (assign, "$g_horses_are_avaliable", 0),         
+         (try_end),
+
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_headquarters),
 
          (store_mul, ":initial_hq_score", "$g_multiplayer_game_max_points", 10000),
@@ -9664,6 +9698,13 @@ mission_templates = [
 
       (ti_before_mission_start, 0, 0, [],
        [
+         (try_begin),
+           (scene_allows_mounted_units),
+           (assign, "$g_horses_are_avaliable", 1),         
+         (else_try),  
+           (assign, "$g_horses_are_avaliable", 0),         
+         (try_end),
+
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_capture_the_flag),
 
          (scene_set_day_time, 15),
@@ -10433,6 +10474,13 @@ mission_templates = [
 
       (ti_before_mission_start, 0, 0, [],
        [
+         (try_begin),
+           (scene_allows_mounted_units),
+           (assign, "$g_horses_are_avaliable", 1),         
+         (else_try),  
+           (assign, "$g_horses_are_avaliable", 0),         
+         (try_end),
+
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_siege),
 
          (try_begin),
@@ -11486,6 +11534,13 @@ mission_templates = [
 
       (ti_before_mission_start, 0, 0, [],
        [
+         (try_begin),
+           (scene_allows_mounted_units),
+           (assign, "$g_horses_are_avaliable", 1),         
+         (else_try),  
+           (assign, "$g_horses_are_avaliable", 0),         
+         (try_end),
+
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_battle),
 
          (scene_set_day_time, 15),
@@ -12733,6 +12788,13 @@ mission_templates = [
 
       (ti_before_mission_start, 0, 0, [],
        [
+         (try_begin),
+           (scene_allows_mounted_units),
+           (assign, "$g_horses_are_avaliable", 1),         
+         (else_try),  
+           (assign, "$g_horses_are_avaliable", 0),         
+         (try_end),
+
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_destroy),
 
          (scene_set_day_time, 15),
@@ -13930,33 +13992,42 @@ mission_templates = [
 	   ],
 	   [          
           (store_character_level, ":player_level", "trp_player"),                   
-          (store_add, ":number_of_bandits_will_be_spawned_at_each_period", 10, ":player_level"),
-          (val_div, ":number_of_bandits_will_be_spawned_at_each_period", 2),
+          (store_add, ":number_of_bandits_will_be_spawned_at_each_period", 5, ":player_level"),
+          (val_div, ":number_of_bandits_will_be_spawned_at_each_period", 3),
 
           (lt, "$bandits_spawned_extra", ":number_of_bandits_will_be_spawned_at_each_period"),
-          (val_add, "$bandits_spawned_extra", 1),
+          (val_add, "$bandits_spawned_extra", 1),                   
 
           (party_get_template_id, ":template", "$g_encountered_party"),
+          (store_random_in_range, ":random_value", 0, 2),
+          
           (try_begin),
             (eq, ":template", "pt_sea_raider_lair"),
+            (eq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_sea_raider"),
           (else_try),
             (eq, ":template", "pt_forest_bandit_lair"),
+            (eq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_forest_bandit"),
           (else_try),
             (eq, ":template", "pt_desert_bandit_lair"),
+            (eq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_desert_bandit"),
           (else_try),
             (eq, ":template", "pt_mountain_bandit_lair"),
+            (eq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_mountain_bandit"),
           (else_try),
             (eq, ":template", "pt_taiga_bandit_lair"),
+            (eq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_taiga_bandit"),
           (else_try),
             (eq, ":template", "pt_steppe_bandit_lair"),
+            (eq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_steppe_bandit"),
           (else_try),
-            (eq, ":template", "pt_looter_lair"),
+            (this_or_next|eq, ":template", "pt_looter_lair"),
+            (neq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_looter"),
           (try_end),
 
@@ -14007,34 +14078,43 @@ mission_templates = [
           (val_add, "$defender_reinforcement_stage", 1),
 
           (store_character_level, ":player_level", "trp_player"),                   
-          (store_add, ":number_of_bandits_will_be_spawned_at_each_period", 10, ":player_level"),
-          (val_div, ":number_of_bandits_will_be_spawned_at_each_period", 2),
+          (store_add, ":number_of_bandits_will_be_spawned_at_each_period", 5, ":player_level"),
+          (val_div, ":number_of_bandits_will_be_spawned_at_each_period", 3),
           (try_begin),
             (ge, "$defender_reinforcement_stage", 2),
             (val_sub, ":number_of_bandits_will_be_spawned_at_each_period", "$bandits_spawned_extra"),
           (try_end),
           
-          (party_get_template_id, ":template", "$g_encountered_party"),
+          (party_get_template_id, ":template", "$g_encountered_party"),          
+          (store_random_in_range, ":random_value", 0, 2),
+          
           (try_begin),
             (eq, ":template", "pt_sea_raider_lair"),
+            (eq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_sea_raider"),
           (else_try),
             (eq, ":template", "pt_forest_bandit_lair"),
+            (eq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_forest_bandit"),
           (else_try),
             (eq, ":template", "pt_desert_bandit_lair"),
+            (eq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_desert_bandit"),
           (else_try),
             (eq, ":template", "pt_mountain_bandit_lair"),
+            (eq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_mountain_bandit"),
           (else_try),
             (eq, ":template", "pt_taiga_bandit_lair"),
+            (eq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_taiga_bandit"),
           (else_try),
             (eq, ":template", "pt_steppe_bandit_lair"),
+            (eq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_steppe_bandit"),
           (else_try),
-            (eq, ":template", "pt_looter_lair"),
+            (this_or_next|eq, ":template", "pt_looter_lair"),
+            (neq, ":random_value", 0),
             (assign, ":bandit_troop", "trp_looter"),
           (try_end),
                                                                        

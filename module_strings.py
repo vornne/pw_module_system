@@ -1297,17 +1297,17 @@ strings = [
   ("npc3_kingsupport_2", "I would, my lord. But I would strongly recommend that you reinstitute an old Calradic imperial tradition -- the council of lords and commons, drawn from both the nobles of the land and well-educated men of property, with the power to overrule any new taxes or other tyrannical measures that might tempt you. It would be for your own good, {sir/my lady}."), #ymira
   ("npc4_kingsupport_2", "Of course, {captain/my lady}. The trick is now to get others to follow you. As you know, one's lineage is a great determinant of one's worthiness. Perhaps you have a long-lost ancestor of whom you have not told me?"), #rolf
   ("npc5_kingsupport_2", "Ay, Bahadur, I would. But there is something I should say, on behalf of the men of the steppes such as myself. It would bring great joy to us, to hear from the lips of one who would be khan, that you would restore an anicent right. From the days of the old emperors, the men of the steppes have enjoyed the right to bring their flocks to new pastures or to market, which necessarily involves the crossing of lands owned by the great lords of this realm."), #beheshtur
-  ("npc6_kingsupport_2", "I would. I would tell anyone who listens of your deeds on behalf of the weak and helpless, of your ability to lead men against great odds and triumph, and tell them that if you were to be come king, there would be one law and one peace -- from the Rhodok highlands to the Vaegir wastes, from the high steppe to the Nordic shore."), #firentis
+  ("npc6_kingsupport_2", "I would. I would tell anyone who listens of your deeds on behalf of the weak and helpless, of your ability to lead men against great odds and triumph, and tell them that if you were to become {king/queen}, there would be one law and one peace -- from the Rhodok highlands to the Vaegir wastes, from the high steppe to the Nordic shore."), #firentis
   ("npc7_kingsupport_2", "Yes, captain, I would. A {king/queen}'s duty is to keep the roads safe for decent folk, make it so a woman can gather the firewood or draw the water without being accosted by some drooling, scabby ape of an outlaw. Anyway, you've split the skulls of a number of such brutes in your time. Men would fear to even meet the eyes of a woman on the road, if you were {king/queen}."), #deshavi
   ("npc8_kingsupport_2", "I would -- on one condition. You'd be king in Praven or Sargoth or wherever you want to rule, but I'd rule my own hall. And if I had a dispute with any other of your thegns, be it over land, livestock, or blood, you'd let us settle it sword to sword, according to the old ways, and let the heavens decide who is in the right."), #matheld
   ("npc9_kingsupport_2", "I would, sir, and others would too. But here's what I think -- you need to show the noble lords that you'll uphold their ancient rights. Right now, Calradia's a mess -- the lord owns the land, except it's the king who owns the forest, but the city has the right to levee tax at its gates, and the commons can use the pastures on odd Tuesdays, except in Rivacheg when it's Wednesday. Who can remember? So I say you make things simple, like it was in the old days -- first the {king/sovereign}, then the lords, then everyone else."), #Alayen
-  ("npc10_kingsupport_2", "Certainly, {Brother/Sister}. But I'd ask that you consider a thought of mine. If you be {king/queen}, then I'd ask you open your court to the common folks, and not just to the lords and blue-bloods. I'd ask you to let it be known that should any man be judged and sentenced, that he have the right to appeal to you directly. Right now, the lords have the right -- I say every man in Calradia should have it, too."), #Bunduk
+  ("npc10_kingsupport_2", "Certainly, {Brother/Sister}. But I'd ask that you consider a thought of mine. If you became {king/queen}, then I'd ask you open your court to the common folks, and not just to the lords and blue-bloods. I'd ask you to let it be known that should any man be judged and sentenced, that he have the right to appeal to you directly. Right now, the lords have the right -- I say every man in Calradia should have it, too."), #Bunduk
   ("npc11_kingsupport_2", "Of course, I would! Let me see your hand, there... Aha! You've got the 'Mark of Kings.' That's what we call it in Praven, anyway. I hear in Suno it's the 'Emperor's Line,' but they call everything differently, over there. Anyway, yours is very long -- I'd say that it means that you're meant to rule! It's your destiny! In fact, I think I can even recall a prophecy to that effect. Hmm, how did it go..."), #katrin
   ("npc12_kingsupport_2", "Of course, captain.  But if I have learned anything in my travels in this land, it is that Calradians are sticklers for precedent. Everything must be done as it was done in the days of the old Empire -- even though not more than one in a hundred of them can read enough Old Calradic to understand the chronicles! Veluca merchants marry their daughters according to the 'imperial' rite. Rivacheg cattle herders churn 'imperial' butter. And of course, every king must be crowned according to 'imperial' law."), #jeremus
   ("npc13_kingsupport_2", "Of course, my lord. Also, as we learn from the tale of Antaran, when claiming a throne, it does not hurt to be the subject of an epic, recited around campfires and hearthfires, describing one's deeds. As you no doubt know, I fancy myself a fair crafter of couplets."), #nizar
   ("npc14_kingsupport_2", "I would indeed, sir. I think you can unite this land, and then we'll be able to raise an army such as Calradia has not seen for many generations -- Swadian lances, Vaegir archers, Rhodok spears, Sarranid swords, Nord axes, and Khergit skirmishers, and take it over the mountains to subdue all the lands that the Calradic emperors once held sway."), #lazalit
   ("npc15_kingsupport_2", "I would. People might say that you don't have royal blood in your veins. But as far as I've seen, royal blood makes you a skinflint. Kings and nobles will take out loans or commission building projects without half a thought to how they're ever going to pay back all those commoners who expect to eat after an honest day's work. If you ask me, an honest tongue makes a {man/woman} a {king/queen}, not a fancy pedigree."), #artimenner
-  ("npc16_kingsupport_2", "Of course, my {lord/lady}. And what's more, I figure a girl like me do you a bit of a service raising support with the lords of this land. I may have only had a small part in their schemes and intrigues over the years, but I think I know what they want. And given what I know of their secrets, they'd not want to be denying me admission to their halls, now would they?"), #klethi
+  ("npc16_kingsupport_2", "Of course, my {lord/lady}. And what's more, I figure a girl like me could do you a bit of a service raising support with the lords of this land. I may have only had a small part in their schemes and intrigues over the years, but I think I know what they want. And given what I know of their secrets, they'd not want to be denying me admission to their halls, now would they?"), #klethi
   
   ("npc1_kingsupport_2a", "Please go on..."), #Borcha
   ("npc2_kingsupport_2a", "Please continue..."), #marnid
@@ -1759,7 +1759,7 @@ strings = [
 #new political comments  
   ("comment_lord_intervened_against_me", "It is well known that I had quarreled with {s54}, and {s50} ruled in my rival's favor."),
   ("comment_i_protested_marshall_appointment", "It is well known that I had protested {s54}'s decision to appoint {s51} as marshal."),
-  ("comment_i_blamed_defeat", "It is well known that I am dissatisfied with {s54} for his favor shown to {s51}, who led us to defeat against the {s56}."),
+  ("comment_i_blamed_defeat", "It is well known that I am dissatisfied with {s54} for the favor shown to {s51}, who led us to defeat against the {s56}."),
   ("comment_i_was_entitled_to_fief", "It is well known that I am disappointed that {s54} received the fief of {s51}, which should have gone to me."),
   ("comment_i_quarreled_with_troop_over_woman", "It is well known that {s51} paid suit to {s54}, while I was also courting her. He is unworthy of her attentions, and I intend to teach him to keep his distance from her."),
 
@@ -3445,15 +3445,15 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("yes_i_have_heard_such_talk_while_it_is_good_that_you_are_building_up_your_support_i_do_not_think_that_you_are_quite_ready_to_proclaim_yourself_yet_however_i_will_let_you_be_the_judge_of_that_and_when_you_decide_i_should_be_honored_to_be_your_consort", "Yes... I have heard such talk. While it is good that you are building up your support, I do not think that you are quite ready to proclaim yourself yet. However, I will let you be the judge of that, and when you decide, I should be honored to be your consort."),
   ("yes_and_many_others_in_calradia_think_so_as_well_perhaps_it_is_time_that_you_declared_yourself_and_we_shall_ride_forth_together_to_claim_your_throne_i_should_be_honored_to_be_your_consort", "Yes... and many others in Calradia think so as well. Perhaps it is time that you declared yourself, and we shall ride forth together to claim your throne. I should be honored to be your consort."),
   ("i_am_disturbed_about_my_lord_s15s_choice_of_companions", "I am disturbed about my lord {s15}'s choice of companions."),
-  ("well_ill_be_honest_i_feel_that_sometimes_s15_overlooks_my_rights_and_extends_his_protection_to_the_unworthy", "Well, I'll be honest. I feel that sometimes {s15} overlooks my rights, and extends his protection to the unworthy."),
-  ("heh_one_thing_that_ill_say_about_s15_is_that_he_has_a_ripe_batch_of_bastards_in_his_court", "Heh. One thing that I'll say about {s15} is that he has a ripe batch of bastards in his court."),
-  ("well_sometimes_i_have_to_say_that_i_question_s15s_judgment_regarding_those_who_he_keeps_in_his_court", "Well, sometimes I have to say that I question {s15}'s judgment regarding those who he keeps in his court."),
-  ("s15_is_a_weak_man_who_too_easily_lends_his_ear_to_evil_council_and_gives_his_protection_to_some_who_have_done_me_wrong", "{s15} is a weak man, who too easily lends his ear to evil council, and gives his protection to some who have done me wrong."),
-  ("i_will_confess_that_sometimes_i_worry_about_s15s_judgment_particularly_in_the_matter_of_the_counsel_that_he_keeps", "I will confess that sometimes I worry about {s15}'s judgment, particularly in the matter of the counsel that he keeps.."),
+  ("well_ill_be_honest_i_feel_that_sometimes_s15_overlooks_my_rights_and_extends_his_protection_to_the_unworthy", "Well, I'll be honest. I feel that sometimes {s15} overlooks my rights, and extends {reg15?her:his} protection to the unworthy."),
+  ("heh_one_thing_that_ill_say_about_s15_is_that_he_has_a_ripe_batch_of_bastards_in_his_court", "Heh. One thing that I'll say about {s15} is that {reg15?she:he} has a ripe batch of bastards in {reg15?her:his} court."),
+  ("well_sometimes_i_have_to_say_that_i_question_s15s_judgment_regarding_those_who_he_keeps_in_his_court", "Well, sometimes I have to say that I question {s15}'s judgment regarding those whom {reg15?she:he} keeps in his court."),
+  ("s15_is_a_weak_man_who_too_easily_lends_his_ear_to_evil_council_and_gives_his_protection_to_some_who_have_done_me_wrong", "{s15} is a weak ruler, who too easily lends an ear to evil council, and gives protection to some who have done me wrong."),
+  ("i_will_confess_that_sometimes_i_worry_about_s15s_judgment_particularly_in_the_matter_of_the_counsel_that_he_keeps", "I will confess that sometimes I worry about {s15}'s judgment, particularly in the matter of the counsel that {reg15?she:he} keeps.."),
   ("what_do_i_think_i_think_that_s15_is_a_vile_pretender_a_friend_to_the_flatterer_and_the_hypocrite", "What do I think? I think that {s15} is a vile pretender, a friend to the flatterer and the hypocrite."),
   ("well_s15_is_not_like_you_ill_say_that_much", "Well, {s15} is not like you. I'll say that much."),
-  ("s15_long_may_he_live", "{s15}? Long may he live!"),
-  ("he_is_my_liege_that_is_all_that_i_will_say_on_this_matter", "He is my liege. That is all that I will say on this matter."),
+  ("s15_long_may_he_live", "{s15}? Long may {reg15?she:he} live!"),
+  ("he_is_my_liege_that_is_all_that_i_will_say_on_this_matter", "{s15} is my liege. That is all that I will say on this matter."),
   ("that_you_are_the_rightful_heir_to_the_throne_of_calradia", "That you are the rightful heir to the throne of Calradia?"),
   ("that_s14_is_the_rightful_ruler_of_calradia", "That {s14} is the rightful ruler of Calradia?"),
   ("that_s14_will_rule_this_land_justly", "That {s14} will rule this land justly?"),
@@ -3575,10 +3575,10 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("ERROR__player_not_logged_as_groom", "{!}ERROR - Player not logged as groom"),
   ("you_intend_to_bring_goods_to_s9_in_preparation_for_the_feast_which_will_be_held_as_soon_as_conditions_permit", "You intend to bring goods to {s9} in preparation for the feast, which will be held as soon as conditions permit."),
   ("hello_playername", "Hello, {playername}"),
-  ("ah_my_gentle_playername_how_much_good_it_does_my_heart_to_see_you_again", "Ah, my gentle {playername}. How much good it does my heart to see you again!"),
-  ("playername__i_am_so_glad_to_see_you_again_i_must_say_i_do_envy_your_freedom_to_ride_out_and_experience_the_world", "{playername} -- I am so glad to see you again. I must say, I do envy your freedom to ride out and experience the world."),
-  ("playername__i_am_so_glad_to_see_you_i_trust_that_you_have_been_behaving_honorably_since_last_we_met", "{playername} -- I am so glad to see you. I trust that you have been behaving honorably since last we met."),
-  ("playername__i_am_so_glad_that_you_were_able_to_come", "{playername} -- I am so glad that you were able to come."),
+  ("ah_my_gentle_playername_how_much_good_it_does_my_heart_to_see_you_again", " How much good it does my heart to see you again! Sometimes, I feel that there is a mystic bond between us that transcends the distance."),
+  ("playername__i_am_so_glad_to_see_you_again_i_must_say_i_do_envy_your_freedom_to_ride_out_and_experience_the_world", " I must say, I do envy your freedom to ride out and experience the world."),
+  ("playername__i_am_so_glad_to_see_you_i_trust_that_you_have_been_behaving_honorably_since_last_we_met", " I trust that you have been behaving honorably since last we met."),
+  ("playername__i_am_so_glad_that_you_were_able_to_come", " I am so glad that you were able to come."),
   ("i_do_enjoy_speaking_to_you_but_i_am_sure_you_understand_that_our_people_cluck_their_tongues_at_a_woman_to_spend_too_long_conversing_with_a_man_outside_her_family__although_the_heavens_know_its_never_the_man_who_is_held_to_blame_", "I do enjoy speaking to you. But I am sure you understand that our people cluck their tongues at a woman to spend too long conversing with a man outside her family -- although the heavens know it's never the man who is held to blame. "),
   ("as_much_as_i_enjoy_speaking_to_you_i_do_not_care_to_be_gossiped_about_by_others_who_might_lack_my_grace_and_beauty_", "As much as I enjoy speaking to you, I do not care to be gossiped about by others who might lack my grace and beauty. "),
   ("i_do_so_enjoy_speaking_to_you_but_as_a_daughter_of_one_of_the_great_families_of_this_land_i_must_set_an_example_of_propriety_", "I do so enjoy speaking to you. But as a daughter of one of the great families of this land, I must set an example of propriety. "),
@@ -3621,8 +3621,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("normal", "normal"),
   ("s51", "{!}{s51}"),
   ("_meanwhile_s51_reg2areis_being_held_in_the_castle_but_reg2havehas_made_pledges_not_to_escape_and_reg2areis_being_held_in_more_comfortable_quarters", " Meanwhile, {s51} {reg2?are:is} being held in the castle, but {reg2?have:has} made pledges not to escape, and {reg2?are:is} being held in more comfortable quarters."),
-  ("you_may_be_aware_my_lord_of_the_quarrel_between_s4_and_s5_which_is_damaging_the_unity_of_this_realm_and_sapping_your_authority_if_you_could_persuade_the_lords_to_reconcile_it_would_boost_your_own_standing_however_in_taking_this_on_you_run_the_risk_of_one_the_lords_deciding_that_you_have_taken_the_rivals_side", "You may be aware, my lord, of the quarrel between {s4} and {s5} which is damaging the unity of this realm and sapping your authority. If you could persuade the lords to reconcile, it would boost your own standing. However, in taking this on, you run the risk of one the lords deciding that you have taken the rival's side."),
-  ("you_may_be_aware_my_lord_of_the_quarrel_between_s4_and_s5_which_is_damaging_the_unity_of_this_realm_and_sapping_your_authority_if_you_could_persuade_the_lords_to_reconcile_i_imagine_that_s7_would_be_most_pleased_however_in_taking_this_on_you_run_the_risk_of_one_the_lords_deciding_that_you_have_taken_the_rivals_side", "You may be aware, my lord, of the quarrel between {s4} and {s5} which is damaging the unity of this realm and sapping your authority. If you could persuade the lords to reconcile, I imagine that {s7} would be most pleased. However, in taking this on, you run the risk of one the lords deciding that you have taken the rival's side."),
+  ("you_may_be_aware_my_lord_of_the_quarrel_between_s4_and_s5_which_is_damaging_the_unity_of_this_realm_and_sapping_your_authority_if_you_could_persuade_the_lords_to_reconcile_it_would_boost_your_own_standing_however_in_taking_this_on_you_run_the_risk_of_one_the_lords_deciding_that_you_have_taken_the_rivals_side", "You may be aware, {sire/my lady}, of the quarrel between {s4} and {s5} which is damaging the unity of this realm and sapping your authority. If you could persuade the lords to reconcile, it would boost your own standing. However, in taking this on, you run the risk of one the lords deciding that you have taken the rival's side."),
+  ("you_may_be_aware_my_lord_of_the_quarrel_between_s4_and_s5_which_is_damaging_the_unity_of_this_realm_and_sapping_your_authority_if_you_could_persuade_the_lords_to_reconcile_i_imagine_that_s7_would_be_most_pleased_however_in_taking_this_on_you_run_the_risk_of_one_the_lords_deciding_that_you_have_taken_the_rivals_side", "You may be aware, {my lord/my lady}, of the quarrel between {s4} and {s5} which is damaging the unity of this realm. If you could persuade the lords to reconcile, I imagine that {s7} would be most pleased. However, in taking this on, you run the risk of one the lords deciding that you have taken the rival's side."),
   ("_of_course_the_land_is_currently_at_peace_so_you_may_have_better_luck_in_other_realms", " Of course, the land is currently at peace, so you may have better luck in other realms."),
   ("here", "here"),
   ("over", "over"),
@@ -3633,7 +3633,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("_has_been_asking_around_for_someone_who_might_want_work_id_watch_yourself_with_him_though", " has been asking around for someone who might want work. I'd watch yourself with him, though."),
   ("town", "town."),
   ("castle", "castle."),
-  ("_but_he_is_holding_there_as_a_prisoner_at_dungeon_of_s13", " But he is holding there as a prisoner at dungeon of {s13}."),
+  ("_but_he_is_holding_there_as_a_prisoner_at_dungeon_of_s13", " But {reg4?she:he} is being held there as a prisoner in the dungeon of {s13}."),
   ("log_entry_type_reg4_for_s4_total_entries_reg5", "{!}DEBUG : Log entry type: {reg4} for {s4}, total entries: {reg5}"),
   ("ERROR__reputation_type_for_s9_not_within_range", "{!}ERROR - reputation type for {s9} not within range"),
   ("they_say_that_s9_is_a_most_conventional_maiden__devoted_to_her_family_of_a_kind_and_gentle_temperament_a_lady_in_all_her_way", "They say that {s9} is a most conventional maiden - devoted to her family, of a kind and gentle temperament, a lady in all her way."),
@@ -4014,8 +4014,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("my_lady_not_sufficient_chemistry", "My lady, there are other maidens who have captured my heart."),
   ("my_lady_engaged_to_another", "My lady, as I understand it, you are engaged to another."),
 
-  ("attempting_to_rejoin_party", "attempting to rejoin party,"),
-  ("separated_from_party", "separated from party,"),
+  ("attempting_to_rejoin_party", "Attempting to rejoin party,"),
+  ("separated_from_party", "Separated from party,"),
   ("whereabouts_unknown", "whereabouts unknown"),
   
   ("none_yet_gathered", "None yet gathered"),
@@ -4024,5 +4024,26 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("leading_party", "leading a party"),
   ("court_disbanded", "As you no longer rule an independent kingdom, your court has been disbanded"), 
   ("i_am_not_accompanying_the_marshal_because_will_be_reappointment", " I am not accompanying the marshal, because I suspect that our ruler will shortly appoint another to that post."),
+
+  ("persuasion_opportunity", "Persuasion opportunity.^Relation required for automatic success: {reg4}^Current relationship: {reg5}^Chance of success: {reg7}^Chance of losing {reg9} relation point(s): {reg8}"),
+
+  ("marshal_warning", "You are not following {s1}. However, you will not suffer any penalty."),
+  
+  ("follow_army_quest_brief_2", "Your mission is complete. You may continue to follow {s9}'s army, if you wish further assignments."),
  
+  ("greetings_playername__it_is_good_to_see_you_i_hope_that_you_have_had_success_in_your_efforts_to_make_your_name_in_the_world", " I am glad to see you. I trust you are having some success out there, making your name in the world"),
+
+  ("minister_advice_select_fief", " Might I suggest that you select {s4}, as the vassals have been speculating about how you might assign it."),
+  ("minister_advice_select_fief_wait", " Might I suggest that you wait until after you have appointed a marshal, as that will give time to the vassals to decide whom they wish to support."),
+  ("minister_advice_fief_leading_vassal", " {s4}, by the way, has already received the support of {reg4} of your vassals."),
+  ("unassigned_center", " (unassigned)"),
+  ("s43_also_you_should_know_that_an_unprovoked_assault_is_declaration_of_war", "{s43} Also, as you are the ruler of your realm, you should know that this assault constitutes a declaration of war."),
+  ("missing_after_battle", "Missing after battle"),
+  ("retrieve_garrison_warning", " (Troops might not be retrievable if fortress awarded to another)"),
+
+  ("s12s15_declared_war_to_control_calradia", "{s12}{s15} declared war on {s16} as a bid to extend control over all of Calradia."),
+  ("offer_gift_description", " improve my standing by offering a gift."),
+  ("resolve_dispute_description", " improve my standing by resolving a dispute."),
+  ("feast_wedding_opportunity", " If your betrothed and her family are present, then this may be an opportunity for you to celebrate the wedding."),
+  
 ]

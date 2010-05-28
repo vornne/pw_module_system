@@ -1227,7 +1227,7 @@ logent_policy_ruler_breaks_truce                            = 84
 logent_policy_ruler_issues_indictment_just                  = 85 #possibly add this to rumors for non-player faction
 logent_policy_ruler_issues_indictment_questionable          = 86 #possibly add this to rumors for non-player faction
 
-logent_player_faction_declares_war						    = 90
+logent_player_faction_declares_war						    = 90 #this doubles for declare war to extend power
 logent_faction_declares_war_out_of_personal_enmity		    = 91
 logent_faction_declares_war_to_regain_territory 		    = 92
 logent_faction_declares_war_to_curb_power					= 93
