@@ -32,7 +32,7 @@ triggers = [
 # Tutorial:
   (0.1, 0, ti_once, [(map_free,0)], [(dialog_box,"str_tutorial_map1")]),
 
-#  (1.0, 0, ti_once, [(map_free,0)], [(start_map_conversation,"trp_guide")]),
+#  (1.0, 0, ti_once, [(map_free,0)], [(start_map_conversation, "trp_guide", -1)]),
 
 # Refresh Merchants
   (0.0, 0, 24.0, [], [
@@ -526,8 +526,8 @@ triggers = [
 ##    ],
 ##   
 ##   [
-##       (assign,"$borcha_arrive_sargoth_as_prisoner",1),
-##       (start_map_conversation,"trp_borcha")
+##       (assign,"$borcha_arrive_sargoth_as_prisoner", 1),
+##       (start_map_conversation, "trp_borcha", -1)
 ##    ]
 ##   ),
 ##
@@ -538,7 +538,7 @@ triggers = [
 ##      (main_party_has_troop,"trp_borcha")
 ##    ],
 ##   [
-##       (start_map_conversation,"trp_borcha")
+##       (start_map_conversation, "trp_borcha", -1)
 ##    ]
 ##   ),
 ##  
@@ -550,7 +550,7 @@ triggers = [
 ##      (main_party_has_troop,"trp_borcha")
 ##    ],
 ##   [
-##       (start_map_conversation,"trp_borcha"),
+##       (start_map_conversation, "trp_borcha", -1),
 ##    ]
 ##   ),
 

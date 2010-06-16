@@ -37,8 +37,14 @@ slot_item_multiplayer_faction_price_multipliers_begin = 30 #reserve around 10 sl
 
 slot_item_primary_raw_material    		= 50
 slot_item_is_raw_material_only_for      = 51
-slot_item_input_number                  = 52 #ie, how many items it takes to produce the finished product
-slot_item_base_price                    = 53
+slot_item_input_number                  = 52 #ie, how many items of inputs consumed per run
+slot_item_base_price                    = 53 #taken from module_items
+#slot_item_production_site			    = 54 #a string replaced with function - Armagan
+slot_item_output_per_run                = 55 #number of items produced per run
+slot_item_overhead_per_run              = 56 #labor and overhead per run
+slot_item_secondary_raw_material        = 57 #in this case, the amount used is only one
+slot_item_enterprise_building_cost      = 58 #enterprise building cost
+
 
 slot_item_multiplayer_item_class   = 60 #temporary, can be moved to higher values
 slot_item_multiplayer_availability_linked_list_begin = 61 #temporary, can be moved to higher values
@@ -388,12 +394,14 @@ village_improvements_end          = 135
 walled_center_improvements_begin = slot_center_has_messenger_post
 walled_center_improvements_end               = 136
 
-slot_center_player_enterprise     				  = 137
+slot_center_player_enterprise     				  = 137 #noted with the item produced
 slot_center_player_enterprise_production_order    = 138
-slot_center_player_enterprise_consumption_order   = 139
-slot_center_player_enterprise_balance             = 140
-slot_center_player_enterprise_input_price         = 141
-slot_center_player_enterprise_output_price        = 142
+slot_center_player_enterprise_consumption_order   = 139 #not used
+slot_center_player_enterprise_days_until_complete = 139 #Used instead
+
+slot_center_player_enterprise_balance             = 140 #not used
+slot_center_player_enterprise_input_price         = 141 #not used
+slot_center_player_enterprise_output_price        = 142 #not used
 
 
 
@@ -1599,7 +1607,7 @@ custom_banner_map_icons_begin = "icon_custom_banner_01"
 custom_banner_map_icons_end = "icon_banner_01"
 
 banner_map_icons_begin = "icon_banner_01"
-banner_map_icons_end_minus_one = "icon_banner_126"
+banner_map_icons_end_minus_one = "icon_banner_136"
 
 banner_scene_props_begin = "spr_banner_a"
 banner_scene_props_end_minus_one = "spr_banner_f21"
@@ -1657,6 +1665,7 @@ btactic_stand_ground = 4
 
 #default right mouse menu orders
 cmenu_move = -7
+cmenu_follow = -6
 
 # Town center modes - resets in game menus during the options
 tcm_default 		= 0
@@ -1694,3 +1703,5 @@ arena_grand_prize = 250
 
 #Additions
 price_adjustment = 25 #the percent by which a trade at a center alters price
+
+fire_duration = 4 #fires takes 4 hours

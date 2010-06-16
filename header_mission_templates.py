@@ -38,6 +38,7 @@ mordr_use_any_weapon	= 10
 mordr_stand_ground		= 11
 mordr_hold_fire			= 12
 mordr_fire_at_will		= 13
+mordr_retreat           = 14
 
 rordr_free				= 0
 rordr_mount				= 1

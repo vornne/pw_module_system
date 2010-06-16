@@ -128,6 +128,9 @@ player_control_agent                 = 421 # (player_control_agent, <player_id>,
 player_get_item_id                   = 422 # (player_get_item_id, <destination>, <player_id>, <item_slot_no>) #only for server
 player_get_banner_id                 = 423 # (player_get_banner_id, <destination>, <player_id>),
 game_get_reduce_campaign_ai          = 424 # (game_get_reduce_campaign_ai, <destination>),
+multiplayer_find_spawn_point         = 425 # (multiplayer_find_spawn_point, <destination>, <team_no>, <examine_all_spawn_points>, <is_horseman>), 
+set_spawn_effector_scene_prop_kind   = 426 # (set_spawn_effector_scene_prop_kind <team_no> <scene_prop_kind_no>)
+set_spawn_effector_scene_prop_id     = 427 # (set_spawn_effector_scene_prop_id <scene_prop_id>)
 
 player_is_admin                      = 430 # (player_is_admin, <player_id>),
 player_get_score                     = 431 # (player_get_score, <destination>, <player_id>),
@@ -348,6 +351,8 @@ overlay_set_display                       = 947 # (overlay_set_display, <overlay
 create_combo_label_overlay                = 948 # (create_combo_label_overlay, <destination>), #returns overlay id
 
 overlay_set_tooltip                       = 950 # (overlay_set_tooltip, <overlay_id>, <string_id>),
+
+show_object_details_overlay               = 960 # (show_object_details_overlay, <value>), #0 = hide, 1 = show
 
 show_item_details      = 970 # (show_item_details, <item_id>, <position_no>, <show_default_text_or_not>) #show_default_text_or_not should be 1 for showing "default" for default item costs
 close_item_details     = 971 # (close_item_details)
@@ -773,6 +778,7 @@ agent_get_division                     = 1773   # (agent_get_division ,<destinat
 agent_unequip_item                     = 1774	  # (agent_unequip_item,<agent_id>,<item_id>),
 
 class_is_listening_order               = 1775   # (class_is_listening_order, <team_no>, <sub_class>),
+agent_set_ammo                         = 1776   # (agent_set_ammo,<agent_id>,<item_id>,<value>), #value = a number between 0 and maximum ammo
 
 entry_point_get_position               = 1780   # (entry_point_get_position, <position_no>, <entry_no>),
 entry_point_set_position               = 1781   # (entry_point_set_position, <entry_no>, <position_no>),
@@ -833,6 +839,12 @@ prop_instance_enable_physics           = 1864   # (prop_instance_enable_physics,
 prop_instance_rotate_to_position       = 1865	# (prop_instance_rotate_to_position, <scene_prop_id>, position, <duration-in-1/100-seconds>, <total_rotate_angle>),
 prop_instance_initialize_rotation_angles = 1866   # (prop_instance_initialize_rotation_angles, <scene_prop_id>),
 prop_instance_refill_hit_points        = 1870 # (prop_instance_refill_hit_points, <scene_prop_id>), 
+
+prop_instance_dynamics_set_properties  = 1871 # (prop_instance_dynamics_set_properties,<scene_prop_id>,mass_friction),
+prop_instance_dynamics_set_velocity    = 1872 # (prop_instance_dynamics_set_velocity,<scene_prop_id>,linear_velocity),
+prop_instance_dynamics_set_omega       = 1873 # (prop_instance_dynamics_set_omega,<scene_prop_id>,angular_velocity),
+prop_instance_dynamics_apply_impulse   = 1874 # (prop_instance_dynamics_apply_impulse,<scene_prop_id>,impulse_force),
+
 
 replace_scene_props                    = 1890   # (replace_scene_props, <old_scene_prop_id>,<new_scene_prop_id>),
 replace_scene_items_with_scene_props   = 1891   # (replace_scene_items_with_scene_props, <old_item_id>,<new_scene_prop_id>),
@@ -916,6 +928,7 @@ mission_cam_animate_to_aperture        = 2015   # (mission_cam_animate_to_apertu
 mission_cam_animate_to_position_and_aperture = 2016   # (mission_cam_animate_to_position_and_aperture, <position_register_no>, <value>, <duration-in-1/1000-seconds>, <value>) # if value = 0, then camera velocity will be linear. else it will be non-linear
 mission_cam_set_target_agent           = 2017   # (mission_cam_set_target_agent, <agent_id>, <value>) #if value = 0 then do not use agent's rotation, else use agent's rotation
 mission_cam_clear_target_agent         = 2018   # (mission_cam_clear_target_agent)
+mission_cam_set_animation              = 2019   # (mission_cam_set_animation, <anim_id>),
 
 talk_info_show                         = 2020   # (talk_info_show, <hide_or_show>) :0=hide 1=show
 talk_info_set_relation_bar             = 2021   # (talk_info_set_relation_bar, <value>) :set relation bar to a value between -100 to 100, enter an invalid value to hide the bar.

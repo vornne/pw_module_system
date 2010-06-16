@@ -253,6 +253,6 @@ map_icons = [
   ("map_flag_kingdom_d",0,"map_flag_kingdom_d", banner_scale,0),
   ("map_flag_kingdom_e",0,"map_flag_kingdom_e", banner_scale,0),
   ("map_flag_kingdom_f",0,"map_flag_kingdom_f", banner_scale,0),
-  ("banner_126",0,"map_flag_15", banner_scale,0),
+  ("banner_136",0,"map_flag_15", banner_scale,0),
   ("bandit_lair",mcn_no_shadow,"map_bandit_lair", 0.45, 0),
 ]

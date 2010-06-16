@@ -1171,7 +1171,7 @@ animations = [
    [attack_parried_duration_thrust, "anim_human", combat+7316, combat+7313, arf_blend_in_2], 
 #   [attack_parried_duration, "thrust_staff", 102, 97, arf_blend_in_2], 
  ],
-##                            overhead
+##                            
 ## ["ready_overswing_staff_overhead", acf_overswing, amf_priority_attack|amf_use_weapon_speed|amf_use_inertia|amf_keep|amf_client_owner_prediction,
 ##   [ready_durn, "attacks_staff_thrust_overhead", 6, 21, blend_in_ready], 
 ## ],

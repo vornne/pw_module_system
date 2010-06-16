@@ -821,7 +821,7 @@ strings = [
   ("npc4_backstory_b", "Like all the men of my family, I have come to a foreign land to make a name for myself in the profession of arms before returning home to take over custodianship of my estates. Unfortunately, the authorities in these lands have little understanding of the warrior code, and have chosen to call me a bandit and brigand, and put a price on my head -- a most unfair libel to throw at a gentleman adventurer, you will surely agree."),
   ("npc5_backstory_b", "For as long as any one can remember, our people have feuded with the tribe of Humyan, many of whom have settled in the next valley over. Many men have died in this feud, on both sides, including two of my brothers. The Khan himself has ordered us to cease, to save men for the wars in Calradia. But I know my rights, and my brothers' blood cries out for vengeance. I waylaid and killed a Humyan on a track over the mountains, and I rode out of our village the same night, without even having had the chance to bid farewell to my father. I will bide my time in Calradia, for a year or two, then return home when the Khan's men have forgotten. The Humyan will not forget, of course, but such is the price of honour."),
   ("npc6_backstory_b", "I was a captain of horse in the service of the lord {s19}in {s20}, and my brother served with me. But we were both in love with the same woman, a courtesan -- a temptress, who played upon our jealousies! My brother and I quarreled. I had drunk too much. He slapped me with his glove, and I spit him upon my sword... My own brother! My sword-arm was stained with the blood of my kin!"),
-  ("npc7_backstory_b", "It was my bad luck to be born to a weak father who married me off to a drunken layabout, who beat me. It was my bad luck, when I ran away from my husband, to be taken by a group of bandits. It was my bad luck that the only one among them who was kind to me, who taught me to hunt and to fight, inspired the jealousy of the others, who knifed him and forced me to run away again."),
+  ("npc7_backstory_b", "It was my bad luck to be born to a weak father who married me off to a drunken layabout who beat me. It was my bad luck, when I ran away from my husband, to be taken by a group of bandits. It was my bad luck that the only one among them who was kind to me, who taught me to hunt and to fight, inspired the jealousy of the others, who knifed him and forced me to run away again."),
   ("npc8_backstory_b", "I am from an old family in the northern lands, the daughter of a thane and also wife to one. I fought by my husband's side, his partner both in war and in peace. But my husband died of the plague, when I was still childless. My husband had decreed that I should inherit his lands, in the absence of an heir. My brother-in-law, cursed be his name, said that it was not our custom that women could inherit a thanedom. That was nonsense, but his gold bought the loyalties of enough of my husband's faithless servants for him to install himself in my hall. So I fled, something I was raised never to do, and something I hope never to do again."),
   ("npc9_backstory_b", "I was my father's first son, and his heir. But my mother died, and my father remarried. His new wife thought that her son should inherit. She could not move against me openly, but the other day I fed a pot of suet that had been left out for me to one of my hounds, and it keeled over. I accused my stepmother, but my father, befuddled by her witchcraft, refused to believe me and ordered me to leave his sight."),
   ("npc10_backstory_b", "A sergeant I was, in the garrison {s19} at {s20}. Twenty years I stood guard for the city, taking many a hard knock in many a tough fight, until they appointed a snot-nosed, downy-lipped princeling, barely out of his mother's cradle, as commander of the garrison. He came upon me standing watch atop the tower, with my crossbow unstrung -- on account of the rain, you see... Can't have the cord loosen... But Little Prince Snot-Nose tells me that an unstrung bow is dereliction of duty. Says he'll have me horsewhipped. And something in me snapped. So I walked off my post."),
@@ -1384,11 +1384,11 @@ strings = [
   ("npc3_intel_mission", "Captain, although I cannot return to my father's house in {s17}, I still may make contact with my sister. She will be privy to the councils of the great merchant houses, and may tell us much about the state of the {s18}."), #ymira
   ("npc4_intel_mission", "Captain, if you could spare me for a few days, I would like to look up an old comrade-in-arms in {s17}, who has from time to time led a small company in the pay of the {s18}. He is a good man, the kind who speaks little and listens much. I'm sure over a drink or two he might let us know which way the political winds are blowing in those parts."), #rolf - men whom i fought with
   ("npc5_intel_mission", "If you like, {playername} Bahadur, I can take a few days to visit my mother's sister's people. They work in a caravanserie in {s17}, and hear the news from all across the {s18}. They may have some gossip about the feuds and rivaries of the great lords, if that is of interest to you."), #beheshtur
-  ("npc6_intel_mission", "Captain -- while I am not strictly welcome in {s17}, I would be able to make contact with some former tenants of estate of mine nearby. I granted them ownership after my abrupt departure, and they now well-placed in society, and also less inclined than most to hold my crime against me. If you give me a few days, I may be able to collect some interesting information about the {s18}."), #firentis
+  ("npc6_intel_mission", "Captain -- while I am not strictly welcome in {s17}, I would be able to make contact with some former tenants of an estate of mine nearby. I granted them ownership after my abrupt departure, and they now well-placed in society, and also less inclined than most to hold my crime against me. If you give me a few days, I may be able to collect some interesting information about the {s18}."), #firentis
   ("npc7_intel_mission", "Captain. When I left my former home in {s17}, I had promised myself that I would never return, except for the purposes of taking out vengeance on those who wronged me. Perhaps I was rash. I am occasionally curious as to how my family is getting along. Perhaps I can bring them some gifts, to let them know what I have made of myself! Any rate, they are wretched people, but just as a cringing dog keeps its ear to the wind, so do they. They may have useful information about the {s18}, if you would give me a few days to pay them a visit."), #deshavi
   ("npc8_intel_mission", "If you have any interest in the events in the {s18}, a former shield-companion of mine retired and now keeps a farm near {s17}. He keeps in contact with a number of other old warriors. I could visit him for a few days, and learn more about what is going on there."), #matheld
   ("npc9_intel_mission", "{Sir/My lady} -- it has been some time since I sampled the delights of {s17}, where gentlefolk such as myself are wont to partake of the hospitality of the most puissant and generous lord. If you wish, I could perhaps go there, and let you know something about the concerns that weigh on the minds of the great peers of the {s18}."), #Alayen
-  ("npc10_intel_mission", "Captain -- I was thinking that some of my old mates in the garrison at {s17} would be glad to see me. Their good lads, and would never betray the city, but like me they have no particular affection for the bluebloods that command them, and may be willing to slip a little political gossip our way. The gentry are always falling out over one little thing or the other, but the lads might be able to know if there's real dissent brewing."), #Bunduk
+  ("npc10_intel_mission", "Captain -- I was thinking that some of my old mates in the garrison at {s17} would be glad to see me. They are good lads, and would never betray the city, but like me they have no particular affection for the bluebloods that command them, and may be willing to slip a little political gossip our way. The gentry are always falling out over one little thing or the other, but the lads might be able to know if there's real dissent brewing."), #Bunduk
   ("npc11_intel_mission", "{Laddie/Lassie} -- I was thinking that it's been a while since I visited my kinfolk in {s17}. They've been kind enough to me over the years, helping me out during the lean times, so I feel I'd like to share some of my newfound fortune with them. I've also bought wholesale enough times from the Praven grain merchants for them to trust me. I'd reckon they might be persuaded to spill a few tidbits about events in the {s18}, if that would interest you."), #katrin
   ("npc12_intel_mission", "If you wish, Captain, I would not mind taking the time to pay a visit to a pupil of mine, now employed by the lord of {s17}. I had great hopes for him, but I have heard that he has lately endorsed the use of muskmelon for the treatment of palsy, on the grounds that its cold essence offsets an abundance of yellow bile. This is a travesty of medicine, and I must journey there swiftly to correct him. While I am there, if you wish, I could question him on the latest trends within the {s17}, a matter which may interest you."), #jeremus
   ("npc13_intel_mission", "Oh valiant one! With your permission, I was thinking that I might pay a visit to the dales near {s17}. I try not to revisit old pastures, but I must confess a certain curiosity as to how a comely shepherdess of my former acquaintance is getting along. On the way, I may attempt to stop in at the castle. I suspect that it would not be terribly difficult for me to charm my way into the lord's hall, and I may be able to provide you with the latest news from the {s18}."), #nizar
@@ -2185,9 +2185,10 @@ strings = [
   ("credits_9", "Tutorial written by:^Steve Negus^Armagan Yavuz^Edward Spoerl^^^\
 Horse Motion Capture Animation Supplied by:^Richard Widgery & Kinetic Impulse^^^\
 Physics:^Havok^^^\
-Sound and Music Program Library:^FMOD Sound System by Firelight Technologies^^^\
+Sound and Music Program Library:^FMODex Sound System by Firelight Technologies^^^\
 Skybox Textures:^Jay Weston^^^\
 Chinese Translation:^Hetairoi; Gaodatailang; silentjealousy; Ginn; fallout13; James; D.Kaede; Kan2; alixyang; muyiboy^^^\
+TaleWorlds Director of Communications:^Ali Erkin ^^^\
 TaleWorlds Forum Programming:^Brett Flannigan ^^^\
 TaleWorlds.com Forum Administrators and Moderators:^\
 Janus^\
@@ -2394,18 +2395,19 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 #multiplayer scene names
   ("multi_scene_1", "Ruins"),
   ("multi_scene_2", "Village"),
-  ("multi_scene_3", "Castle"),
+  ("multi_scene_3", "Hailes Castle"), #Castle 1
   ("multi_scene_4", "Ruined Fort"),
   ("multi_scene_5", "Scene 5"), #not ready yet
   ("multi_scene_6", "Scene 6"), #not ready yet
   ("multi_scene_7", "Field by the River"),
-  ("multi_scene_8", "Castle 2"),
+  ("multi_scene_8", "Rudkhan Castle"), #Castle 2
   ("multi_scene_9", "Snowy Village"),
-  ("multi_scene_10", "Castle 3"),
+  ("multi_scene_10", "Turin Castle"), #Castle 3
   ("multi_scene_11", "Nord Town"),
   ("multi_scene_16", "Port Assault"),
-  ("multi_scene_17", "Castle 4"),
+  ("multi_scene_17", "Brunwud Castle"), #Castle 4
   ("multi_scene_18", "Battle on Ice"),
+  ("multi_scene_19", "Mahdaar Castle"), #Castle 5
   ("multi_scene_12", "Random Plains (Medium)"),
   ("multi_scene_13", "Random Plains (Large)"),
   ("multi_scene_14", "Random Steppe (Medium)"),
@@ -2444,7 +2446,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("map", "Map:"),
   ("game_type", "Game type:"),
   ("max_number_of_players", "Maximum number of players:"),
-  ("number_of_bots_in_team_reg1", "Number of bots in team {reg1}:"),
+  ("number_of_bots_in_team_reg1", "Number of bots in team {reg1}:"), 
   ("team_reg1_faction", "Team {reg1} faction:"),
   ("enable_valve_anti_cheat", "Enable Valve Anti-cheat (Requires valid Steam account)"),
   ("allow_friendly_fire", "Allow ranged friendly fire"),
@@ -3187,7 +3189,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("s12s15_has_no_particular_reason_to_continue_the_war_with_s16_and_would_probably_make_peace_if_given_the_opportunity", "{s12}{s15} has no particular reason to continue the war with {s16}, and would probably make peace if given the opportunity."),
   ("s12s15_seems_to_be_willing_to_improve_relations_with_s16", "{s12}{s15} seems to be willing to improve relations with {s16}."),
   ("excuse_me_how_can_you_possibly_imagine_yourself_worthy_to_marry_into_our_family", "Excuse me? How can you possibly imagine yourself worthy to marry into our family?"),
-  ("em_with_regard_to_her_ladyship_we_were_looking_specifically_for_a_groom_of_some_distinction_fight_hard_count_your_dinars_and_perhaps_some_day_in_the_future_we_may_speak_of_such_things_my_good_man", "Em... With regard to her ladyship, we were looking specifically for a groom of some distinction. Fight hard, count your dinars, and perhaps some day in the future we may speak of such things, my good man!"),
+  ("em_with_regard_to_her_ladyship_we_were_looking_specifically_for_a_groom_of_some_distinction_fight_hard_count_your_dinars_and_perhaps_some_day_in_the_future_we_may_speak_of_such_things_my_good_man", "Em... With regard to her ladyship, we were looking specifically for a groom of some distinction. Fight hard, count your denars, and perhaps some day in the future we may speak of such things, my good man!"),
   ("em_with_regard_to_her_ladyship_we_were_looking_specifically_for_a_groom_of_some_distinction", "Em... With regard to her ladyship, we were looking specifically for a groom of some distinction."),
   ("it_is_too_early_for_you_to_be_speaking_of_such_things_you_are_still_making_your_mark_in_the_world", "It is too early for you to be speaking of such things. You are still making your mark in the world."),
   ("you_dont_serve_the_s4_so_id_say_no_one_day_we_may_be_at_war_and_i_prefer_not_to_have_to_kill_my_inlaws_if_at_all_possible", "You don't serve the {s4}, so I'd say no. One day we may be at war, and I prefer not to have to kill my in-laws, if at all possible."),
@@ -3262,7 +3264,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("may_find_that_you_are_able_to_take_your_place_among_calradias_great_lords_relatively_quickly", "may find that you are able to take your place among Calradia's great lords relatively quickly"),
   ("may_face_some_difficulties_establishing_yourself_as_an_equal_among_calradias_great_lords", "may face some difficulties establishing yourself as an equal among Calradia's great lords"),
   ("may_face_great_difficulties_establishing_yourself_as_an_equal_among_calradias_great_lords", "may face great difficulties establishing yourself as an equal among Calradia's great lords"),
-  ("current_party_morale_is_reg5_current_party_morale_modifiers_are__base_morale__50_party_size_s2reg1_leadership_s3reg2_food_variety_s4reg3s5s6_recent_events_s7reg4_total__reg5___", "Current party morale is {reg5}.^Current party morale modifiers are:^^Base morale:  +50^Party size: {s2}{reg1}^Leadership: {s3}{reg2}^Food variety: {s4}{reg3}{s5}{s6}^Recent events: {s7}{reg4}^TOTAL:  {reg5}^^^"),
+  ("current_party_morale_is_reg5_current_party_morale_modifiers_are__base_morale__50_party_size_s2reg1_leadership_s3reg2_food_variety_s4reg3s5s6_recent_events_s7reg4_total__reg5___", "Current party morale is {reg5}.^Current party morale modifiers are:^^Base morale:  +{reg6}^Party size: {s2}{reg1}^Leadership: {s3}{reg2}^Food variety: {s4}{reg3}{s5}{s6}^Recent events: {s7}{reg4}^TOTAL:  {reg5}^^^"),
   ("s1extra_morale_for_s9_troops__reg6_", "{s1}Extra morale for {s9} troops : {reg6}^"),
   ("courtships_in_progress_", "Courtships in progress:^"),
   ("s1_s2_relation_reg3_last_visit_reg4_days_ago", "{s1}^{s2}, relation {reg3}, last visit {reg4} days ago"),
@@ -3749,9 +3751,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 
   #Defector joining
   ("lord_defects_ordinary", "Lord Defects^^{s1} has renounced {reg4?her:his} allegiance to the {s3}, and joined the {s2}"),
-  ("lord_defects_player",   "Lord Defects^^{s1} has renounced {reg4?her:his} allegiance to the {s3}. He has tentatively joined your kingdom. You may go to your court to receive a pledge, if you wish."),
-
-  ("lord_defects_ordinary", "Lord Defects^^{s1} has renounced {reg4?her:his} allegiance to the {s3}, and joined the {s2}"),
+  ("lord_defects_player",   "Lord Defects^^{s1} has renounced {reg4?her:his} allegiance to the {s3}. He has tentatively joined your kingdom. You may go to your court to receive a pledge, if you wish."),  
   ("lord_defects_player_faction",   "Lord Defects^^{s1} has renounced {reg4?her:his} allegiance to the {s3}. He has tentatively joined your kingdom. You may go to your court to receive a pledge, if you wish."),
   ("lord_indicted_player_faction", "By order of {s6}, {s4} of the {s5} has been indicted for treason. The lord has been stripped of all {reg4?her:his} properties, and has fled for {reg4?her:his} life. He wishes to join your kingdom. You may find him in your court to receive {reg?her:his} allegiance, if you wish it."),
 
@@ -4018,7 +4018,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("separated_from_party", "Separated from party,"),
   ("whereabouts_unknown", "whereabouts unknown"),
   
-  ("none_yet_gathered", "None yet gathered"),
+  ("none_yet_gathered", "{!}None yet gathered"),
   
   ("betrothed", " Betrothed "),
   ("leading_party", "leading a party"),
@@ -4041,9 +4041,37 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("missing_after_battle", "Missing after battle"),
   ("retrieve_garrison_warning", " (Troops might not be retrievable if fortress awarded to another)"),
 
-  ("s12s15_declared_war_to_control_calradia", "{s12}{s15} declared war on {s16} as a bid to extend control over all of Calradia."),
+  ("s12s15_declared_war_to_control_calradia", "{s12}{s15} may attack {s16} without pretext, as a bid to extend control over all of Calradia."),
   ("offer_gift_description", " improve my standing by offering a gift."),
   ("resolve_dispute_description", " improve my standing by resolving a dispute."),
   ("feast_wedding_opportunity", " If your betrothed and her family are present, then this may be an opportunity for you to celebrate the wedding."),
+  ("s21_the_s8_declared_war_as_part_of_a_bid_to_conquer_all_calradia", "{s21}. The {s8} declared war with very little pretext, as part of a bid to conquer all Calradia."),
+  ("master_vinter", "Master vinter"),
+  ("s54_has_left_the_realm", "{s54} has left the realm."),
+  ("enterprise_s5_at_s0", "Net revenue from {s5} at {s0}"),  
+  
+  ("bread_site", "mill"),
+  ("ale_site", "brewery"),
+  ("oil_site", "oil press"),
+  ("wine_site", "wine press"),
+  ("tool_site", "ironworks"),
+  ("leather_site", "tannery"),
+  ("linen_site", "linen weavery"),
+  ("wool_cloth_site", "wool weavery"),
+  ("velvet_site", "dyeworks"),
+
+  ("under_sequestration", "Under sequestration"),
+  ("describe_secondary_input", " In addition, you will also need to purchase {s11} worth {reg10} denars."),
+  ("profit", "profit"),
+  ("loss", "loss"),
+  
+  ("server_name_s0", "Server Name: {s0}"),
+  ("map_name_s0", "Map Name: {s0}"),
+  ("game_type_s0", "Game Type: {s0}"),  
+  ("remaining_time_s0reg0_s1reg1", "Remaining Time: {s0}{reg0}:{s1}{reg1}"),
+  ("you_are_a_lord_lady_of_s8_s9", "You are a {lord/lady} of {s8}.^{s9}"),
+  ("you_are_king_queen_of_s8_s9", "You are {king/queen} of {s8}.^{s9}"),
+  ("for_s4", " for {s4}"),
+  
   
 ]

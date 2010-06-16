@@ -2446,7 +2446,6 @@ scene_props = [
  ("earth_tower_a",0,"earth_tower_a","bo_earth_tower_a", []),
  ("earth_stairs_c",0,"earth_stairs_c","bo_earth_stairs_c", []),
  
-
   ("earth_sally_gate_left",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"earth_sally_gate_left","bo_earth_sally_gate_left", [
     check_sally_door_use_trigger_double,
 
@@ -2808,16 +2807,6 @@ scene_props = [
     ]),
   ]),
 
-
-
-
-
-
-
-
-
-
-
   ("castle_f_door_b",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"castle_e_sally_door_a","bo_castle_e_sally_door_a", [
     check_castle_door_use_trigger,
 
@@ -2907,5 +2896,86 @@ scene_props = [
       (try_end),      
     ]),
   ]),
+
+ ("ctf_flag_kingdom_1", sokf_moveable|sokf_face_player, "ctf_flag_kingdom_1", "0", []),
+ ("ctf_flag_kingdom_2", sokf_moveable|sokf_face_player, "ctf_flag_kingdom_2", "0", []),
+ ("ctf_flag_kingdom_3", sokf_moveable|sokf_face_player, "ctf_flag_kingdom_3", "0", []),
+ ("ctf_flag_kingdom_4", sokf_moveable|sokf_face_player, "ctf_flag_kingdom_4", "0", []),
+ ("ctf_flag_kingdom_5", sokf_moveable|sokf_face_player, "ctf_flag_kingdom_5", "0", []),
+ ("ctf_flag_kingdom_6", sokf_moveable|sokf_face_player, "ctf_flag_kingdom_6", "0", []),
+ ("ctf_flag_kingdom_7", sokf_moveable|sokf_face_player, "ctf_flag_kingdom_7", "0", []),
+
+ ("headquarters_flag_rebel",sokf_moveable|sokf_face_player,"flag_rebel","0", []),
+  ("arabian_lighthouse_a",0,"arabian_lighthouse_a","bo_arabian_lighthouse_a", []),
+  ("arabian_ramp_a",0,"arabian_ramp_a","bo_arabian_ramp_a", []),
+  ("arabian_ramp_b",0,"arabian_ramp_b","bo_arabian_ramp_b", []),
   
+  ("winery_interior",0,"winery_interior","bo_winery_interior", []),
+  ("winery_barrel_shelf",0,"winery_barrel_shelf","bo_winery_barrel_shelf", []),
+  ("winery_wall_shelf",0,"winery_wall_shelf","bo_winery_wall_shelf", []),
+  ("winery_huge_barrel",0,"winery_huge_barrel","bo_winery_huge_barrel", []),
+  ("winery_wine_press",0,"winery_wine_press","bo_winery_wine_press", []),
+  ("winery_middle_barrel",0,"winery_middle_barrel","bo_winery_middle_barrel", []),
+  ("winery_wine_cart_small_loaded",0,"winery_wine_cart_small_loaded","bo_winery_wine_cart_small_loaded", []),
+  ("winery_wine_cart_small_empty",0,"winery_wine_cart_small_empty","bo_winery_wine_cart_small_empty", []),
+  ("winery_wine_cart_empty",0,"winery_wine_cart_empty","bo_winery_wine_cart_empty", []),
+  ("winery_wine_cart_loaded",0,"winery_wine_cart_loaded","bo_winery_wine_cart_loaded", []),
+  
+  ("weavery_interior",0,"weavery_interior","bo_weavery_interior", []),
+  ("weavery_loom_a",0,"weavery_loom_a","bo_weavery_loom_a", []),
+  ("weavery_spinning_wheel",0,"weavery_spinning_wheel","bo_weavery_spinning_wheel", []),
+  
+  ("mill_interior",0,"mill_interior","bo_mill_interior", []),
+  ("mill_flour_sack", 0,"mill_flour_sack","bo_mill_flour_sack", []),
+  ("mill_flour_sack_desk_a", 0,"mill_flour_sack_desk_a","bo_mill_flour_sack_desk_a", []),
+  ("mill_flour_sack_desk_b", 0,"mill_flour_sack_desk_b","bo_mill_flour_sack_desk_b", []),
+  
+  ("smithy_interior", 0,"smithy_interior","bo_smithy_interior", []),
+  ("smithy_grindstone_wheel", 0,"smithy_grindstone_wheel","bo_smithy_grindstone_wheel", []),
+  ("smithy_forge_bellows", 0,"smithy_forge_bellows","bo_smithy_forge_bellows", []),
+  ("smithy_forge", 0,"smithy_forge","bo_smithy_forge", []),
+  ("smithy_anvil", 0,"smithy_anvil","bo_smithy_anvil", []),
+  
+  ("tannery_hide_a", 0,"tannery_hide_a","bo_tannery_hide_a", []),
+  ("tannery_hide_b", 0,"tannery_hide_b","bo_tannery_hide_b", []),
+  ("tannery_pools_a", 0,"tannery_pools_a","bo_tannery_pools_a", []),
+  ("tannery_pools_b", 0,"tannery_pools_b","bo_tannery_pools_b", []),
+  
+
+
+
+  
+  
+ 
+
+ ("fountain", 0, "fountain", "bo_fountain", []),
+
+ ("rhodok_houses_a",0,"rhodok_houses_a","bo_rhodok_houses_a", []),
+ ("rhodok_houses_b",0,"rhodok_houses_b","bo_rhodok_houses_b", []),
+ ("rhodok_houses_c",0,"rhodok_houses_c","bo_rhodok_houses_c", []),
+ ("rhodok_houses_d",0,"rhodok_houses_d","bo_rhodok_houses_d", []),
+ ("rhodok_houses_e",0,"rhodok_houses_e","bo_rhodok_houses_e", []),
+ ("rhodok_house_passage_a",0,"rhodok_house_passage_a","bo_rhodok_house_passage_a", []),
+
+ ("bridge_b",0,"bridge_b","bo_bridge_b", []),
+ 
+("brewery_pool", 0,"brewery_pool","bo_brewery_pool", []),
+("brewery_big_bucket", 0,"brewery_big_bucket","bo_brewery_big_bucket", []),
+("brewery_interior", 0,"brewery_interior","bo_brewery_interior", []),
+("brewery_bucket_platform_a", 0,"brewery_bucket_platform_a","bo_brewery_bucket_platform_a", []),
+("brewery_bucket_platform_b", 0,"brewery_bucket_platform_b","bo_brewery_bucket_platform_b", []),
+
+
+("weavery_dye_pool_r",0,"weavery_dye_pool_r","bo_weavery_dye_pool_r", []),
+("weavery_dye_pool_y",0,"weavery_dye_pool_y","bo_weavery_dye_pool_y", []),
+("weavery_dye_pool_b",0,"weavery_dye_pool_b","bo_weavery_dye_pool_b", []),
+("weavery_dye_pool_p",0,"weavery_dye_pool_p","bo_weavery_dye_pool_p", []),
+("weavery_dye_pool_g",0,"weavery_dye_pool_g","bo_weavery_dye_pool_g", []),
+
+("oil_press_interior",0,"oil_press_interior","bo_oil_press_interior", []),
+
+
 ]
+
+
+

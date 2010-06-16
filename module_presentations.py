@@ -1784,6 +1784,9 @@ presentations = [
         (eq, "$g_multiplayer_selected_map", "scn_multi_scene_14"),
         (assign, ":map_image", "mesh_mp_ui_host_maps_14"),
       (else_try),
+        (eq, "$g_multiplayer_selected_map", "scn_multi_scene_15"),
+        (assign, ":map_image", "mesh_mp_ui_host_maps_15"),
+      (else_try),
         (this_or_next|eq, "$g_multiplayer_selected_map", "scn_random_multi_plain_medium"),
         (eq, "$g_multiplayer_selected_map", "scn_random_multi_plain_large"),
         (assign, ":map_image", "mesh_mp_ui_host_maps_randomp"),
@@ -2219,7 +2222,6 @@ presentations = [
         (position_set_y, pos1, ":cur_y"),
         (overlay_set_position, "$g_presentation_obj_admin_panel_16", pos1),
         (overlay_set_val, "$g_presentation_obj_admin_panel_16", "$g_multiplayer_round_max_seconds"),
-
       (else_try),
         (assign, "$g_presentation_obj_admin_panel_16", -1),
       (try_end),
@@ -2539,17 +2541,17 @@ presentations = [
 
       (set_container_overlay, -1),
 
-      (create_button_overlay, "$g_presentation_obj_admin_panel_13", "str_back", 0),
-      (position_set_x, pos1, 880),
+      (create_button_overlay, "$g_presentation_obj_admin_panel_13", "str_back", tf_center_justify),
+      (position_set_x, pos1, 825),
       (position_set_y, pos1, 50),
       (overlay_set_position, "$g_presentation_obj_admin_panel_13", pos1),
       (position_set_x, pos1, 1500),
       (position_set_y, pos1, 1500),
       (overlay_set_size, "$g_presentation_obj_admin_panel_13", pos1),
 
-      (create_button_overlay, "$g_presentation_obj_admin_panel_2", "str_start_map", 0),
-      (position_set_x, pos1, 720),
-      (position_set_y, pos1, 50),
+      (create_button_overlay, "$g_presentation_obj_admin_panel_2", "str_start_map", tf_center_justify),
+      (position_set_x, pos1, 825),
+      (position_set_y, pos1, 90),
       (overlay_set_position, "$g_presentation_obj_admin_panel_2", pos1),
       (position_set_x, pos1, 1500),
       (position_set_y, pos1, 1500),
@@ -2768,8 +2770,73 @@ presentations = [
         (str_store_string, s3, "@Game Rules:^"),
         (str_store_string, s2, "str_s2_s3"),
         (assign, ":end_cond", 1000),
-        (call_script, "script_multiplayer_get_game_type_mission_template", "$g_multiplayer_game_type"),
+        (call_script, "script_game_multiplayer_get_game_type_mission_template", "$g_multiplayer_game_type"),
         (assign, ":cur_mt", reg0),
+        
+        (str_store_server_name, s0),
+        (str_store_string, s3, "str_server_name_s0"),
+        (str_store_string, s2, "str_s2_s3"),        
+
+        (try_begin),                
+          (eq, "$g_multiplayer_game_type", multiplayer_game_type_deathmatch),
+          (str_store_string, s0, "str_multi_game_type_1"),
+        (else_try),
+          (eq, "$g_multiplayer_game_type", multiplayer_game_type_team_deathmatch),
+          (str_store_string, s0, "str_multi_game_type_2"),
+        (else_try),
+          (eq, "$g_multiplayer_game_type", multiplayer_game_type_battle),
+          (str_store_string, s0, "str_multi_game_type_3"),
+        (else_try),
+          (eq, "$g_multiplayer_game_type", multiplayer_game_type_destroy),
+          (str_store_string, s0, "str_multi_game_type_4"),
+        (else_try),
+          (eq, "$g_multiplayer_game_type", multiplayer_game_type_capture_the_flag),
+          (str_store_string, s0, "str_multi_game_type_5"),
+        (else_try),
+          (eq, "$g_multiplayer_game_type", multiplayer_game_type_headquarters),
+          (str_store_string, s0, "str_multi_game_type_6"),
+        (else_try),
+          (eq, "$g_multiplayer_game_type", multiplayer_game_type_siege),
+          (str_store_string, s0, "str_multi_game_type_7"),
+        (try_end),
+        (str_store_string, s3, "str_game_type_s0"),
+        (str_store_string, s2, "str_s2_s3"),   
+        
+        (store_current_scene, ":cur_scene"),
+        (val_sub, ":cur_scene", "scn_multi_scene_1"),
+        (val_add, ":cur_scene", "str_multi_scene_1"),
+        (str_store_string, s0, ":cur_scene"),
+        (str_store_string, s3, "str_map_name_s0"),
+        (str_store_string, s2, "str_s2_s3"),
+        
+        (store_mission_timer_a, ":mission_timer"),
+        (val_add, ":mission_timer", "$server_mission_timer_while_player_joined"),
+        (assign, reg0, ":mission_timer"),       
+        (store_mul, "$g_multiplayer_game_max_seconds", "$g_multiplayer_game_max_minutes", 60),
+        (store_sub, ":remaining_seconds", "$g_multiplayer_game_max_seconds", ":mission_timer"),
+        (store_div, reg0, ":remaining_seconds", 60),
+        (store_mod, reg1, ":remaining_seconds", 60),
+        (try_begin),
+          (ge, reg0, 10),
+          (ge, reg1, 10),          
+          (str_clear, s0),
+          (str_clear, s1),
+        (else_try),  
+          (ge, reg0, 10),
+          (str_clear, s0),
+          (str_store_string, s1, "@0"),
+        (else_try),  
+          (ge, reg1, 10),
+          (str_store_string, s0, "@0"),
+          (str_clear, s1),
+        (else_try),  
+          (str_store_string, s0, "@0"),
+          (str_store_string, s1, "@0"),
+        (try_end),
+        (str_store_string, s3, "str_remaining_time_s0reg0_s1reg1"),
+        
+        (str_store_string, s2, "str_s2_s3"),
+
         (try_for_range, ":cur_option", 0, ":end_cond"),
           (assign, reg0, -12345), #magic number
           (call_script, "script_game_get_multiplayer_server_option_for_mission_template", ":cur_mt", ":cur_option"),
@@ -2781,7 +2848,7 @@ presentations = [
             (str_store_string, s3, s0),
             (str_store_string, s2, "str_s2_s3"),
           (try_end),
-        (try_end),
+        (try_end),        
         (create_text_overlay, reg0, s2, tf_scrollable),
         (overlay_set_color, reg0, 0xFFFFFF),
         (position_set_x, pos1, 230),
@@ -4092,7 +4159,7 @@ presentations = [
           (str_store_string, s0, "str_s1_won_round"),
         (try_end),
 
-        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_1", ":text_font_color"),
         (try_begin),
           (neq, ":winner_agent_team", -1),
@@ -4100,6 +4167,7 @@ presentations = [
         (else_try),
           (position_set_x, pos1, 400), #400
         (try_end),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 400),
         (overlay_set_position, "$g_multiplayer_message_1", pos1),
         (position_set_x, pos1, 2000),
@@ -4136,9 +4204,10 @@ presentations = [
         (try_end),      
 
         (str_store_string, s0, "str_s1_captured_flag"),
-        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_1", ":text_font_color"),
         (position_set_x, pos1, 350),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 400),
         (overlay_set_position, "$g_multiplayer_message_1", pos1),
         (position_set_x, pos1, 2000),
@@ -4165,10 +4234,11 @@ presentations = [
 
         (assign, ":text_font_color", 0xFFFFFFFF),
 
-        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_1", ":text_font_color"),
         (position_set_x, pos1, 325),
         (position_set_y, pos1, 400),
+        (position_set_x, pos1, 500), #new
         (overlay_set_position, "$g_multiplayer_message_1", pos1),
         (position_set_x, pos1, 2000),
         (position_set_y, pos1, 2000),
@@ -4184,9 +4254,10 @@ presentations = [
         (assign, ":text_font_color", 0xFFFFFFFF),
 
         (str_store_string, s0, "str_s1_taken_flag"),
-        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_1", ":text_font_color"),
         (position_set_x, pos1, 365),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 400),
         (overlay_set_position, "$g_multiplayer_message_1", pos1),
         (position_set_x, pos1, 2000),
@@ -4226,9 +4297,10 @@ presentations = [
         (str_store_faction_name, s1, ":winner_agent_faction"),
 
         (str_store_string, s0, "str_s1_captured_flag_reg0"),
-        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_1", ":text_font_color"),
         (position_set_x, pos1, 345),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 400),
         (overlay_set_position, "$g_multiplayer_message_1", pos1),
         (position_set_x, pos1, 2000),
@@ -4248,9 +4320,10 @@ presentations = [
         (str_store_faction_name, s1, ":winner_agent_faction"),      
 
         (str_store_string, s0, "str_s1_pulling_flag_reg0"),
-        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_1", ":text_font_color"),
         (position_set_x, pos1, 345),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 400),
         (overlay_set_position, "$g_multiplayer_message_1", pos1),
         (position_set_x, pos1, 2000),
@@ -4290,9 +4363,10 @@ presentations = [
         (str_store_faction_name, s1, ":winner_agent_faction"),
 
         (str_store_string, s0, "str_s1_neutralized_flag_reg0"),
-        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_1", ":text_font_color"),
         (position_set_x, pos1, 345),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 400),
         (overlay_set_position, "$g_multiplayer_message_1", pos1),
         (position_set_x, pos1, 2000),
@@ -4337,7 +4411,7 @@ presentations = [
           (assign, ":text_font_color", 0xFFFFFFFF),
         (try_end),
       
-        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_1", ":text_font_color"),
         (try_begin),
           (neq, "$g_multiplayer_message_value_1", -1),
@@ -4345,6 +4419,7 @@ presentations = [
         (else_try),
           (position_set_x, pos1, 400),
         (try_end),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 400),
         (overlay_set_position, "$g_multiplayer_message_1", pos1),
         (position_set_x, pos1, 2000),
@@ -4356,9 +4431,10 @@ presentations = [
       
         (assign, ":text_font_color", 0xFFFFFFFF),
         (str_store_string, s0, "str_round_draw"),
-        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_1", ":text_font_color"),
         (position_set_x, pos1, 375),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 400),
         (overlay_set_position, "$g_multiplayer_message_1", pos1),
         (position_set_x, pos1, 2000),
@@ -4370,9 +4446,10 @@ presentations = [
       
         (assign, ":text_font_color", 0xFFFFFFFF),
         (str_store_string, s0, "str_death_mode_started"),
-        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_1", ":text_font_color"),
         (position_set_x, pos1, 350),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 400),
         (overlay_set_position, "$g_multiplayer_message_1", pos1),
         (position_set_x, pos1, 2000),
@@ -4426,9 +4503,10 @@ presentations = [
           (str_store_string, s0, "str_s1_destroyed_trebuchet"),
         (try_end),
       
-        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_1", ":text_font_color"),
         (position_set_x, pos1, 350),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 400),
         (overlay_set_position, "$g_multiplayer_message_1", pos1),
         (position_set_x, pos1, 2000),
@@ -4473,9 +4551,10 @@ presentations = [
           (str_store_string, s0, "str_s1_saved_2_targets"),
         (try_end),
       
-        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_1", ":text_font_color"),
         (position_set_x, pos1, 350),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 400),
         (overlay_set_position, "$g_multiplayer_message_1", pos1),
         (position_set_x, pos1, 2000),
@@ -4518,9 +4597,10 @@ presentations = [
         (str_store_faction_name, s1, ":faction_of_winner_team"),
 
         (str_store_string, s0, "str_s1_won_round"),
-        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_1", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_1", ":text_font_color"),
         (position_set_x, pos1, 350),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 400),
         (overlay_set_position, "$g_multiplayer_message_1", pos1),
         (position_set_x, pos1, 2000),
@@ -4541,9 +4621,10 @@ presentations = [
         (eq, "$g_multiplayer_message_type", multiplayer_message_type_auto_team_balance_done),
         (assign, ":text_font_color", 0xFFFFFFFF),
         (str_store_string, s0, "str_auto_team_balance_done"),
-        (create_text_overlay, "$g_multiplayer_message_2", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_2", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_2", ":text_font_color"),
         (position_set_x, pos1, 375),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 550),
         (overlay_set_position, "$g_multiplayer_message_2", pos1),
         (position_set_x, pos1, 2000),
@@ -4559,15 +4640,16 @@ presentations = [
           (neq, "$g_multiplayer_game_type", multiplayer_game_type_destroy),
           (neq, "$g_multiplayer_game_type", multiplayer_game_type_siege),
           (str_store_string, s0, "str_auto_team_balance_in_20_seconds"),
-          (position_set_x, pos1, 275),
+          (position_set_x, pos1, 375),
         (else_try),
           (str_store_string, s0, "str_auto_team_balance_next_round"),
-          (position_set_x, pos1, 325),
+          (position_set_x, pos1, 375),
         (try_end),
       
-        (create_text_overlay, "$g_multiplayer_message_2", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_2", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_2", ":text_font_color"),
         (position_set_y, pos1, 550),
+        (position_set_x, pos1, 500), #new
         (overlay_set_position, "$g_multiplayer_message_2", pos1),
         (position_set_x, pos1, 2000),
         (position_set_y, pos1, 2000),
@@ -4593,9 +4675,10 @@ presentations = [
         (else_try),
           (str_store_string, s0, "str_poll_result_no"),
         (try_end),
-        (create_text_overlay, "$g_multiplayer_message_3", s0, tf_center_justify|tf_single_line|tf_with_outline),
+        (create_text_overlay, "$g_multiplayer_message_3", s0, tf_center_justify|tf_with_outline),
         (overlay_set_color, "$g_multiplayer_message_3", ":text_font_color"),
         (position_set_x, pos1, 380),
+        (position_set_x, pos1, 500), #new
         (position_set_y, pos1, 475),
         (overlay_set_position, "$g_multiplayer_message_3", pos1),
         (position_set_x, pos1, 2000),
@@ -4694,6 +4777,9 @@ presentations = [
       (overlay_set_size, reg0, pos1),      
 
       (try_begin),
+        (eq, "$g_multiplayer_team_1_faction", "$g_multiplayer_team_2_faction"),
+        (create_mesh_overlay, reg0, "mesh_ui_kingdom_shield_7"),
+      (else_try),
         (eq, "$g_multiplayer_team_2_faction", "fac_kingdom_4"),
         (create_mesh_overlay, reg0, "mesh_ui_kingdom_shield_1"),
       (else_try),
@@ -4760,12 +4846,22 @@ presentations = [
       (val_sub, ":flag_mesh", multiplayer_flag_projections_begin),
       (val_add, ":flag_mesh", multiplayer_flag_taken_projections_begin),
       (create_mesh_overlay, "$g_presentation_obj_flag_projection_display_2", ":flag_mesh"),
-      (store_sub, ":flag_mesh", "$g_multiplayer_team_2_faction", npc_kingdoms_begin),
-      (val_add, ":flag_mesh", multiplayer_flag_projections_begin),
-      (create_mesh_overlay, "$g_presentation_obj_flag_projection_display_3", ":flag_mesh"),
-      (val_sub, ":flag_mesh", multiplayer_flag_projections_begin),
-      (val_add, ":flag_mesh", multiplayer_flag_taken_projections_begin),
-      (create_mesh_overlay, "$g_presentation_obj_flag_projection_display_4", ":flag_mesh"),
+      
+      (try_begin),
+        (neq, "$g_multiplayer_team_1_faction", "$g_multiplayer_team_2_faction"),
+        (store_sub, ":flag_mesh", "$g_multiplayer_team_2_faction", npc_kingdoms_begin),
+        (val_add, ":flag_mesh", multiplayer_flag_projections_begin),
+        (create_mesh_overlay, "$g_presentation_obj_flag_projection_display_3", ":flag_mesh"),
+        (val_sub, ":flag_mesh", multiplayer_flag_projections_begin),
+        (val_add, ":flag_mesh", multiplayer_flag_taken_projections_begin),
+        (create_mesh_overlay, "$g_presentation_obj_flag_projection_display_4", ":flag_mesh"),
+      (else_try),
+        (assign, ":flag_mesh", "mesh_flag_project_rb"),
+        (create_mesh_overlay, "$g_presentation_obj_flag_projection_display_3", ":flag_mesh"),
+        (assign, ":flag_mesh", "mesh_flag_project_rb_miss"),
+        (create_mesh_overlay, "$g_presentation_obj_flag_projection_display_4", ":flag_mesh"),      
+      (try_end),
+      
       (position_set_x, pos1, 250),
       (position_set_y, pos1, 250),
       (overlay_set_size, "$g_presentation_obj_flag_projection_display_1", pos1),
@@ -4782,12 +4878,27 @@ presentations = [
     (ti_on_presentation_run, 
     [
       (set_fixed_point_multiplier, 1000),
-      (scene_prop_get_instance, ":flag_red_id", "spr_tutorial_flag_red", 0),
-      (prop_instance_get_position, pos1, ":flag_red_id"), #hold position of flag of team 1 (red flag) at pos1
-      (position_move_z, pos1, 250, 1),
-      (scene_prop_get_instance, ":flag_blue_id", "spr_tutorial_flag_blue", 0),
-      (prop_instance_get_position, pos2, ":flag_blue_id"), #hold position of flag of team 2 (blue flag) at pos2
-      (position_move_z, pos2, 250, 1),
+      
+      (scene_prop_get_instance, ":flag_red_id", "$team_1_flag_scene_prop", 0),      
+      (team_get_slot, ":team_0_flag_situation", 0, slot_team_flag_situation),      
+      (try_begin),
+        (neq, ":team_0_flag_situation", 1),
+        (prop_instance_get_position, pos1, ":flag_red_id"), #hold position of flag of team 1 (red flag) at pos1
+      (else_try),
+        (entry_point_get_position, pos1, multi_base_point_team_1), #moved from above to here after auto-set position      
+      (try_end),            
+      (position_move_z, pos1, 200, 1),
+      
+      (scene_prop_get_instance, ":flag_blue_id", "$team_2_flag_scene_prop", 0),      
+      (team_get_slot, ":team_1_flag_situation", 1, slot_team_flag_situation),            
+      (try_begin),
+        (neq, ":team_1_flag_situation", 1),
+        (prop_instance_get_position, pos2, ":flag_blue_id"), #hold position of flag of team 1 (red flag) at pos1
+      (else_try),
+        (entry_point_get_position, pos2, multi_base_point_team_2), #moved from above to here after auto-set position      
+      (try_end),      
+      (position_move_z, pos2, 200, 1),
+            
       (position_get_screen_projection, pos3, pos1),
       (position_get_x, ":x_pos", pos3),
       (position_get_y, ":y_pos", pos3),
@@ -4795,8 +4906,6 @@ presentations = [
       (try_begin),
         (is_between, ":x_pos", -100, 1100),
         (is_between, ":y_pos", -100, 850),
-
-        (team_get_slot, ":team_0_flag_situation", 0, slot_team_flag_situation),
 
         (multiplayer_get_my_player, ":my_player_number"),
         (try_begin),
@@ -4822,8 +4931,9 @@ presentations = [
             (try_end),
 
             (entry_point_get_position, pos5, ":our_base_entry_id"), #moved from above to here after auto-set position
+            (position_get_screen_projection, pos3, pos5),
 
-            (overlay_set_position, "$g_presentation_obj_flag_projection_display_2", pos5),
+            (overlay_set_position, "$g_presentation_obj_flag_projection_display_2", pos3),
             (overlay_set_display, "$g_presentation_obj_flag_projection_display_2", 1),
             (overlay_set_display, "$g_presentation_obj_flag_projection_display_1", 0),
           (try_end),
@@ -4834,12 +4944,12 @@ presentations = [
             (overlay_set_display, "$g_presentation_obj_flag_projection_display_1", 1),
             (overlay_set_display, "$g_presentation_obj_flag_projection_display_2", 0),
           (try_end),
-        (try_end),
-      
+        (try_end),      
       (else_try),
         (overlay_set_display, "$g_presentation_obj_flag_projection_display_1", 0),
         (overlay_set_display, "$g_presentation_obj_flag_projection_display_2", 0),
       (try_end),
+      
       (position_get_screen_projection, pos3, pos2),
       (position_get_x, ":x_pos", pos3),
       (position_get_y, ":y_pos", pos3),
@@ -4865,8 +4975,7 @@ presentations = [
             (overlay_set_position, "$g_presentation_obj_flag_projection_display_3", pos3),
             (overlay_set_display, "$g_presentation_obj_flag_projection_display_3", 1),
             (overlay_set_display, "$g_presentation_obj_flag_projection_display_4", 0),
-          (else_try), #if our flag is stolen
-      
+          (else_try), #if our flag is stolen      
             (try_begin),
               (eq, ":my_player_team", 0), 
               (assign, ":our_base_entry_id", multi_base_point_team_1),
@@ -4875,8 +4984,9 @@ presentations = [
             (try_end),
 
             (entry_point_get_position, pos5, ":our_base_entry_id"), #moved from above to here after auto-set position
+            (position_get_screen_projection, pos3, pos5),
       
-            (overlay_set_position, "$g_presentation_obj_flag_projection_display_4", pos5),
+            (overlay_set_position, "$g_presentation_obj_flag_projection_display_4", pos3),
             (overlay_set_display, "$g_presentation_obj_flag_projection_display_4", 1),
             (overlay_set_display, "$g_presentation_obj_flag_projection_display_3", 0),
           (try_end),
@@ -4888,7 +4998,6 @@ presentations = [
             (overlay_set_display, "$g_presentation_obj_flag_projection_display_4", 0),
           (try_end),
         (try_end),
-
       (else_try),
         (overlay_set_display, "$g_presentation_obj_flag_projection_display_3", 0),
         (overlay_set_display, "$g_presentation_obj_flag_projection_display_4", 0),
@@ -4903,8 +5012,14 @@ presentations = [
       (store_sub, ":flag_mesh", "$g_multiplayer_team_1_faction", npc_kingdoms_begin),
       (val_add, ":flag_mesh", multiplayer_flag_projections_begin),
       (create_mesh_overlay, "$g_presentation_obj_flag_projection_display_1", ":flag_mesh"),
-      (store_sub, ":flag_mesh", "$g_multiplayer_team_2_faction", npc_kingdoms_begin),
-      (val_add, ":flag_mesh", multiplayer_flag_projections_begin),
+
+      (try_begin),
+        (neq, "$g_multiplayer_team_1_faction", "$g_multiplayer_team_2_faction"),
+        (store_sub, ":flag_mesh", "$g_multiplayer_team_2_faction", npc_kingdoms_begin),
+        (val_add, ":flag_mesh", multiplayer_flag_projections_begin),
+      (else_try),
+        (assign, ":flag_mesh", "mesh_flag_project_rb"),
+      (try_end),
       (create_mesh_overlay, "$g_presentation_obj_flag_projection_display_3", ":flag_mesh"),
 
       (position_set_x, pos1, 250),
@@ -4923,6 +5038,7 @@ presentations = [
         (scene_prop_get_instance, ":flag_1_id", "$team_1_flag_scene_prop", 0),
         (prop_instance_get_position, pos1, ":flag_1_id"), #hold position of flag of team 1 at pos1
         (position_move_z, pos1, 250, 1),
+      
         (scene_prop_get_instance, ":flag_2_id", "$team_2_flag_scene_prop", 0),
         (prop_instance_get_position, pos2, ":flag_2_id"), #hold position of flag of team 2 at pos2
         (position_move_z, pos2, 250, 1),
@@ -5302,7 +5418,14 @@ presentations = [
         (overlay_set_size, reg0, pos1),
         (overlay_set_size, reg1, pos2),
 
+        (team_get_faction, ":faction_of_team_1", 0),
+        (team_get_faction, ":faction_of_team_2", 1),
+          
         (try_begin),
+          (eq, ":faction_of_team_1", ":faction_of_team_2"),
+          (eq, ":i_team", 1),
+          (create_mesh_overlay, reg0, "mesh_ui_kingdom_shield_7"),
+        (else_try),
           (eq, ":cur_faction", "fac_kingdom_4"),
           (create_mesh_overlay, reg0, "mesh_ui_kingdom_shield_1"),
         (else_try),
@@ -5332,7 +5455,7 @@ presentations = [
         (team_get_score, reg0, ":i_team"),
         (create_text_overlay, reg0, "str_score_reg0", tf_right_align),
         (overlay_set_color, reg0, 0xFFFFFF),
-        (store_add, ":sub_cur_x", ":cur_x", 325),
+        (store_add, ":sub_cur_x", ":cur_x", 340), #325
         (store_add, ":sub_cur_y", ":cur_y", 0),
         (position_set_x, pos1, ":sub_cur_x"),
         (position_set_y, pos1, ":sub_cur_y"),
@@ -5480,7 +5603,7 @@ presentations = [
               (overlay_set_size, reg0, pos1),
             (try_end),
   
-            (try_begin), #at headquarters and capture the flag write score instead before kill count
+            (try_begin), #at headquarters and capture the flag write score instead dead label before kill count
               (this_or_next|eq, "$g_multiplayer_game_type", multiplayer_game_type_capture_the_flag),
               (eq, "$g_multiplayer_game_type", multiplayer_game_type_headquarters),      
 
@@ -5493,12 +5616,12 @@ presentations = [
               (try_end),
 
               (player_get_score, reg0, ":max_score_plus_death_player_no"),
-              (create_text_overlay, reg0, "str_reg0", 0),
+              (create_text_overlay, reg0, "str_reg0", tf_right_align),
               (overlay_set_color, reg0, ":font_color"),
               (position_set_x, pos1, 750),
               (position_set_y, pos1, 750),
               (overlay_set_size, reg0, pos1),      
-              (store_add, ":sub_cur_x", ":cur_x", 150),
+              (store_add, ":sub_cur_x", ":cur_x", 165), #150
               (position_set_x, pos1, ":sub_cur_x"),
               (position_set_y, pos1, ":cur_y"),
               (overlay_set_position, reg0, pos1),
@@ -5532,45 +5655,34 @@ presentations = [
             (overlay_set_position, reg0, pos1),
       
             (player_get_kill_count, reg0, ":max_score_plus_death_player_no"), #get_kill_count
-            (create_text_overlay, reg0, "str_reg0", 0),
+            (create_text_overlay, reg0, "str_reg0", tf_right_align),
             (overlay_set_color, reg0, ":font_color"),
             (position_set_x, pos1, 750),
             (position_set_y, pos1, 750),
             (overlay_set_size, reg0, pos1),      
-            (store_add, ":sub_cur_x", ":cur_x", 200),
+            (store_add, ":sub_cur_x", ":cur_x", 215), #200
             (position_set_x, pos1, ":sub_cur_x"),
             (position_set_y, pos1, ":cur_y"),
             (overlay_set_position, reg0, pos1),
       
-##            (player_get_score, reg0, ":max_score_plus_death_player_no"), #get_score
-##            (create_text_overlay, reg0, "str_reg0", 0),
-##            (overlay_set_color, reg0, ":font_color"),
-##            (position_set_x, pos1, 750),
-##            (position_set_y, pos1, 750),
-##            (overlay_set_size, reg0, pos1),      
-##            (store_add, ":sub_cur_x", ":cur_x", 225),
-##            (position_set_x, pos1, ":sub_cur_x"),
-##            (position_set_y, pos1, ":cur_y"),
-##            (overlay_set_position, reg0, pos1),
-
             (player_get_death_count, reg0, ":max_score_plus_death_player_no"),
-            (create_text_overlay, reg0, "str_reg0", 0),
+            (create_text_overlay, reg0, "str_reg0", tf_right_align),
             (overlay_set_color, reg0, ":font_color"),
             (position_set_x, pos1, 750),
             (position_set_y, pos1, 750),
             (overlay_set_size, reg0, pos1),      
-            (store_add, ":sub_cur_x", ":cur_x", 250),
+            (store_add, ":sub_cur_x", ":cur_x", 265), #250
             (position_set_x, pos1, ":sub_cur_x"),
             (position_set_y, pos1, ":cur_y"),
             (overlay_set_position, reg0, pos1),
       
             (player_get_ping, reg0, ":max_score_plus_death_player_no"),
-            (create_text_overlay, reg0, "str_reg0", 0),
+            (create_text_overlay, reg0, "str_reg0", tf_right_align),
             (overlay_set_color, reg0, ":font_color"),
             (position_set_x, pos1, 750),
             (position_set_y, pos1, 750),
             (overlay_set_size, reg0, pos1),
-            (store_add, ":sub_cur_x", ":cur_x", 300),
+            (store_add, ":sub_cur_x", ":cur_x", 315), #300
             (position_set_x, pos1, ":sub_cur_x"),
             (position_set_y, pos1, ":cur_y"),
             (overlay_set_position, reg0, pos1),
@@ -5649,23 +5761,23 @@ presentations = [
               (overlay_set_position, reg0, pos1),
       
               (team_get_bot_kill_count, reg0, ":i_team"),
-              (create_text_overlay, reg0, "str_reg0", 0),
+              (create_text_overlay, reg0, "str_reg0", tf_right_align),
               (overlay_set_color, reg0, ":font_color"),
               (position_set_x, pos1, 750),
               (position_set_y, pos1, 750),
               (overlay_set_size, reg0, pos1),
-              (store_add, ":sub_cur_x", ":cur_x", 200),
+              (store_add, ":sub_cur_x", ":cur_x", 215), #200
               (position_set_x, pos1, ":sub_cur_x"),
               (position_set_y, pos1, ":cur_y"),
               (overlay_set_position, reg0, pos1),
       
               (team_get_bot_death_count, reg0, ":i_team"),
-              (create_text_overlay, reg0, "str_reg0", 0),
+              (create_text_overlay, reg0, "str_reg0", tf_right_align),
               (overlay_set_color, reg0, ":font_color"),
               (position_set_x, pos1, 750),
               (position_set_y, pos1, 750),
               (overlay_set_size, reg0, pos1),
-              (store_add, ":sub_cur_x", ":cur_x", 250),
+              (store_add, ":sub_cur_x", ":cur_x", 265), #250
               (position_set_x, pos1, ":sub_cur_x"),
               (position_set_y, pos1, ":cur_y"),
               (overlay_set_position, reg0, pos1),
@@ -5717,9 +5829,9 @@ presentations = [
         (position_set_y, pos1, 1000),
         (overlay_set_size, reg0, pos1),
 
-        (create_text_overlay, reg0, "str_ping", 0),
+        (create_text_overlay, reg0, "str_ping", tf_right_align),
         (overlay_set_color, reg0, 0xFFFFFF),
-        (store_add, ":sub_cur_x", ":cur_x", 200),
+        (store_add, ":sub_cur_x", ":cur_x", 215), #200
         (position_set_x, pos1, ":sub_cur_x"),
         (position_set_y, pos1, ":cur_y"),
         (overlay_set_position, reg0, pos1),
@@ -5780,12 +5892,12 @@ presentations = [
           (overlay_set_position, reg0, pos1),
           
           (player_get_ping, reg0, ":player_no"),
-          (create_text_overlay, reg0, "str_reg0", 0),
+          (create_text_overlay, reg0, "str_reg0", tf_right_align),
           (overlay_set_color, reg0, ":font_color"),
           (position_set_x, pos1, 750),
           (position_set_y, pos1, 750),
           (overlay_set_size, reg0, pos1),
-          (store_add, ":sub_cur_x", ":cur_x", 200),
+          (store_add, ":sub_cur_x", ":cur_x", 215), #200
           (position_set_x, pos1, ":sub_cur_x"),
           (position_set_y, pos1, ":cur_y"),
           (overlay_set_position, reg0, pos1),
@@ -5904,9 +6016,9 @@ presentations = [
       (position_set_y, pos1, 750),
       (overlay_set_size, reg0, pos1),
       
-      (create_text_overlay, reg0, "str_kills", 0),
+      (create_text_overlay, reg0, "str_kills", tf_center_justify),
       (overlay_set_color, reg0, 0xFFFFFF),
-      (store_add, ":sub_cur_x", ":cur_x", 164),
+      (store_add, ":sub_cur_x", ":cur_x", 179), #164
       (position_set_x, pos1, ":sub_cur_x"),
       (position_set_y, pos1, ":cur_y"),
       (overlay_set_position, reg0, pos1),
@@ -5914,9 +6026,9 @@ presentations = [
       (position_set_y, pos1, 750),
       (overlay_set_size, reg0, pos1),
       
-      (create_text_overlay, reg0, "str_deaths", 0),
+      (create_text_overlay, reg0, "str_deaths", tf_center_justify),
       (overlay_set_color, reg0, 0xFFFFFF),
-      (store_add, ":sub_cur_x", ":cur_x", 205),
+      (store_add, ":sub_cur_x", ":cur_x", 233), #205
       (position_set_x, pos1, ":sub_cur_x"),
       (position_set_y, pos1, ":cur_y"),
       (overlay_set_position, reg0, pos1),
@@ -5924,9 +6036,9 @@ presentations = [
       (position_set_y, pos1, 750),
       (overlay_set_size, reg0, pos1),
       
-      (create_text_overlay, reg0, "str_ping", 0),
+      (create_text_overlay, reg0, "str_ping", tf_center_justify),
       (overlay_set_color, reg0, 0xFFFFFF),
-      (store_add, ":sub_cur_x", ":cur_x", 264),
+      (store_add, ":sub_cur_x", ":cur_x", 282), #264
       (position_set_x, pos1, ":sub_cur_x"),
       (position_set_y, pos1, ":cur_y"),
       (overlay_set_position, reg0, pos1),
@@ -6001,34 +6113,34 @@ presentations = [
           (overlay_set_position, reg0, pos1),
       
           (player_get_kill_count, reg0, ":max_kills_player_no"),
-          (create_text_overlay, reg0, "str_reg0", 0),
+          (create_text_overlay, reg0, "str_reg0", tf_right_align),
           (overlay_set_color, reg0, 0xFFFFFF),
           (position_set_x, pos1, 750),
           (position_set_y, pos1, 750),
           (overlay_set_size, reg0, pos1),      
-          (store_add, ":sub_cur_x", ":cur_x", 173),
+          (store_add, ":sub_cur_x", ":cur_x", 188), #173
           (position_set_x, pos1, ":sub_cur_x"),
           (position_set_y, pos1, ":cur_y"),
           (overlay_set_position, reg0, pos1),
       
           (player_get_death_count, reg0, ":max_kills_player_no"),
-          (create_text_overlay, reg0, "str_reg0", 0),
+          (create_text_overlay, reg0, "str_reg0", tf_right_align),
           (overlay_set_color, reg0, 0xFFFFFF),
           (position_set_x, pos1, 750),
           (position_set_y, pos1, 750),
           (overlay_set_size, reg0, pos1),      
-          (store_add, ":sub_cur_x", ":cur_x", 223),
+          (store_add, ":sub_cur_x", ":cur_x", 238), #223
           (position_set_x, pos1, ":sub_cur_x"),
           (position_set_y, pos1, ":cur_y"),
           (overlay_set_position, reg0, pos1),
       
           (player_get_ping, reg0, ":max_kills_player_no"),
-          (create_text_overlay, reg0, "str_reg0", 0),
+          (create_text_overlay, reg0, "str_reg0", tf_right_align),
           (overlay_set_color, reg0, 0xFFFFFF),
           (position_set_x, pos1, 750),
           (position_set_y, pos1, 750),
           (overlay_set_size, reg0, pos1),
-          (store_add, ":sub_cur_x", ":cur_x", 273),
+          (store_add, ":sub_cur_x", ":cur_x", 288), #273
           (position_set_x, pos1, ":sub_cur_x"),
           (position_set_y, pos1, ":cur_y"),
           (overlay_set_position, reg0, pos1),
@@ -6058,12 +6170,12 @@ presentations = [
           (team_get_bot_kill_count, reg0, 1),
           (val_add, ":bot_kill_count", reg0),
           (assign, reg0, ":bot_kill_count"),
-          (create_text_overlay, reg0, "str_reg0", 0),
+          (create_text_overlay, reg0, "str_reg0", tf_right_align),
           (overlay_set_color, reg0, 0xD0D0D0),
           (position_set_x, pos1, 750),
           (position_set_y, pos1, 750),
           (overlay_set_size, reg0, pos1),
-          (store_add, ":sub_cur_x", ":cur_x", 173),
+          (store_add, ":sub_cur_x", ":cur_x", 188), #173
           (position_set_x, pos1, ":sub_cur_x"),
           (position_set_y, pos1, ":cur_y"),
           (overlay_set_position, reg0, pos1),
@@ -6073,12 +6185,12 @@ presentations = [
           (team_get_bot_death_count, reg0, 1),
           (val_add, ":bot_death_count", reg0),
           (assign, reg0, ":bot_death_count"),
-          (create_text_overlay, reg0, "str_reg0", 0),
+          (create_text_overlay, reg0, "str_reg0", tf_right_align),
           (overlay_set_color, reg0, 0xD0D0D0),
           (position_set_x, pos1, 750),
           (position_set_y, pos1, 750),
           (overlay_set_size, reg0, pos1),
-          (store_add, ":sub_cur_x", ":cur_x", 223),
+          (store_add, ":sub_cur_x", ":cur_x", 238), #223
           (position_set_x, pos1, ":sub_cur_x"),
           (position_set_y, pos1, ":cur_y"),
           (overlay_set_position, reg0, pos1),
@@ -6121,9 +6233,9 @@ presentations = [
         (position_set_y, pos1, 1000),
         (overlay_set_size, reg0, pos1),
 
-        (create_text_overlay, reg0, "str_ping", 0),
+        (create_text_overlay, reg0, "str_ping", tf_center_justify),
         (overlay_set_color, reg0, 0xFFFFFF),
-        (store_add, ":sub_cur_x", ":cur_x", 200),
+        (store_add, ":sub_cur_x", ":cur_x", 218), #200
         (position_set_x, pos1, ":sub_cur_x"),
         (position_set_y, pos1, ":cur_y"),
         (overlay_set_position, reg0, pos1),
@@ -6168,7 +6280,7 @@ presentations = [
             (store_add, ":sub_cur_y", ":cur_y", 0),
             (position_set_y, pos1, ":sub_cur_y"),
             (overlay_set_position, reg0, pos1),
-            (position_set_x, pos1, 16500),
+            (position_set_x, pos1, 12000), #16500
             (position_set_y, pos1, 1000),
             (overlay_set_size, reg0, pos1),
           (try_end),
@@ -6184,12 +6296,12 @@ presentations = [
           (overlay_set_position, reg0, pos1),
           
           (player_get_ping, reg0, ":player_no"),
-          (create_text_overlay, reg0, "str_reg0", 0),
+          (create_text_overlay, reg0, "str_reg0", tf_right_align),
           (overlay_set_color, reg0, ":font_color"),
           (position_set_x, pos1, 750),
           (position_set_y, pos1, 750),
           (overlay_set_size, reg0, pos1),
-          (store_add, ":sub_cur_x", ":cur_x", 200),
+          (store_add, ":sub_cur_x", ":cur_x", 215), #200
           (position_set_x, pos1, ":sub_cur_x"),
           (position_set_y, pos1, ":cur_y"),
           (overlay_set_position, reg0, pos1),
@@ -7284,6 +7396,17 @@ presentations = [
           (party_set_banner_icon, "p_main_party", ":selected_banner_map_icon"),
           (store_add, ":selected_banner_spr", ":selected_banner", banner_scene_props_begin),
           (troop_set_slot, "trp_player", slot_troop_banner_scene_prop, ":selected_banner_spr"),
+                    
+          #Correcting banners according to the player banner
+          #(assign, ":end_cond", active_npcs_end),
+          #(try_for_range, ":cur_troop", original_kingdom_heroes_begin, ":end_cond"),
+          #  (troop_slot_eq, ":cur_troop", slot_troop_banner_scene_prop, ":selected_banner_spr"),
+          #  (str_store_troop_name, s7, ":cur_troop"),
+          #  (display_message, "@DEBUGS : {s7}'s banner is changed"),
+          #  (troop_set_slot, ":cur_troop", slot_troop_banner_scene_prop, banner_scene_props_end_minus_one),
+          #  (assign, ":end_cond", 0),
+          #(try_end),
+                    
           (presentation_set_duration, 0),
           (assign, ":troop_to_change", 0),
           (assign, ":end_cond", active_npcs_end),
@@ -7294,7 +7417,7 @@ presentations = [
             (troop_set_slot, ":cur_troop", slot_troop_banner_scene_prop, banner_scene_props_end_minus_one),
             (troop_get_slot, ":cur_party", ":cur_troop", slot_troop_leaded_party),
             (gt, ":cur_party", 0),
-            (party_set_banner_icon, ":cur_party", banner_map_icons_end_minus_one),
+            (party_set_banner_icon, ":cur_party", banner_map_icons_end_minus_one),             
           (try_end),
           (try_for_range, ":cur_center", walled_centers_begin, walled_centers_end),
             (try_begin),
@@ -7302,7 +7425,7 @@ presentations = [
               (party_set_banner_icon, ":cur_center", ":selected_banner_map_icon"),
             (else_try),
               (party_slot_eq, ":cur_center", slot_town_lord, ":troop_to_change"),
-              (party_set_banner_icon, ":cur_center", banner_map_icons_end_minus_one),
+              (party_set_banner_icon, ":cur_center", banner_map_icons_end_minus_one), 
             (try_end),
           (try_end),
         (try_end),
@@ -10975,17 +11098,38 @@ presentations = [
       (overlay_set_area_size, "$g_presentation_obj_bugdet_report_container", pos1),
       (set_container_overlay, "$g_presentation_obj_bugdet_report_container"),
 
+      (game_get_reduce_campaign_ai, ":reduce_campaign_ai"),      
+      (try_begin),
+        (eq, ":reduce_campaign_ai", 0), #hard
+        (assign, ":num_centers_needed_for_efficiency_loss", 2),
+        (assign, ":tax_efficiency_loss_ratio_per_center", 5),
+      (else_try),  
+        (eq, ":reduce_campaign_ai", 1), #medium
+        (assign, ":num_centers_needed_for_efficiency_loss", 4),
+        (assign, ":tax_efficiency_loss_ratio_per_center", 4),
+      (else_try),  
+        (eq, ":reduce_campaign_ai", 2), #easy
+        (assign, ":num_centers_needed_for_efficiency_loss", 6),
+        (assign, ":tax_efficiency_loss_ratio_per_center", 3),
+      (try_end),  
+
       (assign, ":num_lines", 0),
       (assign, ":num_owned_center_values_for_tax_efficiency", 0),
       (assign, ":all_centers_accumulated_total", 0),
-      (try_for_range, ":center_no", centers_begin, centers_end),
+      (assign, ":all_centers_accumulated_taxes_and_rents", 0),
+      (try_for_range, ":center_no", centers_begin, centers_end),	  
+	    (try_begin),
+		  (party_slot_ge, ":center_no", slot_center_player_enterprise, 1),		  
+		  (val_add, ":num_lines", 1),
+	    (try_end),	  
+	  
         (party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
-        (val_add, ":num_owned_center_values_for_tax_efficiency", 1),
         (val_add, ":num_lines", 1),
+        (val_add, ":num_owned_center_values_for_tax_efficiency", 1),
         (try_begin),
           (is_between, ":center_no", towns_begin, towns_end),
-          (val_add, ":num_owned_center_values_for_tax_efficiency", 1),
           (val_add, ":num_lines", 1),
+          (val_add, ":num_owned_center_values_for_tax_efficiency", 1),
         (try_end),
       (try_end),
       (try_begin),
@@ -10995,8 +11139,8 @@ presentations = [
         (eq, "$player_has_homage", 0),
         (val_add, ":num_lines", 1),
       (try_end),
-      (try_begin),
-        (gt, ":num_owned_center_values_for_tax_efficiency", 3),
+      (try_begin),      
+        (gt, ":num_owned_center_values_for_tax_efficiency", ":num_centers_needed_for_efficiency_loss"),
       #gt accumulated total is ignored
         (val_add, ":num_lines", 1),
       (try_end),
@@ -11019,14 +11163,196 @@ presentations = [
       (val_add, ":num_lines", 3),
       (store_mul, ":cur_y", 27, ":num_lines"),
       (assign, ":net_change", 0), #this is the amount added
-      (try_for_range, ":center_no", centers_begin, centers_end),
-#		(neg|is_between, ":center_no", castles_begin, castles_end),
+      (try_for_range, ":center_no", centers_begin, centers_end),		
+		#Enterprise
+        (try_begin),
+		  (party_get_slot, ":enterprise_output", ":center_no", slot_center_player_enterprise),
+		  (gt, ":enterprise_output", 1),
+		  (neg|party_slot_ge, ":center_no", slot_center_player_enterprise_days_until_complete, 1),
+		  
+          (str_store_party_name, s0, ":center_no"),
+		  
+		  (call_script, "script_process_player_enterprise", ":enterprise_output", ":center_no"),
+		  (assign, ":net_profit", reg0),
+		  (assign, ":price_of_single_output", reg4),
+		  (assign, ":price_of_single_input", reg5),
+		  (assign, ":price_of_secondary_input", reg10),
+		  
+		  (store_sub, ":town_order", ":center_no", towns_begin),
+		  (store_add, ":craftsman_troop", ":town_order", "trp_town_1_master_craftsman"),
+
+		  (item_get_slot, ":outputs_added_to_market", ":enterprise_output", slot_item_output_per_run),
+		  (assign, ":outputs_added_to_warehouse", 0),
+		  
+		  #Enterprise impact of outputs
+		  (try_begin),
+		    #output placed in inventory: deduct selling price and add one good
+			(party_slot_eq, ":center_no", slot_center_player_enterprise_production_order, 1),
+			
+			#Count empty slots
+			(assign, ":empty_slots", 0),
+			(troop_get_inventory_capacity, ":total_capacity", ":craftsman_troop"),
+			(try_for_range, ":capacity_iterator", 0, ":total_capacity"),
+				(troop_get_inventory_slot, ":slot", ":craftsman_troop", ":capacity_iterator"),
+				(lt, ":slot", 1),
+				(val_add, ":empty_slots", 1),
+			(try_end),
+			
+			(assign, ":outputs_added_to_warehouse", ":outputs_added_to_market"),
+			(val_min, ":outputs_added_to_warehouse",  ":empty_slots"),
+			(gt, ":outputs_added_to_warehouse", 0),
+			
+			(store_mul, ":cancelled_sales", ":price_of_single_output", ":outputs_added_to_warehouse"),
+			(val_sub, ":net_profit", ":cancelled_sales"),
+			(val_sub, ":outputs_added_to_market", ":outputs_added_to_warehouse"),
+		  (try_end),
+		  
+		  #If the transaction is for real, and not just a budget check
+		  (try_begin),
+		    (eq, "$g_apply_budget_report_to_gold", 1),
+			(troop_add_items, ":craftsman_troop", ":enterprise_output", ":outputs_added_to_warehouse"),
+
+			#Affect prices by outputs added to market
+			(store_sub, ":item_slot_no", ":enterprise_output", trade_goods_begin),
+			(val_add, ":item_slot_no", slot_town_trade_good_prices_begin),
+			(party_get_slot, ":current_index", ":center_no", ":item_slot_no"),			
+			(store_mul, ":impact_on_price", ":outputs_added_to_market", 15),
+			(val_sub, ":current_index", ":impact_on_price"),
+			(party_set_slot, ":center_no", ":item_slot_no",":current_index"),			
+						
+			(gt, "$cheat_mode", 0),
+			(str_store_troop_name, s3, ":craftsman_troop"),
+			(assign, reg3, ":outputs_added_to_warehouse"),
+			(display_message, "@{!}DEBUG -- Adding {reg3} items to {s3}"),
+		  (try_end),
+		  
+		  #Enterprise impact of outputs
+		  (item_get_slot, ":inputs_taken_from_market", ":enterprise_output", slot_item_input_number),		  
+		  (try_begin),
+			(item_slot_ge, ":enterprise_output", slot_item_secondary_raw_material, 1),
+		    (assign, ":2ary_inputs_taken_from_market", ":inputs_taken_from_market"),
+		  (else_try),
+		    (assign, ":2ary_inputs_taken_from_market", 0),
+		  (try_end),
+		  
+		  (assign, ":inputs_taken_from_warehouse", 0),
+		  (assign, ":2ary_inputs_taken_from_warehouse", 0),
+		  
+		  (try_begin),
+		    #input present in inventory: reimburse for input cost and remove one good
+			(troop_get_inventory_capacity, ":total_capacity", ":craftsman_troop"),
+			(try_for_range, ":capacity_iterator", 0, ":total_capacity"),
+				(troop_get_inventory_slot, ":item_in_slot", ":craftsman_troop", ":capacity_iterator"),
+			
+				(lt, ":inputs_taken_from_warehouse", ":inputs_taken_from_market"),
+				(item_slot_eq, ":enterprise_output", slot_item_primary_raw_material, ":item_in_slot"),
+                #(troop_inventory_slot_get_item_amount, ":item_ammo", ":craftsman_troop", ":capacity_iterator"),
+                #(troop_inventory_slot_get_item_max_amount, ":item_max_ammo", ":craftsman_troop", ":capacity_iterator"),
+                #(eq, ":item_ammo", ":item_max_ammo"),
+				
+				(val_add, ":inputs_taken_from_warehouse", 1),
+			(else_try),	
+				(lt, ":2ary_inputs_taken_from_warehouse", ":2ary_inputs_taken_from_market"),
+				(item_slot_eq, ":enterprise_output", slot_item_secondary_raw_material, ":item_in_slot"),
+                #(troop_inventory_slot_get_item_amount, ":item_ammo", ":craftsman_troop", ":capacity_iterator"),
+                #(troop_inventory_slot_get_item_max_amount, ":item_max_ammo", ":craftsman_troop", ":capacity_iterator"),
+                #(eq, ":item_ammo", ":item_max_ammo"),
+
+				(val_add, ":2ary_inputs_taken_from_warehouse", 1),
+			(try_end),
+		  
+		    (try_begin),
+				(gt, ":inputs_taken_from_warehouse", 0),
+				(val_sub, ":inputs_taken_from_market", ":inputs_taken_from_warehouse"),
+				(store_mul, ":savings_from_warehoused_inputs",	":price_of_single_input", ":inputs_taken_from_warehouse"),
+				(val_add, ":net_profit", ":savings_from_warehoused_inputs"),
+			(try_end),	
+		    (try_begin),
+				(gt, ":2ary_inputs_taken_from_warehouse", 0),
+				(val_sub, ":2ary_inputs_taken_from_market", ":2ary_inputs_taken_from_warehouse"),
+				(assign, ":savings_from_warehoused_inputs",	":price_of_secondary_input"),
+				(val_add, ":net_profit", ":savings_from_warehoused_inputs"),
+			(try_end),					
+		  (try_end),
+		  
+		  #If the transaction is for real, and not just a budget check
+		  (try_begin),
+		    (eq, "$g_apply_budget_report_to_gold", 1),
+			(item_get_slot, ":raw_material", ":enterprise_output", slot_item_primary_raw_material),
+			(troop_remove_items, ":craftsman_troop", ":raw_material", ":inputs_taken_from_warehouse"),
+			(item_get_slot, ":secondary_raw_material", ":enterprise_output", slot_item_secondary_raw_material),
+			(troop_remove_items, ":craftsman_troop", ":secondary_raw_material", ":2ary_inputs_taken_from_warehouse"),
+			
+			#Affect prices by intputs added to market
+			(store_sub, ":item_slot_no", ":raw_material", trade_goods_begin),
+			(val_add, ":item_slot_no", slot_town_trade_good_prices_begin),
+			(party_get_slot, ":current_index", ":center_no", ":item_slot_no"),			
+			(store_mul, ":impact_on_price", ":outputs_added_to_market", 15),
+			(val_add, ":current_index", ":impact_on_price"),
+			(party_set_slot, ":center_no", ":item_slot_no",":current_index"),			
+			
+			(try_begin),
+				(gt, ":2ary_inputs_taken_from_market", 0),
+				(store_sub, ":item_slot_no", ":secondary_raw_material", trade_goods_begin),
+				(val_add, ":item_slot_no", slot_town_trade_good_prices_begin),
+				(party_get_slot, ":current_index", ":center_no", ":item_slot_no"),			
+				(val_add, ":current_index", 15),
+				(party_set_slot, ":center_no", ":item_slot_no",":current_index"),			
+			(try_end),
+		  (try_end),		  
+		  		  
+		  (call_script, "script_get_enterprise_name", ":enterprise_output"),
+		  (str_store_string, s5, reg0),
+		  
+          (create_text_overlay, reg1, "str_enterprise_s5_at_s0", 0),
+          (position_set_x, pos1, 900),
+          (position_set_y, pos1, 900),
+          (overlay_set_size, reg1, pos1),
+          (position_set_x, pos1, 25),
+          (position_set_y, pos1, ":cur_y"),
+          (overlay_set_position, reg1, pos1),
+		  
+          (assign, reg0, ":net_profit"),
+		  
+		  #Enterprise revenue strings
+          (try_begin),
+     	    (store_faction_of_party, ":faction_no", ":center_no"),
+		    (store_relation, ":relation", ":faction_no", "$players_kingdom"),
+		    (lt, ":relation", 0),
+		    (assign, reg0, 0), 
+		    (assign, ":net_profit", 0), 
+		  
+            (create_text_overlay, reg1, "str_under_sequestration", tf_right_align|tf_single_line),
+            (overlay_set_color, reg1, 0xFF0000),		  
+		  (else_try),
+		    (ge, reg0, 0), 
+            (create_text_overlay, reg1, "@{!}{reg0}", tf_right_align|tf_single_line),
+            (overlay_set_color, reg1, 0x00AA00),
+          (else_try),
+            (create_text_overlay, reg1, "@{!}{reg0}", tf_right_align|tf_single_line),
+            (overlay_set_color, reg1, 0xFF0000),
+          (try_end),
+		  
+          (val_add, ":all_centers_accumulated_total", ":net_profit"),
+          (val_add, ":net_change", ":net_profit"),		  
+		  
+          (position_set_x, pos1, 900),
+          (position_set_y, pos1, 900),
+          (overlay_set_size, reg1, pos1),
+          (position_set_x, pos1, 500),
+          (position_set_y, pos1, ":cur_y"),
+          (overlay_set_position, reg1, pos1),
+          (val_sub, ":cur_y", 27),
+        (try_end),
+
+		#Enterprise ends, taxes begin
         (party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
         (party_get_slot, ":accumulated_rents", ":center_no", slot_center_accumulated_rents),
         (party_get_slot, ":accumulated_tariffs", ":center_no", slot_center_accumulated_tariffs),
 		
         (store_add, ":accumulated_total", ":accumulated_rents", ":accumulated_tariffs"),
         (val_add, ":all_centers_accumulated_total", ":accumulated_total"),
+        (val_add, ":all_centers_accumulated_taxes_and_rents", ":accumulated_total"),
         (val_add, ":net_change", ":accumulated_total"),
         (str_store_party_name, s0, ":center_no"),
         (create_text_overlay, reg1, "str_rents_from_s0", 0),
@@ -11051,6 +11377,7 @@ presentations = [
         (position_set_y, pos1, ":cur_y"),
         (overlay_set_position, reg1, pos1),
         (val_sub, ":cur_y", 27),
+		
         (try_begin),
           (is_between, ":center_no", towns_begin, towns_end),
           (create_text_overlay, reg1, "str_tariffs_from_s0", 0),
@@ -11075,7 +11402,7 @@ presentations = [
           (position_set_y, pos1, ":cur_y"),
           (overlay_set_position, reg1, pos1),
           (val_sub, ":cur_y", 27),
-        (try_end),
+        (try_end),								
       (try_end),
 
       (try_begin),
@@ -11107,14 +11434,16 @@ presentations = [
         (overlay_set_position, reg1, pos1),
         (val_sub, ":cur_y", 27),
       (try_end),
-
+      
       (try_begin),
-        (gt, ":num_owned_center_values_for_tax_efficiency", 3),
+        (gt, ":num_owned_center_values_for_tax_efficiency", ":num_centers_needed_for_efficiency_loss"),
         (gt, ":all_centers_accumulated_total", 0),
-        (store_sub, ":ratio_lost", ":num_owned_center_values_for_tax_efficiency", 3),
-        (val_mul, ":ratio_lost", 5),
-        (val_min, ":ratio_lost", 70),
-        (store_mul, ":tax_lost", ":all_centers_accumulated_total", ":ratio_lost"),
+        (store_sub, ":ratio_lost", ":num_owned_center_values_for_tax_efficiency", ":num_centers_needed_for_efficiency_loss"),
+        (val_mul, ":ratio_lost", ":tax_efficiency_loss_ratio_per_center"),
+        (val_min, ":ratio_lost", 65),
+                
+        #(store_mul, ":tax_lost", ":all_centers_accumulated_total", ":ratio_lost"),
+        (store_mul, ":tax_lost", ":all_centers_accumulated_taxes_and_rents", ":ratio_lost"),        
         (val_div, ":tax_lost", 100),
         (val_sub, ":net_change", ":tax_lost"),
         (create_text_overlay, reg1, "str_loss_due_to_tax_inefficiency", 0),
@@ -11311,6 +11640,7 @@ presentations = [
         (position_set_y, pos1, ":cur_y"),
         (overlay_set_position, reg1, pos1),
         (val_sub, ":cur_y", 27),
+        (neq, "$g_apply_budget_report_to_gold", 0),
         (call_script, "script_objectionable_action", tmt_egalitarian, "str_men_unpaid"),
       (try_end),
 

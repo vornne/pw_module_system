@@ -110,6 +110,7 @@ multiplayer_event_return_force_default_armor                  = 103
 multiplayer_event_return_anti_cheat                           = 104
 multiplayer_event_return_open_game_rules                      = 105
 multiplayer_event_return_max_num_bots                         = 106
+multiplayer_event_return_server_mission_timer_while_player_joined = 107
 
 #multiplayer message types
 multiplayer_message_type_auto_team_balance_done      = 2
@@ -146,7 +147,7 @@ multiplayer_round_max_seconds_max            = 901
 multiplayer_respawn_period_min               = 3
 multiplayer_respawn_period_max               = 31 #can only be 30 seconds max (due to agent deletion after that period)
 
-multiplayer_siege_mod_defender_team_extra_respawn_time = 20
+multiplayer_siege_mod_defender_team_extra_respawn_time = 27 #It was 20 in 1.113 but it is increased it to 25 in 1.121 because defenders were mostly defeating enemy.
 multiplayer_new_agents_finish_spawning_time = 30
 multiplayer_max_possible_player_id = 1000
 
@@ -557,3 +558,17 @@ reg62  = opmask_register|62
 reg63  = opmask_register|63
 
 reg65  = opmask_register|65
+
+spf_all_teams_are_enemy                      = 0x00000001, 
+spf_is_horseman                              = 0x00000002,
+spf_examine_all_spawn_points                 = 0x00000004,
+spf_team_0_spawn_far_from_entry_32           = 0x00000008,
+spf_team_1_spawn_far_from_entry_0            = 0x00000010,
+spf_team_1_spawn_far_from_entry_66           = 0x00000020,
+spf_team_0_spawn_near_entry_0                = 0x00000040,
+spf_team_0_spawn_near_entry_66               = 0x00000080,
+spf_team_1_spawn_near_entry_32               = 0x00000100,
+spf_team_0_walkers_spawn_at_high_points      = 0x00000200,
+spf_team_1_walkers_spawn_at_high_points      = 0x00000400,
+spf_try_to_spawn_close_to_at_least_one_enemy = 0x00000800,
+spf_care_agent_to_agent_distances_less       = 0x00001000,
