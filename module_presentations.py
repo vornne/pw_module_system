@@ -5455,7 +5455,7 @@ presentations = [
         (team_get_score, reg0, ":i_team"),
         (create_text_overlay, reg0, "str_score_reg0", tf_right_align),
         (overlay_set_color, reg0, 0xFFFFFF),
-        (store_add, ":sub_cur_x", ":cur_x", 340), #325
+        (store_add, ":sub_cur_x", ":cur_x", 325), #325
         (store_add, ":sub_cur_y", ":cur_y", 0),
         (position_set_x, pos1, ":sub_cur_x"),
         (position_set_y, pos1, ":sub_cur_y"),

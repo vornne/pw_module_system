@@ -32,6 +32,7 @@ simple_triggers = [
    [
     ]),
 
+
   (1,
    [
       (try_begin),
@@ -52,6 +53,7 @@ simple_triggers = [
       (neg|is_currently_night),
       (rest_for_hours, 0, 0, 0), #stop resting
     ]),
+
 
   (0,
    [
@@ -89,6 +91,7 @@ simple_triggers = [
       (party_is_active, "$capturer_party"),
       (party_relocate_near_party, "p_main_party", "$capturer_party", 0),
     ]),
+
 
 #Auto-menu
   (0,
@@ -169,9 +172,7 @@ simple_triggers = [
    [
        (map_free),
        (call_script, "script_music_set_situation_with_culture", mtf_sit_travel),
-	    ]),
-
-	
+	    ]),	
 
   (0,
 	[
@@ -1505,7 +1506,8 @@ simple_triggers = [
 	     #(troop_get_slot, ":lord_relation", ":kingdom_lord", slot_troop_player_relation),
 	     (call_script, "script_get_number_of_hero_centers", "trp_player"),
 	     (assign, ":num_centers_owned", reg0),
-	     (try_begin),
+	     (eq, "$g_infinite_camping", 0),
+	     (try_begin),	       
 	       (eq, ":num_centers_owned", 0),
 	       (troop_get_slot, ":player_renown", "trp_player", slot_troop_renown),
 	       (ge, ":player_renown", 160),
@@ -2905,6 +2907,7 @@ simple_triggers = [
 # Report to army quest 
   (6,
    [
+     (eq, "$g_infinite_camping", 0),
      (is_between, "$players_kingdom", kingdoms_begin, kingdoms_end),
      (eq, "$g_player_is_captive", 0),
      	 
@@ -2918,8 +2921,17 @@ simple_triggers = [
 	 
      (neg|faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_default),
      (neg|faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_feast),     
-     (this_or_next|neg|faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_attacking_enemies_around_center),
-     (is_between, ":faction_object", walled_centers_begin, walled_centers_end),
+          
+     (assign, ":continue", 1),
+     (try_begin),
+       (this_or_next|faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_attacking_enemies_around_center),     
+       (faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_attacking_center),
+     
+       (neg|is_between, ":faction_object", walled_centers_begin, walled_centers_end),
+       (assign, ":continue", 0),
+     (try_end),  
+     
+     (eq, ":continue", 1),
                             	 
 	 (assign, ":kingdom_is_at_war", 0),
 	 (try_for_range, ":faction", kingdoms_begin, kingdoms_end),
@@ -3338,12 +3350,13 @@ simple_triggers = [
 #NPC changes begin
 #Resolve one issue each hour
 (1, 
-   [   
+   [           
 		(str_store_string, s51, "str_no_trigger_noted"),
 		
 		# Rejoining party
         (try_begin),
             (gt, "$npc_to_rejoin_party", 0),
+            (eq, "$g_infinite_camping", 0),
             (try_begin),
                 (neg|main_party_has_troop, "$npc_to_rejoin_party"),
                 (neq, "$g_player_is_captive", 1),
@@ -3359,6 +3372,7 @@ simple_triggers = [
 		# Here do NPC that is quitting
 		(else_try),
             (gt, "$npc_is_quitting", 0),
+            (eq, "$g_infinite_camping", 0),
             (try_begin),
                 (main_party_has_troop, "$npc_is_quitting"),
                 (neq, "$g_player_is_captive", 1),
@@ -3371,6 +3385,7 @@ simple_triggers = [
 		#NPC with grievance	
         (else_try), #### Grievance
             (gt, "$npc_with_grievance", 0),
+            (eq, "$g_infinite_camping", 0),
             (eq, "$disable_npc_complaints", 0),
             (try_begin),
                 (main_party_has_troop, "$npc_with_grievance"),
@@ -3385,6 +3400,7 @@ simple_triggers = [
             (try_end),
         (else_try),
             (gt, "$npc_with_personality_clash", 0),
+            (eq, "$g_infinite_camping", 0),
             (eq, "$disable_npc_complaints", 0),
             (troop_get_slot, ":object", "$npc_with_personality_clash", slot_troop_personalityclash_object),
             (try_begin),
@@ -3400,6 +3416,7 @@ simple_triggers = [
             (try_end),
         (else_try), #### Political issue
             (gt, "$npc_with_political_grievance", 0),
+            (eq, "$g_infinite_camping", 0),
             (eq, "$disable_npc_complaints", 0),
             (try_begin),
                 (main_party_has_troop, "$npc_with_political_grievance"),
@@ -3413,6 +3430,7 @@ simple_triggers = [
             (try_end),
 		(else_try),	
             (eq, "$disable_sisterly_advice", 0),
+            (eq, "$g_infinite_camping", 0),
             (gt, "$npc_with_sisterly_advice", 0),
             (try_begin),
 				(main_party_has_troop, "$npc_with_sisterly_advice"),
@@ -3425,6 +3443,7 @@ simple_triggers = [
             (try_end),
 		(else_try), #check for regional background
             (eq, "$disable_local_histories", 0),
+            (eq, "$g_infinite_camping", 0),
             (try_for_range, ":npc", companions_begin, companions_end),
                 (main_party_has_troop, ":npc"),           
                 (troop_slot_eq, ":npc", slot_troop_home_speech_delivered, 0),

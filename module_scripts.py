@@ -22095,6 +22095,10 @@ scripts = [
        (faction_get_slot, ":faction_marshal", ":faction_no", slot_faction_marshall),
        (troop_get_slot, ":marshal_party", ":faction_marshal", slot_troop_leaded_party),
        (party_set_slot, ":marshal_party", slot_party_ai_object, -1),
+       (assign, "$g_gathering_new_started", 1),
+       (call_script, "script_npc_decision_checklist_party_ai", ":faction_marshal"), #This handles AI for both marshal and other parties		
+       (call_script, "script_party_set_ai_state", ":marshal_party", reg0, reg1),
+       (assign, "$g_gathering_new_started", 0),
     (else_try),      
        #check if marshal arrived his target city during active gathering
        
@@ -22733,7 +22737,16 @@ scripts = [
       (assign, "$g_player_party_morale_modifier_party_size", ":num_men"),
     
       (store_skill_level, ":player_leadership", "skl_leadership", "trp_player"),
-      (store_mul, "$g_player_party_morale_modifier_leadership", ":player_leadership", 10),
+      
+      (try_begin),
+        (eq, "$players_kingdom", "fac_player_supporters_faction"),
+        (faction_get_slot, ":cur_faction_king", "$players_kingdom", slot_faction_leader),
+        (eq, ":cur_faction_king", "trp_player"),
+        (store_mul, "$g_player_party_morale_modifier_leadership", ":player_leadership", 12),
+      (else_try),  
+        (store_mul, "$g_player_party_morale_modifier_leadership", ":player_leadership", 10),
+      (try_end),  
+      
       (assign, ":new_morale", "$g_player_party_morale_modifier_leadership"),
       (val_sub, ":new_morale", "$g_player_party_morale_modifier_party_size"),
       
@@ -23023,7 +23036,13 @@ scripts = [
         (party_get_slot, ":str", ":cur_troop_party", slot_party_cached_strength),
         (try_begin),
           (party_slot_eq, ":cur_troop_party", slot_party_ai_state, spai_accompanying_army),
+          #(str_store_party_name, s7, ":cur_troop_party"),
+          #(str_store_party_name, s5, ":party_no"),
+          #(display_message, "@DEBUGS : examining {s5}, {s7} is accompanying"),
           (party_get_slot, ":commander_party", ":cur_troop_party", slot_party_ai_object),
+          #(str_store_party_name, s7, ":commander_party"),
+          #(assign, reg9, ":str"),
+          #(display_message, "@DEBUGS : commander : {s7}, {reg9}"),
           (eq, ":commander_party", ":party_no"),
           (val_add, ":follower_strength", ":str"),
         (else_try),
@@ -39697,7 +39716,9 @@ scripts = [
 	  
       (try_begin),
         (lt, ":old_ai_object", 0),
-        (store_random_in_range, ":random_value", 0, 10), #to eanble marshal to wait sometime during active gathering
+        
+        (store_random_in_range, ":random_value", 0, 8), #to eanble marshal to wait sometime during active gathering
+        (this_or_next|eq, "$g_gathering_new_started", 1),
         (eq, ":random_value", 0),
         
         (assign, ":vassals_already_assembled", 0),
@@ -39729,13 +39750,10 @@ scripts = [
           #if more than 35% of vassals already collected do not make any more active gathering, just hold and wait last vassals to participate.
           (le, ":ratio_of_vassals_assembled", 35), 
                       
-          (assign, ":best_center_to_travel", ":most_threatened_center"),
-          (game_get_reduce_campaign_ai, ":reduce_campaign_ai"),
+          (assign, ":best_center_to_travel", ":most_threatened_center"),          
 
           (try_begin),
-            (this_or_next|eq, ":reduce_campaign_ai", 2), #at easy any marshal do not do active gathering
-            (eq, ":faction_no", "$players_kingdom"), #players kingdom do not do active gathering
-            (eq, 1, 2),
+            (eq, "$g_gathering_new_started", 1),
             
             (assign, ":minimum_distance", 100000),
             (try_for_range, ":center_no", centers_begin, centers_end),
@@ -40814,7 +40832,34 @@ scripts = [
 	(else_try),
 		(call_script, "script_troop_get_relation_with_troop", ":troop_no", ":faction_marshall"),
 		(assign, ":relation_with_marshall", reg0),
-		(lt, ":relation_with_marshall", -10),
+		
+		(try_begin),
+		  (le, ":relation_with_marshall", -10),
+		  (assign, ":acceptance_level", 10000),
+		(else_try),  
+		  (store_mul, ":acceptance_level", ":relation_with_marshall", -1000),
+		(try_end), 
+		
+		(val_add, ":acceptance_level", 1000),
+
+		(try_begin),
+		  (neq, ":faction_no", "$players_kingdom"),
+
+          (game_get_reduce_campaign_ai, ":reduce_campaign_ai"),
+          (try_begin),
+            (eq, ":reduce_campaign_ai", 0), #hard
+            (val_add, ":acceptance_level", -1250),
+          (else_try),
+            (eq, ":reduce_campaign_ai", 1), #moderate
+          (else_try),                        
+            (eq, ":reduce_campaign_ai", 2), #easy
+            (val_add, ":acceptance_level", 1250),
+          (try_end),           
+		(try_end),
+										
+		(troop_get_slot, ":temp_ai_seed", ":troop_no", slot_troop_temp_decision_seed),						
+		
+		(le, ":temp_ai_seed", ":acceptance_level"),				
 	
 		#Very low opinion of marshall
 		(try_begin),
@@ -40844,17 +40889,17 @@ scripts = [
 			(str_store_string, s15, "str_i_am_not_accompanying_the_marshal_because_will_be_reappointment"),
 		(try_end),
 	(else_try),
-		#(lt, ":relation_with_marshall", 50),	
+		#(lt, ":relation_with_marshall", 45),	
 		#(eq, ":faction_marshall", "trp_player"), #moved below as only effector. Search "think about this".
 		
-		(store_sub, ":relation_with_marshal_difference", 40, ":relation_with_marshall"),
+		(store_sub, ":relation_with_marshal_difference", 45, ":relation_with_marshall"),
 		
-		#for 50 relation with marshal ":acceptance_level" will be -1000
-		#for 10 relation with marshal ":acceptance_level" will be 2000
-		#for 0 relation with marshal ":acceptance_level" will be 3000
-		#for -10 relation with marshal ":acceptance_level" will be 4000
-		#for -50 relation with marshal ":acceptance_level" will be 9000
-		#average 3000
+		#for 50 relation with marshal ":acceptance_level" will be -500
+		#for 10 relation with marshal ":acceptance_level" will be 3500
+		#for 0 relation with marshal ":acceptance_level" will be 4500
+		#for -10 relation with marshal ":acceptance_level" will be 5500
+		#for -50 relation with marshal ":acceptance_level" will be 9500
+		#average 4000
 		(store_mul, ":acceptance_level", ":relation_with_marshal_difference", 100), 
 		
 		(try_begin),
@@ -40908,8 +40953,8 @@ scripts = [
           (try_end),           
 		(try_end),
 		
-		(val_add, ":acceptance_level", -250), #default
-								
+		(val_add, ":acceptance_level", 1500),
+										
 		(troop_get_slot, ":temp_ai_seed", ":troop_no", slot_troop_temp_decision_seed),						
 		
 		(le, ":temp_ai_seed", ":acceptance_level"),		
@@ -44077,7 +44122,7 @@ scripts = [
       (try_end),
       
       (assign, "$g_use_current_ai_object_as_s8", 0),
-      
+            
       #THE FIRST BATCH OF DISQUALIFYING CONDITIONS DO NOT REQUIRE THE ATTACKING PARTY TO HAVE CURRENT INTELLIGENCE ON THE TARGET
       (try_begin),
         (neg|party_is_active, ":party_no"),
@@ -44085,7 +44130,7 @@ scripts = [
         (assign, ":result", -1),
         (assign, ":explainer_string", "str_center_party_not_active"),
         #(assign, ":reason_is_obvious", 1),
-      (else_try),
+      (else_try), 
         (store_faction_of_party, ":potential_target_faction", ":potential_target"),
         (store_relation, ":relation", ":potential_target_faction", ":faction_no"),
         (ge, ":relation", 0),
@@ -44106,6 +44151,7 @@ scripts = [
         (neq, ":faction_of_besieger_party", -1),
         (neq, ":faction_of_besieger_party", ":faction_no"),	
         
+        #(display_message, "@DEBUGSC{s7}"),
         (assign, ":result", -1),
         (assign, ":explainer_string", "str_center_is_already_besieged"),
         #(assign, ":reason_is_obvious", 1),
@@ -44131,6 +44177,7 @@ scripts = [
         
         (eq, ":village_is_looted_or_raided_already", 1),
         
+        #(display_message, "@DEBUGSD{s7}"),
         (assign, ":result", -1),
         (assign, ":explainer_string", "str_center_is_looted_or_raided_already"),
         #(assign, ":reason_is_obvious", 1),
@@ -44143,19 +44190,21 @@ scripts = [
         (assign, ":explainer_string", "str_center_marshal_does_not_want_to_attack_innocents"),
       (else_try),
         (store_distance_to_party_from_party, ":distance_from_party", ":party_no", ":potential_target"),
-        (gt, ":distance_from_party", 100),
+        (gt, ":distance_from_party", 160),
         (this_or_next|troop_slot_eq, ":troop_no", slot_lord_reputation_type, lrep_martial),
         (this_or_next|troop_slot_eq, ":troop_no", slot_lord_reputation_type, lrep_quarrelsome),
         (this_or_next|troop_slot_eq, ":troop_no", slot_lord_reputation_type, lrep_cunning),
         (troop_slot_eq, ":troop_no", slot_lord_reputation_type, lrep_selfrighteous),
         
+        #(display_message, "@DEBUGSE{s7}"),
         (assign, ":result", -1),
         (assign, ":explainer_string", "str_center_far_away_our_cautious_marshal_does_not_wish_to_reconnoiter"),				
       #RECONNOITERING BEGINS HERE - VALUE WILL BE TEN OR LESS
       (else_try),
-        (gt, ":distance_from_party", 150),
+        (gt, ":distance_from_party", 200),
         (neg|troop_slot_eq, ":troop_no", slot_lord_reputation_type, lrep_cunning),
         
+        #(display_message, "@DEBUGSF{s7}"),
         (assign, ":result", -1),
         (assign, ":explainer_string", "str_center_far_away_even_for_our_aggressive_marshal_to_reconnoiter"),
         #(assign, ":reason_is_obvious", 1),	
@@ -44176,6 +44225,7 @@ scripts = [
         (try_end),
         (eq, ":close_center_found", 0),
         
+        #(display_message, "@DEBUGSG{s7}"),
         (assign, ":result", -1),
         (assign, ":explainer_string", "str_center_is_indefensible"),	
       #(else_try),
@@ -44220,6 +44270,17 @@ scripts = [
         (try_end),
         (val_max, ":enemy_strength", 1),
         
+        
+        #(store_mul, ":power_ratio", ":total_strength", 100),
+        #(val_div, ":power_ratio", ":enemy_strength"),
+        #(assign, reg1, ":power_ratio"),
+        #(str_store_party_name, s7, ":potential_target"),
+        #(assign, reg2, ":party_strength"),
+        #(assign, reg3, ":follower_strength"),
+        #(assign, reg4, ":strength_of_nearby_friend"),
+        #(display_message, "@DEBUGS, {s7}, {reg1}, st:{reg2}+fol:{reg3}+ar:{reg4}"),
+
+
         (this_or_next|troop_slot_eq, ":troop_no", slot_lord_reputation_type, lrep_martial),
         (this_or_next|troop_slot_eq, ":troop_no", slot_lord_reputation_type, lrep_quarrelsome),
         (troop_slot_eq, ":troop_no", slot_lord_reputation_type, lrep_selfrighteous),
@@ -44878,7 +44939,7 @@ scripts = [
 			(party_is_active, ":marshal_party"),
 			(eq, ":current_ai_state", sfai_gathering_army),
 
-			(lt, ":hours_at_current_state", 48), #gather army for 48 hours
+			(lt, ":hours_at_current_state", 54), #gather army for 48 hours
 			
 			(lt, ":ratio_of_vassals_assembled", 30),
 

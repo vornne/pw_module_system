@@ -1167,7 +1167,10 @@ triggers = [
        (try_begin),
          (eq, ":abort_meeting", 1),
          (party_set_ai_object, "$qst_follow_spy_spy_party", ":quest_giver_center"),
+         
+         #sdsdsdsdsdsdsd #DEBUGS
          (party_set_ai_object, "$qst_follow_spy_spy_partners_party", ":quest_object_center"),
+         
          (party_set_ai_behavior, "$qst_follow_spy_spy_party", ai_bhvr_travel_to_party),
          (party_set_ai_behavior, "$qst_follow_spy_spy_partners_party", ai_bhvr_travel_to_party),
          (party_set_flags, "$qst_follow_spy_spy_party", pf_default_behavior, 0),

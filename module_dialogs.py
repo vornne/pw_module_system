@@ -4098,6 +4098,7 @@ dialogs = [
 
 
   [anyone, "event_triggered", [
+                     (eq, "$g_infinite_camping", 0),
                      (store_conversation_troop, "$map_talk_troop"),
 					 (is_between, "$map_talk_troop", companions_begin, companions_end),
                      (eq, "$map_talk_troop", "$npc_is_quitting"), 
@@ -4445,6 +4446,7 @@ dialogs = [
 	   
 
   [anyone, "event_triggered", [
+                     (eq, "$g_infinite_camping", 0),
                      (eq, "$npc_map_talk_context", slot_troop_home), 
                      (store_conversation_troop, "$map_talk_troop"),
                      (troop_get_slot, ":speech", "$map_talk_troop", slot_troop_home_intro),
