@@ -536,8 +536,8 @@ game_menus = [
     (assign, reg5, ":renown"),
     (assign, reg6, "$player_honor"),
     (assign, reg7, ":party_size_limit"),
-    (call_script, "script_get_player_party_morale_values"),
-    (party_set_morale, "p_main_party", reg0),
+    #(call_script, "script_get_player_party_morale_values"),
+    #(party_set_morale, "p_main_party", reg0),
     (party_get_morale, reg8, "p_main_party"),
    ],
     [
@@ -2015,7 +2015,7 @@ game_menus = [
    "none",
    [
      (call_script, "script_get_player_party_morale_values"),
-     (party_set_morale, "p_main_party", reg0),
+     #(party_set_morale, "p_main_party", reg0),
 
      (assign, ":target_morale", reg0),
      (assign, reg1, "$g_player_party_morale_modifier_party_size"),
@@ -2066,16 +2066,17 @@ game_menus = [
        (str_store_string, s7, "str_space"),
      (try_end),
      
-     (game_get_reduce_campaign_ai, ":reduce_campaign_ai"),
-     (try_begin),
-       (eq, ":reduce_campaign_ai", 0), #hard
-       (assign, reg6, 50),
-     (else_try),
-       (eq, ":reduce_campaign_ai", 1), #moderate
-       (assign, reg6, 60),
-     (else_try),         
-       (assign, reg6, 70), #easy
-     (try_end),           
+     #(game_get_reduce_campaign_ai, ":reduce_campaign_ai"),
+     #(try_begin),
+     #  (eq, ":reduce_campaign_ai", 0), #hard
+     #  (assign, reg6, 50),
+     #(else_try),
+     #  (eq, ":reduce_campaign_ai", 1), #moderate
+     #  (assign, reg6, 60),
+     #(else_try),         
+     #  (assign, reg6, 70), #easy
+     #(try_end),           
+     (assign, reg6, 50),
      
      (str_store_string, s1, "str_current_party_morale_is_reg5_current_party_morale_modifiers_are__base_morale__50_party_size_s2reg1_leadership_s3reg2_food_variety_s4reg3s5s6_recent_events_s7reg4_total__reg5___"),
         
@@ -3943,7 +3944,7 @@ game_menus = [
       ],
       "Order your troops to attack without you.",
       [
-        (jump_to_menu,"mnu_order_attack_begin"),
+        (jump_to_menu, "mnu_order_attack_begin"),
         #(simulate_battle,3),
       ]),
       
@@ -4089,14 +4090,37 @@ game_menus = [
       (call_script, "script_party_calculate_strength", "p_collective_enemy", 0),
       (assign, ":enemy_party_strength", reg0),
       (val_div, ":enemy_party_strength", 5),
+      
+      (party_collect_attachments_to_party, "p_main_party", "p_collective_ally"),
+      (call_script, "script_party_calculate_strength", "p_collective_ally", 0),
+      (assign, ":total_player_and_followers_strength", reg0),
+      (val_div, ":total_player_and_followers_strength", 5),
+      #(assign, reg2, ":player_party_strength"),
+      #(assign, reg3, ":ally_party_strength"),
+      #(display_message, "@DEBUGS player = {reg2}, ally = {reg3}"),
+      #(val_add, ":player_party_strength", ":ally_party_strength"),      
+      #(store_sub, ":ally_party_strength", ":total_player_and_followers_strength", ":player_party_strength"),      
+      (store_mul, "$g_strength_contribution_of_player", ":player_party_strength", 100),
+      (val_div, "$g_strength_contribution_of_player", ":total_player_and_followers_strength"),
+      #DEBUGS 
                                     
-#                                    (call_script,"script_inflict_casualties_to_party", "p_main_party", ":enemy_party_strength"),
-                                    (inflict_casualties_to_party_group, "p_main_party", ":enemy_party_strength", "p_temp_casualties"),
-                                    (call_script, "script_print_casualties_to_s0", "p_temp_casualties", 0),
-                                    (str_store_string_reg, s8, s0),
-                                    
-####                                    (call_script,"script_inflict_casualties_to_party", "$g_encountered_party", ":player_party_strength"),
-                                    (inflict_casualties_to_party_group, "$g_encountered_party", ":player_party_strength", "p_temp_casualties"),
+      #(inflict_casualties_to_party_group, "p_main_party", ":enemy_party_strength", "p_temp_casualties"),
+      #(call_script, "script_print_casualties_to_s0", "p_temp_casualties", 0),
+      #(str_store_string_reg, s8, s0),
+      (inflict_casualties_to_party_group, "p_main_party", ":enemy_party_strength", "p_temp_casualties"),
+      (call_script, "script_print_casualties_to_s0", "p_temp_casualties", 0),
+      (str_store_string_reg, s8, s0),
+      (try_begin),
+        (ge, "$g_ally_party", 0),
+        (inflict_casualties_to_party_group, "$g_ally_party", ":enemy_party_strength", "p_temp_casualties"),
+        #(call_script, "script_print_casualties_to_s0", "p_temp_casualties", 0),
+        (str_store_string_reg, s8, s0),
+      (try_end),
+      #(inflict_casualties_to_party_group, "p_collective_ally", ":enemy_party_strength", "p_temp_casualties"),
+      #(call_script, "script_print_casualties_to_s0", "p_temp_casualties", 0),
+      #(str_store_string_reg, s8, s0),
+
+                                    (inflict_casualties_to_party_group, "$g_encountered_party", ":total_player_and_followers_strength", "p_temp_casualties"),
 
                                     #ozan begin
                                     (party_get_num_companion_stacks, ":num_stacks", "p_temp_casualties"), 
@@ -4118,16 +4142,13 @@ game_menus = [
                                     (str_store_string_reg, s9, s0),
 
                                     (party_collect_attachments_to_party, "$g_encountered_party", "p_collective_enemy"),
-
- #                                   (assign, "$cant_leave_encounter", 0),
-
+ 
                                     (assign, "$no_soldiers_left", 0),
                                     (try_begin),
                                       (call_script, "script_party_count_members_with_full_health", "p_main_party"),
                                       (assign, ":num_our_regulars_remaining", reg0),
                                       
-                                      #(le, reg0, 0),
-                                      (le, ":num_our_regulars_remaining",  "$num_routed_us"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
+                                      (le, ":num_our_regulars_remaining", "$num_routed_us"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
                                       
                                       (assign, "$no_soldiers_left", 1),
                                       (str_store_string, s4, "str_order_attack_failure"),
@@ -4135,8 +4156,7 @@ game_menus = [
                                       (call_script, "script_party_count_members_with_full_health", "p_collective_enemy"),
                                       (assign, ":num_enemy_regulars_remaining", reg0),
 
-                                      #(le, reg0, 0),
-                                      (le, ":num_enemy_regulars_remaining",  "$num_routed_enemies"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
+                                      (le, ":num_enemy_regulars_remaining", "$num_routed_enemies"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
                                       
                                       (assign, ":continue", 0),
                                       (party_get_num_companion_stacks, ":party_num_stacks", "p_collective_enemy"),

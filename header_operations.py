@@ -90,6 +90,8 @@ is_trial_version                = 250 # (is_trial_version),
 profile_get_banner_id                = 350 # (profile_get_banner_id, <destination>),
 profile_set_banner_id                = 351 # (profile_set_banner_id, <value>),
 
+send_message_to_url                  = 380 # (send_message_to_url, <string_id>), #result will be returned to script_game_receive_url_response
+
 # multiplayer
 multiplayer_send_message_to_server   = 388 # (multiplayer_send_int_to_server, <message_type>),
 multiplayer_send_int_to_server       = 389 # (multiplayer_send_int_to_server, <message_type>, <value>),
@@ -143,6 +145,7 @@ player_get_ping                      = 437 # (player_get_ping, <destination>, <p
 player_is_busy_with_menus            = 438 # (player_is_busy_with_menus, <player_id>),
 player_get_is_muted                  = 439 # (player_get_is_muted, <destination>, <player_id>),
 player_set_is_muted                  = 440 # (player_set_is_muted, <player_id>, <value>),
+player_get_unique_id                 = 441 # (player_get_unique_id, <destination>, <player_id>), #can only bew used on server side
 
 team_get_bot_kill_count              = 450 # (team_get_bot_kill_count, <destination>, <team_id>),
 team_set_bot_kill_count              = 451 # (team_get_bot_kill_count, <destination>, <team_id>),
@@ -1191,6 +1194,7 @@ lhs_operations = [try_for_range,
                   player_get_death_count,
                   player_get_ping,
                   player_get_is_muted,
+                  player_get_unique_id,
                   player_get_item_id,
                   player_get_banner_id,
                   game_get_reduce_campaign_ai,

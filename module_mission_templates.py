@@ -2222,7 +2222,13 @@ mission_templates = [
          (store_trigger_param_1, ":agent_no"),
          (call_script, "script_agent_reassign_team", ":agent_no"),
 
-         (assign, ":initial_courage_score", 5500),
+         (assign, ":initial_courage_score", 5000),
+                  
+         (agent_get_troop_id, ":troop_id", ":agent_no"),
+         (store_character_level, ":troop_level", ":troop_id"),
+         (val_mul, ":troop_level", 35),
+         (val_add, ":initial_courage_score", ":troop_level"), #average : 20 * 35 = 700
+         
          (store_random_in_range, ":randomized_addition_courage", 0, 3000), #average : 1500
          (val_add, ":initial_courage_score", ":randomized_addition_courage"), 
                    
@@ -2233,9 +2239,9 @@ mission_templates = [
          (val_mul, ":morale_effect_on_courage", 30), #this can effect morale with -2100..900
          (val_add, ":initial_courage_score", ":morale_effect_on_courage"), 
          
-         #average = 6000 + 1500 = 7500; min : 6000, max : 9000
+         #average = 5000 + 700 + 1500 = 7200; min : 5700, max : 8700
          #morale effect = min : -2100(party morale is 0), average : 0(party morale is 70), max : 900(party morale is 100)
-         #min starting : 3900, max starting  : 9900, average starting : 6000
+         #min starting : 3600, max starting  : 9600, average starting : 7200
          (agent_set_slot, ":agent_no", slot_agent_courage_score, ":initial_courage_score"), 
          ]),
 

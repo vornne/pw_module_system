@@ -191,7 +191,7 @@ simple_triggers = [
         (party_stack_get_troop_id, ":caravan_leader", "$caravan_escort_party_id", 0),     
         (party_stack_get_troop_dna, ":caravan_leader_dna", "$caravan_escort_party_id", 0),    
         
-        (start_map_conversation, ":caravan_leader", ":caravan_leader_dna"),#sdsdsdsd
+        (start_map_conversation, ":caravan_leader", ":caravan_leader_dna"),
       (try_end),
       
       (try_begin),
@@ -683,9 +683,9 @@ simple_triggers = [
          (gt, ":hero_party", centers_end),
          (party_is_active, ":hero_party"),
          
-         (store_skill_level, ":trainer_level", skl_trainer, ":troop_no"),
-         (val_add, ":trainer_level", 3), #was 2.
-         (store_mul, ":xp_gain", ":trainer_level", 2500), #xp gain
+         (store_skill_level, ":trainer_level", skl_trainer, ":troop_no"),                  
+         (val_add, ":trainer_level", 5), #was 2. (average trainer level is 3 for npc lords, worst : 0, best : 6)
+         (store_mul, ":xp_gain", ":trainer_level", 1500), #xp gain
          
          (assign, ":max_accepted_random_value", 30),
          (try_begin),               
@@ -714,7 +714,7 @@ simple_triggers = [
          (party_get_slot, ":center_lord", ":center_no", slot_town_lord),
          (neq, ":center_lord", "trp_player"),
          
-         (assign, ":xp_gain", 6250), #xp gain
+         (assign, ":xp_gain", 4500), #xp gain
          
          (assign, ":max_accepted_random_value", 30),
          (try_begin),            
@@ -2905,7 +2905,7 @@ simple_triggers = [
     ]),
 
 # Report to army quest 
-  (6,
+  (2,
    [
      (eq, "$g_infinite_camping", 0),
      (is_between, "$players_kingdom", kingdoms_begin, kingdoms_end),
@@ -2923,14 +2923,14 @@ simple_triggers = [
      (neg|faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_feast),     
           
      (assign, ":continue", 1),
-     (try_begin),
-       (this_or_next|faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_attacking_enemies_around_center),     
-       (faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_attacking_center),
-     
+     (try_begin),     
+       (this_or_next|faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_attacking_enemies_around_center),
+       (this_or_next|faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_attacking_center),
+       (faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_raiding_village),       
+                     
        (neg|is_between, ":faction_object", walled_centers_begin, walled_centers_end),
        (assign, ":continue", 0),
-     (try_end),  
-     
+     (try_end),       
      (eq, ":continue", 1),
                             	 
 	 (assign, ":kingdom_is_at_war", 0),
@@ -2950,6 +2950,9 @@ simple_triggers = [
      (gt, ":faction_marshall", 0),
      (troop_get_slot, ":faction_marshall_party", ":faction_marshall", slot_troop_leaded_party),
      (gt, ":faction_marshall_party", 0),
+     
+     (store_distance_to_party_from_party, ":distance_to_marshal", ":faction_marshall", "p_main_party"),
+     (le, ":distance_to_marshal", 96),
      
      (assign, ":has_no_quests", 1),     
      (try_for_range, ":cur_quest", lord_quests_begin, lord_quests_end),
@@ -3736,6 +3739,14 @@ simple_triggers = [
    (party_set_name, "p_sea_raider_spawn_point_2", "str_the_coast"),
    (party_set_name, "p_desert_bandit_spawn_point", "str_the_deserts"),
 
+   
+   #This to correct inappropriate home strings - Katrin to Uxkhal, Matheld to Fearichen
+   (troop_set_slot, "trp_npc11", slot_troop_home, "p_town_7"),
+   (troop_set_slot, "trp_npc8", slot_troop_home, "p_village_35"),
+   
+   (troop_set_slot, "trp_npc15", slot_troop_town_with_contacts, "p_town_20"), #durquba
+   
+   
    (try_begin),
 	(is_between, "$players_kingdom", kingdoms_begin, kingdoms_end),
 	(neq, "$players_kingdom", "fac_player_supporters_faction"),

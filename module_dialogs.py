@@ -6742,7 +6742,7 @@ dialogs = [
   [anyone|plyr, "lord_scout_waypoints_thank", [],
    "Nothing I couldn't handle.", "lord_pretalk",[]],
   [anyone|plyr, "lord_scout_waypoints_thank", [],
-   "My pleasure, sir.", "lord_pretalk",[]],
+   "My pleasure, {s65}.", "lord_pretalk",[]],
   
 
 
@@ -13405,7 +13405,6 @@ dialogs = [
 	  
     (try_end),
     (call_script, "script_add_log_entry", logent_pledged_allegiance,   "trp_player",  -1, "$g_talk_troop", "$g_talk_troop_faction"),
-
     
     (try_begin),
       (check_quest_active, "qst_join_faction"),
@@ -20792,6 +20791,10 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 				
 				(try_begin),
 					(troop_slot_eq, ":lady", slot_troop_met, 2),
+					(this_or_next|troop_slot_eq, ":suitor", slot_troop_love_interest_1, ":lady"),
+					(this_or_next|troop_slot_eq, ":suitor", slot_troop_love_interest_2, ":lady"),
+						(troop_slot_eq, ":suitor", slot_troop_love_interest_3, ":lady"),
+						
 					(assign, "$romantic_rival", ":suitor"),
 				(try_end),
 			(else_try),	
@@ -20812,6 +20815,11 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 
 				(try_begin),
 					(troop_slot_eq, ":lady", slot_troop_met, 2),
+					(this_or_next|troop_slot_eq, ":suitor", slot_troop_love_interest_1, ":lady"),
+					(this_or_next|troop_slot_eq, ":suitor", slot_troop_love_interest_2, ":lady"),
+						(troop_slot_eq, ":suitor", slot_troop_love_interest_3, ":lady"),
+					
+					
 					(assign, "$romantic_rival", ":suitor"),
 				(try_end),
 				
@@ -20823,6 +20831,10 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 
 				(try_begin),
 					(troop_slot_eq, ":lady", slot_troop_met, 2),
+					(this_or_next|troop_slot_eq, ":suitor", slot_troop_love_interest_1, ":lady"),
+					(this_or_next|troop_slot_eq, ":suitor", slot_troop_love_interest_2, ":lady"),
+						(troop_slot_eq, ":suitor", slot_troop_love_interest_3, ":lady"),
+					
 					(assign, "$romantic_rival", ":suitor"),
 				(try_end),
 				
@@ -20868,6 +20880,10 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 				(assign, ":last_suitor_noted", ":suitor"),
 				(try_begin),
 					(troop_slot_eq, ":lady", slot_troop_met, 2),
+					(this_or_next|troop_slot_eq, ":suitor", slot_troop_love_interest_1, ":lady"),
+					(this_or_next|troop_slot_eq, ":suitor", slot_troop_love_interest_2, ":lady"),
+						(troop_slot_eq, ":suitor", slot_troop_love_interest_3, ":lady"),
+					
 					(assign, "$romantic_rival", ":suitor"),
 				(try_end),
 			(try_end),
