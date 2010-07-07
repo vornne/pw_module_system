@@ -5361,20 +5361,9 @@ presentations = [
 
       (try_begin), #counting number of flags each team has.
         (eq, "$g_multiplayer_game_type", multiplayer_game_type_headquarters),
-        (assign, ":team_1_num_flags", 0),
-        (assign, ":team_2_num_flags", 0),
-        (try_for_range, ":flag_no", 0, "$g_number_of_flags"),
-          (store_add, ":cur_flag_owner_slot", multi_data_flag_owner_begin, ":flag_no"),
-          (troop_get_slot, ":cur_flag_owner", "trp_multiplayer_data", ":cur_flag_owner_slot"),
-          (neq, ":cur_flag_owner", 0),
-      
-          (try_begin),
-            (eq, ":cur_flag_owner", 1),
-            (val_add, ":team_1_num_flags", 1),
-          (else_try),
-            (val_add, ":team_2_num_flags", 1),
-          (try_end),
-        (try_end),        
+        (call_script, "script_get_headquarters_scores"),
+        (assign, ":team_1_num_flags", reg0),
+        (assign, ":team_2_num_flags", reg1),
       (try_end),
 
       #assuming only 2 teams in scene
@@ -11677,6 +11666,7 @@ presentations = [
           (party_set_slot, ":center_no", slot_center_accumulated_rents, 0),
           (party_set_slot, ":center_no", slot_center_accumulated_tariffs, 0),
         (try_end),
+        (assign, "$g_cur_week_half_daily_wage_payments", 0),#Reseting the weekly half wage payments
       (try_end),
       ]),
     (ti_on_presentation_event_state_change,

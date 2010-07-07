@@ -2974,6 +2974,12 @@ scene_props = [
 
 ("oil_press_interior",0,"oil_press_interior","bo_oil_press_interior", []),
 
+    ("city_swad_01" ,0,"city_swad_01" ,"bo_city_swad_01" , []),
+    ("city_swad_02" ,0,"city_swad_02" ,"bo_city_swad_02" , []),
+    ("city_swad_03" ,0,"city_swad_03" ,"bo_city_swad_03" , []),
+    ("city_swad_04" ,0,"city_swad_04" ,"bo_city_swad_04" , []),
+    ("city_swad_passage_01" ,0,"city_swad_passage_01" ,"bo_city_swad_passage_01" , []),
+    ("city_swad_05" ,0,"city_swad_05" ,"bo_city_swad_05" , []),
 
 ]
 

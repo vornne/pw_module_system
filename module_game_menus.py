@@ -910,7 +910,8 @@ game_menus = [
        (str_store_string, s1, "str_battle_won"),
      (else_try),
        (str_store_string, s1, "str_battle_lost"),
-     (try_end),],
+     (try_end),
+     ],
     [
       ("continue",[],"Continue.",
        [(change_screen_quit),
@@ -926,7 +927,7 @@ game_menus = [
     [
       ("start_male",[],"Male",
        [
-         (troop_set_type,"trp_player",0),
+         (troop_set_type,"trp_player", 0),
          (assign,"$character_gender",tf_male),
          (jump_to_menu,"mnu_start_character_1"),
         ]
@@ -2066,16 +2067,6 @@ game_menus = [
        (str_store_string, s7, "str_space"),
      (try_end),
      
-     #(game_get_reduce_campaign_ai, ":reduce_campaign_ai"),
-     #(try_begin),
-     #  (eq, ":reduce_campaign_ai", 0), #hard
-     #  (assign, reg6, 50),
-     #(else_try),
-     #  (eq, ":reduce_campaign_ai", 1), #moderate
-     #  (assign, reg6, 60),
-     #(else_try),         
-     #  (assign, reg6, 70), #easy
-     #(try_end),           
      (assign, reg6, 50),
      
      (str_store_string, s1, "str_current_party_morale_is_reg5_current_party_morale_modifiers_are__base_morale__50_party_size_s2reg1_leadership_s3reg2_food_variety_s4reg3s5s6_recent_events_s7reg4_total__reg5___"),
@@ -2154,8 +2145,7 @@ game_menus = [
   ("lord_relations",0,
    "{s1}",
    "none",
-   [
-   
+   [   
     (try_for_range, ":active_npc", active_npcs_begin, active_npcs_end),
 		(troop_set_slot, ":active_npc", slot_troop_temp_slot, 0),
 	(try_end),
@@ -3002,7 +2992,9 @@ game_menus = [
            (assign,"$g_camp_mode", 1),
            (assign, "$g_infinite_camping", 0),
            (assign, "$g_player_icon_state", pis_camping),
+           
            (rest_for_hours_interactive, 24 * 365, 5, 1), #rest while attackable
+                      
            (change_screen_return),
         ]
        ),
@@ -3912,6 +3904,7 @@ game_menus = [
       [
         (assign, "$g_battle_result", 0),
         (assign, "$g_engaged_enemy", 1),
+        
         (call_script, "script_calculate_renown_value"),
         (call_script, "script_calculate_battle_advantage"),
         (set_battle_advantage, reg0),
@@ -4071,10 +4064,11 @@ game_menus = [
     "none",
     [],
     [
-      ("order_attack_begin",[],"Order the attack to begin.", [
-                                    (assign, "$g_engaged_enemy", 1),
-                                    (jump_to_menu,"mnu_order_attack_2"),
-                                    ]),
+      ("order_attack_begin",[],"Order the attack to begin.", 
+      [
+        (assign, "$g_engaged_enemy", 1),
+        (jump_to_menu,"mnu_order_attack_2"),
+      ]),
       ("call_back",[],"Call them back.",[(jump_to_menu,"mnu_simple_encounter")]),
     ]
   ),
@@ -4084,102 +4078,111 @@ game_menus = [
     "none",
     [
       (set_background_mesh, "mesh_pic_charge"),
-      (call_script, "script_party_calculate_strength", "p_main_party", 1), #skip player
+
+      (call_script, "script_party_calculate_strength", "p_main_party", 1), #exclude player
       (assign, ":player_party_strength", reg0),
-      (val_div, ":player_party_strength", 5),
+
       (call_script, "script_party_calculate_strength", "p_collective_enemy", 0),
       (assign, ":enemy_party_strength", reg0),
-      (val_div, ":enemy_party_strength", 5),
       
       (party_collect_attachments_to_party, "p_main_party", "p_collective_ally"),
-      (call_script, "script_party_calculate_strength", "p_collective_ally", 0),
+      (call_script, "script_party_calculate_strength", "p_collective_ally", 1), #exclude player
       (assign, ":total_player_and_followers_strength", reg0),
-      (val_div, ":total_player_and_followers_strength", 5),
-      #(assign, reg2, ":player_party_strength"),
-      #(assign, reg3, ":ally_party_strength"),
-      #(display_message, "@DEBUGS player = {reg2}, ally = {reg3}"),
-      #(val_add, ":player_party_strength", ":ally_party_strength"),      
-      #(store_sub, ":ally_party_strength", ":total_player_and_followers_strength", ":player_party_strength"),      
+                                    
+      (try_begin),
+        (le, ":total_player_and_followers_strength", ":enemy_party_strength"),
+        (assign, ":minimum_power", ":total_player_and_followers_strength"),
+      (else_try),
+        (assign, ":minimum_power", ":enemy_party_strength"),
+      (try_end),
+      
+      (try_begin),
+        (le, ":minimum_power", 3),
+        (assign, ":division_constant", 1),
+      (else_try),
+        (le, ":minimum_power", 9),
+        (assign, ":division_constant", 2),
+      (else_try),
+        (le, ":minimum_power", 27),
+        (assign, ":division_constant", 3),
+      (else_try),
+        (assign, ":division_constant", 4),
+      (try_end),  
+                                                                        
+      (val_div, ":player_party_strength", ":division_constant"), #1.126, ":division_constant" was 5 before
+      (val_max, ":player_party_strength", 1), #1.126
+      (val_div, ":enemy_party_strength", ":division_constant"), #1.126, ":division_constant" was 5 before
+      (val_max, ":enemy_party_strength", 1), #1.126
+      (val_div, ":total_player_and_followers_strength", ":division_constant"), #1.126, ":division_constant" was 5 before
+      (val_max, ":total_player_and_followers_strength", 1), #1.126
+
       (store_mul, "$g_strength_contribution_of_player", ":player_party_strength", 100),
       (val_div, "$g_strength_contribution_of_player", ":total_player_and_followers_strength"),
-      #DEBUGS 
-                                    
-      #(inflict_casualties_to_party_group, "p_main_party", ":enemy_party_strength", "p_temp_casualties"),
-      #(call_script, "script_print_casualties_to_s0", "p_temp_casualties", 0),
-      #(str_store_string_reg, s8, s0),
+
       (inflict_casualties_to_party_group, "p_main_party", ":enemy_party_strength", "p_temp_casualties"),
       (call_script, "script_print_casualties_to_s0", "p_temp_casualties", 0),
       (str_store_string_reg, s8, s0),
+
       (try_begin),
         (ge, "$g_ally_party", 0),
         (inflict_casualties_to_party_group, "$g_ally_party", ":enemy_party_strength", "p_temp_casualties"),
-        #(call_script, "script_print_casualties_to_s0", "p_temp_casualties", 0),
         (str_store_string_reg, s8, s0),
+      (try_end),  
+                                  
+      (inflict_casualties_to_party_group, "$g_encountered_party", ":total_player_and_followers_strength", "p_temp_casualties"),
+
+      #ozan begin
+      (party_get_num_companion_stacks, ":num_stacks", "p_temp_casualties"), 
+      (try_for_range, ":stack_no", 0, ":num_stacks"),
+        (party_stack_get_troop_id, ":stack_troop", "p_temp_casualties", ":stack_no"), 
+        (try_begin),
+          (party_stack_get_size, ":stack_size", "p_temp_casualties", ":stack_no"),
+          (gt, ":stack_size", 0),
+          (party_add_members, "p_total_enemy_casualties", ":stack_troop", ":stack_size"), #addition_to_p_total_enemy_casualties
+          (party_stack_get_num_wounded, ":stack_wounded_size", "p_temp_casualties", ":stack_no"),                                    
+          (gt, ":stack_wounded_size", 0),
+          (party_wound_members, "p_total_enemy_casualties", ":stack_troop", ":stack_wounded_size"),
+        (try_end),
       (try_end),
-      #(inflict_casualties_to_party_group, "p_collective_ally", ":enemy_party_strength", "p_temp_casualties"),
-      #(call_script, "script_print_casualties_to_s0", "p_temp_casualties", 0),
-      #(str_store_string_reg, s8, s0),
-
-                                    (inflict_casualties_to_party_group, "$g_encountered_party", ":total_player_and_followers_strength", "p_temp_casualties"),
-
-                                    #ozan begin
-                                    (party_get_num_companion_stacks, ":num_stacks", "p_temp_casualties"), 
-                                    (try_for_range, ":stack_no", 0, ":num_stacks"),
-                                      (party_stack_get_troop_id, ":stack_troop", "p_temp_casualties", ":stack_no"), 
-                                      (try_begin),
-                                        #(neg|troop_is_hero, ":stack_troop"), 
-                                        (party_stack_get_size, ":stack_size", "p_temp_casualties", ":stack_no"),
-                                        (gt, ":stack_size", 0),
-                                        (party_add_members, "p_total_enemy_casualties", ":stack_troop", ":stack_size"), #addition_to_p_total_enemy_casualties
-                                        (party_stack_get_num_wounded, ":stack_wounded_size", "p_temp_casualties", ":stack_no"),                                    
-                                        (gt, ":stack_wounded_size", 0),
-                                        (party_wound_members, "p_total_enemy_casualties", ":stack_troop", ":stack_wounded_size"),
-                                      (try_end),
-                                    (try_end),
-                                    #ozan end
+      #ozan end
                                                                         
-                                    (call_script, "script_print_casualties_to_s0", "p_temp_casualties", 0),
-                                    (str_store_string_reg, s9, s0),
+      (call_script, "script_print_casualties_to_s0", "p_temp_casualties", 0),
+      (str_store_string_reg, s9, s0),
 
-                                    (party_collect_attachments_to_party, "$g_encountered_party", "p_collective_enemy"),
- 
-                                    (assign, "$no_soldiers_left", 0),
-                                    (try_begin),
-                                      (call_script, "script_party_count_members_with_full_health", "p_main_party"),
-                                      (assign, ":num_our_regulars_remaining", reg0),
-                                      
-                                      (le, ":num_our_regulars_remaining", "$num_routed_us"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
-                                      
-                                      (assign, "$no_soldiers_left", 1),
-                                      (str_store_string, s4, "str_order_attack_failure"),
-                                    (else_try),
-                                      (call_script, "script_party_count_members_with_full_health", "p_collective_enemy"),
-                                      (assign, ":num_enemy_regulars_remaining", reg0),
-
-                                      (le, ":num_enemy_regulars_remaining", "$num_routed_enemies"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
-                                      
-                                      (assign, ":continue", 0),
-                                      (party_get_num_companion_stacks, ":party_num_stacks", "p_collective_enemy"),
-                                      (try_begin),
-                                        (eq, ":party_num_stacks", 0),
-                                        (assign, ":continue", 1),
-                                      (else_try),
-                                        (party_stack_get_troop_id, ":party_leader", "p_collective_enemy", 0),
-                                        (try_begin),
-                                          (neg|troop_is_hero, ":party_leader"),
-                                          (assign, ":continue", 1),
-                                        (else_try),
-                                          (troop_is_wounded, ":party_leader"),
-                                          (assign, ":continue", 1),
-                                        (try_end),
-                                      (try_end),
-                                      (eq, ":continue", 1),
-                                      (assign, "$g_battle_result", 1),
-                                      (assign, "$no_soldiers_left", 1),
-                                      (str_store_string, s4, "str_order_attack_success"),
-                                    (else_try),
-                                      (str_store_string, s4, "str_order_attack_continue"),
-                                    (try_end),
+      (party_collect_attachments_to_party, "$g_encountered_party", "p_collective_enemy"),
+      (assign, "$no_soldiers_left", 0),
+      (try_begin),
+        (call_script, "script_party_count_members_with_full_health", "p_main_party"),
+        (assign, ":num_our_regulars_remaining", reg0),
+        (le, ":num_our_regulars_remaining", "$num_routed_us"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
+        (assign, "$no_soldiers_left", 1),
+        (str_store_string, s4, "str_order_attack_failure"),
+      (else_try),
+        (call_script, "script_party_count_members_with_full_health", "p_collective_enemy"),
+        (assign, ":num_enemy_regulars_remaining", reg0),
+        (le, ":num_enemy_regulars_remaining", "$num_routed_enemies"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
+        (assign, ":continue", 0),
+        (party_get_num_companion_stacks, ":party_num_stacks", "p_collective_enemy"),
+        (try_begin),
+          (eq, ":party_num_stacks", 0),
+          (assign, ":continue", 1),
+        (else_try),
+          (party_stack_get_troop_id, ":party_leader", "p_collective_enemy", 0),
+          (try_begin),
+            (neg|troop_is_hero, ":party_leader"),
+            (assign, ":continue", 1),
+          (else_try),
+            (troop_is_wounded, ":party_leader"),
+            (assign, ":continue", 1),
+          (try_end),
+        (try_end),
+        (eq, ":continue", 1),
+        (assign, "$g_battle_result", 1),
+        (assign, "$no_soldiers_left", 1),
+        (str_store_string, s4, "str_order_attack_success"),
+      (else_try),
+      (str_store_string, s4, "str_order_attack_continue"),
+    (try_end),
     ],
     [
       ("order_attack_continue",[(eq, "$no_soldiers_left", 0)],"Order your soldiers to continue the attack.",[
@@ -4204,14 +4207,7 @@ game_menus = [
        (call_script, "script_change_troop_renown", "trp_player", "$battle_renown_value"),
      (try_end),
           
-     #(try_begin),       
-       #(neg|is_between, "$g_enemy_party", centers_begin, centers_end),
-       (call_script, "script_count_casualties_and_adjust_morale"),#new
-     #(else_try),
-	   #(ge, "$cheat_mode", 1),
-       #(display_message, "str_debug__you_fought_with_a_center_so_no_change_in_morale"),
-     #(try_end),
-
+     (call_script, "script_count_casualties_and_adjust_morale"),#new
      (call_script, "script_encounter_calculate_fit"),               
 
      (call_script, "script_party_count_fit_regulars", "p_main_party"),
@@ -4853,7 +4849,7 @@ game_menus = [
     "join_battle",0,
     "You are helping the {s2} against the {s1}. You have {reg10} troops fit for battle against the enemy's {reg11}.",
     "none",
-    [
+    [                
         (str_store_party_name, 1,"$g_enemy_party"),
         (str_store_party_name, 2,"$g_ally_party"),
 
@@ -5210,7 +5206,7 @@ game_menus = [
     "{s1} remains under siege. The banners of {s2} fly above the camp of the besiegers,\
  where you and your men are welcomed.",
     "none",
-    [
+    [        
         (str_store_party_name, s1, "$g_encountered_party"),
         (str_store_party_name, s2, "$g_encountered_party_2"),
         (assign, "$g_enemy_party", "$g_encountered_party"),
@@ -5340,6 +5336,7 @@ game_menus = [
         (call_script, "script_encounter_calculate_fit"),
         (assign,"$all_doors_locked",1),
         (assign, "$current_town","$g_encountered_party"),
+                
         (try_begin),
           (eq, "$new_encounter", 1),
           (assign, "$new_encounter", 0),
@@ -6388,27 +6385,26 @@ game_menus = [
     "none",
     [
         (party_clear, "$g_encountered_party"),
-        (call_script, "script_lift_siege", "$g_encountered_party", 0),
-        (assign, "$g_player_besiege_town", -1),
-        
-        (try_begin),
-		  (eq, 1, 0), #this should not occur here -- in this case, the old, enemy lord thinks that the player has given him the castle
-          (party_get_slot, ":center_object_lord", "$g_encountered_party", slot_town_lord),
-          (neq, ":center_object_lord", "trp_player"),          
-          (call_script, "script_add_log_entry", logent_castle_given_to_lord_by_player, "trp_player", "$g_encountered_party", -1, "$g_encountered_party_faction"),
-		  #Also, "-1" should be troop object
-          #add log entry to "lord x" about "thank player because he gave this castle to lord x".
+
+        (try_begin),        
+          (eq, "$players_kingdom", "fac_player_supporters_faction"),
+          (party_get_slot, ":new_owner", "$g_encountered_party", slot_town_lord),
+          (neq, ":new_owner", "trp_player"),
+          
+          (try_for_range, ":unused", 0, 4),
+            (call_script, "script_cf_reinforce_party", "$g_encountered_party"),
+          (try_end),  
         (try_end),
         
-        #removed from here because here already owner of castle become changed.
-        #(call_script, "script_add_log_entry", logent_castle_captured_by_player, "trp_player",  "$g_encountered_party", 0, "$g_encountered_party_faction"),
-        
+        (call_script, "script_lift_siege", "$g_encountered_party", 0),
+        (assign, "$g_player_besiege_town", -1),
+                        
         (party_set_slot, "$g_encountered_party", slot_center_last_taken_by_troop, "trp_player"),
         #Reduce prosperity of the center by 5
         (call_script, "script_change_center_prosperity", "$g_encountered_party", -5),
 
         (call_script, "script_change_troop_renown", "trp_player", 5),		
-#		(store_faction_of_party, ":fortress_faction", "$g_encountered_party"),
+
 		(assign, ":damage", 20),
 		(try_begin),
 			(is_between, "$g_encountered_party", towns_begin, towns_end),
@@ -6426,7 +6422,7 @@ game_menus = [
           (call_script, "script_order_best_besieger_party_to_guard_center", "$g_encountered_party", "$players_kingdom"),
           (jump_to_menu, "mnu_castle_taken_2"),
         (else_try),
-          (call_script, "script_give_center_to_faction", "$g_encountered_party", "fac_player_supporters_faction"),
+          (call_script, "script_give_center_to_faction", "$g_encountered_party", "fac_player_supporters_faction"),          
           (call_script, "script_order_best_besieger_party_to_guard_center", "$g_encountered_party", "fac_player_supporters_faction"),
           (str_store_party_name, s3, "$g_encountered_party"),
           (assign, reg1, 0),
@@ -7032,7 +7028,7 @@ game_menus = [
        [
          (neg|troop_is_wounded, "trp_player"),
          ],
-          "Join the battle.",[
+          "Join the battle.",[              
               (party_set_next_battle_simulation_time, "$g_encountered_party", -1),
               (assign, "$g_battle_result", 0),
               (try_begin),
@@ -7441,12 +7437,15 @@ game_menus = [
          [
            (assign,"$auto_enter_town","$current_town"),
            (assign, "$g_last_rest_center", "$current_town"),
+
            (rest_for_hours_interactive, 24 * 7, 5, 1), #rest while attackable
+
            (change_screen_return),
           ]),
       
       
       ("collect_taxes_qst",[(party_slot_eq, "$current_town", slot_village_state, 0),
+                            (neg|party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
                             (check_quest_active, "qst_collect_taxes"),
                             (quest_get_slot, ":quest_giver_troop", "qst_collect_taxes", slot_quest_giver_troop),
                             (quest_slot_eq, "qst_collect_taxes", slot_quest_target_center, "$current_town"),
@@ -7969,6 +7968,7 @@ game_menus = [
         (try_end),
         (call_script, "script_change_player_relation_with_center", "$current_town", -5),
         (str_store_string, s1, "@You drive away {reg17} {reg12?heads:head} of cattle from the village's herd."),
+        
         (call_script, "script_create_cattle_herd", "$current_town", ":random_value"),
         (party_get_slot, ":num_cattle", "$current_town", slot_village_number_of_cattle),
         (val_sub, ":num_cattle", ":random_value"),
@@ -8290,7 +8290,7 @@ game_menus = [
           (assign, "$g_siege_first_encounter", 1),
           (jump_to_menu, "mnu_siege_started_defender"),
         (try_end),
-
+        
         #Quest menus
         
         (assign, "$qst_collect_taxes_currently_collecting", 0),
@@ -9353,23 +9353,29 @@ game_menus = [
 
 		  (assign, ":player_can_draw_from_garrison", 1),
 		(else_try), #option 3 - town was captured by player
-		  (eq, ":town_lord", -1),
-		  (eq, "$players_kingdom", "$g_encountered_party_faction"),
+		  (lt, ":town_lord", 0), #ie, unassigned
+		  (store_faction_of_party, ":castle_faction", "$g_encountered_party"),
+		  (eq, "$players_kingdom", ":castle_faction"),
+		  
 		  (eq, "$g_encountered_party", "$g_castle_requested_by_player"),
 
 		  (str_store_string, s10, "str_retrieve_garrison_warning"),
 		  (assign, ":player_can_draw_from_garrison", 1),
 		(else_try),
-		  (eq, ":town_lord", -1),
-		  (eq, "$players_kingdom", "$g_encountered_party_faction"),
-		  (store_party_size, ":party_size", "$g_encountered_party"),
+		  (lt, ":town_lord", 0), #ie, unassigned
+		  (store_faction_of_party, ":castle_faction", "$g_encountered_party"),
+		  (eq, "$players_kingdom", ":castle_faction"),
+		  
+		  (store_party_size_wo_prisoners, ":party_size", "$g_encountered_party"),
 		  (eq, ":party_size", 0),
 			
 		  (str_store_string, s10, "str_retrieve_garrison_warning"),
 		  (assign, ":player_can_draw_from_garrison", 1),
 		(else_try),
 		  (party_slot_ge, "$g_encountered_party", slot_town_lord, active_npcs_begin),
-		  (eq, ":faction", "$players_kingdom"),
+		  (store_faction_of_party, ":castle_faction", "$g_encountered_party"),
+		  (eq, "$players_kingdom", ":castle_faction"),
+		  
 		  (troop_slot_eq, "trp_player", slot_troop_spouse, ":town_lord"),		    
 
 		  (assign, ":player_can_draw_from_garrison", 1),
@@ -9391,6 +9397,7 @@ game_menus = [
         (str_clear, s1),
         (try_begin),
           (neg|party_slot_eq, "$current_town", slot_town_lord, "trp_player"),
+          (party_slot_ge, "$current_town", slot_town_lord, "trp_player"), #can rest for free in castles and towns with unassigned lords
           (store_faction_of_party, ":current_town_faction", "$current_town"),
           (neq, ":current_town_faction", "fac_player_supporters_faction"),
           (party_get_num_companions, ":num_men", "p_main_party"),
@@ -9719,6 +9726,7 @@ game_menus = [
         (val_max, ":player_odds", 250),
         (party_set_slot, "$current_town", slot_town_player_odds, ":player_odds"),
         (call_script, "script_play_victorious_sound"),
+        
         ],
     [
       ("continue", [], "Continue...",
@@ -10740,7 +10748,12 @@ game_menus = [
     "none",
     [],
     [
-      ("assess_prices",[],
+      ("assess_prices",
+       [
+         (store_faction_of_party, ":current_town_faction", "$current_town"),
+         (store_relation, ":reln", ":current_town_faction", "fac_player_supporters_faction"),
+         (ge, ":reln", 0),
+         ],
        "Assess the local prices.",
        [
            (jump_to_menu,"mnu_town_trade_assessment_begin"),
@@ -13020,6 +13033,7 @@ game_menus = [
              (store_troop_faction, ":cur_faction", ":cur_troop"),
              (eq, ":cur_faction", "fac_player_supporters_faction"),
              (troop_set_faction, ":cur_troop", "$g_notification_menu_var1"),
+             (call_script, "script_troop_set_title_according_to_faction", ":cur_troop", "$g_notification_menu_var1"),
 		   (else_try), #all loyal lords gain a small bonus with the player	 
 		     (troop_slot_eq, ":cur_troop", slot_troop_occupation, slto_kingdom_hero),
              (store_troop_faction, ":cur_faction", ":cur_troop"),
@@ -13735,7 +13749,7 @@ game_menus = [
 		(try_begin),
 			(eq, ":issue", 1),
 		    (call_script, "script_check_and_finish_active_army_quests_for_faction", "$players_kingdom"),       
-			(call_script, "script_appoint_faction_marshall", "$players_kingdom", "trp_player"),   
+			(call_script, "script_appoint_faction_marshall", "$players_kingdom", "trp_player"), 
 		(else_try),
 			(call_script, "script_give_center_to_lord", ":issue", "trp_player", 0), #Zero means don't add garrison
 		(try_end),

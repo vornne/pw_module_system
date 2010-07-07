@@ -597,7 +597,6 @@ spai_screening_army             = 12
 spai_trading_with_town          = 13
 spai_retreating_to_center       = 14
 ##spai_trading_within_kingdom     = 15
-spai_recruiting_troops          = 16
 spai_visiting_village           = 16 #same thing, I think. Recruiting differs from holding because NPC parties don't actually enter villages
 
 #slot_village_state values
@@ -1306,7 +1305,9 @@ walkert_spy                = 3
 num_town_walkers = 8
 town_walker_entries_start = 32
 
-reinforcement_cost            = 400
+reinforcement_cost_easy = 600
+reinforcement_cost_moderate = 450
+reinforcement_cost_hard = 300
 
 merchant_toll_duration        = 72 #Tolls are valid for 72 hours
 
@@ -1573,7 +1574,7 @@ horses_begin = "itm_sumpter_horse"
 horses_end = "itm_arrows"
 weapons_begin = "itm_wooden_stick"
 weapons_end = "itm_wooden_shield"
-ranged_weapons_begin = "itm_jarid"
+ranged_weapons_begin = "itm_darts"
 ranged_weapons_end = "itm_torch"
 armors_begin = "itm_leather_gloves"
 armors_end = "itm_wooden_stick"

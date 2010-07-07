@@ -106,7 +106,7 @@ triggers = [
                       (try_for_range,reg(2),armor_merchants_begin,armor_merchants_end),
                         (store_sub, ":cur_town", reg2, armor_merchants_begin),
                         (val_add, ":cur_town", towns_begin),
-                        (store_faction_of_party, ":cur_faction", ":cur_town"),
+                        (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
                         (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_body_armor,16),
                         (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_head_armor,16),
                         (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_foot_armor,8),
@@ -128,7 +128,7 @@ triggers = [
                       (try_for_range,reg(2),weapon_merchants_begin,weapon_merchants_end),
                         (store_sub, ":cur_town", reg2, weapon_merchants_begin),
                         (val_add, ":cur_town", towns_begin),
-                        (store_faction_of_party, ":cur_faction", ":cur_town"),
+                        (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
                         (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_one_handed_wpn,5),
                         (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_two_handed_wpn,5),
                         (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_polearm,5),
@@ -154,7 +154,7 @@ triggers = [
                       (try_for_range,":cur_merchant",horse_merchants_begin,horse_merchants_end),
                         (store_sub, ":cur_town", ":cur_merchant", horse_merchants_begin),
                         (val_add, ":cur_town", towns_begin),
-                        (store_faction_of_party, ":cur_faction", ":cur_town"),
+                        (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
                         (troop_add_merchandise_with_faction,":cur_merchant", ":cur_faction",itp_type_horse,5),
                         (troop_ensure_inventory_space,":cur_merchant",65),
                         (troop_sort_inventory, ":cur_merchant"),
@@ -1168,7 +1168,6 @@ triggers = [
          (eq, ":abort_meeting", 1),
          (party_set_ai_object, "$qst_follow_spy_spy_party", ":quest_giver_center"),
          
-         #sdsdsdsdsdsdsd #DEBUGS
          (party_set_ai_object, "$qst_follow_spy_spy_partners_party", ":quest_object_center"),
          
          (party_set_ai_behavior, "$qst_follow_spy_spy_party", ai_bhvr_travel_to_party),

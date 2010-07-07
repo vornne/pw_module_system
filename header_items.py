@@ -82,6 +82,7 @@ itp_unbalanced               = 0x0000000800000000
 
 itp_covers_beard             = 0x0000001000000000    #remove beard mesh
 itp_no_pick_up_from_ground   = 0x0000002000000000
+itp_can_knock_down           = 0x0000004000000000
 
 #equipment slots
 ek_item_0 = 0

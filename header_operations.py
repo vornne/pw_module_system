@@ -418,6 +418,7 @@ spawn_around_party              = 1100 # ID of spawned party is put into reg(0)
 			       # (spawn_around_party,<party_id>,<party_template_id>),
 set_spawn_radius                = 1103 # (set_spawn_radius,<value>),
 
+display_debug_message           = 1104 # (display_debug_message,<string_id>,[hex_colour_code]), #displays message only in debug mode, but writes to rgl_log.txt in both release and debug modes when edit mode is enabled
 display_log_message             = 1105 # (display_log_message,<string_id>,[hex_colour_code]),
 display_message                 = 1106 # (display_message,<string_id>,[hex_colour_code]),
 set_show_messages               = 1107 # (set_show_messages,<value>), #0 disables window messages 1 re-enables them.

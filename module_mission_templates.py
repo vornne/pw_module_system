@@ -7982,7 +7982,10 @@ mission_templates = [
 
       (ti_on_multiplayer_mission_end, 0, 0, [],
        [
-           (start_presentation, "prsnt_multiplayer_stats_chart_deathmatch"),
+         (call_script, "script_multiplayer_event_mission_end"),
+
+         (assign, "$g_multiplayer_stats_chart_opened_manually", 0),
+         (start_presentation, "prsnt_multiplayer_stats_chart_deathmatch"),
          ]),
 
       (ti_on_agent_killed_or_wounded, 0, 0, [],
@@ -8389,6 +8392,8 @@ mission_templates = [
 
       (ti_on_multiplayer_mission_end, 0, 0, [],
        [
+         (call_script, "script_multiplayer_event_mission_end"),
+         
          (assign, "$g_multiplayer_stats_chart_opened_manually", 0),
          (start_presentation, "prsnt_multiplayer_stats_chart"),
          ]),
@@ -8978,6 +8983,8 @@ mission_templates = [
 
       (ti_on_multiplayer_mission_end, 0, 0, [],
        [
+         (call_script, "script_multiplayer_event_mission_end"),
+
          (assign, "$g_multiplayer_stats_chart_opened_manually", 0),
          (start_presentation, "prsnt_multiplayer_stats_chart"),
          ]),
@@ -9878,6 +9885,7 @@ mission_templates = [
 
       (ti_on_multiplayer_mission_end, 0, 0, [],
        [
+         (call_script, "script_multiplayer_event_mission_end"),
          (assign, "$g_multiplayer_stats_chart_opened_manually", 0),
          (start_presentation, "prsnt_multiplayer_stats_chart"),
          ]),
@@ -10857,13 +10865,14 @@ mission_templates = [
 
       (ti_on_multiplayer_mission_end, 0, 0, [],
        [
+         (call_script, "script_multiplayer_event_mission_end"),
          (assign, "$g_multiplayer_stats_chart_opened_manually", 0),
          (start_presentation, "prsnt_multiplayer_stats_chart"),
          ]),
       
       (0, 0, 0, [], #if this trigger takes lots of time in the future and make server machine runs siege mod
                     #very slow with lots of players make period of this trigger 1 seconds, but best is 0. Currently
-                    #we are testing this mod with few players and no speed program occured.
+                    #we are testing this mod with few players and no speed problem occured.
       [
         (multiplayer_is_server),
         (eq, "$g_round_ended", 0),
@@ -11964,6 +11973,7 @@ mission_templates = [
 
       (ti_on_multiplayer_mission_end, 0, 0, [],
        [
+         (call_script, "script_multiplayer_event_mission_end"),
          (assign, "$g_multiplayer_stats_chart_opened_manually", 0),
          (start_presentation, "prsnt_multiplayer_stats_chart"),
          ]),
@@ -13265,6 +13275,7 @@ mission_templates = [
 
       (ti_on_multiplayer_mission_end, 0, 0, [],
        [
+         (call_script, "script_multiplayer_event_mission_end"),
          (assign, "$g_multiplayer_stats_chart_opened_manually", 0),
          (start_presentation, "prsnt_multiplayer_stats_chart"),
          ]),
@@ -14614,12 +14625,12 @@ mission_templates = [
       (ti_inventory_key_pressed, 0, 0, 
       [
         (set_trigger_result, 1),        
-      ], []),
+      ], []),           
             
       (ti_tab_pressed, 0, 0, 
-      [          
-        (try_begin),
-          (gt, "$dialog_with_merchant_ended", 0),
+      [ 
+        (try_begin),          
+          (gt, "$dialog_with_merchant_ended", 0),          
 
           (assign, ":max_dist", 0),
           (party_get_position, pos1, "$current_town"),
@@ -14895,8 +14906,8 @@ mission_templates = [
 
          (mission_enable_talk),        
 
-         (finish_mission),                 
-                  
+         (finish_mission),         
+         
          (change_screen_return),
          (set_trigger_result, 1),         
        ]),

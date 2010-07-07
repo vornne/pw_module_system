@@ -1191,3 +1191,5 @@ bug_fix_version
 number_of_report_to_army_quest_notes
 g_gathering_reason
 g_gathering_new_started
+g_other_quest
+g_one_faction_left_notification_shown
