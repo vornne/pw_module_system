@@ -260,6 +260,8 @@ copy_position                   = 700 # copies position_no_2 to position_no_1
 init_position                   = 701 # (init_position,<position_no>),
 get_trigger_object_position     = 702 # (get_trigger_object_position,<position_no>),
 
+get_angle_between_positions     = 705 # (get_angle_between_positions, <destination_fixed_point>, <position_no_1>, <position_no_2>),
+position_has_line_of_sight_to_position = 707 # (position_has_line_of_sight_to_position, <position_no_1>, <position_no_2>),
 get_distance_between_positions  = 710 # gets distance in centimeters. # (get_distance_between_positions,<destination>,<position_no_1>,<position_no_2>),
 get_distance_between_positions_in_meters  = 711 # gets distance in meters. # (get_distance_between_positions_in_meters,<destination>,<position_no_1>,<position_no_2>),
 get_sq_distance_between_positions = 712 # gets squared distance in centimeters # (get_sq_distance_between_positions,<destination>,<position_no_1>,<position_no_2>),
@@ -784,6 +786,9 @@ agent_unequip_item                     = 1774	  # (agent_unequip_item,<agent_id>
 class_is_listening_order               = 1775   # (class_is_listening_order, <team_no>, <sub_class>),
 agent_set_ammo                         = 1776   # (agent_set_ammo,<agent_id>,<item_id>,<value>), #value = a number between 0 and maximum ammo
 
+agent_add_offer_with_timeout           = 1777   # (agent_add_offer_with_timeout, <agent_id>, <agent_id>, <duration-in-1/1000-seconds>), #second agent_id is offerer, 0 value for duration is an infinite offer
+agent_check_offer_from_agent           = 1778   # (agent_check_offer_from_agent, <agent_id>, <agent_id>), #second agent_id is offerer
+
 entry_point_get_position               = 1780   # (entry_point_get_position, <position_no>, <entry_no>),
 entry_point_set_position               = 1781   # (entry_point_set_position, <entry_no>, <position_no>),
 entry_point_is_auto_generated          = 1782  	# (entry_point_is_auto_generated, <entry_no>),
@@ -808,7 +813,13 @@ get_scene_boundaries                   = 1799   # (get_scene_boundaries, <positi
 scene_prop_enable_after_time           = 1800   # (scene_prop_enable_after_time, <scene_prop_id>, <value>)
 scene_prop_has_agent_on_it             = 1801   # (scene_prop_has_agent_on_it, <scene_prop_id>, <agent_id>)
 
+agent_clear_relations_with_agents      = 1802   # (agent_clear_relations_with_agents, <agent_id>),
+agent_add_relation_with_agent          = 1803   # (agent_add_relation_with_agent, <agent_id>, <agent_id>, <value>), #-1 = enemy, 0 = neutral (no friendly fire at all), 1 = ally
+
 ai_mesh_face_group_show_hide           = 1805   # (ai_mesh_face_group_show_hide, <group_no>, <value>), # 1 for enable, 0 for disable
+
+agent_is_alarmed                       = 1806   # (agent_is_alarmed, <agent_id>),
+agent_set_is_alarmed                   = 1807   # (agent_set_is_alarmed, <agent_id>, <value>), # 1 for enable, 0 for disable
 
 scene_prop_get_num_instances           = 1810	# (scene_prop_get_num_instances, <destination>, <scene_prop_id>),
 scene_prop_get_instance                = 1811	# (scene_prop_get_instance, <destination>, <scene_prop_id>, <instance_no>),
@@ -848,6 +859,8 @@ prop_instance_dynamics_set_properties  = 1871 # (prop_instance_dynamics_set_prop
 prop_instance_dynamics_set_velocity    = 1872 # (prop_instance_dynamics_set_velocity,<scene_prop_id>,linear_velocity),
 prop_instance_dynamics_set_omega       = 1873 # (prop_instance_dynamics_set_omega,<scene_prop_id>,angular_velocity),
 prop_instance_dynamics_apply_impulse   = 1874 # (prop_instance_dynamics_apply_impulse,<scene_prop_id>,impulse_force),
+
+prop_instance_intersects_with_prop_instance = 1880 # (prop_instance_intersects_with_prop_instance, <scene_prop_id>, <scene_prop_id>),
 
 
 replace_scene_props                    = 1890   # (replace_scene_props, <old_scene_prop_id>,<new_scene_prop_id>),
@@ -919,6 +932,7 @@ mission_cam_set_mode                   = 2001   # (mission_cam_set_mode, <missio
 mission_get_time_speed                 = 2002   # (mission_get_time_speed, <destination_fixed_point>),
 mission_set_time_speed                 = 2003   # (mission_set_time_speed, <value_fixed_point>) #this works only when cheat mode is enabled
 mission_time_speed_move_to_value       = 2004   # (mission_speed_move_to_value, <value_fixed_point>, <duration-in-1/1000-seconds>) #this works only when cheat mode is enabled
+mission_set_duel_mode                  = 2006   # (mission_set_duel_mode, <value>), #value: 0 = off, 1 = on
 
 mission_cam_set_screen_color           = 2008   #(mission_cam_set_screen_color, <value>), #value is color together with alpha
 mission_cam_animate_to_screen_color    = 2009   #(mission_cam_animate_to_screen_color, <value>, <duration-in-1/1000-seconds>), #value is color together with alpha
@@ -1228,6 +1242,7 @@ lhs_operations = [try_for_range,
                   player_get_slot,
                   team_get_slot,
                   scene_prop_get_slot,
+                  get_angle_between_positions,
                   get_distance_between_positions,
                   get_distance_between_positions_in_meters,
                   get_sq_distance_between_positions,
@@ -1509,6 +1524,7 @@ can_fail_operations = [ge,
                        player_slot_ge,
                        team_slot_ge,
                        scene_prop_slot_ge,
+                       position_has_line_of_sight_to_position,
                        position_is_behind_position,
                        is_presentation_active,
                        all_enemies_defeated,
@@ -1529,11 +1545,14 @@ can_fail_operations = [ge,
                        agent_is_in_special_mode,
                        agent_is_in_parried_animation,
                        class_is_listening_order,
+                       agent_check_offer_from_agent,
                        entry_point_is_auto_generated,
                        scene_prop_has_agent_on_it,
+                       agent_is_alarmed,
                        scene_prop_get_instance,
                        scene_item_get_instance,
                        scene_allows_mounted_units,
+                       prop_instance_intersects_with_prop_instance,
                        agent_has_item_equipped,
                        map_get_land_position_around_position,
                        map_get_water_position_around_position,

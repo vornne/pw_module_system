@@ -181,13 +181,17 @@ triggers = [
 #    ]),
 
 
-  (5.7, 0, 0.0, [(store_num_parties_created,reg(3),"pt_manhunters"),
-                 (lt,reg(3),num_max_zendar_manhunters),
-                 (store_num_parties_of_template, reg(2), "pt_manhunters"), (lt,reg(2),3)],
-                       [(set_spawn_radius,1),(spawn_around_party,"p_zendar","pt_manhunters")]),
-#  (5.2, 0, 0.0, [(store_num_parties_created,reg(3),"pt_peasant"),(lt,reg(3),num_max_zendar_peasants),
-#                 (store_num_parties_of_template, reg(2), "pt_peasant"), (lt,reg(2),3)],
-#                          [(set_spawn_radius,1),(spawn_around_party,"p_zendar","pt_peasant")]),
+  (5.7, 0, 0.0, 
+  [
+    (store_num_parties_of_template, reg2, "pt_manhunters"),    
+    (lt, reg2, 4)
+  ],
+  [
+    (set_spawn_radius, 1),
+    (store_add, ":p_town_22_plus_one", "p_town_22", 1),
+    (store_random_in_range, ":selected_town", "p_town_1", ":p_town_22_plus_one"),
+    (spawn_around_party, ":selected_town", "pt_manhunters"),
+  ]),
 
 
 
@@ -1160,7 +1164,7 @@ triggers = [
            (val_add, "$qst_follow_spy_meeting_counter", 1),
            (gt, "$qst_follow_spy_meeting_counter", 4),
            (party_detach, "$qst_follow_spy_spy_party"),
-           (assign, ":abort_meeting", 0),
+           (assign, ":abort_meeting", 1),
            (assign, "$qst_follow_spy_meeting_state", 2),
          (try_end),
        (try_end),

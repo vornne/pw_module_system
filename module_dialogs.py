@@ -2853,7 +2853,7 @@ dialogs = [
 			(str_store_string, s14, "str_lord_s12"),
 		(try_end),
 		(troop_set_name, "$g_talk_troop", s14),
-	
+		
 		
 		(try_begin),
 			(troop_add_item, "$g_talk_troop", "itm_saddle_horse", 0),
@@ -7947,7 +7947,7 @@ dialogs = [
 		(eq, "$players_kingdom", "fac_player_supporters_faction"),
 		(call_script, "script_add_log_entry", logent_ruler_intervenes_in_quarrel, "trp_player",  "$g_talk_troop", "$g_other_lord", "fac_player_supporters_faction"),
 	(try_end),
-	(call_script, "script_end_quest", "qst_resolve_dispute", 0),
+	(call_script, "script_end_quest", "qst_resolve_dispute"),
 	]],
 
   [anyone,"lord_quarrel_intervention_4", [
@@ -10339,8 +10339,14 @@ dialogs = [
   [anyone|plyr,"lord_talk", [#(troop_slot_eq, "$g_talk_troop", slot_troop_is_prisoner, 0),
                              (neg|troop_slot_ge, "$g_talk_troop", slot_troop_prisoner_of_party, 0),
                              (lt, "$g_talk_troop_faction_relation", 0),
+							 
+							 (store_relation, ":players_kingdom_relation", "$g_talk_troop_faction", "$players_kingdom"),
+							 
+							 (this_or_next|ge, ":players_kingdom_relation", 0),
                              (this_or_next|eq, "$players_kingdom", 0),
 								(eq, "$players_kingdom", "fac_player_supporters_faction"),
+								
+								
                              (neq, "$players_oath_renounced_against_kingdom", "$g_talk_troop_faction"),
                              (assign, ":continue", 1),
                              (try_begin),
@@ -10383,6 +10389,7 @@ dialogs = [
 	 
     ], "Make peace when I have you at an advantage? I think not.", "lord_pretalk",[]], 
  
+    #If the player faction is active
   [anyone,"lord_ask_pardon",
    [
 	(faction_slot_eq, "$g_talk_troop_faction", slot_faction_leader, "$g_talk_troop"),
@@ -10476,8 +10483,11 @@ dialogs = [
  I will use this to make amends to those you have wronged, and I will let it be known that you are no longer an enemy of the {s4}.", "close_window",
    [
      (troop_remove_gold, "trp_player", reg16),
+	 (store_relation, ":players_kingdom_relation", "$g_talk_troop_faction", "$players_kingdom"),
+	 
      (try_begin),
-       (eq, "$players_kingdom", 0),
+       (this_or_next|eq, "$players_kingdom", 0),
+		(ge, ":players_kingdom_relation", 0),
        (call_script, "script_set_player_relation_with_faction", "$g_talk_troop_faction", 0),
      (try_end),
      (assign,"$g_leave_town_outside",1),
@@ -10488,11 +10498,14 @@ dialogs = [
  I'll use the coin to smooth the feathers of those that can oppose your pardon, and I'm sure that word will soon spread that you are no longer an enemy of {s4}.", "close_window",
    [
      (troop_remove_gold, "trp_player", reg16),
+	 (store_relation, ":players_kingdom_relation", "$g_talk_troop_faction", "$players_kingdom"),
+	 
      (try_begin),
-       (eq, "$players_kingdom", 0),
+       (this_or_next|eq, "$players_kingdom", 0),
+		(ge, ":players_kingdom_relation", 0),
        (call_script, "script_set_player_relation_with_faction", "$g_talk_troop_faction", 0),
      (else_try),
-       (call_script, "script_diplomacy_start_peace_between_kingdoms", "$g_talk_troop_faction", "$players_kingdom"),
+       (call_script, "script_diplomacy_start_peace_between_kingdoms", "$g_talk_troop_faction", "$players_kingdom", 1),
      (try_end),
      (assign,"$g_leave_town_outside",1),
      (assign, "$g_leave_encounter", 1),
@@ -11196,8 +11209,9 @@ dialogs = [
     (try_begin),
 	  (call_script, "script_npc_decision_checklist_party_ai", "$g_talk_troop"),
 	  (eq, reg0, ":ai_behavior"),
-	  (eq, reg1, ":ai_object"),
+	  (eq, reg1, ":ai_object"),	  
 	(else_try),
+	  (call_script, "script_party_set_ai_state", "$g_talk_troop_party", reg0, reg1),
       (str_store_string, s14, "str_however_circumstances_have_changed_since_we_made_that_decision_and_i_may_reconsider_shortly_s16"),
 	  (try_begin),
 		(ge, "$cheat_mode", 1),
@@ -13334,24 +13348,24 @@ dialogs = [
 ## I give you my protection and grant you the right to hold three castles.\
 ## You have done wisely {playername}. Serve me well and I promise, you will rise high.", "lord_give_oath_5", []],
 
-  [anyone|plyr,"lord_give_conclude", [
-            (troop_get_type, reg39, "$g_talk_troop"),
-			(try_begin), #activate husband as pretender
-				(troop_slot_eq, "$g_talk_troop", slot_troop_spouse, "trp_player"),
-				(str_store_string, s41, "str_very_well__you_are_now_my_liege_as_well_as_my_husband"),
-			(else_try),	#all other situations
-				(str_store_string, s41, "str_i_thank_you_reg39my_ladylord"),
-			(try_end),
-			
-      ],  "{s41}", "lord_give_conclude_2", [
-
+  [anyone|plyr,"lord_give_conclude", 
+  [
+    (troop_get_type, reg39, "$g_talk_troop"),
+    (try_begin), #activate husband as pretender
+      (troop_slot_eq, "$g_talk_troop", slot_troop_spouse, "trp_player"),
+      (str_store_string, s41, "str_very_well__you_are_now_my_liege_as_well_as_my_husband"),
+    (else_try),	#all other situations
+      (str_store_string, s41, "str_i_thank_you_reg39my_ladylord"),
+    (try_end),
+  ],  "{s41}", "lord_give_conclude_2", 
+  [
 	#Pretender changes  
     (try_begin),
       (this_or_next|is_between, "$g_talk_troop", pretenders_begin, pretenders_end),
-		(troop_slot_eq, "$g_talk_troop", slot_troop_spouse, "trp_player"),
+      (troop_slot_eq, "$g_talk_troop", slot_troop_spouse, "trp_player"),
+      
       (neg|faction_slot_eq, "$g_talk_troop_faction", slot_faction_leader, "$g_talk_troop"),
 	  
-#      (faction_set_slot, "$g_talk_troop_faction", slot_faction_marshall, "trp_player"),
       (assign, "$supported_pretender", "$g_talk_troop"),
       (troop_get_slot, "$supported_pretender_old_faction", "$g_talk_troop", slot_troop_original_faction),
       (troop_set_faction, "$g_talk_troop", "fac_player_supporters_faction"),
@@ -13388,6 +13402,7 @@ dialogs = [
       (call_script, "script_update_all_notes"),
       (assign, "$g_recalculate_ais", 1),
     (try_end),
+        
     (try_begin),
       (is_between, "$players_kingdom", kingdoms_begin, kingdoms_end),
       (neq, "$players_kingdom", "fac_player_supporters_faction"),
@@ -13397,18 +13412,19 @@ dialogs = [
       (call_script, "script_add_log_entry", logent_renounced_allegiance,   "trp_player",  -1, ":old_leader", "$players_kingdom"),
       (call_script, "script_player_leave_faction", 0),
     (try_end),
+        
     (call_script, "script_player_join_faction", "$g_talk_troop_faction"),
+        
     (try_begin),
 		(gt, "$g_invite_offered_center", 0),
 		(call_script, "script_give_center_to_lord", "$g_invite_offered_center", "trp_player", 0),
 		(try_begin),
 			(faction_slot_eq, "$players_kingdom", slot_faction_political_issue, "$g_invite_offered_center"),
 			(faction_set_slot, "$players_kingdom", slot_faction_political_issue, -1),
-		(try_end),
-	  
+		(try_end),	  
     (try_end),
     (call_script, "script_add_log_entry", logent_pledged_allegiance,   "trp_player",  -1, "$g_talk_troop", "$g_talk_troop_faction"),
-    
+        
     (try_begin),
       (check_quest_active, "qst_join_faction"),
       (eq, "$g_invite_faction_lord", "$g_talk_troop"),
@@ -14216,7 +14232,7 @@ Hand over my {reg19} denars, if you please, and end our business together.", "lo
   [anyone,"lord_mercenary_service_accept", [(str_store_faction_name, s9, "$g_talk_troop_faction")],
    "Perfect. Of course you shall have to make a formal declaration of allegiance,\
  and give your oath that you and your company will remain in service to {s9}\
- for a period of no less than three months.", "lord_mercenary_service_verify", []],
+ for a period of no less than one month.", "lord_mercenary_service_verify", []],
   [anyone|plyr,"lord_mercenary_service_verify", [], "As you wish. Your enemies are my enemies.", "lord_mercenary_service_verify_2", []],
   [anyone|plyr,"lord_mercenary_service_verify", [], "On second thought, forget it.", "lord_mercenary_service_reject", []],
 
@@ -14224,7 +14240,7 @@ Hand over my {reg19} denars, if you please, and end our business together.", "lo
  {s9} does well by its loyal fighters, you will receive many rewards for your service.", "lord_mercenary_service_accept_3", [
      (call_script, "script_troop_add_gold", "trp_player", "$temp"),
      (store_current_day, ":cur_day"),
-     (store_add, "$mercenary_service_next_renew_day", ":cur_day", 90),
+     (store_add, "$mercenary_service_next_renew_day", ":cur_day", 30),
      (call_script, "script_player_join_faction", "$g_talk_troop_faction"),
      (str_store_faction_name, s9, "$g_talk_troop_faction"),]],
 
@@ -14235,7 +14251,7 @@ Hand over my {reg19} denars, if you please, and end our business together.", "lo
    "I'm very sorry to hear that. You'll find no better place than {s9}, be sure of that.", "lord_pretalk", []],
 
   [anyone,"lord_mercenary_elaborate_pay", [(assign, reg12, "$temp")],
-   "I can offer you a contract for three months. At the end of those three, it can be extended month by month.\
+   "I can offer you a contract for one month. At the end of this period, it can be extended on a monthly basis.\
  An initial sum of {reg12} denars will be paid to you to seal the contract.\
  After that, you'll receive wages from {s10} each week, according to the number and quality of the soldiers in your company.\
  You still have your rights to battlefield loot and salvage, as well as any prisoners you capture.\
@@ -20574,6 +20590,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   "minstrel_learn_poem_continue", [
     (troop_remove_gold, "trp_player", 300),
     (val_add, "$mystic_poem_recitations", 1),
+    
   ]],
 
 
@@ -21759,7 +21776,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
    ]],
 
   [anyone,"master_craftsman_accounts", [
-  ], "We currently produce {s3} worth {reg1} denars each week, while the quantity of {s4} needed to manufacture it costs {reg2}, and labor and upkeep are {reg3}.{s9} This means that we theoretically make a {s12} of {reg0} denars a week, assuming that we have no raw materiials in the inventories, and that we sell directly to the market.", "master_craftsman_pretalk",
+  ], "We currently produce {s3} worth {reg1} denars each week, while the quantity of {s4} needed to manufacture it costs {reg2}, and labor and upkeep are {reg3}.{s9} This means that we theoretically make a {s12} of {reg0} denars a week, assuming that we have no raw materials in the inventories, and that we sell directly to the market.", "master_craftsman_pretalk",
   [
     (party_get_slot, ":item_produced", "$g_encountered_party", slot_center_player_enterprise),
     (call_script, "script_process_player_enterprise", ":item_produced", "$g_encountered_party"),
@@ -22242,7 +22259,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   ]],
   
 
-  [anyone|plyr,"mayor_talk",[
+  [anyone|plyr,"mayor_talk",[  
   (item_slot_ge, "itm_velvet", slot_item_secondary_raw_material, "itm_raw_dyes"), #ie, the item information has been updated, to ensure savegame compatibility
   ], "I wish to buy land in this town for a productive enterprise", "mayor_investment_possible",[
   ]],
@@ -23445,8 +23462,8 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
                     (quest_get_slot, reg5, "qst_deliver_cattle", slot_quest_target_amount)],
    "My good {sir/madam}. Our village is grateful for your help. Thanks to the {reg5} heads of cattle you have brought, we can now raise our own herd.", "village_elder_deliver_cattle_thank",
    [(add_xp_as_reward, 400),
-    (quest_get_slot, ":num_cattle", "qst_deliver_cattle", slot_quest_target_amount),
-    (party_set_slot, "$current_town", slot_village_number_of_cattle, ":num_cattle"),
+#    (quest_get_slot, ":num_cattle", "qst_deliver_cattle", slot_quest_target_amount),
+#    (party_set_slot, "$current_town", slot_village_number_of_cattle, ":num_cattle"),
     (call_script, "script_change_center_prosperity", "$current_town", 4),
     (call_script, "script_change_player_relation_with_center", "$current_town", 5),
     (call_script, "script_end_quest", "qst_deliver_cattle"),

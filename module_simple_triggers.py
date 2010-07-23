@@ -312,7 +312,7 @@ simple_triggers = [
       (ge,"$g_player_raiding_village",1),
       (try_begin),
         (neq, "$g_player_is_captive", 0),
-        (rest_for_hours, 0, 0, 0), #stop resting - abort
+        #(rest_for_hours, 0, 0, 0), #stop resting - abort
         (assign,"$g_player_raiding_village",0),
       (else_try),
         (map_free), #we have been attacked during raid
@@ -388,7 +388,13 @@ simple_triggers = [
   (4,
    [
      (assign, "$g_time_to_spare", 1),
-    ]),
+
+    (try_begin),
+		(troop_slot_ge, "trp_player", slot_troop_spouse, active_npcs_begin),
+		(assign, "$g_player_banner_granted", 1),
+	(try_end),
+
+	 ]),
 
 	
   # Banner selection menu
@@ -1365,8 +1371,10 @@ simple_triggers = [
 	  
       (store_random_in_range, ":random_no", 0, 100),
       (try_begin), #Disaster
-        (eq, ":random_no", 0),#1% chance of famine - should happen once every two years
-        (assign, ":num_cattle", 0),
+        (eq, ":random_no", 0),#1% chance of epidemic - should happen once every two years
+        #(assign, ":num_cattle", 0), #formerly
+        (val_min, ":num_cattle", 10),
+		
         (try_begin),
 #          (eq, "$cheat_mode", 1),
 #          (str_store_party_name, s1, ":village_no"),
@@ -1412,63 +1420,70 @@ simple_triggers = [
    [
       #Adding earnings to town lords' wealths.
       #Moved to troop does business
-      (try_for_range, ":center_no", centers_begin, centers_end),
-        (eq, 1, 2), #DEBUGS
-        (party_get_slot, ":town_lord", ":center_no", slot_town_lord),
-        (neq, ":town_lord", "trp_player"),
-        (is_between, ":town_lord", active_npcs_begin, active_npcs_end),
-        (party_get_slot, ":accumulated_rents", ":center_no", slot_center_accumulated_rents),
-        (party_get_slot, ":accumulated_tariffs", ":center_no", slot_center_accumulated_tariffs),
-        (troop_get_slot, ":troop_wealth", ":town_lord", slot_troop_wealth),
-        (val_add, ":troop_wealth", ":accumulated_rents"),
-        (val_add, ":troop_wealth", ":accumulated_tariffs"),
-        (troop_set_slot, ":town_lord", slot_troop_wealth, ":troop_wealth"),
-		
-		#(try_begin),
-		#	(this_or_next|eq, "$cheat_mode", 1),
-		#	(eq, "$cheat_mode", 3),
-		#	(str_store_party_name, s4, ":center_no"),
-		#	(assign, reg3, ":accumulated_rents"),
-		#	(assign, reg4, ":accumulated_tariffs"),
-		#	(display_message, "@DEBUG -- VIRTUAL COLLECTION: {reg3} in rents and {reg4} in tariffs collected from {s4}"),
-		#(try_end),		
-		
-        (party_set_slot, ":center_no", slot_center_accumulated_rents, 0),
-        (party_set_slot, ":center_no", slot_center_accumulated_tariffs, 0),
-        (try_begin),
-          (eq, "$cheat_mode", 1),
-          (assign, reg1, ":troop_wealth"),
-          (add_troop_note_from_sreg, ":town_lord", 1, "str_current_wealth_reg1", 0),
-        (try_end),
-      (try_end),
-      
+      #(try_for_range, ":center_no", centers_begin, centers_end),
+      #  (party_get_slot, ":town_lord", ":center_no", slot_town_lord),
+      #  (neq, ":town_lord", "trp_player"),
+      #  (is_between, ":town_lord", active_npcs_begin, active_npcs_end),
+      #  (party_get_slot, ":accumulated_rents", ":center_no", slot_center_accumulated_rents),
+      #  (party_get_slot, ":accumulated_tariffs", ":center_no", slot_center_accumulated_tariffs),
+      #  (troop_get_slot, ":troop_wealth", ":town_lord", slot_troop_wealth),
+      #  (val_add, ":troop_wealth", ":accumulated_rents"),
+      #  (val_add, ":troop_wealth", ":accumulated_tariffs"),
+      #  (troop_set_slot, ":town_lord", slot_troop_wealth, ":troop_wealth"),				
+      #  (party_set_slot, ":center_no", slot_center_accumulated_rents, 0),
+      #  (party_set_slot, ":center_no", slot_center_accumulated_tariffs, 0),
+      #  (try_begin),
+      #    (eq, "$cheat_mode", 1),
+      #    (assign, reg1, ":troop_wealth"),
+      #    (add_troop_note_from_sreg, ":town_lord", 1, "str_current_wealth_reg1", 0),
+      #  (try_end),
+      #(try_end),
+            
 	  #Collect taxes for another week
       (try_for_range, ":center_no", centers_begin, centers_end),
         (try_begin),
           (party_slot_ge, ":center_no", slot_town_lord, 0), #unassigned centers do not accumulate rents	  
         
-          (party_get_slot, ":accumulated_rents", ":center_no", slot_center_accumulated_rents),
-		  #(neg|is_between, ":center_no", castles_begin, castles_end), #castles are added when the village is called
+          (party_get_slot, ":accumulated_rents", ":center_no", slot_center_accumulated_rents),		  
 		
           (assign, ":cur_rents", 0),
           (try_begin),
             (party_slot_eq, ":center_no", slot_party_type, spt_village),
             (try_begin),
               (party_slot_eq, ":center_no", slot_village_state, svs_normal),
-              (assign, ":cur_rents", 1000),
+              (assign, ":cur_rents", 1200),
             (try_end),
           (else_try),
             (party_slot_eq, ":center_no", slot_party_type, spt_castle),
-            (assign, ":cur_rents", 500),
+            (assign, ":cur_rents", 1200),
           (else_try),  
             (party_slot_eq, ":center_no", slot_party_type, spt_town),
-            (assign, ":cur_rents", 2000),
+            (assign, ":cur_rents", 2400),
           (try_end),
 		
           (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity), #prosperty changes between 0..100     
-          (store_add, ":multiplier", 10, ":prosperity"), #multiplier changes between 10..110
+          (store_add, ":multiplier", 20, ":prosperity"), #multiplier changes between 20..120
           (val_mul, ":cur_rents", ":multiplier"), 
-          (val_div, ":cur_rents", 110),#Prosperity of 100 gives the default values
+          (val_div, ":cur_rents", 120),#Prosperity of 100 gives the default values
+          
+          (try_begin),
+            (party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
+            
+            (game_get_reduce_campaign_ai, ":reduce_campaign_ai"),
+            (try_begin),
+              (eq, ":reduce_campaign_ai", 0), #hard (less money from rents)
+              (val_mul, ":cur_rents", 3),
+              (val_div, ":cur_rents", 4),
+            (else_try),
+              (eq, ":reduce_campaign_ai", 1), #medium (normal money from rents)
+              #same
+            (else_try),
+              (eq, ":reduce_campaign_ai", 2), #easy (more money from rents)
+              (val_mul, ":cur_rents", 4),
+              (val_div, ":cur_rents", 3),
+            (try_end),                
+          (try_end),  
+                    
           (val_add, ":accumulated_rents", ":cur_rents"), #cur rents changes between 23..1000
           (party_set_slot, ":center_no", slot_center_accumulated_rents, ":accumulated_rents"),
         (try_end),
@@ -1530,7 +1545,7 @@ simple_triggers = [
 			(assign, "$npc_with_sisterly_advice", ":npc"),
 		(try_end),
 	 (else_try),
-	     (store_random_in_range, ":kingdom_no", kingdoms_begin, kingdoms_end),
+	     (store_random_in_range, ":kingdom_no", npc_kingdoms_begin, npc_kingdoms_end),
 	     (assign, ":min_distance", 999999),
 	     (try_for_range, ":center_no", walled_centers_begin, walled_centers_end),
 	       (store_faction_of_party, ":center_faction", ":center_no"),
@@ -1873,10 +1888,29 @@ simple_triggers = [
            (le, ":num_towns", 0),
            (remove_party, ":party_no"),
          (else_try),
-           (store_random_in_range, ":random_no", 0, 100),
-           (lt, ":random_no", 35),
-       
            (party_get_cur_town, ":cur_center", ":party_no"),
+           
+           (store_random_in_range, ":random_no", 0, 100),                               
+           
+           (try_begin),
+             (party_slot_eq, ":cur_center", slot_town_lord, "trp_player"),
+             
+             (game_get_reduce_campaign_ai, ":reduce_campaign_ai"),
+             (try_begin),
+               (eq, ":reduce_campaign_ai", 0), #hard (less money from tariffs)
+               (assign, ":tariff_succeed_limit", 35),
+             (else_try),
+               (eq, ":reduce_campaign_ai", 1), #medium (normal money from tariffs)
+               (assign, ":tariff_succeed_limit", 45),
+             (else_try),
+               (eq, ":reduce_campaign_ai", 2), #easy (more money from tariffs)
+               (assign, ":tariff_succeed_limit", 60),
+             (try_end),                
+           (else_try),  
+             (assign, ":tariff_succeed_limit", 45),
+           (try_end),
+                      
+           (lt, ":random_no", ":tariff_succeed_limit"),                  
 
            (assign, ":can_leave", 1),
            (try_begin),
@@ -1901,8 +1935,7 @@ simple_triggers = [
              (eq, "$caravan_escort_party_id", ":party_no"),
              (neg|party_is_in_town, ":party_no", "$caravan_escort_destination_town"),
              (assign, ":target_center", "$caravan_escort_destination_town"),
-           (else_try),
-#             (call_script, "script_cf_select_random_town_at_peace_with_faction_in_trade_route", ":cur_center", ":merchant_faction"),
+           (else_try),         
              (call_script, "script_cf_select_most_profitable_town_at_peace_with_faction_in_trade_route", ":cur_center", ":merchant_faction"),
              (assign, ":target_center", reg0),
            (try_end),
@@ -1911,6 +1944,7 @@ simple_triggers = [
        
            (try_begin),
              (eq, ":do_trade", 1),
+             (str_store_party_name, s7, ":cur_center"),             
              (call_script, "script_do_merchant_town_trade", ":party_no", ":cur_center"),
            (try_end),
            (party_set_ai_behavior, ":party_no", ai_bhvr_travel_to_party),
@@ -2868,7 +2902,7 @@ simple_triggers = [
          (troop_raise_skill, "trp_player", "skl_engineer", 1),
          (str_store_string, s2, "@ Your engineer skill has increased by 1."),
        (try_end),
-
+       
        (try_begin),
          (eq, "$g_infinite_camping", 0),
          (dialog_box, "@You have finished reading {s1}.{s2}", "@Book Read"),
@@ -3744,10 +3778,26 @@ simple_triggers = [
        (eq, "$g_player_is_captive", 1),
        (neg|party_is_active, "$capturer_party"),
        (rest_for_hours, 0, 0, 0),
-     (try_end),  
+     (try_end),            
      
      (assign, ":village_no", "$next_center_will_be_fired"),
-     #(try_for_range, ":village_no", villages_begin, villages_end),       
+     (party_get_slot, ":is_there_already_fire", ":village_no", slot_village_smoke_added),
+     (eq, ":is_there_already_fire", 0),
+     (try_begin),
+       (party_get_slot, ":bound_center", ":village_no", slot_village_bound_center),  
+       (party_get_slot, ":last_nearby_fire_time", ":bound_center", slot_town_last_nearby_fire_time),
+       (store_current_hours, ":cur_hours"),
+       (eq, ":cur_hours", ":last_nearby_fire_time"),
+       (party_add_particle_system, ":village_no", "psys_map_village_fire"),
+       (party_add_particle_system, ":village_no", "psys_map_village_fire_smoke"),       
+     (else_try),  
+       (store_add, ":last_nearby_fire_finish_time", ":last_nearby_fire_time", fire_duration),
+       (eq, ":last_nearby_fire_finish_time", ":cur_hours"),
+       (party_clear_particle_systems, ":village_no"),
+     (try_end),  
+     
+     
+     (assign, ":village_no", "$next_center_will_be_fired"),
        (party_get_slot, ":is_there_already_fire", ":village_no", slot_village_smoke_added),
        (eq, ":is_there_already_fire", 0),
        (try_begin),
@@ -3762,7 +3812,6 @@ simple_triggers = [
          (eq, ":last_nearby_fire_finish_time", ":cur_hours"),
          (party_clear_particle_systems, ":village_no"),
        (try_end),  
-     #(try_end),
    ]),
    
   (24,

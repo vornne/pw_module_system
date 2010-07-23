@@ -1215,7 +1215,7 @@ strings = [
   ("npc8_home_description", "You haven't heard the story? When Gundig Hairy-Breeks came to Calradia from Nordland, he planted his banner on the headland and said that it would remain there until he recaptured his 'inheritance.' His 'inheritance', he called it. Gundig believed the skalds who told him that the Emperor had bequeathed Calradia to the Nords, when in fact he just gave us a small strip of land along the coast, so that we would crew his galleys."),
   ("npc9_home_description", "The Nords would sail up the river in their longships. The townsmen of the coast could have stopped them, but they were cowards then, as they are today, and paid them a yearly stipend, known as the Nordgeld, to be let in peace. But the Vaegir king would not pay. My father decided to come over the mountains, to fight with the Vaegir hosts. Three summers in a row they tried to take the Rock, and each time the Vaegir lords held them back."),
   ("npc10_home_description", "In my father's day the Swadians would come calling, thinking to make us knuckle our foreheads and call them their overlords. But Grunwalder, an old veteran of the wars from the hills, showed us how to form a battleline with spear and crossbow that could break a Swadian charge. He fell in battle, but the people gave his name to the castle that was built here, where he fell, so that we would remember, and always stand firm against the horsemens' onslaught."),
-  ("npc11_home_description", "I'm from Praven. You know the saying, {sir/madame} -- 'Barley grown in Uxkhal is made into ale in Praven, and we're all the better for it.' Not sure what that means, {sir/madame}, but it's true about the barley. And wheat, and oats. We grow more grain here in the Vale of Uxkhall then all the rest of Calradia put together, and our ale is the best, too. You can see it in the soil here -- rich and black, and smells of good harvests and full bellies."),
+  ("npc11_home_description", "I'm from Uxkhal. You know the saying, {sir/madame} -- 'Barley grown in Uxkhal is made into ale in Praven, and we're all the better for it.' Not sure what that means, {sir/madame}, but it's true about the barley. And wheat, and oats. We grow more grain here in the Vale of Uxkhal then all the rest of Calradia put together, and our ale is the best, too. You can see it in the soil here -- rich and black, and smells of good harvests and full bellies."),
   ("npc12_home_description", "The lord over there in Almerra Castle had the dropsy, and had requested a doctor from Uxkhal to treat him. Like a typical university-educated doctor, he went right to Galerian for a cure. Galerian commends sun-metal for dropsy. Now most of Galerian's writings were useless back in the days of the Calradic emperors when they were first written down, and they're doubly worthless today, but sometimes he hits upon the right cure by chance: sun-metal does cure some kinds of dropsy in small doses. However, sun-metal in large doses is poison, something that the Galerian-worshippers never grasped."),
 #  ("npc13_home_description", "I had come up here with a small Swadian force, but they were caught by the Rhodoks in the woods and their horsemen cut down amid the trees. I fled and found shelter by the lake, in the arms of the comeliest cowherd you ever saw. She took me to a cave near the high pastures, and would bring me cheese and berries, and tell me the tale from the hills. They say the lake is a gateway to the underworld, and sometimes on the fringes you can the noxious fumes beneath bubbling up to the surface. Such rustics they are!"),
   ("npc13_home_description", "I had come up here with a small Swadian force, but they were caught by the Rhodoks in the woods and their horsemen cut down amid the trees. I fled and found shelter up in the high valleys, in the arms of the comeliest cowherd you ever saw. She took me to a cave near the high pastures, and would bring me cheese and berries, and tell me the tales from the hills -- of playful goat-men who guide lost animals back to their flocks, or of ghostly huntsmen who ride the winds, chasing stormclouds. Such rustics they are!"),
@@ -2422,6 +2422,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("multi_game_type_5", "Capture the Flag"),
   ("multi_game_type_6", "Conquest"),
   ("multi_game_type_7", "Siege"),
+  ("multi_game_type_8", "Duel"),
   ("multi_game_types_end", "multi_game_types_end"),
 
   ("poll_kick_player_s1_by_s0", "{s0} started a poll to kick player {s1}."),
@@ -4073,5 +4074,14 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("for_s4", " for {s4}"),
   
   ("cancel_fiancee_quest", " Also, you should please consider that other matter I had asked of you to have been successfully completed. It is not fit for me to commission you with tasks."),
-  
+  ("a_duel_request_is_sent_to_s0", "A duel offer is sent to {s0}."),
+  ("s0_offers_a_duel_with_you", "{s0} offers a duel with you."),
+  ("your_duel_with_s0_is_cancelled", "Your duel with {s0} is cancelled."),
+  ("a_duel_between_you_and_s0_has_started", "A duel between you and {s0} has started!"),
+  ("you_have_lost_a_duel", "You have lost a duel."),
+  ("you_have_won_a_duel", "You have won a duel!"),
+  ("server_s0", "[SERVER]: {s0}"),
+  ("disallow_ranged_weapons", "Disallow ranged weapons"),
+  ("ranged_weapons_are_disallowed", "Ranged weapons are disallowed."),
+  ("ranged_weapons_are_allowed", "Ranged weapons are allowed."),
 ]

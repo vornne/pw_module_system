@@ -75,7 +75,7 @@ slot_agent_is_respawn_as_bot      = 17
 slot_agent_cur_animation          = 18
 slot_agent_next_action_time       = 19
 slot_agent_state                  = 20
-
+slot_agent_in_duel_with           = 21
 
 slot_agent_walker_occupation      = 25
     
@@ -1706,3 +1706,4 @@ arena_grand_prize = 250
 price_adjustment = 25 #the percent by which a trade at a center alters price
 
 fire_duration = 4 #fires takes 4 hours
+

@@ -3239,7 +3239,12 @@ game_menus = [
        [(jump_to_menu, "mnu_camp_action_read_book"),
         ]
        ),
-      ("action_rename_kingdom",[(eq, "$players_kingdom_name_set", 1),],"Rename your kingdom.",
+      ("action_rename_kingdom",
+       [
+         (eq, "$players_kingdom_name_set", 1),
+         (faction_slot_eq, "fac_player_supporters_faction", slot_faction_state, sfs_active),
+         (faction_slot_eq, "fac_player_supporters_faction", slot_faction_leader, "trp_player"),
+         ],"Rename your kingdom.",
        [(start_presentation, "prsnt_name_kingdom"),
         ]
        ),
@@ -3986,6 +3991,7 @@ game_menus = [
          (assign, ":player_count", reg0),
          (ge, ":player_count", ":enemy_party_strength"),
          ],"Pull back, leaving some soldiers behind to cover your retreat.",[(jump_to_menu, "mnu_encounter_retreat_confirm"),]),
+         
       ("encounter_surrender",[
          (eq,"$cant_leave_encounter", 1),
           ],"Surrender.",[(assign,"$g_player_surrenders",1)]),
@@ -4097,18 +4103,54 @@ game_menus = [
       (try_end),
       
       (try_begin),
-        (le, ":minimum_power", 3),
+        (le, ":minimum_power", 5),
         (assign, ":division_constant", 1),
       (else_try),
-        (le, ":minimum_power", 9),
+        (le, ":minimum_power", 10),
         (assign, ":division_constant", 2),
       (else_try),
-        (le, ":minimum_power", 27),
+        (le, ":minimum_power", 25),
         (assign, ":division_constant", 3),
       (else_try),
+        (le, ":minimum_power", 50),
         (assign, ":division_constant", 4),
+      (else_try),
+        (le, ":minimum_power", 100),
+        (assign, ":division_constant", 5),
+      (else_try),
+        (le, ":minimum_power", 200),
+        (assign, ":division_constant", 6),
+      (else_try),
+        (le, ":minimum_power", 400),
+        (assign, ":division_constant", 7),
+      (else_try),
+        (le, ":minimum_power", 800),
+        (assign, ":division_constant", 8),
+      (else_try),
+        (le, ":minimum_power", 1600),
+        (assign, ":division_constant", 9),
+      (else_try),
+        (le, ":minimum_power", 3200),
+        (assign, ":division_constant", 10),
+      (else_try),
+        (le, ":minimum_power", 6400),
+        (assign, ":division_constant", 11),
+      (else_try),
+        (le, ":minimum_power", 12800),
+        (assign, ":division_constant", 12),
+      (else_try),
+        (le, ":minimum_power", 25600),
+        (assign, ":division_constant", 13),
+      (else_try),
+        (le, ":minimum_power", 51200),
+        (assign, ":division_constant", 14),
+      (else_try),
+        (le, ":minimum_power", 102400),
+        (assign, ":division_constant", 15),
+      (else_try),  
+        (assign, ":division_constant", 16),
       (try_end),  
-                                                                        
+                                                                              
       (val_div, ":player_party_strength", ":division_constant"), #1.126, ":division_constant" was 5 before
       (val_max, ":player_party_strength", 1), #1.126
       (val_div, ":enemy_party_strength", ":division_constant"), #1.126, ":division_constant" was 5 before
@@ -4154,7 +4196,8 @@ game_menus = [
       (try_begin),
         (call_script, "script_party_count_members_with_full_health", "p_main_party"),
         (assign, ":num_our_regulars_remaining", reg0),
-        (le, ":num_our_regulars_remaining", "$num_routed_us"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
+        (store_add, ":num_routed_us_plus_one", "$num_routed_us", 1),
+        (le, ":num_our_regulars_remaining", ":num_routed_us_plus_one"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
         (assign, "$no_soldiers_left", 1),
         (str_store_string, s4, "str_order_attack_failure"),
       (else_try),
@@ -4414,7 +4457,7 @@ game_menus = [
               (call_script, "script_remove_troop_from_prison", ":stack_troop"),
               (troop_set_slot, ":stack_troop", slot_troop_leaded_party, -1),
 
-              (assign, "$talk_context", tc_hero_defeated),
+              (assign, "$talk_context", tc_hero_defeated),                            
 			  
               (call_script, "script_setup_troop_meeting", ":stack_troop", ":stack_troop_dna"),
               (assign, ":break", 1),
@@ -5297,7 +5340,6 @@ game_menus = [
            (assign, "$g_siege_final_menu", "mnu_besiegers_camp_with_allies"),
            (assign, "$g_siege_battle_state", 1),
            (assign, "$g_next_menu", "mnu_castle_besiege_inner_battle"),
-##           (assign, "$g_next_menu", "mnu_besiegers_camp_with_allies"),
            (jump_to_menu, "mnu_battle_debrief"),
            (change_screen_mission),
           ]),
@@ -5977,8 +6019,6 @@ game_menus = [
              (eq, ":siege_sally", 1),
              (jump_to_menu, "mnu_siege_attack_meets_sally"),
            (else_try),
-#           (jump_to_menu,"mnu_castle_outside"),
-##           (assign, "$g_next_menu", "mnu_castle_besiege"),
              (jump_to_menu, "mnu_battle_debrief"),
              (change_screen_mission),
            (try_end),
@@ -6007,7 +6047,6 @@ game_menus = [
          (jump_to_menu, "mnu_castle_besiege"),
        ]),
 
-
       ("cheat_conquer_castle",[(eq, "$cheat_mode", 1),
                                    ],
        "{!}CHEAT: Instant conquer castle.",
@@ -6015,7 +6054,6 @@ game_menus = [
         (assign, "$g_next_menu", "mnu_castle_taken"),
         (jump_to_menu, "mnu_total_victory"),
        ]),
-
 	   
       ("lift_siege",[],"Abandon the siege.",
        [
@@ -7062,18 +7100,6 @@ game_menus = [
               (assign,"$g_ally_party","$g_encountered_party"),
               (assign,"$g_siege_join", 1),
               (jump_to_menu,"mnu_siege_join_defense")]),
-##      ("siege_defender_do_not_join_battle",[(call_script, "script_party_count_fit_regulars","p_collective_ally"),
-##                                            (gt, reg0, 0)],
-##       "Don't get involved.", [(leave_encounter),
-##                               (change_screen_return),
-##           ]),
-
-##      ("siege_defender_surrender",[(call_script, "script_party_count_fit_regulars","p_collective_ally"),
-##                                   (this_or_next|eq, reg0, 0),
-##                                   (party_slot_eq, "$g_encountered_party", slot_town_lord, "trp_player"),
-##                                   ],
-##       "Surrender.",[(assign, "$g_player_surrenders", 1),
-##                     (jump_to_menu,"mnu_under_siege_attacked_continue")]),
     ]
   ),
 
@@ -9324,7 +9350,7 @@ game_menus = [
            (jump_to_menu, "mnu_center_manage"),
        ]),
 		
-      ("walled_center_manage",
+      ("walled_center_move_court",
       [
         (neg|party_slot_eq, "$current_town", slot_village_state, svs_under_siege),
         (faction_slot_eq, "fac_player_supporters_faction", slot_faction_leader, "trp_player"),
@@ -9726,7 +9752,6 @@ game_menus = [
         (val_max, ":player_odds", 250),
         (party_set_slot, "$current_town", slot_town_player_odds, ":player_odds"),
         (call_script, "script_play_victorious_sound"),
-        
         ],
     [
       ("continue", [], "Continue...",
@@ -12309,7 +12334,8 @@ game_menus = [
 			(eq, ":target_village", -1),
 			(party_get_slot, ":target_faction", ":acting_village", slot_center_original_faction),
 			(try_begin),
-				(eq, ":target_faction", ":acting_faction"),
+				(this_or_next|eq, ":target_faction", ":acting_faction"),
+                              		(neg|faction_slot_eq, ":target_faction", slot_faction_state, sfs_active),
 				(party_get_slot, ":target_faction", ":acting_village", slot_center_ex_faction),
 			(try_end),
 
@@ -12387,7 +12413,7 @@ game_menus = [
       (position_set_y, pos0, 30),
       (position_set_z, pos0, 170),
       (set_game_menu_tableau_mesh, "tableau_faction_note_mesh_banner", "fac_player_supporters_faction", pos0),
-	  
+      
 	  (try_for_range, ":walled_center", walled_centers_begin, walled_centers_end),
 	    (lt, "$g_player_court", walled_centers_begin),
 		(store_faction_of_party, ":walled_center_faction", ":walled_center"),
@@ -12589,7 +12615,7 @@ game_menus = [
   
   (
   "notification_court_lost",0,
-  "{s14}",
+  "{s12}",
   "none",
   [
     (try_begin),
@@ -12649,6 +12675,7 @@ game_menus = [
 		(faction_slot_eq, "fac_player_supporters_faction", slot_faction_state, sfs_inactive),
 		(str_store_string, s14, "str_as_you_no_longer_maintain_an_independent_kingdom_you_no_longer_maintain_a_court"),
 	(try_end),
+	(str_store_string, s12, s14),
   ],
   [
       ("continue",[],"Continue...",[
@@ -12708,7 +12735,7 @@ game_menus = [
   
   (
     "notification_player_kingdom_holds_feast",mnf_scale_picture,
-    "{s11}{s12}",
+    "{s11}",
     "none",
     [
 		(set_background_mesh, "mesh_pic_messenger"),
@@ -12733,8 +12760,7 @@ game_menus = [
 			(eq, "$g_notification_menu_var1", 0),
 			(str_store_string, s11, "str_the_great_lords_of_your_kingdom_plan_to_gather_at_your_hall_in_s10_for_a_feast"),
 		(try_end),
-		
-		
+		(str_store_string, s11, "@{!}{s11}{s12}"),
 		
       ],
     [

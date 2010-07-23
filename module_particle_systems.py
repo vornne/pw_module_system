@@ -4,7 +4,6 @@ from header_particle_systems import *
 #psf_emit_at_water_level = 0x0000000020
 #psf_billboard_2d        = 0x0000000100 # up_vec = dir, front rotated towards camera
 #psf_billboard_3d        = 0x0000000200 # front_vec point to camera.
-#psf_billboard_drop      = 0x0000000300
 #psf_turn_to_velocity    = 0x0000000400
 #psf_randomize_rotation  = 0x0000001000
 #psf_randomize_size      = 0x0000002000

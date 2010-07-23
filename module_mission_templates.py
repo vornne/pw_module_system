@@ -7902,65 +7902,20 @@ mission_templates = [
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
-         
-         (try_begin),
-           (agent_is_non_player, ":agent_no"),           
-           (assign, "$g_multiplayer_ready_for_spawning_agent", 1),
-         (try_end),
+         (call_script, "script_multiplayer_server_on_agent_spawn_common", ":agent_no"),
          ]),
-      
+
       (ti_server_player_joined, 0, 0, [],
        [
          (store_trigger_param_1, ":player_no"),
-
-         (try_begin),
-           (this_or_next|player_is_active, ":player_no"),
-           (eq, ":player_no", 0),
-
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-           (store_mission_timer_a, ":player_join_time"),         
-           (player_set_slot, ":player_no", slot_player_join_time, ":player_join_time"),
-           (player_set_slot, ":player_no", slot_player_first_spawn, 1),
-
-           (try_begin),
-             (multiplayer_is_server),
-
-             (assign, ":initial_gold", multi_initial_gold_value),
-             (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-             (val_div, ":initial_gold", 100),
-             (player_set_gold, ":player_no", ":initial_gold"),
-
-             (call_script, "script_multiplayer_send_initial_information", ":player_no"),
-           (try_end),
-         (try_end),
+         (call_script, "script_multiplayer_server_player_joined_common", ":player_no"),
          ]),
 
       (ti_before_mission_start, 0, 0, [],
        [
-         (try_begin),
-           (scene_allows_mounted_units),
-           (assign, "$g_horses_are_avaliable", 1),         
-         (else_try),  
-           (assign, "$g_horses_are_avaliable", 0),         
-         (try_end),
-       
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_deathmatch),
-
-         (scene_set_day_time, 15),
+         (call_script, "script_multiplayer_server_before_mission_start_common"),
          
-         (assign, "$g_multiplayer_mission_end_screen", 0),
-         (get_max_players, ":num_players"),
-         (try_for_range, ":player_no", 0, ":num_players"),
-           (player_is_active, ":player_no"),
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-
-           (assign, ":initial_gold", multi_initial_gold_value),
-           (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-           (val_div, ":initial_gold", 100),
-           (player_set_gold, ":player_no", ":initial_gold"),
-
-           (player_set_slot, ":player_no", slot_player_first_spawn, 1),
-         (try_end),
          (multiplayer_make_everyone_enemy),
 
          (call_script, "script_multiplayer_init_mission_variables"),
@@ -7991,63 +7946,8 @@ mission_templates = [
       (ti_on_agent_killed_or_wounded, 0, 0, [],
        [
          (store_trigger_param_1, ":dead_agent_no"), 
-         (store_trigger_param_2, ":killer_agent_no"), 
-
-         (call_script, "script_multiplayer_event_agent_killed_or_wounded", ":dead_agent_no", ":killer_agent_no"),
-
-         #adding 1 score points to agent which kills enemy agent at server
-         (try_begin), 
-           (multiplayer_is_server),
-           (try_begin), #killing myself because of some reason (friend hit, fall, team change)
-             (lt, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-
-             (neg|agent_is_non_player, ":dead_agent_no"),
-             (agent_get_player_id, ":dead_agent_player_id", ":dead_agent_no"),
-             (player_is_active, ":dead_agent_player_id"),
-             (player_get_score, ":dead_agent_player_score", ":dead_agent_player_id"),
-             (val_add, ":dead_agent_player_score", -1),
-             (player_set_score, ":dead_agent_player_id", ":dead_agent_player_score"),
-           (else_try), #killing teammate
-             (ge, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-             (agent_get_team, ":killer_team_no", ":killer_agent_no"),
-             (agent_get_team, ":dead_team_no", ":dead_agent_no"),
-             (eq, ":killer_team_no", ":dead_team_no"),
-             (neg|agent_is_non_player, ":killer_agent_no"),
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (val_add, ":killer_agent_player_score", -1),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-
-             #(player_get_kill_count, ":killer_agent_player_kill_count", ":killer_agent_player_id"),
-             #(val_add, ":killer_agent_player_kill_count", -2),
-             #(player_set_kill_count, ":killer_agent_player_id", ":killer_agent_player_kill_count"),
-           (else_try), #killing enemy
-             (ge, ":killer_agent_no", 0),
-             (agent_is_human, ":dead_agent_no"),
-             (agent_is_human, ":killer_agent_no"),
-             (neg|agent_is_non_player, ":killer_agent_no"),         
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (agent_get_team, ":killer_agent_team", ":killer_agent_no"),
-             (agent_get_team, ":dead_agent_team", ":dead_agent_no"),
-             (try_begin),
-               (neq, ":killer_agent_team", ":dead_agent_team"),
-               (val_add, ":killer_agent_player_score", 1),
-             (else_try),
-               (val_add, ":killer_agent_player_score", -1),
-             (try_end),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-           (try_end),
-         (try_end),
-
-         (call_script, "script_add_kill_death_counts", ":killer_agent_no", ":dead_agent_no"),
-
-         #money management
-         (call_script, "script_money_management_after_agent_death", ":killer_agent_no", ":dead_agent_no"),
+         (store_trigger_param_2, ":killer_agent_no"),
+         (call_script, "script_multiplayer_server_on_agent_killed_or_wounded_common", ":dead_agent_no", ":killer_agent_no"),
          ]),
       
       (1, 0, 0, [],
@@ -8313,65 +8213,19 @@ mission_templates = [
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
-         
-         (try_begin),
-           (agent_is_non_player, ":agent_no"),           
-           (assign, "$g_multiplayer_ready_for_spawning_agent", 1),
-         (try_end),
+         (call_script, "script_multiplayer_server_on_agent_spawn_common", ":agent_no"),
          ]),
       
       (ti_server_player_joined, 0, 0, [],
        [
          (store_trigger_param_1, ":player_no"),
-
-         (try_begin),
-           (this_or_next|player_is_active, ":player_no"),
-           (eq, ":player_no", 0),
-           
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-           (store_mission_timer_a, ":player_join_time"),         
-           (player_set_slot, ":player_no", slot_player_join_time, ":player_join_time"),
-           (player_set_slot, ":player_no", slot_player_first_spawn, 1),
-
-           (try_begin),
-             (multiplayer_is_server),
-
-             (assign, ":initial_gold", multi_initial_gold_value),
-             (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-             (val_div, ":initial_gold", 100),
-             (player_set_gold, ":player_no", ":initial_gold"),
-                    
-             (call_script, "script_multiplayer_send_initial_information", ":player_no"),
-           (try_end),
-         (try_end),
+         (call_script, "script_multiplayer_server_player_joined_common", ":player_no"),
          ]),
 
       (ti_before_mission_start, 0, 0, [],
        [
-         (try_begin),
-           (scene_allows_mounted_units),
-           (assign, "$g_horses_are_avaliable", 1),         
-         (else_try),  
-           (assign, "$g_horses_are_avaliable", 0),         
-         (try_end),
-
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_team_deathmatch),
-
-         (scene_set_day_time, 15),
-
-         (assign, "$g_multiplayer_mission_end_screen", 0),
-         (get_max_players, ":num_players"),
-         (try_for_range, ":player_no", 0, ":num_players"),
-           (player_is_active, ":player_no"),
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-
-           (assign, ":initial_gold", multi_initial_gold_value),
-           (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-           (val_div, ":initial_gold", 100),
-           (player_set_gold, ":player_no", ":initial_gold"),
-
-           (player_set_slot, ":player_no", slot_player_first_spawn, 1),
-         (try_end),
+         (call_script, "script_multiplayer_server_before_mission_start_common"),
 
          (call_script, "script_multiplayer_init_mission_variables"),
          (call_script, "script_multiplayer_remove_destroy_mod_targets"),
@@ -8402,60 +8256,9 @@ mission_templates = [
        [
          (store_trigger_param_1, ":dead_agent_no"), 
          (store_trigger_param_2, ":killer_agent_no"), 
-
-         (call_script, "script_multiplayer_event_agent_killed_or_wounded", ":dead_agent_no", ":killer_agent_no"),
-
-         #adding 1 score points to agent which kills enemy agent at server
-         (try_begin), 
-           (multiplayer_is_server),
-           (try_begin), #killing myself because of some reason (friend hit, fall, team change)
-             (lt, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-
-             (neg|agent_is_non_player, ":dead_agent_no"),
-             (agent_get_player_id, ":dead_agent_player_id", ":dead_agent_no"),
-             (player_is_active, ":dead_agent_player_id"),
-             (player_get_score, ":dead_agent_player_score", ":dead_agent_player_id"),
-             (val_add, ":dead_agent_player_score", -1),
-             (player_set_score, ":dead_agent_player_id", ":dead_agent_player_score"),
-           (else_try), #killing teammate
-             (ge, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-             (agent_get_team, ":killer_team_no", ":killer_agent_no"),
-             (agent_get_team, ":dead_team_no", ":dead_agent_no"),
-             (eq, ":killer_team_no", ":dead_team_no"),
-             (neg|agent_is_non_player, ":killer_agent_no"),
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (val_add, ":killer_agent_player_score", -1),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-
-             #(player_get_kill_count, ":killer_agent_player_kill_count", ":killer_agent_player_id"),
-             #(val_add, ":killer_agent_player_kill_count", -2),
-             #(player_set_kill_count, ":killer_agent_player_id", ":killer_agent_player_kill_count"),
-           (else_try), #killing enemy
-             (ge, ":killer_agent_no", 0),
-             (agent_is_human, ":dead_agent_no"),
-             (agent_is_human, ":killer_agent_no"),
-             (neg|agent_is_non_player, ":killer_agent_no"),
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (agent_get_team, ":killer_agent_team", ":killer_agent_no"),
-             (agent_get_team, ":dead_agent_team", ":dead_agent_no"),
-             (try_begin),
-               (neq, ":killer_agent_team", ":dead_agent_team"),
-               (val_add, ":killer_agent_player_score", 1),
-             (else_try),
-               (val_add, ":killer_agent_player_score", -1),
-             (try_end),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-           (try_end),
-         (try_end),
-         
+         (call_script, "script_multiplayer_server_on_agent_killed_or_wounded_common", ":dead_agent_no", ":killer_agent_no"),
          #adding 1 score points to killer agent's team. (special for "headquarters" and "team deathmatch" mod)
-         (try_begin), 
+         (try_begin),
            (ge, ":killer_agent_no", 0),
            (agent_is_human, ":dead_agent_no"),
            (agent_is_human, ":killer_agent_no"),
@@ -8467,11 +8270,6 @@ mission_templates = [
            (val_add, ":team_score", 1),
            (team_set_score, ":killer_agent_team", ":team_score"),
          (try_end),
-
-         (call_script, "script_add_kill_death_counts", ":killer_agent_no", ":dead_agent_no"),
-
-         #money management
-         (call_script, "script_money_management_after_agent_death", ":killer_agent_no", ":dead_agent_no"),
          ]),
 
       (1, 0, 0, [],
@@ -8675,49 +8473,19 @@ mission_templates = [
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
-         
-         (try_begin),
-           (agent_is_non_player, ":agent_no"),           
-           (assign, "$g_multiplayer_ready_for_spawning_agent", 1),
-         (try_end),
+         (call_script, "script_multiplayer_server_on_agent_spawn_common", ":agent_no"),
          ]),
       
       (ti_server_player_joined, 0, 0, [],
        [
          (store_trigger_param_1, ":player_no"),
-
-         (try_begin),
-           (this_or_next|player_is_active, ":player_no"),
-           (eq, ":player_no", 0),
-
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-           (store_mission_timer_a, ":player_join_time"),         
-           (player_set_slot, ":player_no", slot_player_join_time, ":player_join_time"),
-           (player_set_slot, ":player_no", slot_player_first_spawn, 1),
-         
-           (try_begin),
-             (multiplayer_is_server),
-
-             (assign, ":initial_gold", multi_initial_gold_value),
-             (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-             (val_div, ":initial_gold", 100),
-             (player_set_gold, ":player_no", ":initial_gold"),
-
-             (call_script, "script_multiplayer_send_initial_information", ":player_no"),
-           (try_end),
-         (try_end),
+         (call_script, "script_multiplayer_server_player_joined_common", ":player_no"),
          ]),
 
       (ti_before_mission_start, 0, 0, [],
        [
-         (try_begin),
-           (scene_allows_mounted_units),
-           (assign, "$g_horses_are_avaliable", 1),         
-         (else_try),  
-           (assign, "$g_horses_are_avaliable", 0),         
-         (try_end),
-
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_headquarters),
+         (call_script, "script_multiplayer_server_before_mission_start_common"),
 
          (store_mul, ":initial_hq_score", "$g_multiplayer_game_max_points", 10000),
          
@@ -8733,22 +8501,6 @@ mission_templates = [
            (try_for_range, ":cur_flag_slot", multi_data_flag_pull_code_begin, multi_data_flag_pull_code_end),
              (troop_set_slot, "trp_multiplayer_data", ":cur_flag_slot", -1),
            (try_end),
-         (try_end),
-
-         (scene_set_day_time, 15),
-
-         (assign, "$g_multiplayer_mission_end_screen", 0),
-         (get_max_players, ":num_players"),
-         (try_for_range, ":player_no", 0, ":num_players"),
-           (player_is_active, ":player_no"),
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-
-           (assign, ":initial_gold", multi_initial_gold_value),
-           (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-           (val_div, ":initial_gold", 100),
-           (player_set_gold, ":player_no", ":initial_gold"),
-
-           (player_set_slot, ":player_no", slot_player_first_spawn, 1),
          (try_end),
 
          (call_script, "script_multiplayer_init_mission_variables"),
@@ -8992,55 +8744,8 @@ mission_templates = [
       (ti_on_agent_killed_or_wounded, 0, 0, [],
        [
          (store_trigger_param_1, ":dead_agent_no"), 
-         (store_trigger_param_2, ":killer_agent_no"), 
-
-         (call_script, "script_multiplayer_event_agent_killed_or_wounded", ":dead_agent_no", ":killer_agent_no"),
-
-         #adding 1 score points to agent which kills enemy agent at server
-         #adding 1 score points to agent which kills enemy agent at server
-         (try_begin), 
-           (multiplayer_is_server),
-           (try_begin), #killing myself because of some reason (friend hit, fall, team change)
-             (lt, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-
-             (neg|agent_is_non_player, ":dead_agent_no"),
-             (agent_get_player_id, ":dead_agent_player_id", ":dead_agent_no"),
-             (player_is_active, ":dead_agent_player_id"),
-             (player_get_score, ":dead_agent_player_score", ":dead_agent_player_id"),
-             (val_add, ":dead_agent_player_score", -1),
-             (player_set_score, ":dead_agent_player_id", ":dead_agent_player_score"),
-           (else_try), #killing teammate
-             (ge, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-             (agent_get_team, ":killer_team_no", ":killer_agent_no"),
-             (agent_get_team, ":dead_team_no", ":dead_agent_no"),
-             (eq, ":killer_team_no", ":dead_team_no"),
-             (neg|agent_is_non_player, ":killer_agent_no"),
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (val_add, ":killer_agent_player_score", -1),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-           (else_try), #killing enemy
-             (ge, ":killer_agent_no", 0),
-             (agent_is_human, ":dead_agent_no"),
-             (agent_is_human, ":killer_agent_no"),
-             (neg|agent_is_non_player, ":killer_agent_no"),
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (agent_get_team, ":killer_agent_team", ":killer_agent_no"),
-             (agent_get_team, ":dead_agent_team", ":dead_agent_no"),
-             (try_begin),
-               (neq, ":killer_agent_team", ":dead_agent_team"),
-               (val_add, ":killer_agent_player_score", 1),
-             (else_try),
-               (val_add, ":killer_agent_player_score", -1),
-             (try_end),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-           (try_end),
-         (try_end),
+         (store_trigger_param_2, ":killer_agent_no"),
+         (call_script, "script_multiplayer_server_on_agent_killed_or_wounded_common", ":dead_agent_no", ":killer_agent_no"),
 
          #adding 1 score points to killer agent's team. (special for "headquarters" and "team deathmatch" mod)
          (try_begin), 
@@ -9071,11 +8776,6 @@ mission_templates = [
              (multiplayer_send_2_int_to_player, ":player_no", multiplayer_event_set_team_score, ":dead_agent_team", ":team_score"),             
            (try_end),
          (try_end),
-
-         (call_script, "script_add_kill_death_counts", ":killer_agent_no", ":dead_agent_no"),
-
-         #money management
-         (call_script, "script_money_management_after_agent_death", ":killer_agent_no", ":dead_agent_no"),
          ]),
 
       (1, 0, 0, [],
@@ -9776,37 +9476,13 @@ mission_templates = [
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
-         
-         (try_begin),
-           (agent_is_non_player, ":agent_no"),           
-           (assign, "$g_multiplayer_ready_for_spawning_agent", 1),
-         (try_end),
+         (call_script, "script_multiplayer_server_on_agent_spawn_common", ":agent_no"),
          ]),
-
+      
       (ti_server_player_joined, 0, 0, [],
        [
          (store_trigger_param_1, ":player_no"),
-
-         (try_begin),
-           (this_or_next|player_is_active, ":player_no"),
-           (eq, ":player_no", 0),
-
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-           (store_mission_timer_a, ":player_join_time"),         
-           (player_set_slot, ":player_no", slot_player_join_time, ":player_join_time"),
-           (player_set_slot, ":player_no", slot_player_first_spawn, 1),
-
-           (try_begin),
-             (multiplayer_is_server),
-
-             (assign, ":initial_gold", multi_initial_gold_value),
-             (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-             (val_div, ":initial_gold", 100),
-             (player_set_gold, ":player_no", ":initial_gold"),
-
-             (call_script, "script_multiplayer_send_initial_information", ":player_no"),
-           (try_end),
-         (try_end),
+         (call_script, "script_multiplayer_server_player_joined_common", ":player_no"),
          ]),
 
       (ti_before_mission_start, 0, 0, [],
@@ -9824,30 +9500,8 @@ mission_templates = [
            (entry_point_set_position, 65, pos1),
          (try_end),
          
-         (try_begin),
-           (scene_allows_mounted_units),
-           (assign, "$g_horses_are_avaliable", 1),         
-         (else_try),  
-           (assign, "$g_horses_are_avaliable", 0),         
-         (try_end),
-
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_capture_the_flag),
-
-         (scene_set_day_time, 15),
-
-         (assign, "$g_multiplayer_mission_end_screen", 0),
-         (get_max_players, ":num_players"),
-         (try_for_range, ":player_no", 0, ":num_players"),
-           (player_is_active, ":player_no"),
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-
-           (assign, ":initial_gold", multi_initial_gold_value),
-           (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-           (val_div, ":initial_gold", 100),
-           (player_set_gold, ":player_no", ":initial_gold"),
-
-           (player_set_slot, ":player_no", slot_player_first_spawn, 1),
-         (try_end),
+         (call_script, "script_multiplayer_server_before_mission_start_common"),
 
          (assign, "$flag_1_at_ground_timer", 0),
          (assign, "$flag_2_at_ground_timer", 0),
@@ -9895,7 +9549,7 @@ mission_templates = [
          (store_trigger_param_1, ":dead_agent_no"), 
          (store_trigger_param_2, ":killer_agent_no"), 
 
-         (call_script, "script_multiplayer_event_agent_killed_or_wounded", ":dead_agent_no", ":killer_agent_no"),
+         (call_script, "script_multiplayer_server_on_agent_killed_or_wounded_common", ":dead_agent_no", ":killer_agent_no"),
 
          (try_begin),                                 #when an agent dies which carrying a flag, assign flag position to current position with
            (agent_is_human, ":dead_agent_no"),        #ground level z and do not change it again according to dead agent's any coordinate/rotation.
@@ -9943,60 +9597,6 @@ mission_templates = [
              (try_end),
            (try_end),         
          (try_end),
-
-         #adding 1 score points to agent which kills enemy agent at server
-         (try_begin), 
-           (multiplayer_is_server),
-           (try_begin), #killing myself because of some reason (friend hit, fall, team change)
-             (lt, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-
-             (neg|agent_is_non_player, ":dead_agent_no"),
-             (agent_get_player_id, ":dead_agent_player_id", ":dead_agent_no"),
-             (player_is_active, ":dead_agent_player_id"),
-             (player_get_score, ":dead_agent_player_score", ":dead_agent_player_id"),
-             (val_add, ":dead_agent_player_score", -1),
-             (player_set_score, ":dead_agent_player_id", ":dead_agent_player_score"),
-           (else_try), #killing teammate
-             (ge, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-             (agent_get_team, ":killer_team_no", ":killer_agent_no"),
-             (agent_get_team, ":dead_team_no", ":dead_agent_no"),
-             (eq, ":killer_team_no", ":dead_team_no"),
-             (neg|agent_is_non_player, ":killer_agent_no"),
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (val_add, ":killer_agent_player_score", -1),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-
-             #(player_get_kill_count, ":killer_agent_player_kill_count", ":killer_agent_player_id"),
-             #(val_add, ":killer_agent_player_kill_count", -2),
-             #(player_set_kill_count, ":killer_agent_player_id", ":killer_agent_player_kill_count"),
-           (else_try), #killing enemy
-             (ge, ":killer_agent_no", 0),
-             (agent_is_human, ":dead_agent_no"),
-             (agent_is_human, ":killer_agent_no"),
-             (neg|agent_is_non_player, ":killer_agent_no"),
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (agent_get_team, ":killer_agent_team", ":killer_agent_no"),
-             (agent_get_team, ":dead_agent_team", ":dead_agent_no"),
-             (try_begin),
-               (neq, ":killer_agent_team", ":dead_agent_team"),
-               (val_add, ":killer_agent_player_score", 1),
-             (else_try),
-               (val_add, ":killer_agent_player_score", -1),
-             (try_end),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-           (try_end),
-         (try_end),
-
-         (call_script, "script_add_kill_death_counts", ":killer_agent_no", ":dead_agent_no"),
-                  
-         #money management
-         (call_script, "script_money_management_after_agent_death", ":killer_agent_no", ":dead_agent_no"),
          ]),
 
       (1, 0, 0, [], #returning flag if it is not touched by anyone in 60 seconds
@@ -10558,62 +10158,38 @@ mission_templates = [
       (ti_server_player_joined, 0, 0, [],
        [
          (store_trigger_param_1, ":player_no"),
+         (call_script, "script_multiplayer_server_player_joined_common", ":player_no"),
 
          (try_begin),
+           (multiplayer_is_server),
            (this_or_next|player_is_active, ":player_no"),
            (eq, ":player_no", 0),
-
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-           (store_mission_timer_a, ":player_join_time"),
-           (player_set_slot, ":player_no", slot_player_join_time, ":player_join_time"),
-           (player_set_slot, ":player_no", slot_player_first_spawn, 1),
-
+           (store_mission_timer_a, ":round_time"),
+           (val_sub, ":round_time", "$g_round_start_time"),
            (try_begin),
-             (multiplayer_is_server),
-
-             (assign, ":initial_gold", multi_initial_gold_value),
-             (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-             (val_div, ":initial_gold", 100),
-             (player_set_gold, ":player_no", ":initial_gold"),
-
-             (call_script, "script_multiplayer_send_initial_information", ":player_no"),
-
-             (store_mission_timer_a, ":round_time"),
-             (val_sub, ":round_time", "$g_round_start_time"),
-
-             (try_begin),
-               (lt, ":round_time", 25),
-               (assign, ":number_of_respawns_spent", 0),
-             (else_try),
-               (lt, ":round_time", 60),
-               (assign, ":number_of_respawns_spent", 1),
-             (else_try),
-               (lt, ":round_time", 105),
-               (assign, ":number_of_respawns_spent", 2),
-             (else_try),
-               (lt, ":round_time", 160),
-               (assign, ":number_of_respawns_spent", 3),
-             (else_try),
-               (assign, ":number_of_respawns_spent", "$g_multiplayer_number_of_respawn_count"),
-             (try_end),
-
-             (player_set_slot, ":player_no", slot_player_spawn_count, ":number_of_respawns_spent"),             
-
-             (multiplayer_send_int_to_player, ":player_no", multiplayer_event_return_player_respawn_spent, ":number_of_respawns_spent"),
-           (try_end),         
+             (lt, ":round_time", 25),
+             (assign, ":number_of_respawns_spent", 0),
+           (else_try),
+             (lt, ":round_time", 60),
+             (assign, ":number_of_respawns_spent", 1),
+           (else_try),
+             (lt, ":round_time", 105),
+             (assign, ":number_of_respawns_spent", 2),
+           (else_try),
+             (lt, ":round_time", 160),
+             (assign, ":number_of_respawns_spent", 3),
+           (else_try),
+             (assign, ":number_of_respawns_spent", "$g_multiplayer_number_of_respawn_count"),
+           (try_end),
+           (player_set_slot, ":player_no", slot_player_spawn_count, ":number_of_respawns_spent"),
+           (multiplayer_send_int_to_player, ":player_no", multiplayer_event_return_player_respawn_spent, ":number_of_respawns_spent"),
          (try_end),
          ]),
 
       (ti_before_mission_start, 0, 0, [],
        [
-         (try_begin),
-           (scene_allows_mounted_units),
-           (assign, "$g_horses_are_avaliable", 1),         
-         (else_try),  
-           (assign, "$g_horses_are_avaliable", 0),         
-         (try_end),
-
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_siege),
+         (call_script, "script_multiplayer_server_before_mission_start_common"),
 
          (try_begin),
            (multiplayer_is_server),
@@ -10625,27 +10201,12 @@ mission_templates = [
            (assign, "$g_my_spawn_count", 0),
          (try_end),
       
-         (scene_set_day_time, 15),
-         
-         (assign, "$g_multiplayer_mission_end_screen", 0),
          (assign, "$g_waiting_for_confirmation_to_terminate", 0),
          (assign, "$g_round_ended", 0),
          (try_begin),
            (multiplayer_is_server),
            (assign, "$g_round_start_time", 0),
          (try_end),
-         (get_max_players, ":num_players"),
-         (try_for_range, ":player_no", 0, ":num_players"),
-           (player_is_active, ":player_no"),
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-
-           (assign, ":initial_gold", multi_initial_gold_value),
-           (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-           (val_div, ":initial_gold", 100),
-           (player_set_gold, ":player_no", ":initial_gold"),
-         (try_end),
-         #(assign, "$g_lose_in_a_row", 0),
-         #(assign, "$g_last_loser_team", -1),
          (assign, "$my_team_at_start_of_round", -1),
 
          (assign, "$g_flag_is_not_ready", 0),
@@ -10732,11 +10293,7 @@ mission_templates = [
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
-         
-         (try_begin),
-           (agent_is_non_player, ":agent_no"),           
-           (assign, "$g_multiplayer_ready_for_spawning_agent", 1),
-         (try_end),
+         (call_script, "script_multiplayer_server_on_agent_spawn_common", ":agent_no"),
 
          (try_begin), #if my initial team still not initialized, find and assign its value.
            (lt, "$my_team_at_start_of_round", 0),
@@ -10789,59 +10346,8 @@ mission_templates = [
          (store_trigger_param_1, ":dead_agent_no"),
          (store_trigger_param_2, ":killer_agent_no"),
 
-         (call_script, "script_multiplayer_event_agent_killed_or_wounded", ":dead_agent_no", ":killer_agent_no"),
+         (call_script, "script_multiplayer_server_on_agent_killed_or_wounded_common", ":dead_agent_no", ":killer_agent_no"),
 
-         #adding 1 score points to agent which kills enemy agent at server
-         (try_begin), 
-           (multiplayer_is_server),
-           (try_begin), #killing myself because of some reason (friend hit, fall, team change)
-             (lt, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-
-             (neg|agent_is_non_player, ":dead_agent_no"),
-             (agent_get_player_id, ":dead_agent_player_id", ":dead_agent_no"),
-             (player_is_active, ":dead_agent_player_id"),
-             (player_get_score, ":dead_agent_player_score", ":dead_agent_player_id"),
-             (val_add, ":dead_agent_player_score", -1),
-             (player_set_score, ":dead_agent_player_id", ":dead_agent_player_score"),
-           (else_try), #killing teammate
-             (ge, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-             (agent_get_team, ":killer_team_no", ":killer_agent_no"),
-             (agent_get_team, ":dead_team_no", ":dead_agent_no"),
-             (eq, ":killer_team_no", ":dead_team_no"),
-             (neg|agent_is_non_player, ":killer_agent_no"),
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (val_add, ":killer_agent_player_score", -1),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-
-             #(player_get_kill_count, ":killer_agent_player_kill_count", ":killer_agent_player_id"),
-             #(val_add, ":killer_agent_player_kill_count", -2),
-             #(player_set_kill_count, ":killer_agent_player_id", ":killer_agent_player_kill_count"),
-           (else_try), #killing enemy
-             (ge, ":killer_agent_no", 0),
-             (agent_is_human, ":dead_agent_no"),
-             (agent_is_human, ":killer_agent_no"),
-             (neg|agent_is_non_player, ":killer_agent_no"),
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (agent_get_team, ":killer_agent_team", ":killer_agent_no"),
-             (agent_get_team, ":dead_agent_team", ":dead_agent_no"),
-             (try_begin),
-               (neq, ":killer_agent_team", ":dead_agent_team"),
-               (val_add, ":killer_agent_player_score", 1),
-             (else_try),
-               (val_add, ":killer_agent_player_score", -1),
-             (try_end),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-           (try_end),
-         (try_end),
-
-         (call_script, "script_add_kill_death_counts", ":killer_agent_no", ":dead_agent_no"),
-         
          (try_begin), #if my initial team still not initialized, find and assign its value.
            (lt, "$my_team_at_start_of_round", 0),
            (multiplayer_get_my_player, ":my_player_no"),
@@ -10851,9 +10357,6 @@ mission_templates = [
            (agent_get_team, "$my_team_at_start_of_round", ":my_agent_id"),
          (try_end),         
          
-         #money management
-         (call_script, "script_money_management_after_agent_death", ":killer_agent_no", ":dead_agent_no"),
-
          (try_begin),
            (multiplayer_is_server),
            (agent_is_human, ":dead_agent_no"),
@@ -11469,7 +10972,9 @@ mission_templates = [
            (assign, ":player_is_horseman", 0),
            (player_get_item_id, ":item_id", ":player_no", ek_horse),
            (try_begin),
-             (is_between, ":item_id", horses_begin, horses_end),
+             (this_or_next|is_between, ":item_id", horses_begin, horses_end),
+             (this_or_next|eq, ":item_id", "itm_warhorse_sarranid"),
+             (eq, ":item_id", "itm_warhorse_steppe"),
              (assign, ":player_is_horseman", 1),
            (try_end),
 
@@ -11644,44 +11149,14 @@ mission_templates = [
       (ti_server_player_joined, 0, 0, [],
        [
          (store_trigger_param_1, ":player_no"),
-
-         (try_begin),
-           (this_or_next|player_is_active, ":player_no"),
-           (eq, ":player_no", 0),
-
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-           (store_mission_timer_a, ":player_join_time"),
-           (player_set_slot, ":player_no", slot_player_join_time, ":player_join_time"),
-           (player_set_slot, ":player_no", slot_player_first_spawn, 1),
-
-           (try_begin),
-             (multiplayer_is_server),
-
-             (assign, ":initial_gold", multi_initial_gold_value),
-             (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-             (val_div, ":initial_gold", 100),
-             (player_set_gold, ":player_no", ":initial_gold"),
-
-             (call_script, "script_multiplayer_send_initial_information", ":player_no"),
-             #(call_script, "script_multiplayer_send_flag_informations", ":player_no"), 
-           (try_end),
-         (try_end),
+         (call_script, "script_multiplayer_server_player_joined_common", ":player_no"),
          ]),
 
       (ti_before_mission_start, 0, 0, [],
        [
-         (try_begin),
-           (scene_allows_mounted_units),
-           (assign, "$g_horses_are_avaliable", 1),         
-         (else_try),  
-           (assign, "$g_horses_are_avaliable", 0),         
-         (try_end),
-
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_battle),
-
-         (scene_set_day_time, 15),
+         (call_script, "script_multiplayer_server_before_mission_start_common"),
          
-         (assign, "$g_multiplayer_mission_end_screen", 0),
          (assign, "$g_waiting_for_confirmation_to_terminate", 0),
          (assign, "$g_round_ended", 0),
          (assign, "$g_battle_death_mode_started", 0),
@@ -11692,18 +11167,6 @@ mission_templates = [
            (assign, "$server_mission_timer_while_player_joined", 0),
            (assign, "$g_round_start_time", 0),
          (try_end),
-         (get_max_players, ":num_players"),
-         (try_for_range, ":player_no", 0, ":num_players"),
-           (player_is_active, ":player_no"),
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-
-           (assign, ":initial_gold", multi_initial_gold_value),
-           (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-           (val_div, ":initial_gold", 100),
-           (player_set_gold, ":player_no", ":initial_gold"),
-         (try_end),
-         #(assign, "$g_lose_in_a_row", 0),
-         #(assign, "$g_last_loser_team", -1),
          (assign, "$my_team_at_start_of_round", -1),
 
          (call_script, "script_multiplayer_init_mission_variables"),
@@ -11760,11 +11223,7 @@ mission_templates = [
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
-
-         (try_begin),
-           (agent_is_non_player, ":agent_no"),           
-           (assign, "$g_multiplayer_ready_for_spawning_agent", 1),
-         (try_end),
+         (call_script, "script_multiplayer_server_on_agent_spawn_common", ":agent_no"),
          
          (try_begin), #if my initial team still not initialized, find and assign its value.
            (lt, "$my_team_at_start_of_round", 0),
@@ -11804,84 +11263,8 @@ mission_templates = [
          (store_trigger_param_1, ":dead_agent_no"),
          (store_trigger_param_2, ":killer_agent_no"),
 
-         (call_script, "script_multiplayer_event_agent_killed_or_wounded", ":dead_agent_no", ":killer_agent_no"),
+         (call_script, "script_multiplayer_server_on_agent_killed_or_wounded_common", ":dead_agent_no", ":killer_agent_no"),
 
-         #adding 1 score points to agent which kills enemy agent at server
-         (try_begin), 
-           (multiplayer_is_server),
-           (try_begin), #killing myself because of some reason (friend hit, fall, team change)
-             (lt, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-
-             (neg|agent_is_non_player, ":dead_agent_no"),
-             (agent_get_player_id, ":dead_agent_player_id", ":dead_agent_no"),
-             (player_is_active, ":dead_agent_player_id"),
-             (player_get_score, ":dead_agent_player_score", ":dead_agent_player_id"),
-             (val_add, ":dead_agent_player_score", -1),
-             (player_set_score, ":dead_agent_player_id", ":dead_agent_player_score"),
-           (else_try), #killing teammate
-             (ge, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-             (agent_get_team, ":killer_team_no", ":killer_agent_no"),
-             (agent_get_team, ":dead_team_no", ":dead_agent_no"),
-             (eq, ":killer_team_no", ":dead_team_no"),
-             (neg|agent_is_non_player, ":killer_agent_no"),
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (val_add, ":killer_agent_player_score", -1),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-
-             #(player_get_kill_count, ":killer_agent_player_kill_count", ":killer_agent_player_id"),
-             #(val_add, ":killer_agent_player_kill_count", -2),
-             #(player_set_kill_count, ":killer_agent_player_id", ":killer_agent_player_kill_count"),
-           (else_try), #killing enemy
-             (ge, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-             (agent_is_human, ":dead_agent_no"),
-             (agent_is_human, ":killer_agent_no"),
-
-             (try_begin),
-               (eq, "$g_battle_death_mode_started", 1),
-               (neq, ":dead_agent_no", ":killer_agent_no"),
-               (call_script, "script_calculate_new_death_waiting_time_at_death_mod"),
-             (try_end),
-
-             (agent_get_player_id, ":dead_player_no", ":dead_agent_no"),
-             (try_begin),
-               (ge, ":dead_player_no", 0),
-               (player_is_active, ":dead_player_no"),
-               (neg|agent_is_non_player, ":dead_agent_no"),         
-               (try_for_agents, ":cur_agent"),
-                 (agent_is_non_player, ":cur_agent"),
-                 (agent_is_human, ":cur_agent"),
-                 (agent_is_alive, ":cur_agent"),
-                 (agent_get_group, ":agent_group", ":cur_agent"),
-                 (try_begin),
-                   (eq, ":dead_player_no", ":agent_group"),
-                   (agent_set_group, ":cur_agent", -1),                 
-                 (try_end),
-               (try_end),
-             (try_end),
-         
-             (neg|agent_is_non_player, ":killer_agent_no"),
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (agent_get_team, ":killer_agent_team", ":killer_agent_no"),
-             (agent_get_team, ":dead_agent_team", ":dead_agent_no"),
-             (try_begin),
-               (neq, ":killer_agent_team", ":dead_agent_team"),
-               (val_add, ":killer_agent_player_score", 1),
-             (else_try),
-               (val_add, ":killer_agent_player_score", -1),
-             (try_end),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-           (try_end),
-         (try_end),
-
-         (call_script, "script_add_kill_death_counts", ":killer_agent_no", ":dead_agent_no"),
-         
          (try_begin), #if my initial team still not initialized, find and assign its value.
            (lt, "$my_team_at_start_of_round", 0),
            (multiplayer_get_my_player, ":my_player_no"),
@@ -11890,9 +11273,6 @@ mission_templates = [
            (ge, ":my_agent_id", 0),
            (agent_get_team, "$my_team_at_start_of_round", ":my_agent_id"),
          (try_end),         
-         
-         #money management
-         (call_script, "script_money_management_after_agent_death", ":killer_agent_no", ":dead_agent_no"),
          
          (try_begin), #count players and if round ended understand this.
            (agent_is_human, ":dead_agent_no"),
@@ -12899,46 +12279,14 @@ mission_templates = [
       (ti_server_player_joined, 0, 0, [],
        [
          (store_trigger_param_1, ":player_no"),
-         
-         (try_begin),
-           (this_or_next|player_is_active, ":player_no"),
-           (eq, ":player_no", 0),
-         
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-           (store_mission_timer_a, ":player_join_time"),
-           (player_set_slot, ":player_no", slot_player_join_time, ":player_join_time"),
-           (player_set_slot, ":player_no", slot_player_first_spawn, 1),
-
-           (player_set_slot, ":player_no", slot_player_damage_given_to_target_1, 0),
-           (player_set_slot, ":player_no", slot_player_damage_given_to_target_2, 0),
-
-           (try_begin),
-             (multiplayer_is_server),
-
-             (assign, ":initial_gold", multi_initial_gold_value),
-             (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-             (val_div, ":initial_gold", 100),
-             (player_set_gold, ":player_no", ":initial_gold"),
-
-             (call_script, "script_multiplayer_send_initial_information", ":player_no"),
-           (try_end),
-         (try_end),
+         (call_script, "script_multiplayer_server_player_joined_common", ":player_no"),
          ]),
 
       (ti_before_mission_start, 0, 0, [],
        [
-         (try_begin),
-           (scene_allows_mounted_units),
-           (assign, "$g_horses_are_avaliable", 1),         
-         (else_try),  
-           (assign, "$g_horses_are_avaliable", 0),         
-         (try_end),
-
          (assign, "$g_multiplayer_game_type", multiplayer_game_type_destroy),
+         (call_script, "script_multiplayer_server_before_mission_start_common"),
 
-         (scene_set_day_time, 15),
-
-         (assign, "$g_multiplayer_mission_end_screen", 0),
          (assign, "$g_waiting_for_confirmation_to_terminate", 0),
          (assign, "$g_round_ended", 0),
          (assign, "$g_reduced_waiting_seconds", 0),
@@ -12947,18 +12295,6 @@ mission_templates = [
            (multiplayer_is_server),
            (assign, "$g_round_start_time", 0),
          (try_end),
-         (get_max_players, ":num_players"),
-         (try_for_range, ":player_no", 0, ":num_players"),
-           (player_is_active, ":player_no"),
-           (call_script, "script_multiplayer_init_player_slots", ":player_no"),
-
-           (assign, ":initial_gold", multi_initial_gold_value),
-           (val_mul, ":initial_gold", "$g_multiplayer_initial_gold_multiplier"),
-           (val_div, ":initial_gold", 100),
-           (player_set_gold, ":player_no", ":initial_gold"),
-         (try_end),
-         #(assign, "$g_lose_in_a_row", 0),
-         #(assign, "$g_last_loser_team", -1),
          (assign, "$my_team_at_start_of_round", -1),
 
          (call_script, "script_multiplayer_init_mission_variables"),
@@ -13022,11 +12358,7 @@ mission_templates = [
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
-
-         (try_begin),
-           (agent_is_non_player, ":agent_no"),           
-           (assign, "$g_multiplayer_ready_for_spawning_agent", 1),
-         (try_end),
+         (call_script, "script_multiplayer_server_on_agent_spawn_common", ":agent_no"),
          
          (try_begin), #if my initial team still not initialized, find and assign its value.
            (lt, "$my_team_at_start_of_round", 0),
@@ -13066,78 +12398,8 @@ mission_templates = [
          (store_trigger_param_1, ":dead_agent_no"),
          (store_trigger_param_2, ":killer_agent_no"),
 
-         (call_script, "script_multiplayer_event_agent_killed_or_wounded", ":dead_agent_no", ":killer_agent_no"),
+         (call_script, "script_multiplayer_server_on_agent_killed_or_wounded_common", ":dead_agent_no", ":killer_agent_no"),
 
-         #adding 1 score points to agent which kills enemy agent at server
-         (try_begin), 
-           (multiplayer_is_server),
-           (try_begin), #killing myself because of some reason (friend hit, fall, team change)
-             (lt, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-
-             (neg|agent_is_non_player, ":dead_agent_no"),
-             (agent_get_player_id, ":dead_agent_player_id", ":dead_agent_no"),
-             (player_is_active, ":dead_agent_player_id"),
-             (player_get_score, ":dead_agent_player_score", ":dead_agent_player_id"),
-             (val_add, ":dead_agent_player_score", -1),
-             (player_set_score, ":dead_agent_player_id", ":dead_agent_player_score"),
-           (else_try), #killing teammate
-             (ge, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-             (agent_get_team, ":killer_team_no", ":killer_agent_no"),
-             (agent_get_team, ":dead_team_no", ":dead_agent_no"),
-             (eq, ":killer_team_no", ":dead_team_no"),
-             (neg|agent_is_non_player, ":killer_agent_no"),
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (val_add, ":killer_agent_player_score", -1),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-
-             #(player_get_kill_count, ":killer_agent_player_kill_count", ":killer_agent_player_id"),
-             #(val_add, ":killer_agent_player_kill_count", -2),
-             #(player_set_kill_count, ":killer_agent_player_id", ":killer_agent_player_kill_count"),
-           (else_try), #killing enemy
-             (ge, ":killer_agent_no", 0),
-             (ge, ":dead_agent_no", 0),
-             (agent_is_human, ":dead_agent_no"),
-             (agent_is_human, ":killer_agent_no"),
-
-             (agent_get_player_id, ":dead_player_no", ":dead_agent_no"),
-             (try_begin),
-               (ge, ":dead_player_no", 0),
-               (player_is_active, ":dead_player_no"),
-               (neg|agent_is_non_player, ":dead_agent_no"),         
-               (try_for_agents, ":cur_agent"),
-                 (agent_is_non_player, ":cur_agent"),
-                 (agent_is_human, ":cur_agent"),
-                 (agent_is_alive, ":cur_agent"),
-                 (agent_get_group, ":agent_group", ":cur_agent"),
-                 (try_begin),
-                   (eq, ":dead_player_no", ":agent_group"),
-                   (agent_set_group, ":cur_agent", -1),                 
-                 (try_end),
-               (try_end),
-             (try_end),
-
-             (neg|agent_is_non_player, ":killer_agent_no"),
-             (agent_get_player_id, ":killer_agent_player_id", ":killer_agent_no"),
-             (player_is_active, ":killer_agent_player_id"),
-             (player_get_score, ":killer_agent_player_score", ":killer_agent_player_id"),
-             (agent_get_team, ":killer_agent_team", ":killer_agent_no"),
-             (agent_get_team, ":dead_agent_team", ":dead_agent_no"),
-             (try_begin),
-               (neq, ":killer_agent_team", ":dead_agent_team"),
-               (val_add, ":killer_agent_player_score", 1),
-             (else_try),
-               (val_add, ":killer_agent_player_score", -1),
-             (try_end),
-             (player_set_score, ":killer_agent_player_id", ":killer_agent_player_score"),
-           (try_end),
-         (try_end),
-
-         (call_script, "script_add_kill_death_counts", ":killer_agent_no", ":dead_agent_no"),
-         
          (try_begin), #if my initial team still not initialized, find and assign its value.
            (lt, "$my_team_at_start_of_round", 0),
            (multiplayer_get_my_player, ":my_player_no"),
@@ -13146,9 +12408,6 @@ mission_templates = [
            (ge, ":my_agent_id", 0),
            (agent_get_team, "$my_team_at_start_of_round", ":my_agent_id"),
          (try_end),         
-         
-         #money management
-         (call_script, "script_money_management_after_agent_death", ":killer_agent_no", ":dead_agent_no"),
          
          (try_begin), #count players and if round ended understand this.
            (agent_is_human, ":dead_agent_no"),
@@ -14931,4 +14190,340 @@ mission_templates = [
       ], []),
   ]),
     
+    (
+    "multiplayer_duel",mtf_battle_mode,-1, #duel mode
+    "You lead your men to battle.",
+    [
+      (0,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (1,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (2,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (3,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (4,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (5,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (6,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (7,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+
+      (8,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (9,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (10,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (11,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (12,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (13,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (14,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (15,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+
+      (16,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (17,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (18,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (19,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (20,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (21,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (22,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (23,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+
+      (24,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (25,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (26,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (27,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (28,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (29,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (30,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+      (31,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
+
+      (32,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (33,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (34,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (35,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (36,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (37,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (38,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (39,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+
+      (40,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (41,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (42,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (43,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (44,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (45,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (46,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (47,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+
+      (48,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (49,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (50,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (51,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (52,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (53,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (54,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (55,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+
+      (56,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (57,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (58,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (59,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (60,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (61,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (62,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+      (63,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
+     ],
+    [
+      multiplayer_server_check_polls,
+
+      (ti_on_agent_spawn, 0, 0, [],
+       [
+         (store_trigger_param_1, ":agent_no"),
+         (call_script, "script_multiplayer_server_on_agent_spawn_common", ":agent_no"),
+         ]),
+      
+      (ti_server_player_joined, 0, 0, [],
+       [
+         (store_trigger_param_1, ":player_no"),
+         (call_script, "script_multiplayer_server_player_joined_common", ":player_no"),
+         ]),
+
+      (ti_before_mission_start, 0, 0, [],
+       [
+         (assign, "$g_multiplayer_game_type", multiplayer_game_type_duel),
+         (call_script, "script_multiplayer_server_before_mission_start_common"),
+         #make everyone see themselves as allies, no friendly fire
+         (team_set_relation, 0, 0, 1),
+         (team_set_relation, 0, 1, 1),
+         (team_set_relation, 1, 1, 1),
+         (mission_set_duel_mode, 1),
+         (call_script, "script_multiplayer_init_mission_variables"),
+         (call_script, "script_multiplayer_remove_destroy_mod_targets"),
+         (call_script, "script_multiplayer_remove_headquarters_flags"), # close this line and open map in deathmatch mod and use all ladders firstly 
+         ]),                                                            # to be able to edit maps without damaging any headquarters flags ext. 
+
+      (ti_after_mission_start, 0, 0, [], 
+       [
+         (set_spawn_effector_scene_prop_kind, 0, -1), #during this mission, agents of "team 0" will try to spawn around scene props with kind equal to -1(no effector for this mod)
+         (set_spawn_effector_scene_prop_kind, 1, -1), #during this mission, agents of "team 1" will try to spawn around scene props with kind equal to -1(no effector for this mod)
+         (call_script, "script_initialize_all_scene_prop_slots"),
+         (call_script, "script_multiplayer_move_moveable_objects_initial_positions"),
+         (assign, "$g_multiplayer_ready_for_spawning_agent", 1),
+         ]),
+
+      (ti_on_multiplayer_mission_end, 0, 0, [],
+       [
+         (call_script, "script_multiplayer_event_mission_end"),
+         (assign, "$g_multiplayer_stats_chart_opened_manually", 0),
+         (start_presentation, "prsnt_multiplayer_stats_chart_deathmatch"),
+         ]),
+
+      (ti_on_agent_killed_or_wounded, 0, 0, [],
+       [
+         (store_trigger_param_1, ":dead_agent_no"), 
+         (store_trigger_param_2, ":killer_agent_no"), 
+
+         (call_script, "script_multiplayer_server_on_agent_killed_or_wounded_common", ":dead_agent_no", ":killer_agent_no"),
+
+         (try_begin),
+           (get_player_agent_no, ":player_agent"),
+           (agent_is_active, ":player_agent"),
+           (try_begin),
+             (eq, ":dead_agent_no", ":player_agent"),
+             (display_message, "str_you_have_lost_a_duel"),
+           (else_try),
+             (agent_slot_eq, ":player_agent", slot_agent_in_duel_with, ":dead_agent_no"),
+             (display_message, "str_you_have_won_a_duel"),
+           (try_end),
+         (try_end),
+         (try_begin),
+           (agent_slot_ge, ":dead_agent_no", slot_agent_in_duel_with, 0),
+           (agent_get_slot, ":duelist_agent_no", ":dead_agent_no", slot_agent_in_duel_with),
+           (agent_set_slot, ":dead_agent_no", slot_agent_in_duel_with, -1),
+           (try_begin),
+             (agent_is_active, ":duelist_agent_no"),
+             (agent_set_slot, ":duelist_agent_no", slot_agent_in_duel_with, -1),
+             (agent_clear_relations_with_agents, ":duelist_agent_no"),
+             (try_begin),
+               (agent_get_player_id, ":duelist_player_no", ":duelist_agent_no"),
+               (neg|player_is_active, ":duelist_player_no"), #might be AI
+               (agent_force_rethink, ":duelist_agent_no"),
+             (try_end),
+           (try_end),
+         (try_end),
+         ]),
+      
+      (1, 0, 0, [],
+       [
+         (multiplayer_is_server),
+         (get_max_players, ":num_players"),
+         (try_for_range, ":player_no", 0, ":num_players"),
+           (player_is_active, ":player_no"),
+           (neg|player_is_busy_with_menus, ":player_no"),
+
+           (player_get_team_no, ":player_team", ":player_no"), #if player is currently spectator do not spawn his agent
+           (lt, ":player_team", multi_team_spectator),
+
+           (player_get_troop_id, ":player_troop", ":player_no"), #if troop is not selected do not spawn his agent
+           (ge, ":player_troop", 0),
+
+           (player_get_agent_id, ":player_agent", ":player_no"),
+           (assign, ":spawn_new", 0),
+           (try_begin),
+             (player_get_slot, ":player_first_spawn", ":player_no", slot_player_first_spawn),
+             (eq, ":player_first_spawn", 1),
+             (assign, ":spawn_new", 1),
+             (player_set_slot, ":player_no", slot_player_first_spawn, 0),
+           (else_try),
+             (try_begin),
+               (lt, ":player_agent", 0),
+               (assign, ":spawn_new", 1),
+             (else_try),
+               (neg|agent_is_alive, ":player_agent"),
+               (agent_get_time_elapsed_since_removed, ":elapsed_time", ":player_agent"),
+               (gt, ":elapsed_time", "$g_multiplayer_respawn_period"),
+               (assign, ":spawn_new", 1),
+             (try_end),             
+           (try_end),
+           (eq, ":spawn_new", 1),
+           (call_script, "script_multiplayer_buy_agent_equipment", ":player_no"),
+
+           (troop_get_inventory_slot, ":has_item", ":player_troop", ek_horse),
+           (try_begin),
+             (ge, ":has_item", 0),
+             (assign, ":is_horseman", 1),
+           (else_try),
+             (assign, ":is_horseman", 0),
+           (try_end),
+         
+           (call_script, "script_multiplayer_find_spawn_point", ":player_team", 0, ":is_horseman"), 
+           (player_spawn_new_agent, ":player_no", reg0),
+         (try_end),
+         ]),
+
+      (1, 0, 0, [], #do this in every new frame, but not at the same time
+       [
+         (multiplayer_is_server),
+         (store_mission_timer_a, ":mission_timer"),
+         (ge, ":mission_timer", 2),
+         (assign, ":team_1_count", 0),
+         (assign, ":team_2_count", 0),
+         (try_for_agents, ":cur_agent"),
+           (agent_is_non_player, ":cur_agent"),
+           (agent_is_human, ":cur_agent"),
+           (assign, ":will_be_counted", 0),
+           (try_begin),
+             (agent_is_alive, ":cur_agent"),
+             (assign, ":will_be_counted", 1), #alive so will be counted
+           (else_try),
+             (agent_get_time_elapsed_since_removed, ":elapsed_time", ":cur_agent"),
+             (le, ":elapsed_time", "$g_multiplayer_respawn_period"),
+             (assign, ":will_be_counted", 1), 
+           (try_end),
+           (eq, ":will_be_counted", 1),
+           (agent_get_team, ":cur_team", ":cur_agent"),
+           (try_begin),
+             (eq, ":cur_team", 0),
+             (val_add, ":team_1_count", 1),
+           (else_try),
+             (eq, ":cur_team", 1),
+             (val_add, ":team_2_count", 1),
+           (try_end),
+         (try_end),
+         (store_sub, "$g_multiplayer_num_bots_required_team_1", "$g_multiplayer_num_bots_team_1", ":team_1_count"),
+         (store_sub, "$g_multiplayer_num_bots_required_team_2", "$g_multiplayer_num_bots_team_2", ":team_2_count"),
+         (val_max, "$g_multiplayer_num_bots_required_team_1", 0),
+         (val_max, "$g_multiplayer_num_bots_required_team_2", 0),
+         ]),
+
+      (0, 0, 0, [],
+       [
+         (multiplayer_is_server),
+         (eq, "$g_multiplayer_ready_for_spawning_agent", 1),
+         (store_add, ":total_req", "$g_multiplayer_num_bots_required_team_1", "$g_multiplayer_num_bots_required_team_2"),
+         (try_begin),
+           (gt, ":total_req", 0),
+           (store_random_in_range, ":random_req", 0, ":total_req"),
+           (val_sub, ":random_req", "$g_multiplayer_num_bots_required_team_1"),
+           (try_begin),
+             (lt, ":random_req", 0),
+             #add to team 1
+             (assign, ":selected_team", 0),
+             (val_sub, "$g_multiplayer_num_bots_required_team_1", 1),
+           (else_try),
+             #add to team 2
+             (assign, ":selected_team", 1),
+             (val_sub, "$g_multiplayer_num_bots_required_team_2", 1),
+           (try_end),
+
+           (team_get_faction, ":team_faction_no", ":selected_team"),
+           (assign, ":available_troops_in_faction", 0),
+
+           (try_for_range, ":troop_no", multiplayer_ai_troops_begin, multiplayer_ai_troops_end),
+             (store_troop_faction, ":troop_faction", ":troop_no"),
+             (eq, ":troop_faction", ":team_faction_no"),
+             (val_add, ":available_troops_in_faction", 1),
+           (try_end),
+
+           (store_random_in_range, ":random_troop_index", 0, ":available_troops_in_faction"),
+           (assign, ":end_cond", multiplayer_ai_troops_end),
+           (try_for_range, ":troop_no", multiplayer_ai_troops_begin, ":end_cond"),
+             (store_troop_faction, ":troop_faction", ":troop_no"),
+             (eq, ":troop_faction", ":team_faction_no"),
+             (val_sub, ":random_troop_index", 1),
+             (lt, ":random_troop_index", 0),
+             (assign, ":end_cond", 0),
+             (assign, ":selected_troop", ":troop_no"),
+           (try_end),
+         
+           (troop_get_inventory_slot, ":has_item", ":selected_troop", ek_horse),
+           (try_begin),
+             (ge, ":has_item", 0),
+             (assign, ":is_horseman", 1),
+           (else_try),
+             (assign, ":is_horseman", 0),
+           (try_end),
+
+           (call_script, "script_multiplayer_find_spawn_point", ":selected_team", 0, ":is_horseman"), 
+           (store_current_scene, ":cur_scene"),
+           (modify_visitors_at_site, ":cur_scene"),
+           (add_visitors_to_current_scene, reg0, ":selected_troop", 1, ":selected_team", -1),
+           (assign, "$g_multiplayer_ready_for_spawning_agent", 0),
+         (try_end),
+         ]),
+
+      (1, 0, 0, [],
+       [
+         (multiplayer_is_server),
+         #checking for restarting the map
+         (assign, ":end_map", 0),
+         (try_begin),
+           (store_mission_timer_a, ":mission_timer"),
+           (store_mul, ":game_max_seconds", "$g_multiplayer_game_max_minutes", 60),
+           (gt, ":mission_timer", ":game_max_seconds"),
+           (assign, ":end_map", 1),
+         (try_end),
+         (try_begin),
+           (eq, ":end_map", 1),
+           (call_script, "script_game_multiplayer_get_game_type_mission_template", "$g_multiplayer_game_type"),
+           (start_multiplayer_mission, reg0, "$g_multiplayer_selected_map", 0),
+           (call_script, "script_game_set_multiplayer_mission_end"),
+         (try_end),
+         ]),
+        
+      (ti_tab_pressed, 0, 0, [],
+       [
+         (try_begin),
+           (eq, "$g_multiplayer_mission_end_screen", 0),
+           (assign, "$g_multiplayer_stats_chart_opened_manually", 1),
+           (start_presentation, "prsnt_multiplayer_stats_chart_deathmatch"),
+         (try_end),
+         ]),
+
+      multiplayer_once_at_the_first_frame,
+      
+      (ti_escape_pressed, 0, 0, [],
+       [
+         (neg|is_presentation_active, "prsnt_multiplayer_escape_menu"),
+         (neg|is_presentation_active, "prsnt_multiplayer_stats_chart_deathmatch"),
+         (eq, "$g_waiting_for_confirmation_to_terminate", 0),
+         (start_presentation, "prsnt_multiplayer_escape_menu"),
+         ]),
+      ],
+  ),
+
+
 ]

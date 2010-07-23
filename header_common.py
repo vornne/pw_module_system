@@ -51,6 +51,8 @@ multiplayer_event_admin_set_allow_player_banners              = 42
 multiplayer_event_admin_set_force_default_armor               = 43
 multiplayer_event_admin_set_anti_cheat                        = 44
 multiplayer_event_open_game_rules                             = 45
+multiplayer_event_offer_duel                                  = 46
+multiplayer_event_admin_set_disallow_ranged_weapons           = 47
 
 #server events
 multiplayer_event_return_max_num_players                      = 50
@@ -111,6 +113,11 @@ multiplayer_event_return_anti_cheat                           = 104
 multiplayer_event_return_open_game_rules                      = 105
 multiplayer_event_return_max_num_bots                         = 106
 multiplayer_event_return_server_mission_timer_while_player_joined = 107
+multiplayer_event_show_duel_request                           = 108
+multiplayer_event_start_duel                                  = 109
+multiplayer_event_cancel_duel                                 = 110
+multiplayer_event_show_server_message                         = 111
+multiplayer_event_return_disallow_ranged_weapons              = 112
 
 #multiplayer message types
 multiplayer_message_type_auto_team_balance_done      = 2
@@ -139,7 +146,8 @@ multiplayer_game_type_destroy                = 3
 multiplayer_game_type_capture_the_flag       = 4
 multiplayer_game_type_headquarters           = 5
 multiplayer_game_type_siege                  = 6
-multiplayer_num_game_types                   = 7
+multiplayer_game_type_duel                   = 7
+multiplayer_num_game_types                   = 8
 
 #admin panel value ranges
 multiplayer_round_max_seconds_min            = 60
@@ -206,6 +214,8 @@ multi_item_class_type_glove = 26
 
 multi_item_class_type_melee_weapons_begin = multi_item_class_type_sword
 multi_item_class_type_melee_weapons_end = multi_item_class_type_small_shield
+multi_item_class_type_ranged_weapons_begin = multi_item_class_type_bow
+multi_item_class_type_ranged_weapons_end = multi_item_class_type_horse
 multi_item_class_type_shields_begin = multi_item_class_type_melee_weapons_end
 multi_item_class_type_shields_end = multi_item_class_type_bow
 
