@@ -69,7 +69,7 @@ scripts = [
       (try_for_range, ":faction_no", kingdoms_begin, kingdoms_end),
         (store_random_in_range, ":last_feast_time", 0, 312), #240 + 72
         (val_mul, ":last_feast_time", -1),
-        (faction_set_slot, ":faction_no", slot_faction_last_feast_concluded, ":last_feast_time"),
+        (faction_set_slot, ":faction_no", slot_faction_last_feast_start_time, ":last_feast_time"),
       (try_end),
       
       # Setting the random town sequence:
@@ -8561,6 +8561,19 @@ scripts = [
       (start_presentation, "prsnt_multiplayer_message_1"),
     (else_try), 
       (eq, ":value", 0), #defender wins
+      #THIS_IS_OUR_LAND achievement
+      (try_begin),
+        (eq, "$g_multiplayer_game_type", multiplayer_game_type_siege),
+        (multiplayer_get_my_player, ":my_player_no"),
+        (is_between, ":my_player_no", 0, multiplayer_max_possible_player_id),
+        (player_get_agent_id, ":my_player_agent", ":my_player_no"),
+        (ge, ":my_player_agent", 0),
+        (agent_is_alive, ":my_player_agent"),
+        (agent_get_team, ":my_player_agent_team_no", ":my_player_agent"),
+        (eq, ":my_player_agent_team_no", 0), #defender
+        (unlock_achievement, ACHIEVEMENT_THIS_IS_OUR_LAND),
+      (try_end),
+      #THIS_IS_OUR_LAND achievement end
       (assign, "$g_round_ended", 1),
       (store_mission_timer_a, "$g_round_finish_time"),
         
@@ -8602,6 +8615,22 @@ scripts = [
       (try_end),
       (start_presentation, "prsnt_multiplayer_message_1"),
     (try_end),
+    #LAST_MAN_STANDING achievement
+    (try_begin),
+      (is_between, ":value", 0, 2), #defender or attacker wins
+      (try_begin),
+        (eq, "$g_multiplayer_game_type", multiplayer_game_type_battle),
+        (multiplayer_get_my_player, ":my_player_no"),
+        (is_between, ":my_player_no", 0, multiplayer_max_possible_player_id),
+        (player_get_agent_id, ":my_player_agent", ":my_player_no"),
+        (ge, ":my_player_agent", 0),
+        (agent_is_alive, ":my_player_agent"),
+        (agent_get_team, ":my_player_agent_team_no", ":my_player_agent"),
+        (eq, ":my_player_agent_team_no", ":value"), #winner team
+        (unlock_achievement, ACHIEVEMENT_LAST_MAN_STANDING),
+      (try_end),
+    (try_end),
+    #LAST_MAN_STANDING achievement end
     ]),   
 
   #script_find_most_suitable_bot_to_control
@@ -9550,7 +9579,7 @@ scripts = [
           (agent_get_position, pos0, ":player_agent_no"),
           (agent_get_position, pos1, ":value"),
           (get_sq_distance_between_positions_in_meters, ":agent_dist_sq", pos0, pos1),
-          (le, ":agent_dist_sq", 36),
+          (le, ":agent_dist_sq", 49),
           #allow duelists to receive new offers
           (this_or_next|agent_check_offer_from_agent, ":player_agent_no", ":value"),
           (agent_slot_eq, ":player_agent_no", slot_agent_in_duel_with, -1),
@@ -9989,8 +10018,11 @@ scripts = [
         (else_try),
           (eq, ":event_type", multiplayer_event_start_duel),
           (store_script_param, ":value", 3),
+          (store_mission_timer_a, ":mission_timer"),
           (try_begin),
             (agent_is_active, ":value"),
+            (get_player_agent_no, ":player_agent"),
+            (agent_is_active, ":player_agent"),
             (agent_get_player_id, ":value_player_no", ":value"),
             (try_begin),
               (player_is_active, ":value_player_no"),
@@ -9998,14 +10030,16 @@ scripts = [
             (else_try),
               (str_store_agent_name, s0, ":value"),
             (try_end),
-            (display_message, "str_a_duel_between_you_and_s0_has_started"),
-          (try_end),
-          (try_begin),
-            (get_player_agent_no, ":player_agent"),
-            (agent_is_active, ":player_agent"),
+            (display_message, "str_a_duel_between_you_and_s0_will_start_in_3_seconds"),
+            (assign, "$g_multiplayer_duel_start_time", ":mission_timer"),
+            (start_presentation, "prsnt_multiplayer_duel_start_counter"),
             (agent_set_slot, ":player_agent", slot_agent_in_duel_with, ":value"),
             (agent_set_slot, ":value", slot_agent_in_duel_with, ":player_agent"),
-            (agent_add_relation_with_agent, ":player_agent", ":value", -1),
+            (agent_set_slot, ":player_agent", slot_agent_duel_start_time, ":mission_timer"),
+            (agent_set_slot, ":value", slot_agent_duel_start_time, ":mission_timer"),
+            (agent_clear_relations_with_agents, ":player_agent"),
+            (agent_clear_relations_with_agents, ":value"),
+##            (agent_add_relation_with_agent, ":player_agent", ":value", -1),
           (try_end),
         (else_try),
           (eq, ":event_type", multiplayer_event_cancel_duel),
@@ -10025,7 +10059,7 @@ scripts = [
             (get_player_agent_no, ":player_agent"),
             (agent_is_active, ":player_agent"),
             (agent_set_slot, ":player_agent", slot_agent_in_duel_with, -1),
-            (agent_clear_relations_with_agents, ":player_agent", ":value"),
+            (agent_clear_relations_with_agents, ":player_agent"),
           (try_end),
         (else_try),
           (eq, ":event_type", multiplayer_event_show_server_message),
@@ -10127,8 +10161,8 @@ scripts = [
      (agent_set_slot, ":agent_no_offerer", slot_agent_in_duel_with, ":agent_no"),
      (agent_clear_relations_with_agents, ":agent_no"),
      (agent_clear_relations_with_agents, ":agent_no_offerer"),
-     (agent_add_relation_with_agent, ":agent_no", ":agent_no_offerer", -1),
-     (agent_add_relation_with_agent, ":agent_no_offerer", ":agent_no", -1),
+##     (agent_add_relation_with_agent, ":agent_no", ":agent_no_offerer", -1),
+##     (agent_add_relation_with_agent, ":agent_no_offerer", ":agent_no", -1),
      (agent_get_player_id, ":player_no", ":agent_no"),
      (try_begin),
        (player_is_active, ":player_no"), #might be AI
@@ -11039,6 +11073,16 @@ scripts = [
   # Output: none
   ("multiplayer_event_mission_end",
    [
+     #EVERY_BREATH_YOU_TAKE achievement
+     (try_begin),
+       (multiplayer_get_my_player, ":my_player_no"),
+       (is_between, ":my_player_no", 0, multiplayer_max_possible_player_id),
+       (player_get_kill_count, ":kill_count", ":my_player_no"),
+       (player_get_death_count, ":death_count", ":my_player_no"),
+       (gt, ":kill_count", ":death_count"),
+       (unlock_achievement, ACHIEVEMENT_EVERY_BREATH_YOU_TAKE),
+     (try_end),
+     #EVERY_BREATH_YOU_TAKE achievement end
      ]),
   
 
@@ -11048,6 +11092,7 @@ scripts = [
   ("multiplayer_event_agent_killed_or_wounded",
    [
      (store_script_param, ":dead_agent_no", 1),
+     (store_script_param, ":killer_agent_no", 2),
      
      (multiplayer_get_my_player, ":my_player_no"),
      (try_begin),
@@ -11057,6 +11102,115 @@ scripts = [
        (try_begin),
          (eq, ":my_player_agent", ":dead_agent_no"),
          (store_mission_timer_a, "$g_multiplayer_respawn_start_time"),
+       (try_end),
+       (try_begin),
+         (eq, ":my_player_agent", ":killer_agent_no"),
+         (neq, ":my_player_agent", ":dead_agent_no"),
+         (agent_is_human, ":dead_agent_no"),
+         (agent_is_alive, ":my_player_agent"),
+         (neg|agent_is_ally, ":dead_agent_no"),
+         (agent_get_horse, ":my_horse_agent", ":my_player_agent"),
+         (agent_get_wielded_item, ":my_wielded_item", ":my_player_agent", 0),
+         (assign, ":my_item_class", -1),
+         (try_begin),
+           (ge, ":my_wielded_item", 0),
+           (item_get_slot, ":my_item_class", ":my_wielded_item", slot_item_multiplayer_item_class),
+         (try_end),
+         #SPOIL_THE_CHARGE achievement
+         (try_begin),
+           (lt, ":my_horse_agent", 0),
+           (agent_get_horse, ":dead_agent_horse_agent", ":dead_agent_no"),
+           (ge, ":dead_agent_horse_agent", 0),
+           (get_achievement_stat, ":achievement_stat", ACHIEVEMENT_SPOIL_THE_CHARGE, 0),
+           (lt, ":achievement_stat", 50),
+           (val_add, ":achievement_stat", 1),
+           (set_achievement_stat, ACHIEVEMENT_SPOIL_THE_CHARGE, 0, ":achievement_stat"),
+           (ge, ":achievement_stat", 50),
+           (unlock_achievement, ACHIEVEMENT_SPOIL_THE_CHARGE),
+         (try_end),
+         #SPOIL_THE_CHARGE achievement end
+         #HARASSING_HORSEMAN achievement
+         (try_begin),
+           (ge, ":my_horse_agent", 0),
+           (this_or_next|eq, ":my_item_class", multi_item_class_type_bow),
+           (this_or_next|eq, ":my_item_class", multi_item_class_type_crossbow),
+           (this_or_next|eq, ":my_item_class", multi_item_class_type_throwing),
+           (eq, ":my_item_class", multi_item_class_type_throwing_axe),
+           (get_achievement_stat, ":achievement_stat", ACHIEVEMENT_HARASSING_HORSEMAN, 0),
+           (lt, ":achievement_stat", 100),
+           (val_add, ":achievement_stat", 1),
+           (set_achievement_stat, ACHIEVEMENT_HARASSING_HORSEMAN, 0, ":achievement_stat"),
+           (ge, ":achievement_stat", 100),
+           (unlock_achievement, ACHIEVEMENT_HARASSING_HORSEMAN),
+         (try_end),
+         #HARASSING_HORSEMAN achievement end
+         #THROWING_STAR achievement
+         (try_begin),
+           (this_or_next|eq, ":my_item_class", multi_item_class_type_throwing),
+           (eq, ":my_item_class", multi_item_class_type_throwing_axe),
+           (get_achievement_stat, ":achievement_stat", ACHIEVEMENT_THROWING_STAR, 0),
+           (lt, ":achievement_stat", 25),
+           (val_add, ":achievement_stat", 1),
+           (set_achievement_stat, ACHIEVEMENT_THROWING_STAR, 0, ":achievement_stat"),
+           (ge, ":achievement_stat", 25),
+           (unlock_achievement, ACHIEVEMENT_THROWING_STAR),
+         (try_end),
+         #THROWING_STAR achievement end
+         #SHISH_KEBAB achievement
+         (try_begin),
+           (ge, ":my_horse_agent", 0),
+           (eq, ":my_item_class", multi_item_class_type_lance),
+           (get_achievement_stat, ":achievement_stat", ACHIEVEMENT_SHISH_KEBAB, 0),
+           (lt, ":achievement_stat", 25),
+           (val_add, ":achievement_stat", 1),
+           (set_achievement_stat, ACHIEVEMENT_SHISH_KEBAB, 0, ":achievement_stat"),
+           (ge, ":achievement_stat", 25),
+           (unlock_achievement, ACHIEVEMENT_SHISH_KEBAB),
+         (try_end),
+         #SHISH_KEBAB achievement end
+         #CHOPPY_CHOP_CHOP achievement
+         (try_begin),
+           (this_or_next|eq, ":my_item_class", multi_item_class_type_sword),
+           (this_or_next|eq, ":my_item_class", multi_item_class_type_axe),
+           (this_or_next|eq, ":my_item_class", multi_item_class_type_cleavers),
+           (this_or_next|eq, ":my_item_class", multi_item_class_type_two_handed_sword),
+           (this_or_next|eq, ":my_item_class", multi_item_class_type_two_handed_axe),
+           (this_or_next|eq, ":my_wielded_item", "itm_sarranid_axe_a"), #sarranid item exception
+           (eq, ":my_wielded_item", "itm_sarranid_axe_b"), #sarranid item exception
+           (neq, ":my_wielded_item", "itm_sarranid_two_handed_mace_1"), #sarranid item exception
+           (get_achievement_stat, ":achievement_stat", ACHIEVEMENT_CHOPPY_CHOP_CHOP, 0),
+           (lt, ":achievement_stat", 50),
+           (val_add, ":achievement_stat", 1),
+           (set_achievement_stat, ACHIEVEMENT_CHOPPY_CHOP_CHOP, 0, ":achievement_stat"),
+           (ge, ":achievement_stat", 50),
+           (unlock_achievement, ACHIEVEMENT_CHOPPY_CHOP_CHOP),
+         (try_end),
+         #CHOPPY_CHOP_CHOP achievement end
+         #MACE_IN_YER_FACE achievement
+         (try_begin),
+           (this_or_next|eq, ":my_item_class", multi_item_class_type_blunt),
+           (eq, ":my_wielded_item", "itm_sarranid_two_handed_mace_1"), #sarranid item exception
+           (neq, ":my_wielded_item", "itm_sarranid_axe_b"), #sarranid item exception
+           (neq, ":my_wielded_item", "itm_sarranid_axe_a"), #sarranid item exception
+           (get_achievement_stat, ":achievement_stat", ACHIEVEMENT_MACE_IN_YER_FACE, 0),
+           (lt, ":achievement_stat", 25),
+           (val_add, ":achievement_stat", 1),
+           (set_achievement_stat, ACHIEVEMENT_MACE_IN_YER_FACE, 0, ":achievement_stat"),
+           (ge, ":achievement_stat", 25),
+           (unlock_achievement, ACHIEVEMENT_MACE_IN_YER_FACE),
+         (try_end),
+         #MACE_IN_YER_FACE achievement end
+         #THE_HUSCARL achievement
+         (try_begin),
+           (eq, ":my_item_class", multi_item_class_type_throwing_axe),
+           (get_achievement_stat, ":achievement_stat", ACHIEVEMENT_THE_HUSCARL, 0),
+           (lt, ":achievement_stat", 50),
+           (val_add, ":achievement_stat", 1),
+           (set_achievement_stat, ACHIEVEMENT_THE_HUSCARL, 0, ":achievement_stat"),
+           (ge, ":achievement_stat", 50),
+           (unlock_achievement, ACHIEVEMENT_THE_HUSCARL),
+         (try_end),
+         #THE_HUSCARL achievement end
        (try_end),
      (try_end),
 
@@ -11522,12 +11676,14 @@ scripts = [
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 4, "scn_multi_scene_9"),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 5, "scn_multi_scene_11"),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 6, "scn_multi_scene_12"),
-        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 7, "scn_multi_scene_14"),        
-        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 8, "scn_random_multi_plain_medium"),
-        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 9, "scn_random_multi_plain_large"),
-        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 10, "scn_random_multi_steppe_medium"),
-        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 11, "scn_random_multi_steppe_large"),
-        (assign, ":num_maps", 12),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 7, "scn_multi_scene_14"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 8, "scn_multi_scene_17"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 9, "scn_multi_scene_18"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 10, "scn_random_multi_plain_medium"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 11, "scn_random_multi_plain_large"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 12, "scn_random_multi_steppe_medium"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 13, "scn_random_multi_steppe_large"),
+        (assign, ":num_maps", 14),
       (else_try),
         (eq, ":game_type", multiplayer_game_type_battle),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin, "scn_multi_scene_1"),
@@ -11538,11 +11694,13 @@ scripts = [
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 5, "scn_multi_scene_11"),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 6, "scn_multi_scene_12"),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 7, "scn_multi_scene_14"),
-        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 8, "scn_random_multi_plain_medium"),
-        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 9, "scn_random_multi_plain_large"),
-        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 10, "scn_random_multi_steppe_medium"),
-        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 11, "scn_random_multi_steppe_large"),
-        (assign, ":num_maps", 12),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 8, "scn_multi_scene_17"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 9, "scn_multi_scene_18"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 10, "scn_random_multi_plain_medium"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 11, "scn_random_multi_plain_large"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 12, "scn_random_multi_steppe_medium"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 13, "scn_random_multi_steppe_large"),
+        (assign, ":num_maps", 14),
       (else_try),
         (eq, ":game_type", multiplayer_game_type_destroy),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin, "scn_multi_scene_1"),
@@ -11563,11 +11721,13 @@ scripts = [
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 5, "scn_multi_scene_11"),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 6, "scn_multi_scene_12"),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 7, "scn_multi_scene_14"),
-        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 8, "scn_random_multi_plain_medium"),
-        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 9, "scn_random_multi_plain_large"),
-        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 10, "scn_random_multi_steppe_medium"),
-        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 11, "scn_random_multi_steppe_large"),
-        (assign, ":num_maps", 12),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 8, "scn_multi_scene_17"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 9, "scn_multi_scene_18"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 10, "scn_random_multi_plain_medium"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 11, "scn_random_multi_plain_large"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 12, "scn_random_multi_steppe_medium"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 13, "scn_random_multi_steppe_large"),
+        (assign, ":num_maps", 14),
       (else_try),
         (eq, ":game_type", multiplayer_game_type_headquarters),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin, "scn_multi_scene_1"),
@@ -11578,7 +11738,9 @@ scripts = [
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 5, "scn_multi_scene_11"),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 6, "scn_multi_scene_12"),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 7, "scn_multi_scene_14"),
-        (assign, ":num_maps", 8),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 8, "scn_multi_scene_17"),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 9, "scn_multi_scene_18"),
+        (assign, ":num_maps", 10),
       (else_try),
         (eq, ":game_type", multiplayer_game_type_siege),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin, "scn_multi_scene_3"),
@@ -11586,7 +11748,8 @@ scripts = [
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 2, "scn_multi_scene_10"),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 3, "scn_multi_scene_13"),
         (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 4, "scn_multi_scene_15"),
-        (assign, ":num_maps", 5),
+        (troop_set_slot, "trp_multiplayer_data", multi_data_maps_for_game_type_begin + 5, "scn_multi_scene_16"),
+        (assign, ":num_maps", 6),
       (try_end),
       (assign, reg0, ":num_maps"),
       ]),
@@ -17235,6 +17398,7 @@ scripts = [
 	            (party_slot_eq, "$g_encountered_party", slot_party_type, spt_town), #skip if we are not in a town.
 	            (party_get_position, pos2, "p_main_party"),
 	            (assign, ":min_distance", 99999),
+                    (assign, ":cur_object_center", -1),
 	            (try_for_range, ":unused_2", 0, 10),
 	              (call_script, "script_cf_get_random_enemy_center", ":giver_party_no"),
 	              (assign, ":random_object_center", reg0),
@@ -19041,6 +19205,28 @@ scripts = [
       (store_script_param_2, ":faction_no"),
       
       (try_begin),
+        (eq, ":faction_no", "fac_player_supporters_faction"),        
+        (faction_get_slot, ":player_faction_king", "fac_player_supporters_faction", slot_faction_leader),
+        (eq, ":player_faction_king", "trp_player"),
+        
+        (try_begin),
+          (is_between, ":center_no", walled_centers_begin, walled_centers_end),
+          (assign, ":number_of_walled_centers_players_kingdom_has", 1),
+        (else_try),
+          (assign, ":number_of_walled_centers_players_kingdom_has", 0),
+        (try_end),
+        
+        (try_for_range, ":walled_center", walled_centers_begin, walled_centers_end),
+          (store_faction_of_party, ":owner_faction_no", ":walled_center"),
+          (eq, ":owner_faction_no", "fac_player_supporters_faction"),          
+          (val_add, ":number_of_walled_centers_players_kingdom_has", 1),
+        (try_end),
+        
+        (ge, ":number_of_walled_centers_players_kingdom_has", 10),
+        (unlock_achievement, ACHIEVEMENT_VICTUM_SEQUENS),
+      (try_end),  
+      
+      (try_begin),
         (check_quest_active, "qst_join_siege_with_army"),
         (quest_slot_eq, "qst_join_siege_with_army", slot_quest_target_center, ":center_no"),
         (call_script, "script_abort_quest", "qst_join_siege_with_army", 0),
@@ -19145,11 +19331,42 @@ scripts = [
 
 	  #Political ramifications
 	  (store_faction_of_troop, ":orig_faction", ":troop_no"),
+	  
+	  #remove if he is marshal
 	  (try_begin),
 		(faction_slot_eq, ":orig_faction", slot_faction_marshall, ":troop_no"),
         (call_script, "script_check_and_finish_active_army_quests_for_faction", ":orig_faction"),       
-		(faction_set_slot, ":faction_no", slot_faction_marshall, -1),
+
+		#No current issue on the agenda
+		(try_begin),
+			(faction_slot_eq, ":orig_faction", slot_faction_political_issue, 0),
+		
+			(faction_set_slot, ":orig_faction", slot_faction_political_issue, 1), #Appointment of marshal
+			(store_current_hours, ":hours"),
+			(val_max, ":hours", 0),
+			(faction_set_slot, ":orig_faction", slot_faction_political_issue_time, ":hours"), #Appointment of marshal
+			(try_for_range, ":active_npc", active_npcs_begin, active_npcs_end),
+				(store_faction_of_troop, ":active_npc_faction", ":active_npc"),
+				(eq, ":active_npc_faction", ":orig_faction"),
+				(troop_set_slot, ":active_npc", slot_troop_stance_on_faction_issue, -1),
+			(try_end),		
+			(try_begin),
+				(eq, "$players_kingdom", ":orig_faction"),
+				(troop_set_slot, "trp_player", slot_troop_stance_on_faction_issue, -1),
+			(try_end),		
+		(try_end),
+		
+        (try_begin),
+		  (troop_get_slot, ":old_marshall_party", ":troop_no", slot_troop_leaded_party),
+          (party_is_active, ":old_marshall_party"),
+          (party_set_marshall, ":old_marshall_party", 0),
+        (try_end),  
+
+		(faction_set_slot, ":orig_faction", slot_faction_marshall, -1),
 	  (try_end),
+	  #Removal as marshal ends
+	  
+	  #Other political ramifications
 	  (troop_set_slot, ":troop_no", slot_troop_stance_on_faction_issue, -1),
 	  (try_for_range, ":active_npc", active_npcs_begin, active_npcs_end),
 		(troop_slot_eq, ":active_npc", slot_troop_stance_on_faction_issue, ":troop_no"),
@@ -19166,6 +19383,12 @@ scripts = [
       #Give new title
       (call_script, "script_troop_set_title_according_to_faction", ":troop_no", ":faction_no"),
       
+      (try_begin),
+        (this_or_next|eq, ":faction_no", "$players_kingdom"),
+        (eq, ":faction_no", "fac_player_supporters_faction"),
+        (call_script, "script_check_concilio_calradi_achievement"),
+      (try_end),
+
 	  #Takes walled centers and dependent villages with him
       (try_for_range, ":center_no", walled_centers_begin, walled_centers_end),
         (party_slot_eq, ":center_no", slot_town_lord, ":troop_no"),
@@ -19355,6 +19578,21 @@ scripts = [
 		(str_store_party_name, s4, ":center_no"),
 		(str_store_troop_name, s5, ":lord_troop_id"),
 		(display_message, "@{!}DEBUG -- {s4} awarded to {s5}"),
+	  (try_end),
+	  
+	  (try_begin),
+	    (eq, ":lord_troop_id", "trp_player"),
+	    (unlock_achievement, ACHIEVEMENT_ROYALITY_PAYMENT),
+	    
+	    (assign, ":number_of_fiefs_player_have", 1),
+	    (try_for_range, ":cur_center", centers_begin, centers_end),
+	      (neq, ":cur_center", ":center_no"),
+	      (party_slot_eq, ":cur_center", slot_town_lord, "trp_player"),
+	      (val_add, ":number_of_fiefs_player_have", 1),
+	    (try_end),
+	    
+	    (ge, ":number_of_fiefs_player_have", 5),
+	    (unlock_achievement, ACHIEVEMENT_MEDIEVAL_EMLAK),	    
 	  (try_end),
 	  
       (party_get_slot, ":old_lord_troop_id", ":center_no", slot_town_lord),
@@ -21051,7 +21289,6 @@ scripts = [
 
 		    (store_relation, ":reln", ":center_faction", ":party_faction"),
             (lt, ":reln", 0),
-			
 			(try_begin),
 	            (le, ":distance", ":spotting_range"),
 	            
@@ -22679,12 +22916,12 @@ scripts = [
      #(call_script, "script_old_faction_ai"), 
      #ozan - I collected all comment-out lines in here (faction ai script) and placed most bottom of scripts.py to avoid confusing.	   		 	
      
-     (faction_set_slot, ":faction_no", slot_faction_ai_state, ":new_strategy"),
-     (faction_set_slot, ":faction_no", slot_faction_ai_object, ":new_object"),
+    (faction_set_slot, ":faction_no", slot_faction_ai_state, ":new_strategy"),
+    (faction_set_slot, ":faction_no", slot_faction_ai_object, ":new_object"),
 
-     (call_script, "script_update_report_to_army_quest_note", ":faction_no", ":new_strategy", ":old_faction_ai_state"),
+    (call_script, "script_update_report_to_army_quest_note", ":faction_no", ":new_strategy", ":old_faction_ai_state"),
 
-     (try_begin),
+    (try_begin),
        (eq, ":new_strategy", sfai_feast),
        
        (store_current_hours, ":hours"),
@@ -22698,10 +22935,10 @@ scripts = [
          (is_between, ":new_object", towns_begin, towns_end),
          (party_set_slot, ":new_object", slot_town_has_tournament, 2),
        (try_end),
-     (try_end),	
+    (try_end),	
 	
      #Change of strategy
-     (try_begin),
+    (try_begin),
        (neq, ":new_strategy", ":old_faction_ai_state"),
 		
        (try_begin),
@@ -22712,7 +22949,14 @@ scripts = [
 		
        (store_current_hours, ":hours"),
        (faction_set_slot, ":faction_no", slot_faction_ai_current_state_started, ":hours"),
-						      		
+
+       #Feast ends
+       (try_begin),
+         (eq, ":old_faction_ai_state", sfai_feast),
+         (call_script, "script_faction_conclude_feast", ":faction_no", ":old_faction_ai_object"),
+       (try_end),
+
+	   
        #Feast begins
        (try_begin),
          (eq, ":new_strategy", sfai_feast),
@@ -22726,11 +22970,13 @@ scripts = [
 
          (try_begin),
            (check_quest_active, "qst_wed_betrothed"),
+		   
            (quest_slot_eq, "qst_wed_betrothed", slot_quest_giver_troop, ":feast_host"),
            (neg|quest_slot_ge, "qst_wed_betrothed", slot_quest_expiration_days, 362),
            (call_script, "script_add_notification_menu", "mnu_notification_player_wedding_day", ":feast_host", ":faction_object"),
 		 (else_try),
            (check_quest_active, "qst_wed_betrothed_female"),
+		   
            (quest_get_slot, ":player_betrothed", "qst_wed_betrothed", slot_quest_giver_troop),
 		   (store_faction_of_troop, ":player_betrothed_faction", ":player_betrothed"),
 		   (eq, ":player_betrothed_faction", ":faction_no"),
@@ -22739,17 +22985,13 @@ scripts = [
          (else_try),
            (eq, "$players_kingdom", ":faction_no"),
            (troop_slot_ge, "trp_player", slot_troop_renown, 150),
+		   
+		   
            (party_get_slot, ":feast_host", ":faction_object", slot_town_lord),
            (call_script, "script_add_notification_menu", "mnu_notification_player_kingdom_holds_feast", ":feast_host", ":faction_object"),
          (try_end),
        (try_end),
 		
-       #Feast ends
-       (try_begin),
-         (eq, ":old_faction_ai_state", sfai_feast),
-         #new (faction_set_slot, ":faction_no", slot_faction_last_feast_concluded, ":hours"),
-         (call_script, "script_faction_conclude_feast", ":faction_no", ":old_faction_ai_object"),
-       (try_end),
 
        #Offensive begins
        (try_begin),
@@ -22996,6 +23238,11 @@ scripts = [
         (try_begin),
           (troop_set_slot, ":troop_no", slot_troop_player_relation, ":player_relation"),
           
+          (try_begin),
+            (le, ":player_relation", -50),
+            (unlock_achievement, ACHIEVEMENT_OLD_DIRTY_SCOUNDREL),
+          (try_end),
+          
           (str_store_troop_name_link, s1, ":troop_no"),
           (call_script, "script_troop_get_player_relation", ":troop_no"),
           (assign, ":new_effective_relation", reg0),
@@ -23033,6 +23280,12 @@ scripts = [
       (val_clamp, ":player_relation", -100, 100),
       (assign, reg2, ":player_relation"),
       (party_set_slot, ":center_no", slot_center_player_relation, ":player_relation"),
+
+      (try_begin),
+        (le, ":player_relation", -50),
+        (unlock_achievement, ACHIEVEMENT_OLD_DIRTY_SCOUNDREL),
+      (try_end),
+
       
       (str_store_party_name_link, s1, ":center_no"),
       (try_begin),
@@ -23070,6 +23323,12 @@ scripts = [
       (assign, reg2, ":player_relation"),
       (set_relation, ":faction_no", "fac_player_faction", ":player_relation"),
       (set_relation, ":faction_no", "fac_player_supporters_faction", ":player_relation"),
+      
+      (try_begin),
+        (le, ":player_relation", -50),
+        (unlock_achievement, ACHIEVEMENT_OLD_DIRTY_SCOUNDREL),
+      (try_end),
+
       
       (str_store_faction_name_link, s1, ":faction_no"),
       (try_begin),
@@ -23466,7 +23725,8 @@ scripts = [
   ]),
 
   
-  ("diplomacy_party_attacks_neutral",
+  ("diplomacy_party_attacks_neutral", #called from game_menus (plundering a village, raiding a village),  from dialogs: surprise attacking a neutral lord, any attack on caravan or villagers
+#Has no effect if factions are already at war  
     [
       (store_script_param, ":attacker_party", 1),
       (store_script_param, ":defender_party", 2),
@@ -23483,9 +23743,16 @@ scripts = [
 	  (else_try),	
 		(eq, ":attacker_party", "p_main_party"),
 		(eq, ":attacker_faction", "fac_player_supporters_faction"),
+	  (try_end),
+	  
+	  (try_begin),
+	    (eq, ":attacker_party", "p_main_party"),
+		(store_relation, ":relation", ":attacker_faction", ":defender_faction"),
+	    (ge, ":relation", 0),
 		(call_script, "script_change_player_honor", -2),
 	  (try_end),
-
+	  
+	  
 	  (try_begin),
 		(check_quest_active, "qst_cause_provocation"),
 		(quest_slot_eq, "qst_cause_provocation", slot_quest_target_faction, ":defender_faction"),
@@ -23500,14 +23767,15 @@ scripts = [
 	  (try_begin),
 	    (eq, ":attacker_faction", "fac_player_supporters_faction"),
 		(neg|faction_slot_eq, "fac_player_supporters_faction", slot_faction_state, sfs_active),
-		#player faction inactive, no effect		
-	  (else_try),	
-	    (eq, ":attacker_faction", "fac_player_supporters_faction"),
-		(faction_slot_eq, ":attacker_faction", slot_faction_leader, "trp_player"),
-		(call_script, "script_faction_follows_controversial_policy", "fac_player_supporters_faction",logent_policy_ruler_attacks_without_provocation),
+		#player faction inactive, no effect
 	  (else_try),
 		(eq, ":diplomatic_status", -2),
 	    #war, no effect
+	  (else_try),
+	  
+	    (eq, ":attacker_faction", "fac_player_supporters_faction"),
+		(faction_slot_eq, ":attacker_faction", slot_faction_leader, "trp_player"),
+		(call_script, "script_faction_follows_controversial_policy", "fac_player_supporters_faction",logent_policy_ruler_attacks_without_provocation),
 	  (else_try),	
 		(eq, ":diplomatic_status", 1),
 		#truce
@@ -23530,6 +23798,12 @@ scripts = [
 	  (else_try),
 	    (party_get_template_id, ":template", ":defender_party"),
 	    (neq, ":template", "pt_kingdom_hero_party"),
+		(try_begin),
+			(ge, "$cheat_mode", 1),
+			(str_store_faction_name, s5, ":defender_faction"),
+			(display_message, "@{!}DEbug - {s5} caravan attacked"),
+		(try_end),
+		
 	    (call_script, "script_add_log_entry", logent_caravan_accosted, ":attacker_leader",  -1, -1, ":defender_faction"),
 	  (try_end),
 
@@ -24360,6 +24634,25 @@ scripts = [
       (str_store_troop_name, s6, ":troop_no"),
       (display_message, "@{s6} has joined your party."),
 	  (troop_set_note_available, ":troop_no", 1),	
+	  
+	  (try_begin),  
+	    (is_between, ":troop_no", companions_begin, companions_end),
+	    (store_sub, ":companion_number", ":troop_no", companions_begin),
+	    	    
+	    (set_achievement_stat, ACHIEVEMENT_KNIGHTS_OF_THE_ROUND, ":companion_number", 1),
+	    
+	    (assign, ":number_of_companions_hired", 0),
+	    (try_for_range, ":cur_companion", 0, 16),	      
+	      (get_achievement_stat, ":is_hired", ACHIEVEMENT_KNIGHTS_OF_THE_ROUND, ":cur_companion"),
+	      (eq, ":is_hired", 1),
+	      (val_add, ":number_of_companions_hired", 1),
+	    (try_end),
+	    
+	    (try_begin),
+	      (ge, ":number_of_companions_hired", 6),
+	      (unlock_achievement, ACHIEVEMENT_KNIGHTS_OF_THE_ROUND),
+	    (try_end),
+	  (try_end),
   ]),
   
 
@@ -31951,7 +32244,7 @@ scripts = [
      (try_begin),
        (store_num_parties_of_template, ":num_parties", "pt_forest_bandits"),
        (lt,":num_parties",16), #was 14 at mount&blade, 18 in warband, 16 last decision
-       (store_random,":spawn_point",num_mountain_bandit_spawn_points),
+       (store_random,":spawn_point",num_forest_bandit_spawn_points),
        (val_add,":spawn_point","p_forest_bandit_spawn_point"),
        (set_spawn_radius, 25),
        (spawn_around_party,":spawn_point","pt_forest_bandits"),
@@ -35097,6 +35390,11 @@ scripts = [
        (eq, ":entry_type", logent_caravan_accosted),
        (eq, ":actor", "trp_player"),
        (eq, ":faction_object", "$g_talk_troop_faction"),
+	   (eq, ":center_object", -1),
+	   (eq, ":troop_object", -1),
+	   
+
+	   
        (faction_slot_eq, "$g_talk_troop_faction", slot_faction_leader, "$g_talk_troop"),
        (assign, ":relevance", 30),
        (assign, ":suggested_relation_change", -1),
@@ -38115,6 +38413,7 @@ scripts = [
 		(this_or_next|eq, ":defeated_party_template", "pt_village_farmers"),
 			(eq, ":defeated_party_template", "pt_kingdom_caravan_party"),
 
+			
 		(party_get_slot, ":destination", ":defeated_party", slot_party_ai_object),
 		(party_get_slot, ":origin", ":defeated_party", slot_party_last_traded_center),
 		
@@ -38994,7 +39293,10 @@ scripts = [
 		(neq, ":faction_marshall", ":old_marshall"),
 		(this_or_next|eq, ":faction_marshall", "trp_player"),
 			(is_between, ":faction_marshall", active_npcs_begin, active_npcs_end),
-			
+		
+		(this_or_next|neq, ":faction_no", "fac_player_supporters_faction"),
+			(neg|check_quest_active, "qst_rebel_against_kingdom"),
+		
 		(try_begin),
 			(eq, "$cheat_mode", 1),
 			(str_store_faction_name, s15, ":faction_no"),
@@ -40044,6 +40346,18 @@ scripts = [
 		(troop_set_faction, ":bride", ":groom_faction"),
 	(try_end),
 
+    (try_begin),
+        (this_or_next|eq, ":groom", "trp_player"),
+           (eq, ":bride", "trp_player"),   
+        (unlock_achievement, ACHIEVEMENT_HAPPILY_EVER_AFTER),
+		(try_begin),
+			(eq, ":elopement", 1),
+			(unlock_achievement, ACHIEVEMENT_HEART_BREAKER),
+		(try_end),
+    (try_end),
+	
+	
+	
     (try_begin),
         (this_or_next|eq, ":groom", "trp_player"),
            (eq, ":bride", "trp_player"),
@@ -44205,6 +44519,7 @@ scripts = [
 	  (try_begin),
 	    (eq, "$g_start_arena_fight_at_nearest_town", 1),
 	  (try_end),  
+	  (unlock_achievement, ACHIEVEMENT_PUGNACIOUS_D),
       (jump_to_menu, "mnu_arena_duel_fight"),
 	  (finish_mission),
 
@@ -45186,9 +45501,9 @@ scripts = [
 	    (faction_get_slot, ":last_offensive_time", ":faction_no", slot_faction_last_offensive_concluded),
 	    (val_sub, ":hours_since_last_offensive", ":last_offensive_time"),
 	      
-	    (store_current_hours, ":hours_since_last_feast"),
-	    (faction_get_slot, ":last_feast_time", ":faction_no", slot_faction_last_feast_concluded),
-	    (val_sub, ":hours_since_last_feast", ":last_feast_time"),
+	    (store_current_hours, ":hours_since_last_feast_start"),
+	    (faction_get_slot, ":last_feast_time", ":faction_no", slot_faction_last_feast_start_time),
+	    (val_sub, ":hours_since_last_feast_start", ":last_feast_time"),
 	      
 	    (store_current_hours, ":hours_at_current_state"),
 	    (faction_get_slot, ":current_state_started", ":faction_no", slot_faction_ai_current_state_started),
@@ -45358,7 +45673,7 @@ scripts = [
 		#Player marshal
 		(try_begin), # a special case to end long-running feasts
 			(eq, ":troop_no", "trp_player"),
-			
+				
 			(eq, ":current_ai_state", sfai_feast),
 			(ge, ":hours_at_current_state", 72),
 		
@@ -45368,8 +45683,23 @@ scripts = [
 			#Normally you are not supposed to set permanent values in this state, but this is a special case to end player-called feasts
 			(assign, "$player_marshal_ai_state", sfai_default),
 			(assign, "$player_marshal_ai_object", -1),
+		(else_try), #another special state, to make player-called feasts last for a while when the player is the leader of the faction, but not the marshal
+			(eq, "$players_kingdom", "fac_player_supporters_faction"),
+			(faction_slot_eq, "$players_kingdom", slot_faction_leader, "trp_player"),
+			(neq, ":troop_no", "trp_player"),
 			
-		(else_try),
+			(eq, ":current_ai_state", sfai_feast),
+			(le, ":hours_at_current_state", 48),
+			
+			(party_slot_eq, ":current_ai_object", slot_town_lord, "trp_player"),
+			(store_faction_of_party, ":current_ai_object_faction", ":current_ai_object"),
+			(eq, ":current_ai_object_faction", "$players_kingdom"),
+			
+			(assign, ":action", sfai_feast),
+			(assign, ":object", ":current_ai_object"),
+
+			
+		(else_try), #this is the main player marshal state
 			(eq, ":troop_no", "trp_player"),
 			
 			(str_clear, s14),
@@ -45863,7 +46193,7 @@ scripts = [
 		(else_try),
 			(eq, ":current_ai_state", sfai_feast),
 			(le, ":hours_at_current_state", 72),
-		
+			
 			(assign, ":action", sfai_feast),
 			(assign, ":object", ":current_ai_object"),		
 			(str_store_string, s14, "str_we_should_continue_the_feast_unless_there_is_an_emergency"),
@@ -45935,6 +46265,8 @@ scripts = [
 		
 		#15-HOLD A FEAST BECAUSE AN NPC WANTS TO GET MARRIED
 		(else_try),	
+            (ge, ":hours_since_last_feast_start", 192), #If at least eight days past last feast start time
+		
 			(assign, ":location_feast", -1),
 		
 			(try_for_range, ":kingdom_lady", kingdom_ladies_begin, kingdom_ladies_end),
@@ -45978,7 +46310,7 @@ scripts = [
 		#16-HOLD A FEAST ANYWAY
 		(else_try),
 			(eq, ":current_ai_state", sfai_default),
-            (gt, ":hours_since_last_feast", 240), #If at least 10 days past after last feast. (added by ozan)
+            (gt, ":hours_since_last_feast_start", 240), #If at least 10 days past after last feast. (added by ozan)
 
 			(assign, ":location_high_score", 0),
 			(assign, ":location_feast", -1),
@@ -46423,4 +46755,24 @@ scripts = [
       (try_end),
   ]),   
 
+  # script_check_concilio_calradi_achievement  
+  ("check_concilio_calradi_achievement",
+  [
+   (try_begin),
+     (eq, "$players_kingdom", "fac_player_supporters_faction"),
+     (faction_get_slot, ":player_faction_king", "fac_player_supporters_faction", slot_faction_leader),
+     (eq, ":player_faction_king", "trp_player"),
+     (assign, ":number_of_vassals", 0),
+     (try_for_range, ":cur_troop", active_npcs_begin, active_npcs_end),
+       (troop_slot_eq, ":cur_troop", slot_troop_occupation, slto_kingdom_hero),
+       (store_faction_of_troop, ":cur_faction", ":cur_troop"),
+       (eq, ":cur_faction", "fac_player_supporters_faction"),
+       (val_add, ":number_of_vassals", 1),
+     (try_end),
+     (ge, ":number_of_vassals", 3),
+     (unlock_achievement, ACHIEVEMENT_CONCILIO_CALRADI),
+   (try_end),  
+  ]),
+  
+  
 ]

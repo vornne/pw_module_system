@@ -976,4 +976,17 @@ particle_systems = [
      0,                       #rotation speed
      0.5                        #rotation damping
     ),
+    ("fall_leafs_a", psf_billboard_2d | psf_always_emit, "prt_mesh_yrellow_leaf_a",
+     1, 9, 0, 0.025, 4, 4,      #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0, 1), (1, 1),            #alpha keys
+     (0, 0.5), (1, 0.5),        #red keys
+     (0, 0.5), (1, 0.5),        #green keys
+     (0, 0.5), (1, 0.5),        #blue keys
+     (0, 0.25),   (1, 0.25),    #scale keys
+     (4, 4, 4),                 #emit box size
+     (0, 0.01, -0.9),           #emit velocity
+      0.02,                     #emit dir randomness
+      15,                       #rotation speed
+      0,                        #rotation damping
+    ),
 ]

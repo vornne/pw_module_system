@@ -911,6 +911,11 @@ game_menus = [
      (else_try),
        (str_store_string, s1, "str_battle_lost"),
      (try_end),
+     
+     (try_begin),
+       (ge, "$g_custom_battle_team2_death_count", 100),
+       (unlock_achievement, ACHIEVEMENT_LOOK_AT_THE_BONES),
+     (try_end),
      ],
     [
       ("continue",[],"Continue.",
@@ -2516,8 +2521,8 @@ game_menus = [
 	   (assign, ":restless_lords", reg1),
 	   
 	   (faction_get_slot, ":last_feast_ended", ":faction_no", slot_faction_last_feast_start_time),
-	   (val_sub, ":last_feast_ended", 72),
 	   (store_sub, ":hours_since_last_feast", ":cur_hours", ":last_feast_ended"),
+	   (val_sub, ":hours_since_last_feast", 72),
 
 	   (faction_get_slot, ":current_state_started", ":faction_no", slot_faction_ai_current_state_started),
 	   (store_sub, ":hours_at_current_state", ":cur_hours", ":current_state_started"),
@@ -2993,6 +2998,15 @@ game_menus = [
            (assign, "$g_infinite_camping", 0),
            (assign, "$g_player_icon_state", pis_camping),
            
+           (try_begin),
+             (party_is_active, "p_main_party"),
+             (party_get_current_terrain, ":cur_terrain", "p_main_party"),
+             (try_begin),
+               (eq, ":cur_terrain", rt_desert),
+               (unlock_achievement, ACHIEVEMENT_SARRANIDIAN_NIGHTS),
+             (try_end),  
+           (try_end),  
+
            (rest_for_hours_interactive, 24 * 365, 5, 1), #rest while attackable
                       
            (change_screen_return),
@@ -3910,6 +3924,12 @@ game_menus = [
         (assign, "$g_battle_result", 0),
         (assign, "$g_engaged_enemy", 1),
         
+        (party_get_template_id, ":encountered_party_template", "$g_encountered_party"),		
+        (try_begin),
+		  (eq, ":encountered_party_template", "pt_village_farmers"),
+		  (unlock_achievement, ACHIEVEMENT_HELP_HELP_IM_BEING_REPRESSED),
+		(try_end),          
+        
         (call_script, "script_calculate_renown_value"),
         (call_script, "script_calculate_battle_advantage"),
         (set_battle_advantage, reg0),
@@ -4059,8 +4079,8 @@ game_menus = [
               (store_troop_faction, ":victorious_faction", ":stack_troop"),
               (call_script, "script_add_log_entry", logent_player_retreated_from_lord_cowardly, "trp_player",  -1, ":stack_troop", ":victorious_faction"),
           (try_end),
-###Troop commentary changes end          
-
+###Troop commentary changes end
+          (party_ignore_player, "$g_encountered_party", 1),
           (leave_encounter),(change_screen_return)]),
     ]
   ),
@@ -4072,6 +4092,12 @@ game_menus = [
     [
       ("order_attack_begin",[],"Order the attack to begin.", 
       [
+        (party_get_template_id, ":encountered_party_template", "$g_encountered_party"),		
+        (try_begin),
+		  (eq, ":encountered_party_template", "pt_village_farmers"),
+		  (unlock_achievement, ACHIEVEMENT_HELP_HELP_IM_BEING_REPRESSED),
+		(try_end),                
+        
         (assign, "$g_engaged_enemy", 1),
         (jump_to_menu,"mnu_order_attack_2"),
       ]),
@@ -4248,8 +4274,66 @@ game_menus = [
      (try_begin),
        (eq, "$g_battle_result", 1),
        (call_script, "script_change_troop_renown", "trp_player", "$battle_renown_value"),
+
+       (try_begin),  
+         (ge, "$g_encountered_party", 0),
+         (party_is_active, "$g_encountered_party"),
+         (party_get_template_id, ":encountered_party_template", "$g_encountered_party"),
+         (eq, ":encountered_party_template", "pt_kingdom_caravan_party"),                  
+         
+         (get_achievement_stat, ":number_of_village_raids", ACHIEVEMENT_THE_BANDIT, 0),
+         (get_achievement_stat, ":number_of_caravan_raids", ACHIEVEMENT_THE_BANDIT, 1),
+         (val_add, ":number_of_caravan_raids", 1),
+         (set_achievement_stat, ACHIEVEMENT_THE_BANDIT, 1, ":number_of_caravan_raids"),
+        
+         (try_begin),
+           (ge, ":number_of_village_raids", 3),
+           (ge, ":number_of_caravan_raids", 3),
+           (unlock_achievement, ACHIEVEMENT_THE_BANDIT),
+         (try_end),
+       (try_end),  
+
+       (try_begin),
+         (party_get_current_terrain, ":cur_terrain", "p_main_party"),
+         (eq, ":cur_terrain", rt_snow),
+         (get_achievement_stat, ":number_of_victories_at_snowy_lands", ACHIEVEMENT_BEST_SERVED_COLD, 0),
+         (val_add, ":number_of_victories_at_snowy_lands", 1),
+         (set_achievement_stat, ACHIEVEMENT_BEST_SERVED_COLD, 0, ":number_of_victories_at_snowy_lands"),
+         
+         (try_begin),
+           (eq, ":number_of_victories_at_snowy_lands", 10),
+           (unlock_achievement, ACHIEVEMENT_BEST_SERVED_COLD),
+         (try_end),
+       (try_end),              
+       
+       (try_begin),
+         (ge, "$g_enemy_party", 0),
+         (party_is_active, "$g_enemy_party"),
+         (party_stack_get_troop_id, ":stack_troop", "$g_enemy_party", 0),          
+         (eq, ":stack_troop", "trp_mountain_bandit"),
+          
+         (get_achievement_stat, ":number_of_victories_aganist_mountain_bandits", ACHIEVEMENT_MOUNTAIN_BLADE, 0),
+         (val_add, ":number_of_victories_aganist_mountain_bandits", 1),
+         (set_achievement_stat, ACHIEVEMENT_MOUNTAIN_BLADE, 0, ":number_of_victories_aganist_mountain_bandits"),
+         
+         (try_begin),
+           (eq, ":number_of_victories_aganist_mountain_bandits", 10),
+           (unlock_achievement, ACHIEVEMENT_MOUNTAIN_BLADE),
+         (try_end),
+       (try_end),  
+
+       (try_begin),
+         (is_between, "$g_ally_party", walled_centers_begin, walled_centers_end),
+         (unlock_achievement, ACHIEVEMENT_NONE_SHALL_PASS),
+       (try_end),
+
+       (try_begin),  
+         (eq, "$g_joined_battle_to_help", 1), 
+         (unlock_achievement, ACHIEVEMENT_GOOD_SAMARITAN),
+       (try_end),
      (try_end),
           
+     (assign, "$g_joined_battle_to_help", 0), 
      (call_script, "script_count_casualties_and_adjust_morale"),#new
      (call_script, "script_encounter_calculate_fit"),               
 
@@ -4440,6 +4524,17 @@ game_menus = [
 				(display_message, "@{!}{s4} skipped in p_total_enemy_casualties capture queue because is friendly"),
 			  (try_end),			
 			(else_try),
+              (try_begin),
+                (party_stack_get_troop_id, ":party_leader", "$g_encountered_party", 0),
+                (is_between, ":party_leader", active_npcs_begin, active_npcs_end),                
+                (troop_slot_eq, ":party_leader", slot_troop_occupation, slto_kingdom_hero),
+                (store_sub, ":kingdom_hero_id", ":party_leader", active_npcs_begin),
+                (get_achievement_stat, ":was_he_defeated_player_before", ACHIEVEMENT_BARON_GOT_BACK, ":kingdom_hero_id"),                
+                (eq, ":was_he_defeated_player_before", 1),
+                
+                (unlock_achievement, ACHIEVEMENT_BARON_GOT_BACK),
+              (try_end),
+
               (store_add, "$last_defeated_hero", ":stack_no", 1),                    
               (call_script, "script_remove_troop_from_prison", ":stack_troop"),
               (troop_set_slot, ":stack_troop", slot_troop_leaded_party, -1),
@@ -4955,6 +5050,7 @@ game_menus = [
       ],
       "Charge the enemy.",
       [
+        (assign, "$g_joined_battle_to_help", 1),
         (party_set_next_battle_simulation_time, "$g_encountered_party", -1),
         (assign, "$g_battle_result", 0),
         (call_script, "script_calculate_renown_value"),
@@ -4975,6 +5071,7 @@ game_menus = [
       ],
       "Order your troops to attack with your allies while you stay back.",
       [
+        (assign, "$g_joined_battle_to_help", 1),
         (party_set_next_battle_simulation_time, "$g_encountered_party", -1),
         (jump_to_menu,"mnu_join_order_attack"),
       ]),
@@ -5305,6 +5402,7 @@ game_menus = [
                                 (change_screen_map_conversation, ":siege_leader_id")]),
       ("join_siege_with_allies",[(neg|troop_is_wounded, "trp_player")], "Join the next assault.",
        [
+           (assign, "$g_joined_battle_to_help", 1), 
            (party_set_next_battle_simulation_time, "$g_encountered_party", -1),
            (try_begin),
              (check_quest_active, "qst_join_siege_with_army"),
@@ -5348,6 +5446,7 @@ game_menus = [
                                 ],
        "Order your soldiers to join the next assault without you.",
        [
+         (assign, "$g_joined_battle_to_help", 1), 
          (party_set_next_battle_simulation_time, "$g_encountered_party", -1),
          (try_begin),
            (check_quest_active, "qst_join_siege_with_army"),
@@ -7464,6 +7563,15 @@ game_menus = [
            (assign,"$auto_enter_town","$current_town"),
            (assign, "$g_last_rest_center", "$current_town"),
 
+           (try_begin),
+             (party_is_active, "p_main_party"),
+             (party_get_current_terrain, ":cur_terrain", "p_main_party"),
+             (try_begin),
+               (eq, ":cur_terrain", rt_desert),
+               (unlock_achievement, ACHIEVEMENT_SARRANIDIAN_NIGHTS),
+             (try_end),  
+           (try_end),  
+
            (rest_for_hours_interactive, 24 * 7, 5, 1), #rest while attackable
 
            (change_screen_return),
@@ -7673,11 +7781,13 @@ game_menus = [
           (quest_slot_eq, "qst_eliminate_bandits_infesting_village", slot_quest_target_center, "$g_encountered_party"),
           (call_script, "script_change_player_relation_with_center", "$g_encountered_party", -5),
           (call_script, "script_fail_quest", "qst_eliminate_bandits_infesting_village"),
+          (call_script, "script_end_quest", "qst_eliminate_bandits_infesting_village"),
         (else_try),
           (check_quest_active, "qst_deal_with_bandits_at_lords_village"),
           (quest_slot_eq, "qst_deal_with_bandits_at_lords_village", slot_quest_target_center, "$g_encountered_party"),
           (call_script, "script_change_player_relation_with_center", "$g_encountered_party", -4),
           (call_script, "script_fail_quest", "qst_deal_with_bandits_at_lords_village"),
+          (call_script, "script_end_quest", "qst_deal_with_bandits_at_lords_village"),
         (else_try),
           (call_script, "script_change_player_relation_with_center", "$g_encountered_party", -3),
         (try_end),
@@ -7995,6 +8105,11 @@ game_menus = [
         (call_script, "script_change_player_relation_with_center", "$current_town", -5),
         (str_store_string, s1, "@You drive away {reg17} {reg12?heads:head} of cattle from the village's herd."),
         
+        (try_begin),
+          (eq, ":random_value", 3),
+          (unlock_achievement, ACHIEVEMENT_GOT_MILK),
+        (try_end),
+        
         (call_script, "script_create_cattle_herd", "$current_town", ":random_value"),
         (party_get_slot, ":num_cattle", "$current_town", slot_village_number_of_cattle),
         (val_sub, ":num_cattle", ":random_value"),
@@ -8185,6 +8300,17 @@ game_menus = [
  and then put the buildings to the torch. From the coins and valuables that are found, you get your share of {reg1} denars.",
     "none",
     [
+        (get_achievement_stat, ":number_of_village_raids", ACHIEVEMENT_THE_BANDIT, 0),
+        (get_achievement_stat, ":number_of_caravan_raids", ACHIEVEMENT_THE_BANDIT, 1),
+        (val_add, ":number_of_village_raids", 1),
+        (set_achievement_stat, ACHIEVEMENT_THE_BANDIT, 0, ":number_of_village_raids"),
+                
+        (try_begin),
+          (ge, ":number_of_village_raids", 3),
+          (ge, ":number_of_caravan_raids", 3),
+          (unlock_achievement, ACHIEVEMENT_THE_BANDIT),
+        (try_end),
+    
         (party_get_slot, ":village_lord", "$current_town", slot_town_lord),
         (try_begin),
           (gt,  ":village_lord", 0),
@@ -8317,6 +8443,25 @@ game_menus = [
           (jump_to_menu, "mnu_siege_started_defender"),
         (try_end),
         
+        (try_begin),
+          (is_between, "$g_encountered_party", towns_begin, towns_end),
+          (store_sub, ":encountered_town_no", "$g_encountered_party", towns_begin),
+          (set_achievement_stat, ACHIEVEMENT_MIGRATING_COCONUTS, ":encountered_town_no", 1),
+          
+          (assign, ":there_are_villages_not_visited", 0),
+          (try_for_range, ":cur_town", towns_begin, towns_end),
+            (store_sub, ":encountered_town_no", ":cur_town", towns_begin),
+            (get_achievement_stat, ":town_is_visited", ACHIEVEMENT_MIGRATING_COCONUTS, ":encountered_town_no"),
+            (eq, ":town_is_visited", 0),
+            (assign, ":there_are_villages_not_visited", 1),
+          (try_end),
+          
+          (try_begin),
+            (eq, ":there_are_villages_not_visited", 0),
+            (unlock_achievement, ACHIEVEMENT_MIGRATING_COCONUTS),
+          (try_end),
+        (try_end),  
+
         #Quest menus
         
         (assign, "$qst_collect_taxes_currently_collecting", 0),
@@ -9286,7 +9431,7 @@ game_menus = [
 		(this_or_next|troop_slot_ge, ":lady_no", slot_troop_met, 2),
 			(troop_slot_eq, ":lady_guardian", slot_lord_granted_courtship_permission, 1),
 		
-#		(neg|troop_slot_get, ":lady_no", slot_troop_met, 4),
+		(neg|troop_slot_eq, ":lady_no", slot_troop_met, 4),
 		
 		#must have approached father
 #		(this_or_next|troop_slot_eq, ":lady_guardian", slot_lord_granted_courtship_permission, 1),
@@ -9442,6 +9587,15 @@ game_menus = [
         (assign, "$g_town_visit_after_rest", 1),
         (assign, "$g_last_rest_center", "$current_town"),
         (assign, "$g_last_rest_payment_until", -1),
+
+        (try_begin),
+          (party_is_active, "p_main_party"),
+          (party_get_current_terrain, ":cur_terrain", "p_main_party"),
+          (try_begin),
+            (eq, ":cur_terrain", rt_desert),
+            (unlock_achievement, ACHIEVEMENT_SARRANIDIAN_NIGHTS),
+          (try_end),  
+        (try_end),  
 
         (rest_for_hours_interactive, 24 * 7, 5, 0), #rest while not attackable
         (change_screen_return),
@@ -9752,6 +9906,8 @@ game_menus = [
         (val_max, ":player_odds", 250),
         (party_set_slot, "$current_town", slot_town_player_odds, ":player_odds"),
         (call_script, "script_play_victorious_sound"),
+        
+        (unlock_achievement, ACHIEVEMENT_MEDIEVAL_TIMES),
         ],
     [
       ("continue", [], "Continue...",
@@ -11644,6 +11800,14 @@ game_menus = [
        (assign, "$g_player_is_captive", 1),
        (assign,"$auto_menu",-1),
        (assign, "$capturer_party", "$g_encountered_party"),
+       
+       (try_begin),
+         (party_stack_get_troop_id, ":party_leader", "$g_encountered_party", 0),
+         (is_between, ":party_leader", active_npcs_begin, active_npcs_end),
+         (troop_slot_eq, ":party_leader", slot_troop_occupation, slto_kingdom_hero),
+         (store_sub, ":kingdom_hero_id", ":party_leader", active_npcs_begin),
+         (set_achievement_stat, ACHIEVEMENT_BARON_GOT_BACK, ":kingdom_hero_id", 1),
+       (try_end),
               
        (jump_to_menu, "mnu_captivity_wilderness_taken_prisoner"),
     ],
@@ -12414,6 +12578,9 @@ game_menus = [
       (position_set_z, pos0, 170),
       (set_game_menu_tableau_mesh, "tableau_faction_note_mesh_banner", "fac_player_supporters_faction", pos0),
       
+      (unlock_achievement, ACHIEVEMENT_CALRADIAN_TEA_PARTY),
+      (play_track, "track_coronation"),
+	  
 	  (try_for_range, ":walled_center", walled_centers_begin, walled_centers_end),
 	    (lt, "$g_player_court", walled_centers_begin),
 		(store_faction_of_party, ":walled_center_faction", ":walled_center"),
@@ -12741,7 +12908,10 @@ game_menus = [
 		(set_background_mesh, "mesh_pic_messenger"),
 		
 		(str_store_troop_name, s8, "$g_notification_menu_var1"),
-		(str_store_faction_name, s9, "$players_kingdom"),
+		(store_faction_of_troop, ":host_faction", "$g_notification_menu_var1"),
+		(str_store_faction_name, s9, ":host_faction"),
+		
+#		(str_store_faction_name, s9, "$players_kingdom"),
 		(str_store_party_name, s10, "$g_notification_menu_var2"),
 		
 		(str_clear, s12),
@@ -12761,6 +12931,15 @@ game_menus = [
 			(str_store_string, s11, "str_the_great_lords_of_your_kingdom_plan_to_gather_at_your_hall_in_s10_for_a_feast"),
 		(try_end),
 		(str_store_string, s11, "@{!}{s11}{s12}"),
+		
+		(try_begin),
+			(ge, "$cheat_mode", 1),
+			(store_current_hours, ":hours_since_last_feast"),
+			(faction_get_slot, ":last_feast_start_time", "$players_kingdom", slot_faction_last_feast_start_time),
+			(val_sub, ":hours_since_last_feast", ":last_feast_start_time"),		
+			(assign, reg4, ":hours_since_last_feast"),
+			(display_message, "@{!}DEBUG -- Hours since last feast started: {reg4}"),
+		(try_end),
 		
       ],
     [
@@ -12853,6 +13032,13 @@ game_menus = [
       (else_try),
         (set_game_menu_tableau_mesh, "tableau_faction_note_mesh_banner", "$g_notification_menu_var1", pos0),
       (try_end),
+	  (try_begin),
+		(faction_slot_eq, "$g_notification_menu_var1", slot_faction_leader, "trp_player"),
+		(unlock_achievement, ACHIEVEMENT_THE_GOLDEN_THRONE),
+	  (else_try),
+		(unlock_achievement, ACHIEVEMENT_MANIFEST_DESTINY),
+	  (try_end),
+	  
       ],
     [
       ("continue",[],"Continue...",
@@ -13060,6 +13246,11 @@ game_menus = [
              (eq, ":cur_faction", "fac_player_supporters_faction"),
              (troop_set_faction, ":cur_troop", "$g_notification_menu_var1"),
              (call_script, "script_troop_set_title_according_to_faction", ":cur_troop", "$g_notification_menu_var1"),
+             (try_begin),
+               (this_or_next|eq, "$g_notification_menu_var1", "$players_kingdom"),
+               (eq, "$g_notification_menu_var1", "fac_player_supporters_faction"),
+               (call_script, "script_check_concilio_calradi_achievement"),
+             (try_end),
 		   (else_try), #all loyal lords gain a small bonus with the player	 
 		     (troop_slot_eq, ":cur_troop", slot_troop_occupation, slto_kingdom_hero),
              (store_troop_faction, ":cur_faction", ":cur_troop"),
@@ -13776,6 +13967,7 @@ game_menus = [
 			(eq, ":issue", 1),
 		    (call_script, "script_check_and_finish_active_army_quests_for_faction", "$players_kingdom"),       
 			(call_script, "script_appoint_faction_marshall", "$players_kingdom", "trp_player"), 
+			(unlock_achievement, ACHIEVEMENT_AUTONOMOUS_COLLECTIVE),
 		(else_try),
 			(call_script, "script_give_center_to_lord", ":issue", "trp_player", 0), #Zero means don't add garrison
 		(try_end),
@@ -13962,12 +14154,14 @@ game_menus = [
     [
 	(try_begin),
 		(agent_get_troop_id, ":type", "$g_main_attacker_agent"),
+		(eq, ":type", "trp_belligerent_drunk"),
 		(str_store_string, s11, "str_lost_tavern_duel_ordinary"),
 	(else_try),
 		(agent_get_troop_id, ":type", "$g_main_attacker_agent"),
 		(eq, ":type", "trp_hired_assassin"),
 		(str_store_string, s11, "str_lost_tavern_duel_assassin"),
 	(try_end),
+	(troop_set_slot, "trp_hired_assassin", slot_troop_cur_center, -1),
     ],
     [
       ("continue",[],"Continue...",

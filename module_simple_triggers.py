@@ -2225,6 +2225,18 @@ simple_triggers = [
       (val_add, ":num_men", 1),
     (try_end),
     
+    (try_begin),
+      (assign, ":number_of_foods_player_has", 0),
+      (try_for_range, ":cur_edible", food_begin, food_end),      
+        (call_script, "script_cf_player_has_item_without_modifier", ":cur_edible", imod_rotten),
+        (val_add, ":number_of_foods_player_has", 1),
+      (try_end),
+      (try_begin),
+        (ge, ":number_of_foods_player_has", 6),
+        (unlock_achievement, ACHIEVEMENT_ABUNDANT_FEAST),        
+      (try_end),
+    (try_end),
+    
     (assign, ":consumption_amount", ":num_men"),
     (assign, ":no_food_displayed", 0),
     (try_for_range, ":unused", 0, ":consumption_amount"),
@@ -2903,6 +2915,8 @@ simple_triggers = [
          (str_store_string, s2, "@ Your engineer skill has increased by 1."),
        (try_end),
        
+       (unlock_achievement, ACHIEVEMENT_BOOK_WORM),
+
        (try_begin),
          (eq, "$g_infinite_camping", 0),
          (dialog_box, "@You have finished reading {s1}.{s2}", "@Book Read"),
@@ -3538,6 +3552,7 @@ simple_triggers = [
             (try_end),
         (try_end),
 		
+		#add pretender to party if not active
 		(try_begin),
 			(check_quest_active, "qst_rebel_against_kingdom"),
 			(is_between, "$supported_pretender", pretenders_begin, pretenders_end),
@@ -3545,6 +3560,17 @@ simple_triggers = [
 			(neg|troop_slot_eq, "$supported_pretender", slot_troop_occupation, slto_kingdom_hero),
 			(party_add_members, "p_main_party", "$supported_pretender", 1),
 		(try_end),
+		
+		#make player marshal of rebel faction
+		(try_begin),
+			(check_quest_active, "qst_rebel_against_kingdom"),
+			(is_between, "$supported_pretender", pretenders_begin, pretenders_end),
+			(main_party_has_troop, "$supported_pretender"),
+			(neg|faction_slot_eq, "fac_player_supporters_faction", slot_faction_marshall, "trp_player"),
+			(call_script, "script_appoint_faction_marshall", "fac_player_supporters_faction", "trp_player"),
+		(try_end),
+		
+		
 ]),
 #NPC changes end
 

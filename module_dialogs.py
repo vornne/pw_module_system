@@ -1113,6 +1113,7 @@ dialogs = [
  	(neg|agent_is_alive, "$g_main_attacker_agent"),
 	(agent_get_troop_id, ":type", "$g_main_attacker_agent"),
 	(eq, ":type", "trp_hired_assassin"),
+	
 	(str_store_string, s9, "str_strange_that_one_didnt_seem_like_your_ordenary_troublemaker_he_didnt_drink_all_that_much__he_just_stood_there_quietly_and_watched_the_door_you_may_wish_to_consider_whether_you_have_any_enemies_who_know_you_are_in_town_a_pity_that_blood_had_to_be_spilled_in_my_establishment"),
 
     (assign, "$g_main_attacker_agent", 0),
@@ -1137,6 +1138,7 @@ dialogs = [
 	(troop_add_item, "trp_player", "itm_sword_viking_1", 0),
 	(call_script, "script_troop_change_relation_with_troop", "trp_player", "$g_talk_troop", 1),
   (try_end),	
+  (troop_set_slot, "trp_hired_assassin", slot_troop_cur_center, -1),
   ],
    "{!}{s9}", "player_duel_response", [
    ]],
@@ -1489,6 +1491,7 @@ dialogs = [
   [anyone|plyr,"village_farmer_talk",
   [(check_quest_active, "qst_track_down_bandits"),
    (neg|check_quest_succeeded, "qst_track_down_bandits"),
+   
   ], "I am hunting a group of bandits with the following description... Have you seen them?", "farmer_bandit_information",[]],
   
   [anyone,"farmer_bandit_information", [
@@ -1510,11 +1513,14 @@ dialogs = [
     (call_script, "script_change_player_relation_with_center", ":home_center", -4),
     (call_script, "script_change_player_relation_with_center", ":market_town", -2),
     (call_script, "script_change_player_relation_with_troop", ":village_owner", -2),
+	(call_script, "script_diplomacy_party_attacks_neutral", "p_main_party", "$g_encountered_party"),
+	
     (store_relation,":rel", "$g_encountered_party_faction","fac_player_supporters_faction"),
     (try_begin),
       (gt, ":rel", 0),
       (val_sub, ":rel", 5),
     (try_end),
+	
     (val_sub, ":rel", 3),
     (call_script, "script_set_player_relation_with_faction", "$g_encountered_party_faction", ":rel"),
     
@@ -1823,6 +1829,10 @@ dialogs = [
     (str_store_string, s5, ":honorific"),
   ], "Yes, {s5}?", "member_talk",
   [
+    (try_begin),
+      (is_between, "$g_talk_troop", companions_begin, companions_end),
+      (unlock_achievement, ACHIEVEMENT_TALKING_HELPS),
+    (try_end),
   ]],
 						  
   [anyone|plyr,"member_talk", [
@@ -2853,7 +2863,9 @@ dialogs = [
 			(str_store_string, s14, "str_lord_s12"),
 		(try_end),
 		(troop_set_name, "$g_talk_troop", s14),
+		(unlock_achievement, ACHIEVEMENT_I_DUB_THEE),
 		
+                (call_script, "script_check_concilio_calradi_achievement"),
 		
 		(try_begin),
 			(troop_add_item, "$g_talk_troop", "itm_saddle_horse", 0),
@@ -4187,9 +4199,12 @@ dialogs = [
 #Morality objections
   [anyone, "event_triggered", [
                      (store_conversation_troop, "$map_talk_troop"),
+					 (is_between, "$map_talk_troop", companions_begin, companions_end),	
+					 
                      (eq, "$map_talk_troop", "$npc_with_grievance"), 
                      (eq, "$npc_map_talk_context", slot_troop_morality_state), 
-
+					 
+					 
                      (try_begin),
                          (eq, "$npc_grievance_slot", slot_troop_morality_state),
                          (troop_get_slot, ":speech", "$map_talk_troop", slot_troop_morality_speech),
@@ -4241,6 +4256,8 @@ dialogs = [
 # Personality clash 2 objections
   [anyone, "event_triggered", [
                      (store_conversation_troop, "$map_talk_troop"),
+					 (is_between, "$map_talk_troop", companions_begin, companions_end),
+					 
                      (eq, "$map_talk_troop", "$npc_with_personality_clash_2"), 
                      (eq, "$npc_map_talk_context", slot_troop_personalityclash2_state), 
 
@@ -4309,6 +4326,8 @@ dialogs = [
 
   [anyone, "event_triggered", [
                      (store_conversation_troop, "$map_talk_troop"),
+					 (is_between, "$map_talk_troop", companions_begin, companions_end),
+					 
                      (eq, "$map_talk_troop", "$npc_with_personality_clash"),
                      (eq, "$npc_map_talk_context", slot_troop_personalityclash_state), 
 
@@ -4376,6 +4395,8 @@ dialogs = [
   [anyone, "event_triggered", [
                      (eq, "$npc_map_talk_context", slot_troop_personalitymatch_state), 
                      (store_conversation_troop, "$map_talk_troop"),
+					 (is_between, "$map_talk_troop", companions_begin, companions_end),
+					 
                      (eq, "$map_talk_troop", "$npc_with_personality_match"),
 
                      (troop_get_slot, ":speech", "$map_talk_troop", slot_troop_personalitymatch_speech),
@@ -4419,6 +4440,8 @@ dialogs = [
   [anyone, "event_triggered", [
                      (eq, "$npc_map_talk_context", slot_troop_woman_to_woman_string), 
                      (store_conversation_troop, "$map_talk_troop"),
+					 (is_between, "$map_talk_troop", companions_begin, companions_end),					 
+					 
 		             (store_sub, ":npc_no", "$map_talk_troop", "trp_npc1"),
 		             (store_add, ":speech", "str_npc1_woman_to_woman", ":npc_no"),
 #                     (troop_get_slot, ":speech", "$map_talk_troop", slot_troop_woman_to_woman_string),
@@ -4444,6 +4467,8 @@ dialogs = [
                      (eq, "$g_infinite_camping", 0),
                      (eq, "$npc_map_talk_context", slot_troop_home), 
                      (store_conversation_troop, "$map_talk_troop"),
+					 (is_between, "$map_talk_troop", companions_begin, companions_end),					 
+					 
                      (troop_get_slot, ":speech", "$map_talk_troop", slot_troop_home_intro),
                      (str_store_string, s5, ":speech"),
                      ],
@@ -4479,6 +4504,9 @@ dialogs = [
 
   [anyone,"event_triggered", [
     (eq, "$talk_context", tc_rebel_thanks),
+    (store_conversation_troop, "$g_talk_troop"),
+	(is_between, "$g_talk_troop", pretenders_begin, pretenders_end),	
+	
     (troop_get_slot, ":old_faction", "$g_talk_troop", slot_troop_original_faction),
     (str_store_faction_name, s3, ":old_faction"),
     (str_store_string, s6, "@{playername}, when we started our long walk, few people had the courage to support me.\
@@ -4493,6 +4521,7 @@ dialogs = [
    "{s6}", "rebel_thanks_answer",
    [
    
+     (unlock_achievement, ACHIEVEMENT_KINGMAKER),
      (call_script, "script_end_quest", "qst_rebel_against_kingdom"),
        ]],
 
@@ -4506,6 +4535,8 @@ dialogs = [
  
   [anyone, "event_triggered", [
                      (store_conversation_troop, "$map_talk_troop"),
+					 (is_between, "$map_talk_troop", companions_begin, companions_end),
+					 
                      (eq, "$map_talk_troop", "$npc_with_political_grievance"), 
                      (eq, "$npc_map_talk_context", slot_troop_kingsupport_objection_state), 
 
@@ -4532,6 +4563,8 @@ dialogs = [
 		  
   [anyone, "event_triggered", [
                      (store_conversation_troop, "$map_talk_troop"),
+					 (is_between, "$map_talk_troop", companions_begin, companions_end),
+					 
                      (eq, "$map_talk_troop", "$npc_to_rejoin_party"), 
                      (troop_slot_eq, "$map_talk_troop", slot_troop_current_mission, npc_mission_rejoin_when_possible),
 					 (troop_slot_eq, "$map_talk_troop", slot_troop_occupation, slto_player_companion),
@@ -4546,6 +4579,8 @@ dialogs = [
 					
   [anyone, "event_triggered", [
                      (store_conversation_troop, "$map_talk_troop"),
+					 (is_between, "$map_talk_troop", companions_begin, companions_end),					 
+					 
                      (eq, "$map_talk_troop", "$npc_to_rejoin_party"), 
 #                     (eq, "$npc_map_talk_context", slot_troop_days_on_mission), 
                      (troop_slot_eq, "$g_talk_troop", slot_troop_current_mission, npc_mission_kingsupport), 
@@ -4570,6 +4605,7 @@ dialogs = [
 					
 	[anyone, "event_triggered", [
 	    (store_conversation_troop, "$map_talk_troop"),
+		(is_between, "$map_talk_troop", companions_begin, companions_end),		
 	    (eq, "$map_talk_troop", "$npc_to_rejoin_party"), 
 	#                     (eq, "$npc_map_talk_context", slot_troop_days_on_mission), 
 	    (troop_slot_eq, "$map_talk_troop", slot_troop_current_mission, npc_mission_gather_intel), 
@@ -4616,6 +4652,8 @@ dialogs = [
 					
   [anyone, "event_triggered", [
                      (store_conversation_troop, "$map_talk_troop"),
+					 (is_between, "$map_talk_troop", companions_begin, companions_end),
+					 
                      (eq, "$map_talk_troop", "$npc_to_rejoin_party"), 
 #                     (eq, "$npc_map_talk_context", slot_troop_days_on_mission), 
                      (troop_get_slot, ":mission", "$g_talk_troop", slot_troop_current_mission), 
@@ -4840,7 +4878,7 @@ dialogs = [
  
   [anyone, "event_triggered", [
                      ],
-   "Sorry -- just talking to myself [ERROR- {s51}]", "close_window", [
+   "{!}Sorry -- just talking to myself [ERROR- {s51}]", "close_window", [
        ]],
 
 
@@ -7030,6 +7068,7 @@ dialogs = [
 							(troop_slot_eq, ":lady", slot_troop_spouse, -1),
 							(troop_slot_eq, ":lady", slot_troop_betrothed, -1),
 							(troop_slot_eq, ":lady", slot_troop_cur_center, "$g_encountered_party"),
+							(neg|troop_slot_ge, ":lady", slot_troop_met, 4),
 							
 							(call_script, "script_get_kingdom_lady_social_determinants", ":lady"),
 							(eq, reg0, "$g_talk_troop"),
@@ -7067,6 +7106,7 @@ dialogs = [
 							(troop_slot_eq, ":lady", slot_troop_spouse, -1),
 							(troop_slot_eq, ":lady", slot_troop_betrothed, -1),
 							(troop_slot_eq, ":lady", slot_troop_cur_center, "$g_encountered_party"),
+							(neg|troop_slot_ge, ":lady", slot_troop_met, 4),
 							
 							(call_script, "script_get_kingdom_lady_social_determinants", ":lady"),
 							(eq, reg0, "$g_talk_troop"),
@@ -7076,6 +7116,7 @@ dialogs = [
 							(gt, reg0, 0),
 							
 							(troop_slot_ge, ":lady", slot_troop_met, 1),
+							
 							(store_current_hours, ":hours"),
 							(troop_get_slot, ":lady_last_met_hour", ":lady", slot_troop_last_talk_time),
 							(val_sub, ":hours", ":lady_last_met_hour"),
@@ -7161,7 +7202,7 @@ dialogs = [
 	(faction_slot_eq, "$g_talk_troop_faction", slot_faction_ai_object, "$g_encountered_party"),
 	
 	(check_quest_active, "qst_organize_feast"),
-	(check_quest_active, "qst_organize_feast", slot_quest_target_center, "$g_encountered_party"),
+	(quest_slot_eq, "qst_organize_feast", slot_quest_target_center, "$g_encountered_party"),
 
 	
 	(try_begin),
@@ -7530,6 +7571,7 @@ dialogs = [
 	(str_store_string, s9, "$g_rejoinder_to_last_comment"),
    ],
    "{s9}", "lord_respond_to_insult",[
+	(unlock_achievement, ACHIEVEMENT_SASSY),
    ]],
 
 
@@ -7597,6 +7639,9 @@ dialogs = [
   [anyone|plyr,"lord_talk",
   [(check_quest_active, "qst_track_down_bandits"),
    (neg|check_quest_succeeded, "qst_track_down_bandits"),
+   (neg|troop_slot_ge, "$g_talk_troop", slot_troop_prisoner_of_party, 1),
+
+   
   ], "I am hunting a group of bandits with the following description... Have you seen them?", "lord_bandit_information",[]],
   [anyone,"lord_bandit_information", [
 	(call_script, "script_get_manhunt_information_to_s15", "qst_track_down_bandits"),
@@ -10540,8 +10585,25 @@ dialogs = [
    "Let us discuss matters related to our household.", "lord_switch_to_spouse",[]],
 
   [anyone,"lord_switch_to_spouse", [
-  (neg|is_between, "$g_encountered_party", centers_begin, centers_end),
-  ],
+    (assign, ":feast_venue", -1),
+    (try_begin),
+		(is_between, "$g_encountered_party", walled_centers_begin, walled_centers_end),
+		(this_or_next|party_slot_eq, "$g_encountered_party", slot_town_lord, "trp_player"),
+			(party_slot_eq, "$g_encountered_party", slot_town_lord, "$g_talk_troop"),
+		(assign, ":feast_venue", "$g_encountered_party"),	
+	(else_try),
+		(try_for_range, ":center", walled_centers_begin, walled_centers_end),
+			(eq, ":feast_venue", -1),
+			(this_or_next|party_slot_eq, ":center", slot_town_lord, "trp_player"),
+				(party_slot_eq, ":center", slot_town_lord, "$g_talk_troop"),
+			(assign, ":feast_venue", ":center"),	
+		(try_end),
+	(else_try),
+		(is_between, "$g_encountered_party", walled_centers_begin, walled_centers_end),
+		(assign, ":feast_venue", "$g_encountered_party"),
+    (try_end),
+	(gt, ":feast_venue", -1),
+	],
    "Let us wait until we are in a hall, my wife, as it is difficult to deal with household inventories and such matters in the field.", "lord_pretalk",[]],
    
   [anyone,"lord_switch_to_spouse", [],
@@ -11016,8 +11078,8 @@ dialogs = [
   [anyone,"lord_give_order_stop", [],
    "All right. I will stop here.", "lord_pretalk",
    [
-     (troop_set_slot, "$g_talk_troop", slot_party_orders_type, spai_undefined),
-     (troop_set_slot, "$g_talk_troop", slot_party_orders_object, -1),
+     (troop_set_slot, "$g_talk_troop_party", slot_party_orders_type, spai_undefined),
+     (troop_set_slot, "$g_talk_troop_party", slot_party_orders_object, -1),
      #this is not set above, so should be set here
      (store_current_hours, ":hours"),
      (val_sub, ":hours", 36),
@@ -11433,6 +11495,8 @@ dialogs = [
 	(try_for_range, ":lady", kingdom_ladies_begin, kingdom_ladies_end),
 		(eq, "$marriage_candidate", 0),
 		(troop_slot_ge, ":lady", slot_troop_courtship_state, 2),
+		(neg|troop_slot_eq, ":lady", slot_troop_courtship_state, 4),
+		(neg|troop_slot_ge, ":lady", slot_troop_spouse, 0),
 		(call_script, "script_get_kingdom_lady_social_determinants", ":lady"),
 		(eq, reg0, "$g_talk_troop"),
 
@@ -11460,6 +11524,7 @@ dialogs = [
    
   [anyone,"lord_courtship_permission", [ 
     (troop_slot_ge, "$marriage_candidate", slot_troop_met, 2),
+	(neg|troop_slot_eq, "$marriage_candidate", slot_troop_met, 4),
 	(this_or_next|troop_slot_eq, "$g_talk_troop", slot_lord_reputation_type, lrep_debauched),
 		(troop_slot_eq, "$g_talk_troop", slot_lord_reputation_type, lrep_quarrelsome),
 
@@ -15889,10 +15954,16 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
    [
    (eq, "$players_kingdom", "fac_player_supporters_faction"),
    (store_current_hours, ":hours_since_last_feast"),
-   (faction_get_slot, ":last_feast_time", "$players_kingdom", slot_faction_last_feast_concluded),
-	(val_sub, ":hours_since_last_feast", ":last_feast_time"),
-   (lt, ":hours_since_last_feast", 72),
-   (store_sub, ":days_to_wait", 120, ":hours_since_last_feast"),
+   (faction_get_slot, ":last_feast_time", "$players_kingdom", slot_faction_last_feast_start_time),
+   (val_sub, ":hours_since_last_feast", ":last_feast_time"),
+   (try_begin),
+	(ge, "$cheat_mode", 1),
+	(assign, reg4, ":hours_since_last_feast"),
+	(str_store_faction_name, s4, "$players_kingdom"),
+	(display_message, "@{!}DEBUG -- {reg4} hours since last feast for {s4}"),
+   (try_end),
+   (lt, ":hours_since_last_feast", 120),
+   (store_sub, ":days_to_wait", 168, ":hours_since_last_feast"),
    (val_div, ":days_to_wait", 24),
    (assign, reg3, ":days_to_wait"),   
    ],
@@ -15945,11 +16016,31 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
    [ (neq, "$players_kingdom", "fac_player_supporters_faction"),],
    "I shall send word, then, that we will host a feast as soon as conditions in the realm permit. You perhaps should continue to stock our larder, so that we may do justice to our reputation for hospitality.",   "spouse_pretalk",[
 
-	(str_store_party_name, s9, "$g_encountered_party"),
+   
+    (assign, ":feast_venue", -1),
+    (try_begin),
+		(is_between, "$g_encountered_party", walled_centers_begin, walled_centers_end),
+		(this_or_next|party_slot_eq, "$g_encountered_party", slot_town_lord, "trp_player"),
+			(party_slot_eq, "$g_encountered_party", slot_town_lord, "$g_talk_troop"),
+		(assign, ":feast_venue", "$g_encountered_party"),	
+	(else_try),
+		(try_for_range, ":center", walled_centers_begin, walled_centers_end),
+			(eq, ":feast_venue", -1),
+			(this_or_next|party_slot_eq, ":center", slot_town_lord, "trp_player"),
+				(party_slot_eq, ":center", slot_town_lord, "$g_talk_troop"),
+			(assign, ":feast_venue", ":center"),	
+		(try_end),
+	(else_try),
+		(is_between, "$g_encountered_party", walled_centers_begin, walled_centers_end),
+		(assign, ":feast_venue", "$g_encountered_party"),
+    (try_end),
+
+
+	(str_store_party_name, s9, ":feast_venue"),
 	(setup_quest_text, "qst_organize_feast"),
 	(str_store_string, s2, "str_you_intend_to_bring_goods_to_s9_in_preparation_for_the_feast_which_will_be_held_as_soon_as_conditions_permit"),
-   
-	(quest_set_slot, "qst_organize_feast", slot_quest_target_center, "$g_encountered_party"),
+	
+	(quest_set_slot, "qst_organize_feast", slot_quest_target_center, ":feast_venue"),
 	(quest_set_slot, "qst_organize_feast", slot_quest_expiration_days, 30),
 	(call_script, "script_start_quest", "qst_organize_feast", "$g_talk_troop"),
    ]],
@@ -16582,6 +16673,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 	[anyone,"lady_start", [
 					(troop_slot_eq, "$g_talk_troop", slot_troop_occupation, slto_kingdom_lady),
 					(troop_slot_ge, "$g_talk_troop", slot_troop_met, 2),
+					(neg|troop_slot_eq, "$g_talk_troop", slot_troop_met, 4),
 					(troop_get_slot, ":betrothed", "$g_talk_troop", slot_troop_betrothed),
 					(gt, ":betrothed", -1),
 					(neq, ":betrothed", "trp_player"),
@@ -16612,6 +16704,10 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 	[
 	  (troop_slot_eq, "$g_talk_troop", slot_troop_occupation, slto_kingdom_lady),
 	  (troop_slot_eq, "$g_talk_troop", slot_troop_met, 2), 
+	  (neg|troop_slot_eq, "$g_talk_troop", slot_troop_met, 4),
+	  (neg|troop_slot_ge, "trp_player", slot_troop_spouse, active_npcs_begin),
+	  (neg|troop_slot_ge, "$g_talk_troop", slot_troop_spouse, active_npcs_begin),
+	  
 	  (gt, "$g_talk_troop_relation", 0),
 	  (assign, "$romantic_rival", -1),
 	  
@@ -20590,7 +20686,6 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   "minstrel_learn_poem_continue", [
     (troop_remove_gold, "trp_player", 300),
     (val_add, "$mystic_poem_recitations", 1),
-    
   ]],
 
 
@@ -20640,7 +20735,39 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   [anyone, "minstrel_learn_poem_continue", [
   ],
    "Very good -- but there are many stanzas to go. Now, listen closely...", "close_window",
-   [(assign, "$g_leave_town",1),
+   [
+    (try_begin),
+      (try_begin),
+        (eq, "$poem_selected", courtship_poem_mystic),
+        (set_achievement_stat, ACHIEVEMENT_ROMANTIC_WARRIOR, 0, 1),
+      (else_try),
+        (eq, "$poem_selected", courtship_poem_tragic),
+        (set_achievement_stat, ACHIEVEMENT_ROMANTIC_WARRIOR, 1, 1),
+      (else_try),
+        (eq, "$poem_selected", courtship_poem_heroic),
+        (set_achievement_stat, ACHIEVEMENT_ROMANTIC_WARRIOR, 2, 1),
+      (else_try),
+        (eq, "$poem_selected", courtship_poem_comic),
+        (set_achievement_stat, ACHIEVEMENT_ROMANTIC_WARRIOR, 3, 1),
+      (else_try),
+        (eq, "$poem_selected", courtship_poem_allegoric),
+        (set_achievement_stat, ACHIEVEMENT_ROMANTIC_WARRIOR, 4, 1),
+      (try_end),
+      
+      (assign, ":number_of_poems_player_know", 0),
+      (try_for_range, ":poem_number", 0, 5),
+        (get_achievement_stat, ":poem_is_known", ACHIEVEMENT_ROMANTIC_WARRIOR, ":poem_number"),
+        (eq, ":poem_is_known", 1),
+        (val_add, ":number_of_poems_player_know", 1),
+      (try_end),
+      
+      (try_begin),
+        (ge, ":number_of_poems_player_know", 3),
+        (unlock_achievement, ACHIEVEMENT_ROMANTIC_WARRIOR),
+      (try_end),
+    (try_end),
+   
+    (assign, "$g_leave_town",1),
     (rest_for_hours, 2, 2, 0),
     (finish_mission),
    ]],
@@ -25023,9 +25150,14 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
       (party_stack_get_size, ":stack_size", "p_main_party", ":i_stack"),
       (val_mul, ":troop_level", ":stack_size"),
       (val_add, ":main_party_power", ":troop_level"),
-    (try_end),  
-        
+    (try_end),
+
     (store_div, ":main_party_power_divided_by_5", ":main_party_power", 5),
+
+    #find num attached parties to routed warriors
+    (party_get_num_attached_parties, ":num_attached_parties", "$g_encountered_party"),
+
+    (this_or_next|gt, ":num_attached_parties", 0), #always fight
     (ge, ":routed_party_power", ":main_party_power_divided_by_5"),
     ],
    "Haven't you got any mercy? Ok, we will fight you to the last man!", "close_window",

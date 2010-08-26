@@ -2637,7 +2637,7 @@ scene_props = [
    (ti_on_init_scene_prop,
     [
       (store_trigger_param_1, ":instance_no"),
-      (scene_prop_set_hit_points, ":instance_no", 1000),
+      (scene_prop_set_hit_points, ":instance_no", 3000),
     ]),
      
    (ti_on_scene_prop_destroy,
@@ -2725,7 +2725,7 @@ scene_props = [
    (ti_on_init_scene_prop,
     [
       (store_trigger_param_1, ":instance_no"),
-      (scene_prop_set_hit_points, ":instance_no", 1000),
+      (scene_prop_set_hit_points, ":instance_no", 3000),
     ]),
      
    (ti_on_scene_prop_destroy,
@@ -2981,7 +2981,20 @@ scene_props = [
     ("city_swad_passage_01" ,0,"city_swad_passage_01" ,"bo_city_swad_passage_01" , []),
     ("city_swad_05" ,0,"city_swad_05" ,"bo_city_swad_05" , []),
 
+  ("arena_block_j_a",0,"arena_block_j_a","bo_arena_block_j_a", []),
+  ("arena_underway_a",0,"arena_underway_a","bo_arena_underway_a", []),
+  ("arena_circle_a",0,"arena_circle_a","bo_arena_circle_a", []),
+
+  ("rope_bridge_15m",0,"rope_bridge_15m","bo_rope_bridge_15m", []),
+  ("tree_house_a",0,"tree_house_a","bo_tree_house_a", []),
+  ("tree_house_guard_a",0,"tree_house_guard_a","bo_tree_house_guard_a", []),
+  ("tree_house_guard_b",0,"tree_house_guard_b","bo_tree_house_guard_b", []),
+  ("tree_shelter_a",0,"tree_shelter_a","bo_tree_shelter_a", []),
+  ("yellow_fall_leafs_a",0,"0","0",
+   [
+   (ti_on_scene_prop_init,
+    [
+     (particle_system_add_new, "psys_fall_leafs_a"),
+    ]),
+   ]),
 ]
-
-
-

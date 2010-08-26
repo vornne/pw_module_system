@@ -90,6 +90,10 @@ is_trial_version                = 250 # (is_trial_version),
 profile_get_banner_id                = 350 # (profile_get_banner_id, <destination>),
 profile_set_banner_id                = 351 # (profile_set_banner_id, <value>),
 
+get_achievement_stat                 = 370 # (get_achievement_stat, <destination>, <achievement_id>, <stat_index>),
+set_achievement_stat                 = 371 # (set_achievement_stat, <achievement_id>, <stat_index>, <value>),
+unlock_achievement                   = 372 # (unlock_achievement, <achievement_id>),
+
 send_message_to_url                  = 380 # (send_message_to_url, <string_id>), #result will be returned to script_game_receive_url_response
 
 # multiplayer
@@ -354,6 +358,7 @@ set_container_overlay                     = 945 # (set_container_overlay, <overl
 overlay_get_position                      = 946 # (overlay_get_position, <destination>, <overlay_id>)
 overlay_set_display                       = 947 # (overlay_set_display, <overlay_id>, <value>), #shows/hides overlay (1 = show, 0 = hide)
 create_combo_label_overlay                = 948 # (create_combo_label_overlay, <destination>), #returns overlay id
+overlay_obtain_focus                      = 949 # (overlay_obtain_focus, <overlay_id>), #works for textboxes only
 
 overlay_set_tooltip                       = 950 # (overlay_set_tooltip, <overlay_id>, <string_id>),
 
@@ -718,7 +723,7 @@ store_agent_hit_points                 = 1720	# set absolute to 1 to retrieve ac
 						# (store_agent_hit_points,<destination>,<agent_id>,[absolute]),
 agent_set_hit_points                   = 1721	# set absolute to 1 if value is absolute, otherwise value will be treated as relative number in range [0..100]
 						# (agent_set_hit_points,<agent_id>,<value>,[absolute]),
-agent_deliver_damage_to_agent          = 1722	# (agent_deliver_damage_to_agent,<agent_id_deliverer>,<agent_id>),
+agent_deliver_damage_to_agent          = 1722	# (agent_deliver_damage_to_agent,<agent_id_deliverer>,<agent_id>,<value>), #if value <= 0, then damage will be calculated using the weapon item
 agent_get_kill_count                   = 1723   # (agent_get_kill_count,<destination>,<agent_id>,[get_wounded]), #Set second value to non-zero to get wounded count
 agent_get_player_id                    = 1724   # (agent_get_player_id,<destination>,<agent_id>),
 agent_set_invulnerable_shield          = 1725 # (agent_set_invulnerable_shield, <agent_id>),
@@ -788,6 +793,8 @@ agent_set_ammo                         = 1776   # (agent_set_ammo,<agent_id>,<it
 
 agent_add_offer_with_timeout           = 1777   # (agent_add_offer_with_timeout, <agent_id>, <agent_id>, <duration-in-1/1000-seconds>), #second agent_id is offerer, 0 value for duration is an infinite offer
 agent_check_offer_from_agent           = 1778   # (agent_check_offer_from_agent, <agent_id>, <agent_id>), #second agent_id is offerer
+
+agent_equip_item                       = 1779	  # (agent_equip_item,<agent_id>,<item_id>), #for weapons, agent needs to have an empty weapon slot
 
 entry_point_get_position               = 1780   # (entry_point_get_position, <position_no>, <entry_no>),
 entry_point_set_position               = 1781   # (entry_point_set_position, <entry_no>, <position_no>),
@@ -1145,7 +1152,7 @@ str_store_agent_name            = 2332	# (str_store_agent_name,<string_register>
 str_store_faction_name          = 2335	# (str_store_faction_name,<string_register>,<faction_id>),
 str_store_quest_name            = 2336	# (str_store_quest_name,<string_register>,<quest_id>),
 str_store_info_page_name        = 2337	# (str_store_info_page_name,<string_register>,<info_page_id>),
-str_store_date                  = 2340 # (str_store_date,<string_register>,<number_of_days_to_add_to_the_current_date>),
+str_store_date                  = 2340 # (str_store_date,<string_register>,<number_of_hours_to_add_to_the_current_date>),
 str_store_troop_name_link       = 2341 # (str_store_troop_name_link,<string_register>,<troop_id>),
 str_store_party_name_link       = 2342 # (str_store_party_name_link,<string_register>,<party_id>),
 str_store_faction_name_link     = 2343 # (str_store_faction_name_link,<string_register>,<faction_id>),
@@ -1179,7 +1186,8 @@ store_defender_count  = 2383 # (store_defender_count,<destination>),
 store_attacker_count  = 2384 # (store_attacker_count,<destination>),
 store_normalized_team_count = 2385 #(store_normalized_team_count,<destination>, <team_no>), #Counts the number of agents belonging to a team
                                                                                             # and normalizes the result regarding battle_size and advantage.
-set_postfx            = 2386,
+set_postfx            = 2386
+set_river_shader_to_mud = 2387 #changes river material for muddy env
 
 #-------------------------------------------
 
@@ -1195,6 +1203,7 @@ lhs_operations = [try_for_range,
                   get_global_cloud_amount,
                   get_global_haze_amount,
                   profile_get_banner_id,
+                  get_achievement_stat,
                   get_max_players,
                   player_get_team_no,
                   player_get_troop_id,

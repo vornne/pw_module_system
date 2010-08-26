@@ -2408,6 +2408,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("multi_scene_17", "Brunwud Castle"), #Castle 4
   ("multi_scene_18", "Battle on Ice"),
   ("multi_scene_19", "Mahdaar Castle"), #Castle 5
+  ("multi_scene_20", "Jameyyed Castle"), #Castle 6
+  ("multi_scene_21", "The Arena"),
+  ("multi_scene_22", "Forest Hideout"),
   ("multi_scene_12", "Random Plains (Medium)"),
   ("multi_scene_13", "Random Plains (Large)"),
   ("multi_scene_14", "Random Steppe (Medium)"),
@@ -3171,7 +3174,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("in_the_short_term_s15_was_recently_provoked_by_s16_and_is_under_pressure_to_declare_war_as_a_matter_of_general_policy_", "In the short term, {s15} was recently provoked by {s16}, and is under pressure to declare war. As a matter of general policy, "),
   ("envoymodified_diplomacy_score_honor_plus_relation_plus_envoy_persuasion_=_reg4", "{!}Envoy-modified diplomacy score (honor plus relation plus envoy persuasion) = {reg4}"),
   ("s12s15_cannot_negotiate_with_s16_as_to_do_so_would_undermine_reg4herhis_own_claim_to_the_throne_this_civil_war_must_almost_certainly_end_with_the_defeat_of_one_side_or_another", "{s12}{s15} cannot negotiate with {s16}, as to do so would undermine {reg4?her:his} own claim to the throne. This civil war must almost certainly end with the defeat of one side or another."),
-  ("s12s15_considers_s16_to_be_dangerous_and_untrustworthy_and_shehe_wants_to_bring_s16_down", "{s12}{s15} considers {s16} to be dangerous and untrustworthy, and {?she:he} wants to bring {s16} down."),
+  ("s12s15_considers_s16_to_be_dangerous_and_untrustworthy_and_shehe_wants_to_bring_s16_down", "{s12}{s15} considers {s16} to be dangerous and untrustworthy, and {reg4?she:he} wants to bring {s16} down."),
   ("s12s15_is_anxious_to_reclaim_old_lands_such_as_s18_now_held_by_s16", "{s12}{s15} is anxious to reclaim old lands such as {s18}, now held by {s16}."),
   ("s12s15_feels_that_reg4shehe_is_winning_the_war_against_s16_and_sees_no_reason_not_to_continue", "{s12}{s15} feels that {reg4?she:he} is winning the war against {s16}, and sees no reason not to continue."),
   ("s12s15_faces_too_much_internal_discontent_to_feel_comfortable_ignoring_recent_provocations_by_s16s_subjects", "{s12}{s15} faces too much internal discontent to feel comfortable ignoring recent provocations by {s16}'s subjects."),
@@ -4077,11 +4080,12 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("a_duel_request_is_sent_to_s0", "A duel offer is sent to {s0}."),
   ("s0_offers_a_duel_with_you", "{s0} offers a duel with you."),
   ("your_duel_with_s0_is_cancelled", "Your duel with {s0} is cancelled."),
-  ("a_duel_between_you_and_s0_has_started", "A duel between you and {s0} has started!"),
+  ("a_duel_between_you_and_s0_will_start_in_3_seconds", "A duel between you and {s0} will start in 3 seconds."),
   ("you_have_lost_a_duel", "You have lost a duel."),
   ("you_have_won_a_duel", "You have won a duel!"),
   ("server_s0", "[SERVER]: {s0}"),
   ("disallow_ranged_weapons", "Disallow ranged weapons"),
   ("ranged_weapons_are_disallowed", "Ranged weapons are disallowed."),
   ("ranged_weapons_are_allowed", "Ranged weapons are allowed."),
+  ("duel_starts_in_reg0_seconds", "Duel starts in {reg0} seconds..."),
 ]

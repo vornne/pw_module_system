@@ -36,7 +36,8 @@ tracks = [
   ("ambushed_by_rhodok",  "ambushed_by_rhodok.ogg", mtf_culture_5|mtf_sit_ambushed|mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_culture_all),
   ("ambushed_by_swadian", "ambushed_by_swadian.ogg", mtf_culture_1|mtf_sit_ambushed|mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_culture_all),
   ("ambushed_by_vaegir",  "ambushed_by_vaegir.ogg", mtf_culture_2|mtf_sit_ambushed|mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_culture_all),
-
+  ("ambushed_by_sarranid", "middle_eastern_action.ogg", mtf_culture_6|mtf_sit_ambushed|mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_culture_all),
+  
   ("arena_1", "arena_1.ogg", mtf_sit_arena, 0),
 #  ("arena_2", "arena_2.ogg", mtf_looping|mtf_sit_arena, 0),
   ("armorer", "armorer.ogg", mtf_sit_travel, 0),
@@ -56,12 +57,14 @@ tracks = [
   ("fight_2", "fight_2.ogg", mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed, 0),
   ("fight_3", "fight_3.ogg", mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed, 0),
   ("fight_as_khergit", "fight_as_khergit.ogg", mtf_culture_3|mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed, mtf_culture_all),
+  ("fight_4", "percussion_battery.ogg", mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed, 0),  
   ("fight_as_nord", "fight_as_nord.ogg", mtf_culture_4|mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed, mtf_culture_all),
   ("fight_as_rhodok", "fight_as_rhodok.ogg", mtf_culture_5|mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed, mtf_culture_all),
 #  ("fight_as_swadian", "fight_as_swadian.ogg", mtf_culture_1|mtf_sit_fight|mtf_sit_multiplayer_fight, mtf_culture_all),
   ("fight_as_vaegir", "fight_as_vaegir.ogg", mtf_culture_2|mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed, mtf_culture_all),
   ("fight_while_mounted_1", "fight_while_mounted_1.ogg", mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed, 0),
   ("fight_while_mounted_2", "fight_while_mounted_2.ogg", mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed, 0),
+  ("fight_while_mounted_3", "warband_action.ogg", mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed, 0),
   
   ("infiltration_khergit", "infiltration_khergit.ogg", mtf_culture_3|mtf_sit_town_infiltrate, mtf_culture_all),
 
@@ -84,7 +87,10 @@ tracks = [
   ("retreat", "retreat.ogg", mtf_persist_until_finished|mtf_sit_killed, 0),
 
   ("seige_neutral", "seige_neutral.ogg", mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed),
-
+  ("enter_the_juggernaut", "enter_the_juggernaut.ogg", mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed),  
+  ("siege_attempt", "siege_attempt.ogg", mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed),  
+  ("crazy_battle_music", "crazy_battle_music.ogg", mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_sit_ambushed),
+  
   ("tavern_1", "tavern_1.ogg", mtf_sit_tavern|mtf_sit_feast, 0),
   ("tavern_2", "tavern_2.ogg", mtf_sit_tavern|mtf_sit_feast, 0),
 
@@ -101,8 +107,11 @@ tracks = [
   ("travel_rhodok",  "travel_rhodok.ogg",  mtf_culture_5|mtf_sit_travel, mtf_sit_town|mtf_sit_tavern|mtf_sit_night|mtf_culture_all),
   ("travel_swadian", "travel_swadian.ogg", mtf_culture_1|mtf_sit_travel, mtf_sit_town|mtf_sit_tavern|mtf_sit_night|mtf_culture_all),
   ("travel_vaegir",  "travel_vaegir.ogg",  mtf_culture_2|mtf_sit_travel, mtf_sit_town|mtf_sit_tavern|mtf_sit_night|mtf_culture_all),
+  ("travel_sarranid",  "middle_eastern_travel.ogg",  mtf_culture_6|mtf_sit_travel, mtf_sit_town|mtf_sit_tavern|mtf_sit_night|mtf_culture_all),
 
   ("uncertain_homestead", "uncertain_homestead.ogg", mtf_sit_travel, mtf_sit_town|mtf_sit_night|mtf_sit_tavern),
+  ("hearth_and_brotherhood", "hearth_and_brotherhood.ogg", mtf_sit_travel, mtf_sit_town|mtf_sit_night|mtf_sit_tavern),
+  ("tragic_village", "tragic_village.ogg", mtf_sit_travel, mtf_sit_town|mtf_sit_night|mtf_sit_tavern),
 
   ("victorious_evil", "victorious_evil.ogg", mtf_persist_until_finished, 0),
   ("victorious_neutral_1", "victorious_neutral_1.ogg", mtf_persist_until_finished|mtf_sit_victorious, 0),
@@ -113,4 +122,10 @@ tracks = [
   ("victorious_vaegir", "victorious_vaegir.ogg", mtf_persist_until_finished|mtf_culture_2|mtf_sit_victorious, 0),
   ("victorious_vaegir_2", "victorious_vaegir_2.ogg", mtf_persist_until_finished|mtf_culture_2|mtf_sit_victorious, 0),
   ("wedding", "wedding.ogg", mtf_persist_until_finished, 0),
+
+  ("coronation", "coronation.ogg", mtf_persist_until_finished, 0),
+
+
+
+  
 ]
