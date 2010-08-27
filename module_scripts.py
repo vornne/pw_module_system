@@ -9583,6 +9583,7 @@ scripts = [
           #allow duelists to receive new offers
           (this_or_next|agent_check_offer_from_agent, ":player_agent_no", ":value"),
           (agent_slot_eq, ":player_agent_no", slot_agent_in_duel_with, -1),
+          (neg|agent_slot_eq, ":player_agent_no", slot_agent_in_duel_with, ":value"), #don't allow spamming duel offers during countdown
           #condition checks are done
           (try_begin),
             #accepting a duel
@@ -10164,12 +10165,14 @@ scripts = [
 ##     (agent_add_relation_with_agent, ":agent_no", ":agent_no_offerer", -1),
 ##     (agent_add_relation_with_agent, ":agent_no_offerer", ":agent_no", -1),
      (agent_get_player_id, ":player_no", ":agent_no"),
+     (store_mission_timer_a, ":mission_timer"),
      (try_begin),
        (player_is_active, ":player_no"), #might be AI
        (multiplayer_send_int_to_player, ":player_no", multiplayer_event_start_duel, ":agent_no_offerer"),
      (else_try),
        (agent_force_rethink, ":agent_no"),
      (try_end),
+     (agent_set_slot, ":agent_no", slot_agent_duel_start_time, ":mission_timer"),
      (agent_get_player_id, ":agent_no_offerer_player", ":agent_no_offerer"),
      (try_begin),
        (player_is_active, ":agent_no_offerer_player"), #might be AI
@@ -10177,6 +10180,7 @@ scripts = [
      (else_try),
        (agent_force_rethink, ":agent_no_offerer"),
      (try_end),
+     (agent_set_slot, ":agent_no_offerer", slot_agent_duel_start_time, ":mission_timer"),
      ]),
 
   # script_game_get_multiplayer_server_option_for_mission_template
@@ -10632,6 +10636,7 @@ scripts = [
        (agent_is_active, ":player_agent_no"),
        (this_or_next|agent_slot_eq, ":player_agent_no", slot_agent_in_duel_with, -1),
        (agent_check_offer_from_agent, ":player_agent_no", ":agent_no"),
+       (neg|agent_slot_eq, ":player_agent_no", slot_agent_in_duel_with, ":agent_no"), #don't allow spamming duel offers during countdown
        (multiplayer_send_int_to_server, multiplayer_event_offer_duel, ":agent_no"),
        (agent_get_player_id, ":player_no", ":agent_no"),
        (try_begin),

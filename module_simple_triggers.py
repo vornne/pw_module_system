@@ -1393,16 +1393,31 @@ simple_triggers = [
 
         (val_mul, ":num_cattle", 6),
         (val_div, ":num_cattle", 5),
+		(val_add, ":num_cattle", 1),
+		
         (val_mul, ":num_sheep", 6),
         (val_div, ":num_sheep", 5),
+		(val_add, ":num_sheep", 1),
+		
      (else_try), #good grazing
 	    (lt, ":grazing_capacity", 100),
         (lt, ":random_no", 50),#double growth
 
         (val_mul, ":num_cattle", 21),
         (val_div, ":num_cattle", 20),
+		(try_begin),
+			(lt, ":num_cattle", 21),
+			(val_add, ":num_cattle", 1),
+		(try_end),
+		
         (val_mul, ":num_sheep", 21),
         (val_div, ":num_sheep", 20),
+		(try_begin),
+			(lt, ":num_sheep", 21),
+			(val_add, ":num_sheep", 1),
+		(try_end),
+
+		
      (try_end),
 
      (party_set_slot, ":village_no", slot_center_head_cattle, ":num_cattle"),

@@ -21052,6 +21052,10 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
 			
 		(try_end),
 
+		(try_begin),
+			(neq, ":last_suitor_noted", "$romantic_rival"),
+			(assign, "$romantic_rival", -1),
+		(try_end),
 		
 		(try_begin),
 			(gt, ":last_lady_noted", 0),
