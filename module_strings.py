@@ -223,4 +223,10 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("profile_banner_selection_text", "Choose a banner for your profile:"),
   ("use_default_banner", "Use Faction's Banner"),
 
+  ("game_type_1", "Conquest"),
+  ("game_types_end", "game_types_end"),
+
+  ("scene_name_1", "Test Scene"),
+  ("scene_names_end", "scene_names_end"),
+
 ]

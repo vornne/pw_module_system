@@ -33,5 +33,52 @@ from module_constants import *
 ####################################################################################################################
 
 mission_templates = [
-  ("default", 0, -1, "Default mission.", [(0,0,0,0,1,[])], [(ti_escape_pressed, 0, 0, [], [(finish_mission,0)])]),
+  ("conquest", mtf_battle_mode, -1, "Fight for control of the castles.",
+   [
+    (0,mtef_visitor_source,0,aif_start_alarmed,1,[]),
+    ],
+   [
+    (ti_before_mission_start, 0, 0, [],
+     [(scene_set_day_time, 12),
+      (server_set_melee_friendly_fire, 1),
+      (server_set_friendly_fire_damage_self_ratio, 0),
+      (server_set_friendly_fire_damage_friend_ratio, 100),
+      (team_set_relation, 0, 0, -1),
+      ]),
+
+    (ti_after_mission_start, 0, 0, [],
+     [(set_spawn_effector_scene_prop_kind, 0, -1),
+      (set_spawn_effector_scene_prop_kind, 1, -1),
+      ]),
+
+    (ti_server_player_joined, 0, 0, [],
+     [(store_trigger_param_1, ":player_id"),
+      (player_set_team_no, ":player_id", 0),
+      (player_set_troop_id, ":player_id", "trp_player"),
+      ]),
+
+    (0, 0, 0, [(multiplayer_is_server)],
+     [(val_add, "$g_loop_player_id", 1),
+      (get_max_players, ":max_players"),
+      (try_begin),
+        (ge, "$g_loop_player_id", ":max_players"),
+        (assign, "$g_loop_player_id", 0),
+      (try_end),
+
+      (player_is_active, "$g_loop_player_id"),
+      (neg|player_is_busy_with_menus, "$g_loop_player_id"),
+      (player_get_agent_id, ":agent_id", "$g_loop_player_id"),
+      (this_or_next|lt, ":agent_id", 0),
+      (neg|agent_is_alive, ":agent_id"),
+      (player_spawn_new_agent, "$g_loop_player_id", 0),
+      ]),
+
+    (ti_escape_pressed, 0, 0, [],
+     [(finish_mission),
+      ]),
+
+    ]),
+
+    ("edit_scene", 0, -1, "edit_scene", [(0,0,0,0,1,[])],
+     [(ti_before_mission_start, 0, 0, [], [(scene_set_day_time, 12)]), (ti_escape_pressed, 0, 0, [], [(finish_mission)])]),
 ]

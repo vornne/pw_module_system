@@ -47,5 +47,17 @@
 
 ########################################################
 
+scenes_begin = 0
+scenes_end = "scn_scenes_end"
+
+scene_names_begin = "str_scene_name_1"
+scene_names_end = "str_scene_names_end"
+
+game_type_mission_templates_begin = "mt_conquest"
+game_type_mission_templates_end = "mt_edit_scene"
+
+game_type_names_begin = "str_game_type_1"
+game_type_names_end = "str_game_types_end"
+
 banner_meshes_begin = "mesh_banner_a01"
 banner_meshes_end_minus_one = "mesh_banner_f21"

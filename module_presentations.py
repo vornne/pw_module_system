@@ -349,7 +349,16 @@ presentations = [
     ]),
 
   ("game_custom_battle_designer", prsntf_manual_end_only, "mesh_cb_ui_main", []),
-  ("game_multiplayer_admin_panel", prsntf_manual_end_only, 0, []),
+
+  ("game_multiplayer_admin_panel", prsntf_manual_end_only, 0,
+   [(ti_on_presentation_load,
+     [(team_set_faction, 0, 0),
+      (team_set_faction, 1, 0),
+      (start_multiplayer_mission, "mt_edit_scene", "scn_scene_1", 1),
+      (presentation_set_duration, 100),
+      ]),
+    ]),
+
   ("game_before_quit", 0, "mesh_load_window", []),
 
   ]
