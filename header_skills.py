@@ -472,3 +472,31 @@ knows_reserved_18_10 = 233840261972944466912589573234605283144949206876160
 
 
 num_skill_words = 6
+
+skl_labouring = skl_reserved_1
+knows_labouring_1 = knows_reserved_1_1
+knows_labouring_2 = knows_reserved_1_2
+knows_labouring_3 = knows_reserved_1_3
+knows_labouring_4 = knows_reserved_1_4
+knows_labouring_5 = knows_reserved_1_5
+knows_labouring_6 = knows_reserved_1_6
+knows_labouring_7 = knows_reserved_1_7
+knows_labouring_8 = knows_reserved_1_8
+knows_labouring_9 = knows_reserved_1_9
+knows_labouring_10 = knows_reserved_1_10
+
+pw_skills = [
+  "ironflesh",
+  "power_strike",
+  "power_draw",
+  "power_throw",
+  "athletics",
+  "riding",
+  "horse_archery",
+  "engineer",
+  "wound_treatment",
+  "labouring",
+  ]
+
+def get_skill_name(skill):
+  return skill.capitalize().replace("_", " ")

@@ -72,8 +72,13 @@ def wp_melee(x):
 reserved = 0
 no_scene = 0
 
+default_face_1 = 0x0000000400000001124000000020000000000000001c00800000000000000000
+default_face_2 = 0x0000000cbf00230c4deeffffffffffff00000000001efff90000000000000000
+
 tf_guarantee_all = tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_helmet|tf_guarantee_horse|tf_guarantee_shield|tf_guarantee_ranged
 tf_guarantee_all_wo_ranged = tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_helmet|tf_guarantee_horse|tf_guarantee_shield
+
+pw_str_5 = bignum | 0x00000002
 
 troops = [
   ["player","Player","Player",tf_hero|tf_unmoveable_in_party_window,no_scene,reserved,0, [], str_4|agi_4|int_4|cha_4,wp(15),0,0x000000018000000136db6db6db6db6db00000000001db6db0000000000000000],
@@ -83,4 +88,44 @@ troops = [
 ####################################################################################################################
 # Troops before this point are hardwired into the game and their order should not be changed!
 ####################################################################################################################
+
+  ["peasant","Peasant","a peasant",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_straw_hat","itm_felt_hat","itm_coarse_tunic","itm_leather_apron","itm_wrapping_boots","itm_woolen_hose","itm_old_knife"],
+   str_8|agi_8|int_4|cha_4|level(1),wpe(50,10,20,30),knows_labouring_2|knows_riding_1,default_face_1,default_face_2],
+  ["serf","Serf","a serf",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_head_wrappings","itm_shirt","itm_wrapping_boots"],
+   pw_str_5|agi_5|int_4|cha_4|level(1),wpe(30,10,10,10),knows_labouring_5|knows_engineer_1|knows_riding_1,default_face_1,default_face_2],
+  ["footman","Footman","a footman",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_leather_cap","itm_woolen_cap","itm_tabard","itm_rawhide_coat","itm_hide_boots","itm_ankle_boots","itm_crude_spear","itm_rusty_sword","itm_blunt_falchion"],
+   str_15|agi_15|int_4|cha_4|level(1),wpex(100,100,130,30,50,80),knows_ironflesh_5|knows_power_strike_4|knows_power_throw_2|knows_athletics_5|knows_riding_2,default_face_1,default_face_2],
+  ["archer","Archer","an archer",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_common_hood","itm_padded_coif","itm_linen_tunic","itm_tunic_with_green_cape","itm_ankle_boots","itm_crude_bow","itm_bent_arrows"],
+   str_14|agi_14|int_4|cha_4|level(1),wpex(90,70,60,150,50,50),knows_ironflesh_4|knows_power_strike_2|knows_power_draw_4|knows_athletics_4|knows_riding_2,default_face_1,default_face_2],
+  ["crossbowman","Crossbowman","a crossbowman",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_padded_coif","itm_arming_cap","itm_leather_vest","itm_tabard","itm_nomad_boots","itm_ankle_boots","itm_hide_boots","itm_flimsy_crossbow","itm_crude_bolts"],
+   str_14|agi_14|int_4|cha_4|level(1),wpex(90,60,60,50,150,50),knows_ironflesh_3|knows_power_strike_3|knows_athletics_4|knows_riding_2,default_face_1,default_face_2],
+  ["lancer","Lancer","a lancer",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_nomad_cap","itm_leather_cap","itm_leather_jacket","itm_leather_vest","itm_leather_boots","itm_hide_boots","itm_bent_lance"],
+   str_14|agi_14|int_4|cha_4|level(1),wpex(90,90,120,30,30,80),knows_ironflesh_3|knows_power_strike_3|knows_power_throw_2|knows_athletics_1|knows_riding_6,default_face_1,default_face_2],
+  ["man_at_arms","Man at Arms","a man at arms",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_arming_cap","itm_leather_cap","itm_linen_tunic","itm_tabard","itm_leather_boots","itm_hide_boots","itm_rusty_sword","itm_worn_sword","itm_old_shield"],
+   str_15|agi_14|int_4|cha_4|level(1),wpex(100,120,110,10,30,10),knows_ironflesh_4|knows_power_strike_4|knows_athletics_2|knows_riding_4,default_face_1,default_face_2],
+  ["engineer","Engineer","an engineer",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_felt_hat_b","itm_common_hood","itm_pelt_coat","itm_leather_apron","itm_hunter_boots","itm_nomad_boots","itm_old_knife"],
+   str_10|agi_12|int_4|cha_4|level(1),wpex(90,80,100,50,80,50),knows_ironflesh_2|knows_power_strike_2|knows_athletics_2|knows_engineer_5|knows_riding_2,default_face_1,default_face_2],
+  ["doctor","Doctor","a doctor",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_fur_hat","itm_headcloth","itm_fur_coat","itm_leather_vest","itm_ankle_boots","itm_woolen_hose"],
+   str_10|agi_10|int_4|cha_4|level(1),wpex(60,50,50,10,20,20),knows_athletics_2|knows_wound_treatment_5|knows_riding_1,default_face_1,default_face_2],
+  ["lord","Lord","the lord",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_skullcap","itm_courtly_outfit","itm_nobleman_outfit","itm_blue_hose","itm_leather_boots","itm_worn_sword"],
+   str_15|agi_14|int_4|cha_4|level(1),wpex(110,110,110,50,50,50),knows_ironflesh_5|knows_power_strike_3|knows_athletics_2|knows_riding_5,default_face_1,default_face_2],
+  ["ruffian","Ruffian","a ruffian",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_head_wrappings","itm_nomad_vest","itm_nomad_armor","itm_wrapping_boots","itm_club"],
+   str_15|agi_12|int_4|cha_4|level(1),wpex(80,80,80,50,50,80),knows_ironflesh_2|knows_power_strike_2|knows_athletics_3|knows_riding_1,default_face_1,default_face_2],
+  ["brigand","Brigand","a brigand",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_nomad_cap","itm_khergit_armor","itm_nomad_vest","itm_wrapping_boots","itm_hunter_boots","itm_old_knife","itm_blunt_falchion"],
+   str_12|agi_12|int_4|cha_4|level(1),wpex(70,60,70,100,80,80),knows_ironflesh_2|knows_power_draw_2|knows_athletics_3|knows_riding_1,default_face_1,default_face_2],
+
+  ["playable_troops_end","playable_troops_end","playable_troops_end",0,0,0,0,[],0,0,0,0,0],
+
 ]

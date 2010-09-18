@@ -17,5 +17,11 @@ from header_factions import *
 ####################################################################################################################
 
 factions = [
-  ("no_faction","No Faction", 0, 1.0, [], []),
+  ("commoners","Commoners", 0, 0, [], [], 0x990099),
+  ("outlaws","Outlaws", 0, 0, [], [], 0x775500),
+  ("1","Red Faction", 0, 0, [], [], 0xDD0000),
+  ("2","White Faction", 0, 0, [], [], 0xFFFFFF),
+  ("3","Blue Faction", 0, 0, [], [], 0x3333FF),
+  ("4","Green Faction", 0, 0, [], [], 0x00DD00),
+  ("factions_end","factions_end", 0, 0, [], []),
 ]

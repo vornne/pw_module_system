@@ -9,6 +9,11 @@
 ##  PLAYER SLOTS           #############################
 ########################################################
 
+# Keep these the same as the equipment slots (ek_* in header_items)
+slot_player_current_armor_head        = 4
+slot_player_current_armor_body        = 5
+slot_player_current_armor_foot        = 6
+slot_player_current_armor_gloves      = 7
 
 ########################################################
 ##  AGENT SLOTS            #############################
@@ -39,6 +44,18 @@
 ##  TROOP SLOTS            #############################
 ########################################################
 
+troop_slot_count_per_equipment_type   = 5
+slot_troop_equipment_one_hand_begin   = 0
+slot_troop_equipment_two_hand_begin   = 1 * troop_slot_count_per_equipment_type
+slot_troop_equipment_ranged_begin     = 2 * troop_slot_count_per_equipment_type
+slot_troop_equipment_ammo_begin       = 3 * troop_slot_count_per_equipment_type
+slot_troop_equipment_shield_begin     = 4 * troop_slot_count_per_equipment_type
+slot_troop_equipment_head_begin       = 5 * troop_slot_count_per_equipment_type
+slot_troop_equipment_body_begin       = 6 * troop_slot_count_per_equipment_type
+slot_troop_equipment_foot_begin       = 7 * troop_slot_count_per_equipment_type
+slot_troop_equipment_hand_begin       = 8 * troop_slot_count_per_equipment_type
+slot_troop_equipment_horse_begin      = 9 * troop_slot_count_per_equipment_type
+
 
 ########################################################
 ##  TEAM SLOTS             #############################
@@ -46,6 +63,19 @@
 
 
 ########################################################
+
+all_items_begin = "itm_straw_hat"
+all_items_end = "itm_all_items_end"
+
+wielded_items_begin = "itm_club"
+wielded_items_end = "itm_all_items_end"
+
+playable_troops_begin = "trp_peasant"
+playable_troops_end = "trp_playable_troops_end"
+
+factions_begin = "fac_commoners"
+castle_factions_begin = "fac_1"
+factions_end = "fac_factions_end"
 
 scenes_begin = 0
 scenes_end = "scn_scenes_end"

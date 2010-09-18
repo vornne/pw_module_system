@@ -54,7 +54,7 @@ mission_templates = [
     (ti_server_player_joined, 0, 0, [],
      [(store_trigger_param_1, ":player_id"),
       (player_set_team_no, ":player_id", 0),
-      (player_set_troop_id, ":player_id", "trp_player"),
+      (player_set_troop_id, ":player_id", "trp_peasant"),
       ]),
 
     (0, 0, 0, [(multiplayer_is_server)],
@@ -70,6 +70,8 @@ mission_templates = [
       (player_get_agent_id, ":agent_id", "$g_loop_player_id"),
       (this_or_next|lt, ":agent_id", 0),
       (neg|agent_is_alive, ":agent_id"),
+      (player_get_troop_id, ":troop_id", "$g_loop_player_id"),
+      (call_script, "script_player_add_spawn_items", "$g_loop_player_id", ":troop_id"),
       (player_spawn_new_agent, "$g_loop_player_id", 0),
       ]),
 
