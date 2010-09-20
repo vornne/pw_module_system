@@ -24,6 +24,10 @@ slot_player_current_armor_gloves      = 7
 ##  SCENE PROP SLOTS       #############################
 ########################################################
 
+slot_scene_prop_item_id               = 0
+slot_scene_prop_gold_value            = 1
+slot_scene_prop_gold_multiplier       = 2
+slot_scene_prop_use_string            = 3
 
 ########################################################
 ##  ITEM SLOTS             #############################
@@ -74,6 +78,9 @@ player_array_entry_size               = 3
 loop_player_check_interval            = 5
 
 max_distance_to_play_sound            = 10000
+
+seconds_before_removing_dropped_item  = 300
+sell_item_gold_multiplier             = 80
 
 all_items_begin = "itm_straw_hat"
 all_items_end = "itm_all_items_end"

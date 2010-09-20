@@ -16,6 +16,64 @@ import string
 #  5) Triggers: Simple triggers that are associated with the scene prop
 ####################################################################################################################
 
+def spr_item_init_trigger(item_id, use_string=None):
+  init_trigger = (ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_item_id, item_id),
+      ])
+  if use_string is not None:
+    init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string))
+  return init_trigger
+
+def spr_call_script_use_trigger(script_name, *args):
+  use_trigger = (ti_on_scene_prop_use,
+     [(store_trigger_param_1, ":agent_id"),
+      (store_trigger_param_2, ":instance_id"),
+      ])
+  call_script_list = [call_script, script_name, ":agent_id", ":instance_id"]
+  call_script_list.extend(args)
+  use_trigger[1].append(tuple(call_script_list))
+  return use_trigger
+
+def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_string=None):
+  use_trigger = (ti_on_scene_prop_use,
+     [(store_trigger_param_1, ":agent_id"),
+      (store_trigger_param_2, ":instance_id"),
+      (prop_instance_get_position, pos1, ":instance_id")])
+  if pos_offset[0] != 0:
+    use_trigger[1].append((position_move_x, pos1, pos_offset[0]))
+  if pos_offset[1] != 0:
+    use_trigger[1].append((position_move_y, pos1, pos_offset[1]))
+  if pos_offset[2] != 0:
+    use_trigger[1].append((position_move_z, pos1, pos_offset[2]))
+  if rotate[0] != 0:
+    use_trigger[1].append((position_rotate_x, pos1, rotate[0]))
+  if rotate[1] != 0:
+    use_trigger[1].append((position_rotate_y, pos1, rotate[1]))
+  if rotate[2] != 0:
+    use_trigger[1].append((position_rotate_z, pos1, rotate[2]))
+  use_trigger[1].append((call_script, "script_cf_buy_item", ":agent_id", ":instance_id"))
+  return [spr_item_init_trigger(item_id, use_string), use_trigger]
+
+def spr_gain_gold_triggers(gold_value, use_string="str_collect_reg1_gold"):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_value, gold_value),
+      ]),
+    spr_call_script_use_trigger("script_cf_gain_gold")]
+
+def spr_gain_health_triggers(heal_pct, heal_limit_pct=100, horse=0, use_string="str_rest"):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
+      ]),
+    (ti_on_scene_prop_use,
+     [(store_trigger_param_1, ":agent_id"),
+      (call_script, "script_cf_gain_health", ":agent_id", heal_pct, heal_limit_pct, horse),
+      ]),
+    ]
+
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
   ("inventory",sokf_type_container|sokf_place_at_origin,"package","bobaggage", []),
@@ -1351,5 +1409,18 @@ scene_props = [
   ("tree_house_guard_b",0,"tree_house_guard_b","bo_tree_house_guard_b", []),
   ("tree_shelter_a",0,"tree_shelter_a","bo_tree_shelter_a", []),
   ("yellow_fall_leafs_a",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_fall_leafs_a")])]),
+
+  ("pw_buy_shirt",spr_use_time(1),"shirt","bo_armor_body", spr_buy_item_triggers("itm_shirt")),
+  ("pw_buy_skullcap",spr_use_time(1),"skull_cap_new_a","bo_armor_head", spr_buy_item_triggers("itm_skullcap")),
+  ("pw_buy_curved_sword",spr_use_time(1),"khergit_sword","bo_weapon", spr_buy_item_triggers("itm_curved_sword")),
+  ("pw_buy_leather_boots",spr_use_time(1),"leather_boots_a","bo_armor_foot", spr_buy_item_triggers("itm_leather_boots")),
+  ("pw_buy_scale_gauntlets",spr_use_time(1),"scale_gauntlets_b_L","bo_armor_hand", spr_buy_item_triggers("itm_scale_gauntlets")),
+  ("pw_buy_tribal_warrior_outfit",spr_use_time(1),"tribal_warrior_outfit_a_new","bo_armor_body", spr_buy_item_triggers("itm_tribal_warrior_outfit")),
+  ("pw_buy_falchion",spr_use_time(1),"falchion_new","bo_weapon", spr_buy_item_triggers("itm_falchion")),
+  ("pw_buy_hunting_bow",spr_use_time(1),"hunting_bow","bo_weapon", spr_buy_item_triggers("itm_hunting_bow")),
+  ("pw_buy_arrows",spr_use_time(1),"arrow","bo_weapon_small", spr_buy_item_triggers("itm_arrows")),
+  ("pw_test_gold",spr_use_time(1),"tree_house_guard_a","bo_tree_house_guard_a", spr_gain_gold_triggers(10000)),
+  ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a", spr_gain_health_triggers(30)),
+  ("pw_test_poison",spr_use_time(1),"wood_b","bo_wood_b", spr_gain_health_triggers(-30)),
 
 ]

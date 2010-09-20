@@ -227,6 +227,11 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("game_types_end", "game_types_end"),
 
   ("done", "Done"),
+  ("use", "Use"),
+  ("buy", "Buy"),
+  ("dont_have_enough_money", "You don't have enough money."),
+  ("collect_reg1_gold", "Collect {reg1} gold"),
+  ("rest", "Rest"),
 
   ("scene_name_1", "Test Scene"),
   ("scene_names_end", "scene_names_end"),

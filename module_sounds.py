@@ -211,5 +211,6 @@ sounds = [
  ("enemy_scored_a_point", sf_2d|sf_priority_10|sf_vol_10, ["enemy_scored_a_point.ogg"]),
 
  ("failure", sf_2d|sf_priority_10|sf_vol_5, ["cue_failure.ogg"]),
+ ("man_yawn",sf_priority_7|sf_vol_10, ["man_yawn_1.ogg"]),
  ("sounds_end", 0, []),
 ]
