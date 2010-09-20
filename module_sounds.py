@@ -209,4 +209,7 @@ sounds = [
  ("flag_returned", sf_2d|sf_priority_10|sf_vol_10, ["your_flag_returned.ogg"]),
  ("team_scored_a_point", sf_2d|sf_priority_10|sf_vol_10, ["you_scored_a_point.ogg"]),
  ("enemy_scored_a_point", sf_2d|sf_priority_10|sf_vol_10, ["enemy_scored_a_point.ogg"]),
+
+ ("failure", sf_2d|sf_priority_10|sf_vol_5, ["cue_failure.ogg"]),
+ ("sounds_end", 0, []),
 ]

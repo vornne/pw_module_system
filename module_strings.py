@@ -226,6 +226,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("game_type_1", "Conquest"),
   ("game_types_end", "game_types_end"),
 
+  ("done", "Done"),
+
   ("scene_name_1", "Test Scene"),
   ("scene_names_end", "scene_names_end"),
 

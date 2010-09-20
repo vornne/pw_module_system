@@ -49,6 +49,7 @@ mission_templates = [
     (ti_after_mission_start, 0, 0, [],
      [(set_spawn_effector_scene_prop_kind, 0, -1),
       (set_spawn_effector_scene_prop_kind, 1, -1),
+      (assign, "$g_preset_message_display_enabled", 0),
       ]),
 
     (ti_server_player_joined, 0, 0, [],
@@ -88,6 +89,10 @@ mission_templates = [
 
     (ti_escape_pressed, 0, 0, [],
      [(finish_mission),
+      ]),
+
+    (1, 0, ti_once, [(neg|multiplayer_is_server)],
+     [(assign, "$g_preset_message_display_enabled", 1),
       ]),
 
     ]),
