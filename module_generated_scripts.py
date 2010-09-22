@@ -1,4 +1,5 @@
 from module_scripts import *
+from module_items import *
 
 def generate_script(name, body):
   for script in scripts:
@@ -20,3 +21,12 @@ def generate_store_troop_skills_description():
       ])
   return script_body
 generate_script("store_troop_skills_description", generate_store_troop_skills_description())
+
+def generate_initialize_item_slots():
+  script_body = []
+  for item_id, item in enumerate(items):
+    difficulty = get_difficulty(item[6])
+    if difficulty > 0:
+      script_body.append((item_set_slot, item_id, slot_item_difficulty, difficulty))
+  return script_body
+generate_script("initialize_item_slots", generate_initialize_item_slots())
