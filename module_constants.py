@@ -44,6 +44,7 @@ slot_item_length                      = 1
 ##  FACTION SLOTS          #############################
 ########################################################
 
+slot_faction_banner_mesh              = 0
 
 ########################################################
 ##  SCENE SLOTS            #############################
@@ -118,4 +119,5 @@ game_type_names_begin = "str_game_type_1"
 game_type_names_end = "str_game_types_end"
 
 banner_meshes_begin = "mesh_banner_a01"
+banner_meshes_end = "mesh_arms_a01"
 banner_meshes_end_minus_one = "mesh_banner_f21"

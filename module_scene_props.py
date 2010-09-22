@@ -16,13 +16,15 @@ import string
 #  5) Triggers: Simple triggers that are associated with the scene prop
 ####################################################################################################################
 
-def spr_item_init_trigger(item_id, use_string=None):
+def spr_item_init_trigger(item_id, use_string=None, tableau=None):
   init_trigger = (ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_item_id, item_id),
       ])
   if use_string is not None:
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string))
+  if tableau is not None:
+    init_trigger[1].append((cur_scene_prop_set_tableau_material, tableau, 0))
   return init_trigger
 
 def spr_call_script_use_trigger(script_name, *args):
@@ -35,7 +37,7 @@ def spr_call_script_use_trigger(script_name, *args):
   use_trigger[1].append(tuple(call_script_list))
   return use_trigger
 
-def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_string=None):
+def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_string=None, tableau=None):
   use_trigger = (ti_on_scene_prop_use,
      [(store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":instance_id"),
@@ -53,7 +55,7 @@ def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_strin
   if rotate[2] != 0:
     use_trigger[1].append((position_rotate_z, pos1, rotate[2]))
   use_trigger[1].append((call_script, "script_cf_buy_item", ":agent_id", ":instance_id"))
-  return [spr_item_init_trigger(item_id, use_string), use_trigger]
+  return [spr_item_init_trigger(item_id, use_string, tableau), use_trigger]
 
 def spr_gain_gold_triggers(gold_value, use_string="str_collect_reg1_gold"):
   return [(ti_on_scene_prop_init,
@@ -490,7 +492,7 @@ scene_props = [
   ("banner_l",0,"banner_a12","0", []),
   ("banner_m",0,"banner_a13","0", []),
   ("banner_n",0,"banner_a14","0", []),
-  ("banner_o",0,"banner_f21","0", []),
+  ("banner_o",0,"banner_a15","0", []),
   ("banner_p",0,"banner_a16","0", []),
   ("banner_q",0,"banner_a17","0", []),
   ("banner_r",0,"banner_a18","0", []),
@@ -602,6 +604,7 @@ scene_props = [
   ("banner_f18", 0, "banner_f18", "0", []),
   ("banner_f19", 0, "banner_f19", "0", []),
   ("banner_f20", 0, "banner_f20", "0", []),
+  ("banner_f21", 0, "banner_f21", "0", []),
 
   ("banner_g01", 0, "banner_f01", "0", []),
   ("banner_g02", 0, "banner_f02", "0", []),
@@ -620,7 +623,6 @@ scene_props = [
   ("banner_kingdom_d", 0, "banner_kingdom_d", "0", []),
   ("banner_kingdom_e", 0, "banner_kingdom_e", "0", []),
   ("banner_kingdom_f", 0, "banner_kingdom_f", "0", []),
-  ("banner_f21", 0, "banner_a15", "0", []),
 
   ("tavern_chair_a",0,"tavern_chair_a","bo_tavern_chair_a", []),
   ("tavern_chair_b",0,"tavern_chair_b","bo_tavern_chair_b", []),
@@ -1421,6 +1423,10 @@ scene_props = [
   ("tree_shelter_a",0,"tree_shelter_a","bo_tree_shelter_a", []),
   ("yellow_fall_leafs_a",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_fall_leafs_a")])]),
 
+  ("pw_buy_light_heraldic_mail",spr_use_time(1),"heraldic_armor_new_c","bo_armor_body", spr_buy_item_triggers("itm_light_heraldic_mail", tableau="tableau_heraldic_armor_c")),
+  ("pw_buy_heraldic_mail_with_tunic",spr_use_time(1),"heraldic_armor_new_b","bo_armor_body", spr_buy_item_triggers("itm_heraldic_mail_with_tunic", tableau="tableau_heraldic_armor_b")),
+  ("pw_buy_heraldic_mail_with_tabard",spr_use_time(1),"heraldic_armor_new_d","bo_armor_body", spr_buy_item_triggers("itm_heraldic_mail_with_tabard", tableau="tableau_heraldic_armor_d")),
+  ("pw_buy_heraldic_mail_with_surcoat",spr_use_time(1),"heraldic_armor_new_a","bo_armor_body", spr_buy_item_triggers("itm_heraldic_mail_with_surcoat", tableau="tableau_heraldic_armor_a")),
   ("pw_buy_shirt",spr_use_time(1),"shirt","bo_armor_body", spr_buy_item_triggers("itm_shirt")),
   ("pw_buy_skullcap",spr_use_time(1),"skull_cap_new_a","bo_armor_head", spr_buy_item_triggers("itm_skullcap")),
   ("pw_buy_curved_sword",spr_use_time(1),"khergit_sword","bo_weapon", spr_buy_item_triggers("itm_curved_sword")),

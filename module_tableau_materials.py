@@ -22,6 +22,54 @@ from module_constants import *
 
 #banner height = 200, width = 85 with wood, 75 without wood
 
+def tableau_armor_banner(mesh_tableau, banner_xyz=(0,0,0), banner_scale=100, mesh_xyz=(0,0,100)):
+  script = [(store_script_param, ":banner_mesh", 1),
+    (set_fixed_point_multiplier, 100),
+    (troop_get_slot, ":background_color", "trp_banner_background_color_array", ":banner_mesh"),
+    (cur_tableau_set_background_color, ":background_color"),
+    (init_position, pos1),
+    (cur_tableau_add_mesh_with_vertex_color, "mesh_heraldic_armor_bg", pos1, 200, 100, ":background_color"),
+    (try_begin),
+      (is_between, ":banner_mesh", banner_meshes_begin, banner_meshes_end),
+      (init_position, pos1)]
+  if banner_xyz[0] != 0:
+    script.append((position_set_x, pos1, banner_xyz[0]))
+  if banner_xyz[1] != 0:
+    script.append((position_set_y, pos1, banner_xyz[1]))
+  if banner_xyz[2] != 0:
+    script.append((position_set_z, pos1, banner_xyz[2]))
+  script.extend([(cur_tableau_add_mesh, ":banner_mesh", pos1, banner_scale, 0),
+    (try_end),
+    (init_position, pos1)])
+  if mesh_xyz[0] != 0:
+    script.append((position_set_x, pos1, mesh_xyz[0]))
+  if mesh_xyz[1] != 0:
+    script.append((position_set_y, pos1, mesh_xyz[1]))
+  if mesh_xyz[2] != 0:
+    script.append((position_set_z, pos1, mesh_xyz[2]))
+  script.extend([(cur_tableau_add_mesh, mesh_tableau, pos1, 0, 0),
+    (cur_tableau_set_camera_parameters, 0, 200, 200, 0, 100000)])
+  return script
+
+def tableau_shield_banner(mesh_tableau, banner_xy, banner_scale, camera_width_height):
+  return [(store_script_param, ":banner_mesh", 1),
+    (set_fixed_point_multiplier, 100),
+    (try_begin),
+      (is_between, ":banner_mesh", banner_meshes_begin, banner_meshes_end),
+      (init_position, pos1),
+      (position_set_x, pos1, banner_xy[0]),
+      (position_set_y, pos1, banner_xy[1]),
+      (cur_tableau_add_mesh, ":banner_mesh", pos1, banner_scale, 0),
+    (else_try),
+      (troop_get_slot, ":background_color", "trp_banner_background_color_array", ":banner_mesh"),
+      (cur_tableau_set_background_color, ":background_color"),
+    (try_end),
+    (init_position, pos1),
+    (position_set_z, pos1, 10),
+    (cur_tableau_add_mesh, mesh_tableau, pos1, 0, 0),
+    (cur_tableau_set_camera_parameters, 0, camera_width_height[0], camera_width_height[1], 0, 100000),
+    ]
+
 tableaus = [
   ("game_character_sheet", 0, "tableau_with_transparency", 1024, 1024, 0, 0, 266, 532, []),
   ("game_inventory_window", 0, "tableau_with_transparency", 1024, 1024, 0, 0, 180, 270, []),
@@ -77,5 +125,27 @@ tableaus = [
     (position_set_y, pos1, 120),
     (cur_tableau_add_mesh, ":banner_mesh", pos1, 120, 0),
     ]),
+
+  ("round_shield_1", 0, "sample_shield_round_1", 512, 256, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_round_1", banner_xy=(-50,125), banner_scale=120, camera_width_height=(200,100))),
+  ("round_shield_2", 0, "sample_shield_matte", 512, 256, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_round_2", banner_xy=(-50,120), banner_scale=116, camera_width_height=(200,100))),
+  ("round_shield_3", 0, "sample_shield_matte", 512, 256, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_round_3", banner_xy=(-50,120), banner_scale=116, camera_width_height=(200,100))),
+  ("round_shield_4", 0, "sample_shield_matte", 512, 256, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_round_4", banner_xy=(-50,125), banner_scale=123, camera_width_height=(200,100))),
+  ("round_shield_5", 0, "sample_shield_matte", 512, 256, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_round_5", banner_xy=(-50,125), banner_scale=122, camera_width_height=(200,100))),
+  ("small_round_shield_1", 0, "sample_shield_small_round_1", 512, 256, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_small_round_1", banner_xy=(-50,130), banner_scale=127, camera_width_height=(200,100))),
+  ("small_round_shield_2", 0, "sample_shield_small_round_2", 512, 256, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_small_round_2", banner_xy=(-50,130), banner_scale=127, camera_width_height=(200,100))),
+  ("small_round_shield_3", 0, "sample_shield_matte", 512, 256, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_small_round_3", banner_xy=(-50,130), banner_scale=127, camera_width_height=(200,100))),
+  ("kite_shield_1", 0, "sample_shield_matte", 512, 512, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_kite_1", banner_xy=(-60,140), banner_scale=116, camera_width_height=(200,200))),
+  ("kite_shield_2", 0, "sample_shield_matte", 512, 512, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_kite_2", banner_xy=(-57,140), banner_scale=116, camera_width_height=(200,200))),
+  ("kite_shield_3", 0, "sample_shield_matte", 512, 512, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_kite_3", banner_xy=(-57,140), banner_scale=116, camera_width_height=(200,200))),
+  ("kite_shield_4", 0, "sample_shield_matte", 512, 512, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_kite_4", banner_xy=(-50,160), banner_scale=120, camera_width_height=(200,200))),
+  ("heater_shield_1", 0, "sample_shield_matte", 512, 512, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_heater_1", banner_xy=(-60,151), banner_scale=116, camera_width_height=(200,200))),
+  ("heater_shield_2", 0, "sample_shield_matte", 512, 512, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_heater_2", banner_xy=(-50,150), banner_scale=116, camera_width_height=(200,200))),
+  ("pavise_shield_1", 0, "sample_shield_matte", 512, 512, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_pavise_1", banner_xy=(-54,120), banner_scale=118, camera_width_height=(200,200))),
+  ("pavise_shield_2", 0, "sample_shield_matte", 512, 512, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_pavise_2", banner_xy=(-54,120), banner_scale=116, camera_width_height=(200,200))),
+
+  ("heraldic_armor_a", 0, "sample_heraldic_armor_a", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_a", banner_xyz=(-25,130,50), banner_scale=100)),
+  ("heraldic_armor_b", 0, "sample_heraldic_armor_b", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_b", banner_xyz=(-5,150,10), banner_scale=100)),
+  ("heraldic_armor_c", 0, "sample_heraldic_armor_c", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_c", banner_xyz=(0,150,10), banner_scale=100)),
+  ("heraldic_armor_d", 0, "sample_heraldic_armor_d", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_d", banner_xyz=(0,145,10), banner_scale=100)),
 
 ]

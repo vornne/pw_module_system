@@ -45,6 +45,13 @@ imodbits_horse_good = imodbit_spirited|imodbit_heavy
 imodbits_good   = imodbit_sturdy|imodbit_thick|imodbit_hardened|imodbit_reinforced
 imodbits_bad    = imodbit_rusty|imodbit_chipped|imodbit_tattered|imodbit_ragged|imodbit_cracked|imodbit_bent
 
+def init_heraldic_item(tableau):
+  return [(ti_on_init_item,
+   [(store_trigger_param_1, ":agent_id"),
+    (store_trigger_param_2, ":troop_id"),
+    (call_script, "script_item_set_banner", tableau, ":agent_id", ":troop_id"),
+    ])]
+
 items = [
 ["no_item", "INVALID ITEM", [("invalid_item", 0)], itp_type_one_handed_wpn|itp_primary|itp_secondary, itc_longsword,
  3, weight(1.5)|spd_rtng(103)|weapon_length(90)|swing_damage(16, blunt)|thrust_damage(10, blunt), imodbits_none],
@@ -120,6 +127,14 @@ items = [
  1320, weight(4)|body_armor(24)|leg_armor(10)|difficulty(9), imodbits_cloth],
 ["nobleman_outfit", "Nobleman Outfit", [("nobleman_outfit_b_new", 0)], itp_type_body_armor|itp_covers_legs, 0,
  1348, weight(4)|body_armor(25)|leg_armor(12)|difficulty(9), imodbits_cloth],
+["light_heraldic_mail", "Light Heraldic Mail", [("heraldic_armor_new_c",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 3130, weight(12)|body_armor(30)|leg_armor(5)|difficulty(9), imodbits_armor, init_heraldic_item("tableau_heraldic_armor_c")],
+["heraldic_mail_with_tunic", "Heraldic Mail with Tunic", [("heraldic_armor_new_b",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 5045, weight(15)|body_armor(35)|leg_armor(8)|difficulty(10), imodbits_armor, init_heraldic_item("tableau_heraldic_armor_b")],
+["heraldic_mail_with_tabard", "Heraldic Mail with Tabard", [("heraldic_armor_new_d",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 6970, weight(20)|body_armor(40)|leg_armor(10)|difficulty(12), imodbits_armor, init_heraldic_item("tableau_heraldic_armor_d")],
+["heraldic_mail_with_surcoat", "Heraldic Mail with Surcoat", [("heraldic_armor_new_a",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 10400, weight(25)|body_armor(45)|leg_armor(15)|difficulty(15), imodbits_armor, init_heraldic_item("tableau_heraldic_armor_a")],
 
 ["wrapping_boots", "Wrapping Boots", [("wrapping_boots_a", 0)], itp_type_foot_armor|itp_attach_armature, 0,
  30, weight(1)|leg_armor(3)|difficulty(0), imodbits_cloth],
