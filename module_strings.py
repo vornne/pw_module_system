@@ -265,6 +265,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("already_towing_cart", "Already towing another cart."),
 
   ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12}"),
+  ("pw_welcome", "Welcome adventurer^^Join a faction and fight for control of the castles"),
 
   ("scene_name_1", "Test Scene"),
   ("scene_names_end", "scene_names_end"),

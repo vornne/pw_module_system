@@ -139,6 +139,10 @@ mission_templates = [
      [(assign, "$g_preset_message_display_enabled", 1),
       ]),
 
+    (0, 0, ti_once, [(neg|multiplayer_is_server)],
+     [(call_script, "script_preset_message", "str_pw_welcome", preset_message_read_object, 0, 0),
+      ]),
+
     ]),
 
   ("edit_scene", 0, -1, "edit_scene", [(0,0,0,0,1,[])],
