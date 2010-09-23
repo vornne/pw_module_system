@@ -53,6 +53,8 @@ mission_templates = [
      [(set_spawn_effector_scene_prop_kind, 0, -1),
       (set_spawn_effector_scene_prop_kind, 1, -1),
       (assign, "$g_preset_message_display_enabled", 0),
+      (multiplayer_is_server),
+      (call_script, "script_setup_scene_props_after_mission_start"),
       ]),
 
     (ti_server_player_joined, 0, 0, [],

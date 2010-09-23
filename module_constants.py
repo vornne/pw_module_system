@@ -39,6 +39,9 @@ slot_scene_prop_linked_scene_prop_2   = 11
 slot_scene_prop_linked_scene_prop_3   = 12
 linked_scene_prop_slot_count          = 3
 
+slot_scene_prop_position              = 15
+slot_scene_prop_target_position       = 16
+
 ########################################################
 ##  ITEM SLOTS             #############################
 ########################################################
@@ -98,6 +101,9 @@ max_distance_to_play_sound            = 10000
 
 seconds_before_removing_dropped_item  = 300
 sell_item_gold_multiplier             = 80
+
+winch_type_drawbridge                 = 0
+winch_type_portcullis                 = 1
 
 all_items_begin = "itm_straw_hat"
 all_items_end = "itm_all_items_end"

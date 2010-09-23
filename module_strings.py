@@ -236,6 +236,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("cant_equip_item", "You can't equip this item."),
   ("collect_reg1_gold", "Collect {reg1} gold"),
   ("rest", "Rest"),
+  ("winch_lower", "Lower"),
+  ("winch_raise", "Raise"),
+  ("winch_drop", "Drop"),
   ("s0__s1_", "{!}{s0} ({s1})"),
 
   ("troop_not_available", "Not available to you^{s0}"),

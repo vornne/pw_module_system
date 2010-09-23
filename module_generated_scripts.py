@@ -41,3 +41,16 @@ def generate_setup_all_linked_scene_props():
     script_body.append(tuple([call_script, "script_setup_linked_scene_props"] + link_entry))
   return script_body
 generate_script("setup_all_linked_scene_props", generate_setup_all_linked_scene_props())
+
+def generate_setup_scene_props_after_mission_start():
+  script_body = []
+  for link_entry in scene_props_to_init:
+    script_body.extend([
+      (scene_prop_get_num_instances, ":num_instances", link_entry[0]),
+      (try_for_range, ":instance_no", 0, ":num_instances"),
+        (scene_prop_get_instance, ":instance_id", link_entry[0], ":instance_no"),
+        tuple([call_script] + [link_entry[1]] + [":instance_id"] + link_entry[2:]),
+      (try_end),
+      ])
+  return script_body
+generate_script("setup_scene_props_after_mission_start", generate_setup_scene_props_after_mission_start())

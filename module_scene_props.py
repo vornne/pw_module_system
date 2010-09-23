@@ -18,6 +18,7 @@ import string
 
 link_scene_prop = -100.0
 link_scene_prop_self = 1
+init_scene_prop = -101.0
 
 def spr_tag(name):
   if name != -1:
@@ -98,6 +99,23 @@ def spr_change_troop_triggers(troop_id, cost=0, use_string=None):
 def spr_teleport_door_triggers(pos_offset=(0,0,0)):
   return [spr_call_script_use_trigger("script_cf_use_teleport_door", pos_offset[0], pos_offset[1], pos_offset[2]),
     [link_scene_prop, link_scene_prop_self]]
+
+def spr_drawbridge_winch_triggers(target_scene_prop, rotation_steps=10, step_size=-8, animation_time=200):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_winch_lower"),
+      ]),
+    spr_call_script_use_trigger("script_cf_use_winch", rotation_steps+1, step_size, animation_time, winch_type_drawbridge),
+    [link_scene_prop, target_scene_prop]]
+
+def spr_portcullis_winch_triggers(target_scene_prop, move_steps=5, step_size=100, animation_time=100):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_winch_drop"),
+      ]),
+    spr_call_script_use_trigger("script_cf_use_winch", move_steps+1, step_size, animation_time, winch_type_portcullis),
+    [link_scene_prop, target_scene_prop],
+    [init_scene_prop, "script_cf_init_winch", move_steps, step_size, winch_type_portcullis]]
 
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
@@ -1471,6 +1489,16 @@ scene_props = [
   ("pw_door_teleport_roof",spr_use_time(1),"house_roof_door","bo_house_roof_door", spr_teleport_door_triggers(pos_offset=(0,0,100))),
   ("pw_door_teleport_invisible",sokf_invisible|spr_use_time(1),"invisible_door","bo_invisible_door", spr_teleport_door_triggers(pos_offset=(0,50,0))),
 
+  ("pw_winch_frame",0,"winch_stabilizer_a","bo_winch_stabilizer_a", []),
+  ("pw_portcullis_winch",sokf_moveable|spr_use_time(1),"winch","bo_winch", spr_portcullis_winch_triggers("pw_portcullis")),
+  ("pw_portcullis",sokf_moveable,"portculis_new","bo_portculis_new", []),
+  ("pw_portcullis_winch_a",sokf_moveable|spr_use_time(1),"winch","bo_winch", spr_portcullis_winch_triggers("pw_portcullis_a")),
+  ("pw_portcullis_a",sokf_moveable,"portcullis_a","bo_portcullis_a", []),
+  ("pw_drawbridge_winch_a",sokf_moveable|spr_use_time(2),"winch_b","bo_winch", spr_drawbridge_winch_triggers("pw_drawbridge_a")),
+  ("pw_drawbridge_a",sokf_moveable,"drawbridge","bo_drawbridge", []),
+  ("pw_drawbridge_winch_b",sokf_moveable|spr_use_time(2),"winch_b","bo_winch", spr_drawbridge_winch_triggers("pw_drawbridge_b")),
+  ("pw_drawbridge_b",sokf_moveable,"castle_drawbridges_open","bo_castle_drawbridges_open", []),
+
   ("pw_castle_sign",spr_use_time(2),"tree_house_guard_a","bo_tree_house_guard_a",
    [(ti_on_scene_prop_use,
      [(store_trigger_param_1, ":agent_id"),
@@ -1508,3 +1536,8 @@ def make_link_scene_prop_entry(spr_name, link_list):
     link_list.append(-1)
   return link_list
 fill_scene_props_list(scene_props_to_link, link_scene_prop, make_link_scene_prop_entry)
+
+scene_props_to_init = []
+def make_init_scene_prop_entry(spr_name, link_list):
+  return [spr_tag(spr_name)] + link_list
+fill_scene_props_list(scene_props_to_init, init_scene_prop, make_init_scene_prop_entry)
