@@ -46,6 +46,7 @@ mission_templates = [
       (team_set_relation, 0, 0, -1),
       (multiplayer_is_server),
       (call_script, "script_setup_owner_faction_for_castles"),
+      (call_script, "script_setup_all_linked_scene_props"),
       ]),
 
     (ti_after_mission_start, 0, 0, [],

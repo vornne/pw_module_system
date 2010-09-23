@@ -16,6 +16,14 @@ import string
 #  5) Triggers: Simple triggers that are associated with the scene prop
 ####################################################################################################################
 
+link_scene_prop = -100.0
+link_scene_prop_self = 1
+
+def spr_tag(name):
+  if name != -1:
+    name = "spr_"+name
+  return name
+
 def spr_item_init_trigger(item_id, use_string=None, tableau=None):
   init_trigger = (ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -86,6 +94,10 @@ def spr_change_troop_triggers(troop_id, cost=0, use_string=None):
   if use_string is not None:
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string))
   return [init_trigger, spr_call_script_use_trigger("script_cf_change_troop")]
+
+def spr_teleport_door_triggers(pos_offset=(0,0,0)):
+  return [spr_call_script_use_trigger("script_cf_use_teleport_door", pos_offset[0], pos_offset[1], pos_offset[2]),
+    [link_scene_prop, link_scene_prop_self]]
 
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
@@ -1453,6 +1465,12 @@ scene_props = [
   ("pw_change_troop_ruffian",spr_use_time(40),"sledgehammer","bo_weapon", spr_change_troop_triggers("trp_ruffian", cost=500, use_string="str_troop_become")),
   ("pw_change_troop_brigand",spr_use_time(50),"spiked_club","bo_weapon", spr_change_troop_triggers("trp_brigand", cost=700, use_string="str_troop_become")),
 
+  ("pw_door_teleport_small_arch_a",spr_use_time(1),"tutorial_door_a","bo_tutorial_door_a", spr_teleport_door_triggers(pos_offset=(-55,50,-98))),
+  ("pw_door_teleport_square_a",spr_use_time(1),"tutorial_door_b","bo_tutorial_door_b", spr_teleport_door_triggers(pos_offset=(70,50,0))),
+  ("pw_door_teleport_arch_a",spr_use_time(1),"dungeon_door_direction_a","bo_dungeon_door_direction_a", spr_teleport_door_triggers(pos_offset=(100,0,-230))),
+  ("pw_door_teleport_roof",spr_use_time(1),"house_roof_door","bo_house_roof_door", spr_teleport_door_triggers(pos_offset=(0,0,100))),
+  ("pw_door_teleport_invisible",sokf_invisible|spr_use_time(1),"invisible_door","bo_invisible_door", spr_teleport_door_triggers(pos_offset=(0,50,0))),
+
   ("pw_castle_sign",spr_use_time(2),"tree_house_guard_a","bo_tree_house_guard_a",
    [(ti_on_scene_prop_use,
      [(store_trigger_param_1, ":agent_id"),
@@ -1470,3 +1488,23 @@ scene_props = [
   ("pw_buy_test_horse",spr_use_time(1),"wood_a","bo_wood_a", spr_buy_item_triggers("itm_test_horse")),
 
 ]
+
+def fill_scene_props_list(list_var, trigger_id, modify_function):
+  for scene_prop in scene_props:
+    trigger_list = scene_prop[4]
+    triggers_to_pop = []
+    for i, trigger in enumerate(trigger_list):
+      if trigger[0] == trigger_id:
+        triggers_to_pop.append(i)
+        list_var.append(modify_function(scene_prop[0], trigger[1:]))
+    for i in reversed(triggers_to_pop):
+      trigger_list.pop(i)
+
+scene_props_to_link = []
+def make_link_scene_prop_entry(spr_name, link_list):
+  link_list = [spr_name] + [spr_name if x == link_scene_prop_self else x for x in link_list]
+  link_list = map(spr_tag, link_list)
+  for unused in range(len(link_list), linked_scene_prop_slot_count + 1):
+    link_list.append(-1)
+  return link_list
+fill_scene_props_list(scene_props_to_link, link_scene_prop, make_link_scene_prop_entry)

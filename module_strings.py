@@ -255,6 +255,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("must_leave_s1_first", "You must leave the {s1} first."),
   ("not_a_member_of_s1", "You are not a member of the {s1}."),
   ("s1_captured_s2", "The {s1} have captured {s2}!"),
+  ("door_locked_by_s1", "The door is locked by the {s1}."),
+
+  ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12}"),
 
   ("scene_name_1", "Test Scene"),
   ("scene_names_end", "scene_names_end"),
