@@ -44,6 +44,7 @@ mission_templates = [
       (server_set_friendly_fire_damage_self_ratio, 0),
       (server_set_friendly_fire_damage_friend_ratio, 100),
       (team_set_relation, 0, 0, -1),
+      (multiplayer_is_server),
       (call_script, "script_setup_owner_faction_for_castles"),
       ]),
 

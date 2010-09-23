@@ -1453,6 +1453,20 @@ scene_props = [
   ("pw_change_troop_ruffian",spr_use_time(40),"sledgehammer","bo_weapon", spr_change_troop_triggers("trp_ruffian", cost=500, use_string="str_troop_become")),
   ("pw_change_troop_brigand",spr_use_time(50),"spiked_club","bo_weapon", spr_change_troop_triggers("trp_brigand", cost=700, use_string="str_troop_become")),
 
+  ("pw_castle_sign",spr_use_time(2),"tree_house_guard_a","bo_tree_house_guard_a",
+   [(ti_on_scene_prop_use,
+     [(store_trigger_param_1, ":agent_id"),
+      (store_trigger_param_2, ":instance_id"),
+      (agent_get_player_id, ":player_id", ":agent_id"),
+      (player_is_active, ":player_id"),
+      (player_get_slot, ":player_faction_id", ":player_id", slot_player_faction_id),
+      (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
+      (assign, ":faction_id", reg0),
+      (assign, ":castle_no", reg1),
+      (neq, ":faction_id", ":player_faction_id"),
+      (call_script, "script_capture_castle", ":player_faction_id", ":castle_no"),
+      ])]),
+
   ("pw_buy_test_horse",spr_use_time(1),"wood_a","bo_wood_a", spr_buy_item_triggers("itm_test_horse")),
 
 ]

@@ -106,6 +106,9 @@ factions_begin = "fac_commoners"
 castle_factions_begin = "fac_1"
 factions_end = "fac_factions_end"
 
+castle_names_begin = "str_castle_name_0"
+castle_names_end = "str_castle_names_end"
+
 scenes_begin = 0
 scenes_end = "scn_scenes_end"
 

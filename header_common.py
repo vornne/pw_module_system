@@ -20,6 +20,7 @@ preset_message_item                             = 0x2
 preset_message_agent                            = 0x3
 preset_message_player                           = 0x4
 preset_message_faction                          = 0x5
+preset_message_faction_castle                   = 0x6
 preset_message_params_mask                      = 0xF
 
 preset_message_white                            = 0x00

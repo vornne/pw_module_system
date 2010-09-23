@@ -236,6 +236,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("cant_equip_item", "You can't equip this item."),
   ("collect_reg1_gold", "Collect {reg1} gold"),
   ("rest", "Rest"),
+  ("s0__s1_", "{!}{s0} ({s1})"),
 
   ("troop_not_available", "Not available to you^{s0}"),
   ("troop_train", "Train to be {s1} for the {s2}"),
@@ -253,8 +254,15 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("joined_the_s1", "You have joined the {s1}."),
   ("must_leave_s1_first", "You must leave the {s1} first."),
   ("not_a_member_of_s1", "You are not a member of the {s1}."),
+  ("s1_captured_s2", "The {s1} have captured {s2}!"),
 
   ("scene_name_1", "Test Scene"),
   ("scene_names_end", "scene_names_end"),
+
+  ("castle_name_0", "Laszloburg Castle"),
+  ("castle_name_1", "Vornneston Castle"),
+  ("castle_name_2", "Horrible Dump"),
+  ("castle_name_3", "Far Away Fairyland"),
+  ("castle_names_end", "Invalid Castle Name"),
 
 ]
