@@ -117,6 +117,14 @@ def spr_portcullis_winch_triggers(target_scene_prop, move_steps=5, step_size=100
     [link_scene_prop, target_scene_prop],
     [init_scene_prop, "script_cf_init_winch", move_steps, step_size, winch_type_portcullis]]
 
+def spr_cart_triggers(horse=0, z_offset=0):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_position, z_offset),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_attached_to_agent, -1),
+      ]),
+    spr_call_script_use_trigger("script_cf_use_cart", horse)]
+
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
   ("inventory",sokf_type_container|sokf_place_at_origin,"package","bobaggage", []),
@@ -1466,6 +1474,7 @@ scene_props = [
   ("pw_buy_falchion",spr_use_time(1),"falchion_new","bo_weapon", spr_buy_item_triggers("itm_falchion")),
   ("pw_buy_hunting_bow",spr_use_time(1),"hunting_bow","bo_weapon", spr_buy_item_triggers("itm_hunting_bow")),
   ("pw_buy_arrows",spr_use_time(1),"arrow","bo_weapon_small", spr_buy_item_triggers("itm_arrows")),
+  ("pw_buy_cart_horse",spr_use_time(1),"wood_b","bo_wood_b", spr_buy_item_triggers("itm_cart_horse")),
   ("pw_test_gold",spr_use_time(1),"tree_house_guard_a","bo_tree_house_guard_a", spr_gain_gold_triggers(10000)),
   ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a", spr_gain_health_triggers(30)),
   ("pw_test_poison",spr_use_time(1),"wood_b","bo_wood_b", spr_gain_health_triggers(-30)),
@@ -1498,6 +1507,10 @@ scene_props = [
   ("pw_drawbridge_a",sokf_moveable,"drawbridge","bo_drawbridge", []),
   ("pw_drawbridge_winch_b",sokf_moveable|spr_use_time(2),"winch_b","bo_winch", spr_drawbridge_winch_triggers("pw_drawbridge_b")),
   ("pw_drawbridge_b",sokf_moveable,"castle_drawbridges_open","bo_castle_drawbridges_open", []),
+  ("pw_cart_a",sokf_moveable|spr_use_time(1),"pw_cart_a","bo_pw_cart_a", spr_cart_triggers(horse=1, z_offset=-125)),
+  ("pw_cart_b",sokf_moveable|spr_use_time(1),"pw_cart_b","bo_pw_cart_b", spr_cart_triggers(horse=1, z_offset=-125)),
+  ("pw_wheelbarrow",sokf_moveable|spr_use_time(1),"pw_hand_cart_a","bo_pw_hand_cart_a", spr_cart_triggers(z_offset=-90)),
+  ("pw_hand_cart",sokf_moveable|spr_use_time(1),"pw_hand_cart_b","bo_pw_hand_cart_b", spr_cart_triggers(z_offset=-90)),
 
   ("pw_castle_sign",spr_use_time(2),"tree_house_guard_a","bo_tree_house_guard_a",
    [(ti_on_scene_prop_use,

@@ -114,6 +114,10 @@ mission_templates = [
      [(finish_mission),
       ]),
 
+    (0, 1, 1, [(key_clicked, key_slash)],
+     [(multiplayer_send_message_to_server, client_event_detach_scene_prop),
+      ]),
+
     (1, 0, ti_once, [(neg|multiplayer_is_server)],
      [(assign, "$g_preset_message_display_enabled", 1),
       ]),

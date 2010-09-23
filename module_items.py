@@ -199,6 +199,9 @@ items = [
 ["steel_shield", "Steel Shield", [("shield_dragon", 0)], itp_type_shield, itcf_carry_round_shield,
  2120, weight(4)|difficulty(1)|hit_points(700)|body_armor(17)|spd_rtng(61)|shield_width(40), imodbits_shield],
 
+["cart_horse", "Cart Horse", [("sumpter_horse",0)], itp_type_horse, 0,
+ 5100, hit_points(150)|body_armor(10)|difficulty(1)|horse_speed(25)|horse_maneuver(20)|horse_charge(20)|horse_scale(120), imodbits_none],
+
 ["test_horse", "Test Horse", [("giant_horse",0)], itp_type_horse, 0,
  0, hit_points(500)|body_armor(100)|difficulty(0)|horse_speed(400)|horse_maneuver(100)|horse_charge(50)|horse_scale(130), imodbit_spirited],
 

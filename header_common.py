@@ -13,7 +13,9 @@ server_event_player_set_slot                    = 5
 server_event_scene_prop_set_slot                = 6
 server_event_faction_set_slot                   = 7
 server_event_troop_set_slot                     = 8
+server_event_set_attached_scene_prop            = 9
 
+client_event_detach_scene_prop                  = 127
 
 preset_message_default                          = 0x0
 preset_message_item                             = 0x2
