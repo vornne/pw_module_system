@@ -57,12 +57,18 @@ slot_scene_prop_linked_scene_prop_2   = 11
 slot_scene_prop_linked_scene_prop_3   = 12
 linked_scene_prop_slot_count          = 3
 
+slot_scene_prop_linked_sail           = slot_scene_prop_linked_scene_prop_1
+slot_scene_prop_linked_sail_off       = slot_scene_prop_linked_scene_prop_2
+slot_scene_prop_linked_ramp           = slot_scene_prop_linked_scene_prop_3
+
 slot_scene_prop_position              = 15
 slot_scene_prop_target_position       = 16
 slot_scene_prop_rotation              = 17
 slot_scene_prop_target_rotation       = 18
 
 slot_scene_prop_attached_to_agent     = 19
+slot_scene_prop_controlling_agent     = 20
+slot_scene_prop_length                = 21
 
 slot_scene_prop_next_resource_hp      = 30
 slot_scene_prop_state                 = 31
@@ -135,6 +141,9 @@ slot_last_chat_message_not_recieved   = 2
 chat_event_type_local                 = 0
 chat_event_type_local_shout           = 1
 
+slot_ship_array_count                 = 0
+slot_ship_array_begin                 = 1
+
 ########################################################
 ##  TEAM SLOTS             #############################
 ########################################################
@@ -162,6 +171,7 @@ max_distance_local_chat               = 3000
 max_distance_local_chat_shout         = 5000
 ambient_distance_local_chat           = 1000
 ambient_distance_local_chat_shout     = 2000
+z_position_to_hide_object             = -4999
 
 seconds_before_removing_dropped_item  = 300
 sell_item_gold_multiplier             = 80
@@ -178,6 +188,17 @@ repairable_repaired                   = 5
 
 destroy_scene_prop_hit_points         = 200
 fell_tree_hit_points                  = 500
+sink_ship_hit_points                  = 500
+
+ship_station_not_on_ship              = 0
+ship_station_none                     = 1
+ship_station_mast                     = 2
+ship_station_rudder                   = 3
+
+ship_forwards_maximum                 = 4
+ship_rotation_maximum                 = 5
+ship_forwards_multiplier              = 200
+ship_rotation_multiplier              = 5
 
 all_items_begin = "itm_straw_hat"
 all_items_end = "itm_all_items_end"

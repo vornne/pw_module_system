@@ -266,6 +266,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("not_riding_cart_horse", "You are not riding a cart horse."),
   ("already_towing_cart", "Already towing another cart."),
   ("resource_required", "More resources required."),
+  ("not_at_mast_or_rudder", "You are not close enough to the mast or rudder."),
 
   ("chat_format", "[{s1}] {s0}"),
   ("send_message_to_players_nearby", "Send message to players nearby:"),

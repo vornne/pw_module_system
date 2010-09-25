@@ -21,6 +21,7 @@ server_event_local_chat_shout                   = 13
 client_event_chat_message_begin                 = 110
 client_event_chat_message_end                   = 120
 client_event_chat_message_type                  = 120
+client_event_control_scene_prop                 = 126
 client_event_detach_scene_prop                  = 127
 
 preset_message_default                          = 0x0

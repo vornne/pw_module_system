@@ -134,4 +134,5 @@ troops = [
   ["banner_background_color_array","banner_background_color_array","banner_background_color_array",0,0,0,0,[],0,0,0,0,0],
   ["temp_array","temp_array","temp_array",0,0,0,0,[],0,0,0,0,0],
   ["last_chat_message","-","-",0,0,0,0,[],0,0,0,0,0],
+  ["ship_array","ship_array","ship_array",0,0,0,0,[],0,0,0,0,0],
 ]
