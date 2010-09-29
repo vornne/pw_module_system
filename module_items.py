@@ -53,8 +53,18 @@ def init_heraldic_item(tableau):
     ])]
 
 items = [
-["no_item", "INVALID ITEM", [("invalid_item", 0)], itp_type_one_handed_wpn|itp_primary|itp_secondary, itc_longsword,
- 3, weight(1.5)|spd_rtng(103)|weapon_length(90)|swing_damage(16, blunt)|thrust_damage(10, blunt), imodbits_none],
+["no_item", "INVALID ITEM", [("invalid_item", 0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger,
+ 0, weight(1)|spd_rtng(1)|weapon_length(1)|swing_damage(1, blunt)|thrust_damage(1, blunt), imodbits_none],
+["no_head", "INVALID HEAD", [("invalid_item", 0)], itp_type_head_armor, 0,
+ 0, weight(1)|head_armor(1)|difficulty(0), imodbits_none],
+["no_body", "INVALID BODY", [("invalid_item", 0)], itp_type_body_armor, 0,
+ 0, weight(1)|body_armor(1)|difficulty(0), imodbits_none],
+["no_foot", "INVALID FOOT", [("invalid_item", 0)], itp_type_foot_armor, 0,
+ 0, weight(1)|leg_armor(1)|difficulty(0), imodbits_none],
+["no_hand", "INVALID HAND", [("invalid_item", 0)], itp_type_hand_armor, 0,
+ 0, weight(1)|body_armor(1)|difficulty(0), imodbits_none],
+["no_horse", "INVALID HORSE", [("invalid_item", 0)], itp_type_horse, 0,
+ 0, hit_points(1)|body_armor(1)|difficulty(0)|horse_speed(10)|horse_maneuver(40)|horse_charge(1)|horse_scale(1), imodbits_none],
 
 ["straw_hat", "Straw Hat", [("straw_hat_new", 0)], itp_type_head_armor, 0,
  29, weight(1)|head_armor(2)|difficulty(0), imodbits_cloth],

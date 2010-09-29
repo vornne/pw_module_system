@@ -10,13 +10,18 @@
 ########################################################
 
 slot_player_faction_id                = 0
-slot_player_respawn_at_scene_prop     = 1
+slot_player_spawn_invulnerable_time   = 1
+slot_player_spawn_at_marker           = 2
+slot_player_spawn_hit_points          = 3
 
-# Keep these the same as the equipment slots (ek_* in header_items)
-slot_player_current_armor_head        = 4
-slot_player_current_armor_body        = 5
-slot_player_current_armor_foot        = 6
-slot_player_current_armor_gloves      = 7
+slot_player_default_armor_head        = 10
+slot_player_default_armor_body        = 11
+slot_player_default_armor_foot        = 12
+slot_player_default_armor_gloves      = 13
+slot_player_bought_armor_head         = 14
+slot_player_bought_armor_body         = 15
+slot_player_bought_armor_foot         = 16
+slot_player_bought_armor_gloves       = 17
 
 ########################################################
 ##  AGENT SLOTS            #############################
@@ -96,6 +101,11 @@ slot_mission_data_castle_owner_faction_end      = 8
 
 
 ########################################################
+
+team_active_players                   = 0
+team_spawn_invulnerable               = 1
+
+spawn_invulnerable_time               = 10
 
 loop_player_check_interval            = 5
 

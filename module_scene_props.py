@@ -1553,6 +1553,7 @@ scene_props = [
   ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a", spr_gain_health_triggers(30)),
   ("pw_test_poison",spr_use_time(1),"wood_b","bo_wood_b", spr_gain_health_triggers(-30)),
 
+  ("spawn_marker",0,"0","0", []),
   ("pw_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_weapon_big", spr_change_troop_triggers("trp_peasant", cost=100, use_string="str_troop_leave_faction")),
   ("pw_change_troop_serf",spr_use_time(30),"trident","bo_weapon_big", spr_change_troop_triggers("trp_serf", cost=300)),
   ("pw_change_troop_footman",spr_use_time(60),"heavy_practicesword","bo_weapon", spr_change_troop_triggers("trp_footman", cost=2000)),
