@@ -174,6 +174,7 @@ mission_templates = [
       (try_for_range, ":unused", 0, "$g_spawn_marker_count"),
         (spawn_scene_prop, "spr_spawn_marker"),
       (try_end),
+      (assign, "$g_spawned_bot_count", 0),
       ]),
 
     (ti_server_player_joined, 0, 0, [],
@@ -191,6 +192,7 @@ mission_templates = [
       (store_trigger_param_2, ":killer_agent_id"),
       (multiplayer_is_server),
       (call_script, "script_setup_agent_for_respawn", ":dead_agent_id"),
+      (call_script, "script_check_spawn_bots", ":dead_agent_id"),
       ]),
 
     (ti_on_agent_mount, 0, 0, [],

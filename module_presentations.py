@@ -435,7 +435,7 @@ presentations = [
       (position_set_y, pos1, 1002),
       (overlay_set_size, reg0, pos1),
 
-      (assign, ":cur_y", 20 + (17 * admin_panel_item_height)),
+      (assign, ":cur_y", 20 + (18 * admin_panel_item_height)),
 
       (str_clear, s0),
       (create_text_overlay, reg0, s0, tf_scrollable),
@@ -723,6 +723,18 @@ presentations = [
       (overlay_set_position, "$g_presentation_obj_admin_panel_vote_ratio", pos1),
       (overlay_set_val, "$g_presentation_obj_admin_panel_vote_ratio", "$g_valid_vote_ratio"),
 
+      (val_sub, ":cur_y", admin_panel_item_height),
+      (create_text_overlay, reg0, "str_bot_count", 0),
+      (position_set_x, pos1, 0),
+      (position_set_y, pos1, ":cur_y"),
+      (overlay_set_position, reg0, pos1),
+
+      (create_number_box_overlay, "$g_presentation_obj_admin_panel_bot_count", 0, 101),
+      (position_set_x, pos1, 390),
+      (position_set_y, pos1, ":cur_y"),
+      (overlay_set_position, "$g_presentation_obj_admin_panel_bot_count", pos1),
+      (overlay_set_val, "$g_presentation_obj_admin_panel_bot_count", "$g_bot_count"),
+
       (set_container_overlay, -1),
 
       (create_button_overlay, "$g_presentation_obj_admin_panel_done", "str_done", tf_center_justify),
@@ -821,6 +833,9 @@ presentations = [
       (else_try),
         (eq, ":object", "$g_presentation_obj_admin_panel_vote_ratio"),
         (multiplayer_send_2_int_to_server, client_event_admin_set_game_rule, command_set_valid_vote_ratio, ":value"),
+      (else_try),
+        (eq, ":object", "$g_presentation_obj_admin_panel_bot_count"),
+        (multiplayer_send_2_int_to_server, client_event_admin_set_game_rule, command_set_bot_count, ":value"),
       (else_try),
         (eq, ":object", "$g_presentation_obj_admin_panel_done"),
         (presentation_set_duration, 0),
