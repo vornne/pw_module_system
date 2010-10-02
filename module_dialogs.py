@@ -3334,7 +3334,7 @@ dialogs = [
   [anyone|plyr,"minister_cancel_political_quest_confirm",
    [],
    "Yes, I am sure. Let's abandon that idea.", "minister_pretalk",[
-   (call_script, "script_abort_quest", "$political_quest_to_cancel"),
+   (call_script, "script_abort_quest", "$political_quest_to_cancel", 1),
  ]],
  
   [anyone|plyr,"minister_cancel_political_quest_confirm",
@@ -3772,7 +3772,7 @@ dialogs = [
    
    (try_for_range, ":minister_quest", all_quests_begin, all_quests_end),
 	(quest_slot_eq, ":minister_quest", slot_quest_giver_troop, "$g_talk_troop"),
-	(call_script, "script_abort_quest", ":minister_quest"),
+	(call_script, "script_abort_quest", ":minister_quest", 0),
    (try_end),
    ]],
    
@@ -4566,6 +4566,8 @@ dialogs = [
 					 (is_between, "$map_talk_troop", companions_begin, companions_end),
 					 
                      (eq, "$map_talk_troop", "$npc_to_rejoin_party"), 
+					 (neg|main_party_has_troop, "$map_talk_troop"),
+					 
                      (troop_slot_eq, "$map_talk_troop", slot_troop_current_mission, npc_mission_rejoin_when_possible),
 					 (troop_slot_eq, "$map_talk_troop", slot_troop_occupation, slto_player_companion),
 					 (troop_get_slot, ":string", "$map_talk_troop", slot_troop_honorific),
@@ -4624,16 +4626,15 @@ dialogs = [
 		
 		(str_store_faction_name, s12, ":town_faction"),
 		(try_begin),
-			(gt, ":instability_index", 60),
+			(ge, ":instability_index", 60),
 			(str_store_string, s11, "str_the_s12_is_a_labyrinth_of_rivalries_and_grudges_lords_ignore_their_lieges_summons_and_many_are_ripe_to_defect"),
 		(else_try),	
-			(is_between, ":instability_index", 40, 60),
+			(ge, ":instability_index", 40),
 			(str_store_string, s11, "str_the_s12_is_shaky_many_lords_do_not_cooperate_with_each_other_and_some_might_be_tempted_to_defect_to_a_liege_that_they_consider_more_worthy"),
 		(else_try),	
-			(is_between, ":instability_index", 20, 40),
+			(ge, ":instability_index", 20),
 			(str_store_string, s11, "str_the_s12_is_fairly_solid_some_lords_bear_enmities_for_each_other_but_they_tend_to_stand_together_against_outside_enemies"),
 		(else_try),	
-			(lt, ":instability_index", 20),
 			(str_store_string, s11, "str_the_s12_is_a_rock_of_stability_politically_speaking_whatever_the_lords_may_think_of_each_other_they_fight_as_one_against_the_common_foe"),
 		(try_end),
 
@@ -4829,6 +4830,7 @@ dialogs = [
 					
   [anyone|plyr, "companion_rejoin_response", [
 	(hero_can_join, "p_main_party"),
+	(neg|main_party_has_troop, "$map_talk_troop"),
       ],  "Welcome back, friend!", "close_window", [
         (party_add_members, "p_main_party", "$map_talk_troop", 1),
 		(assign, "$npc_to_rejoin_party", 0),
@@ -4846,13 +4848,15 @@ dialogs = [
   [anyone, "companion_rejoin_refused", [
       ],  "As you wish. I will take care of some business, and try again in a few days.", "close_window", [
           ]],
- 
+
+		  
   [anyone, "event_triggered", [
 	(is_between, "$g_talk_troop", companions_begin, companions_end),
 	(neg|troop_slot_eq, "$g_talk_troop", slot_troop_occupation, slto_kingdom_hero),
 	(neg|main_party_has_troop, "$g_talk_troop"),
                      ],
    "Would you have me rejoin you?", "companion_rejoin_response", [
+    (assign, "$map_talk_troop", "$g_talk_troop"),
        ]],
 
 #caravan merchants
@@ -7957,7 +7961,7 @@ dialogs = [
   [anyone|plyr,"lord_quarrel_intervention_2",[], 
    "On second thought, I want nothing to do with this.", "lord_pretalk",
    [
-   (call_script, "script_abort_quest", "qst_resolve_dispute", 0),
+   (call_script, "script_abort_quest", "qst_resolve_dispute", 1),
 
    ]],
    
@@ -10586,11 +10590,12 @@ dialogs = [
 
   [anyone,"lord_switch_to_spouse", [
     (assign, ":feast_venue", -1),
+	
     (try_begin),
-		(is_between, "$g_encountered_party", walled_centers_begin, walled_centers_end),
-		(this_or_next|party_slot_eq, "$g_encountered_party", slot_town_lord, "trp_player"),
-			(party_slot_eq, "$g_encountered_party", slot_town_lord, "$g_talk_troop"),
-		(assign, ":feast_venue", "$g_encountered_party"),	
+		(is_between, "$current_town", walled_centers_begin, walled_centers_end),
+		(this_or_next|party_slot_eq, "$current_town", slot_town_lord, "trp_player"),
+			(party_slot_eq, "$current_town", slot_town_lord, "$g_talk_troop"),
+		(assign, ":feast_venue", "$current_town"),	
 	(else_try),
 		(try_for_range, ":center", walled_centers_begin, walled_centers_end),
 			(eq, ":feast_venue", -1),
@@ -10598,11 +10603,14 @@ dialogs = [
 				(party_slot_eq, ":center", slot_town_lord, "$g_talk_troop"),
 			(assign, ":feast_venue", ":center"),	
 		(try_end),
+		(is_between, ":feast_venue", walled_centers_begin, walled_centers_end), #unless there's a try/fail, will not do last check
+		
 	(else_try),
-		(is_between, "$g_encountered_party", walled_centers_begin, walled_centers_end),
-		(assign, ":feast_venue", "$g_encountered_party"),
+		(is_between, "$current_town", walled_centers_begin, walled_centers_end),
+		(assign, ":feast_venue", "$current_town"),
     (try_end),
-	(gt, ":feast_venue", -1),
+	
+	(neg|is_between, ":feast_venue", walled_centers_begin, walled_centers_end),
 	],
    "Let us wait until we are in a hall, my wife, as it is difficult to deal with household inventories and such matters in the field.", "lord_pretalk",[]],
    
@@ -11078,8 +11086,8 @@ dialogs = [
   [anyone,"lord_give_order_stop", [],
    "All right. I will stop here.", "lord_pretalk",
    [
-     (troop_set_slot, "$g_talk_troop_party", slot_party_orders_type, spai_undefined),
-     (troop_set_slot, "$g_talk_troop_party", slot_party_orders_object, -1),
+     (party_set_slot, "$g_talk_troop_party", slot_party_orders_type, spai_undefined),
+     (party_set_slot, "$g_talk_troop_party", slot_party_orders_object, -1),
      #this is not set above, so should be set here
      (store_current_hours, ":hours"),
      (val_sub, ":hours", 36),
@@ -11337,7 +11345,8 @@ dialogs = [
 	(neg|troop_slot_eq, "$g_talk_troop", slot_lord_granted_courtship_permission, 1),
   ],
    "Great heaven, man -- if I haven't given you permission to see her, do you think I'm going to give you permission to marry her?", "lord_pretalk",[
-   (fail_quest, "qst_formal_marriage_proposal"),
+   (call_script, "script_fail_quest", "qst_formal_marriage_proposal"),
+   (call_script, "script_end_quest", "qst_formal_marriage_proposal"),
    ]],
 
   #unwilling bride -- failed due to lord personality
@@ -11353,7 +11362,9 @@ dialogs = [
 	(call_script, "script_troop_get_family_relation_to_troop", ":bride", "$g_talk_troop"),
   ],
    "It is not my way to push my {s11} to marry against her will or her better judgment", "lord_pretalk",[
-   (fail_quest, "qst_formal_marriage_proposal"),
+   (call_script, "script_fail_quest", "qst_formal_marriage_proposal"),
+   (call_script, "script_end_quest", "qst_formal_marriage_proposal"),
+   
    ]],
 
    
@@ -11379,7 +11390,8 @@ dialogs = [
 	
   ],
    "Sorry, lad -- I'm not going to make my {s11} marry you, when I'd rather see her married to {s12}", "lord_pretalk",[
-   (fail_quest, "qst_formal_marriage_proposal"),
+   (call_script, "script_fail_quest", "qst_formal_marriage_proposal"),
+   (call_script, "script_end_quest", "qst_formal_marriage_proposal"),
    ]],
 
  
@@ -11482,7 +11494,8 @@ dialogs = [
 
   [anyone,"lord_marriage_permission_endowment_answer_delay", [],
    "That is a shame, but I would be remiss in my duty if I allowed her ladyship to face an uncertain future.", "lord_pretalk",[
-   (fail_quest, "qst_formal_marriage_proposal"),
+   (call_script, "script_fail_quest", "qst_formal_marriage_proposal"),
+   (call_script, "script_end_quest", "qst_formal_marriage_proposal"),
    ]],
 
 
@@ -11863,7 +11876,7 @@ dialogs = [
   (neq, ":faction_marshal", "$g_talk_troop"),
   (str_store_troop_name, s4, ":faction_marshal"),
   ],
-   "Our leader {s4} is far too cautious. {reg4?He:She} should either use the army to attack the enemy, or let it go home.",
+   "Our leader {s4} is far too cautious. {reg4?She:He} should either use the army to attack the enemy, or let it go home.",
    "lord_strategy_follow_up",[
   (assign, "$g_talk_troop_disagrees_with_marshal", 1),
    
@@ -13425,11 +13438,12 @@ dialogs = [
   ],  "{s41}", "lord_give_conclude_2", 
   [
 	#Pretender changes  
+	(assign, ":is_pretender", 0),
     (try_begin),
       (this_or_next|is_between, "$g_talk_troop", pretenders_begin, pretenders_end),
       (troop_slot_eq, "$g_talk_troop", slot_troop_spouse, "trp_player"),
-      
       (neg|faction_slot_eq, "$g_talk_troop_faction", slot_faction_leader, "$g_talk_troop"),
+      (assign, ":is_pretender", 1),
 	  
       (assign, "$supported_pretender", "$g_talk_troop"),
       (troop_get_slot, "$supported_pretender_old_faction", "$g_talk_troop", slot_troop_original_faction),
@@ -13475,6 +13489,10 @@ dialogs = [
 	  
       (faction_get_slot, ":old_leader", "$players_kingdom", slot_faction_leader),
       (call_script, "script_add_log_entry", logent_renounced_allegiance,   "trp_player",  -1, ":old_leader", "$players_kingdom"),
+      (try_begin),
+        (eq, ":is_pretender", 1),
+        (call_script, "script_activate_player_faction", "$g_talk_troop"),
+      (try_end),
       (call_script, "script_player_leave_faction", 0),
     (try_end),
         
@@ -15835,7 +15853,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   [anyone|plyr,"spouse_cancel_political_quest_confirm",
    [],
    "Yes, I am sure. Let's abandon that idea.", "spouse_pretalk",[
-   (call_script, "script_abort_quest", "$political_quest_to_cancel"),
+   (call_script, "script_abort_quest", "$political_quest_to_cancel", 1),
  ]],
   [anyone|plyr,"spouse_cancel_political_quest_confirm",
    [],

@@ -3127,7 +3127,7 @@ simple_triggers = [
        (lt, ":dist", 15),
        (assign, "$g_player_follow_army_warnings", 0),
        (store_current_hours, ":cur_hours"),
-       (faction_get_slot, ":last_offensive_time", "$players_kingdom", slot_faction_ai_last_offensive_time),
+       (faction_get_slot, ":last_offensive_time", "$players_kingdom", slot_faction_last_offensive_concluded),
        (store_sub, ":passed_time", ":cur_hours", ":last_offensive_time"),
 
        (assign, ":result", -1),
@@ -3698,7 +3698,7 @@ simple_triggers = [
 
        (party_get_num_companion_stacks, ":num_stacks","p_main_party"),
        (assign, ":num_deserters_total", 0),
-       (try_for_range, ":i_stack", 0, ":num_stacks"),
+       (try_for_range_backwards, ":i_stack", 0, ":num_stacks"),
          (party_stack_get_troop_id, ":stack_troop", "p_main_party", ":i_stack"),
          (neg|troop_is_hero, ":stack_troop"),
          (party_stack_get_size, ":stack_size", "p_main_party", ":i_stack"),
@@ -3891,6 +3891,22 @@ simple_triggers = [
    (party_set_slot, "p_village_5", slot_center_fishing_fleet, 15), #Kulum
    
    
+   #The following scripts are to end quests which should have cancelled, but did not because of a bug
+   (try_begin),
+	(check_quest_active, "qst_formal_marriage_proposal"),
+	(check_quest_failed, "qst_formal_marriage_proposal"),
+    (call_script, "script_end_quest", "qst_formal_marriage_proposal"),
+   (try_end),
+   
+   (try_begin),
+	(check_quest_active, "qst_lend_companion"),
+	(quest_get_slot, ":giver_troop", "qst_lend_companion", slot_quest_giver_troop),
+	(store_faction_of_troop, ":giver_troop_faction", ":giver_troop"),
+	(neg|is_between, ":giver_troop_faction", kingdoms_begin, kingdoms_end),
+    (call_script, "script_abort_quest", "qst_lend_companion", 0),
+   (try_end),
+
+
    
    (try_begin),
 	(is_between, "$players_kingdom", kingdoms_begin, kingdoms_end),

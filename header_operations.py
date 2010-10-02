@@ -94,7 +94,7 @@ get_achievement_stat                 = 370 # (get_achievement_stat, <destination
 set_achievement_stat                 = 371 # (set_achievement_stat, <achievement_id>, <stat_index>, <value>),
 unlock_achievement                   = 372 # (unlock_achievement, <achievement_id>),
 
-send_message_to_url                  = 380 # (send_message_to_url, <string_id>), #result will be returned to script_game_receive_url_response
+send_message_to_url                  = 380 # (send_message_to_url, <string_id>, <encode_url>), #result will be returned to script_game_receive_url_response
 
 # multiplayer
 multiplayer_send_message_to_server   = 388 # (multiplayer_send_int_to_server, <message_type>),

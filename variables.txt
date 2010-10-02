@@ -1199,3 +1199,5 @@ g_joined_battle_to_help
 g_multiplayer_duel_start_counter_overlay
 g_multiplayer_last_duel_start_counter_value
 g_multiplayer_duel_start_time
+love_interest_in_town_7
+love_interest_in_town_8

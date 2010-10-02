@@ -697,7 +697,7 @@ scenes = [
   ("castle_20_prison",sf_indoors,"interior_prison_d", "bo_interior_prison_d", (-100,-100),(100,100),-100,"0",
     [],[]),
 
-  ("castle_21_exterior",sf_generate,"none", "none", (0,0),(100,100),-100,"0x0000000030011ab20005d57800003a2600004b7a000071ef",
+  ("castle_21_exterior",sf_generate,"none", "none", (0,0),(100,100),-100,"0x0000000230011ab20005d57800003a2600004b7a000071ef",
     [],[],"outer_terrain_plain"),
   ("castle_21_interior",sf_indoors, "interior_castle_c", "bo_interior_castle_c", (-100,-100),(100,100),-100,"0",
     ["exit"],["castle_21_seneschal"]),

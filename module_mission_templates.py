@@ -2255,11 +2255,11 @@ mission_templates = [
           (neg|agent_is_ally, ":dead_agent_no"),
           (agent_is_human, ":dead_agent_no"),
           (agent_get_troop_id, ":dead_agent_troop_id", ":dead_agent_no"),
-          (str_store_troop_name, s6, ":dead_agent_troop_id"),
-          (assign, reg0, ":dead_agent_no"),
-          (assign, reg1, ":killer_agent_no"),
-          (assign, reg2, ":is_wounded"),
-          (agent_get_team, reg3, ":dead_agent_no"),          
+##          (str_store_troop_name, s6, ":dead_agent_troop_id"),
+##          (assign, reg0, ":dead_agent_no"),
+##          (assign, reg1, ":killer_agent_no"),
+##          (assign, reg2, ":is_wounded"),
+##          (agent_get_team, reg3, ":dead_agent_no"),          
           #(display_message, "@{!}dead agent no : {reg0} ; killer agent no : {reg1} ; is_wounded : {reg2} ; dead agent team : {reg3} ; {s6} is added"), 
           (party_add_members, "p_total_enemy_casualties", ":dead_agent_troop_id", 1), #addition_to_p_total_enemy_casualties
           (eq, ":is_wounded", 1),
@@ -11385,6 +11385,7 @@ mission_templates = [
                  (try_end),
 
                  (call_script, "script_show_multiplayer_message", multiplayer_message_type_round_result_in_battle_mode, "$g_winner_team"), #1 is winner team
+                 (call_script, "script_check_achievement_last_man_standing", "$g_winner_team"),
                (else_try),
                  (try_begin),
                    (neq, ":team1_living_players", 0),
@@ -11394,7 +11395,8 @@ mission_templates = [
                    (assign, "$g_winner_team", 0),
                  (try_end),
 
-                 (call_script, "script_show_multiplayer_message", multiplayer_message_type_round_result_in_battle_mode, "$g_winner_team"), #0 is winner team         
+                 (call_script, "script_show_multiplayer_message", multiplayer_message_type_round_result_in_battle_mode, "$g_winner_team"), #0 is winner team  
+                 (call_script, "script_check_achievement_last_man_standing", "$g_winner_team"),       
                (try_end),
                (store_mission_timer_a, "$g_round_finish_time"),
                (assign, "$g_round_ended", 1),
@@ -11841,7 +11843,8 @@ mission_templates = [
              (multiplayer_send_2_int_to_player, ":player_no", multiplayer_event_set_team_score, 1, ":team_2_score"),             
            (try_end),
 
-           (call_script, "script_show_multiplayer_message", multiplayer_message_type_round_result_in_battle_mode, 0), #0 is winner team         
+           (call_script, "script_show_multiplayer_message", multiplayer_message_type_round_result_in_battle_mode, 0), #0 is winner team		
+           (call_script, "script_check_achievement_last_man_standing", "$g_winner_team"),     
 
            (store_mission_timer_a, "$g_round_finish_time"),
            (assign, "$g_round_ended", 1),
@@ -12873,8 +12876,9 @@ mission_templates = [
              (player_is_active, ":player_no"),
              (multiplayer_send_2_int_to_player, ":player_no", multiplayer_event_set_team_score, 1, ":team_2_score"),             
            (try_end),
-
-           (call_script, "script_show_multiplayer_message", multiplayer_message_type_round_result_in_battle_mode, 0), #0 is winner team         
+	
+           (call_script, "script_show_multiplayer_message", multiplayer_message_type_round_result_in_battle_mode, 0), #0 is winner team     
+           (call_script, "script_check_achievement_last_man_standing", "$g_winner_team"),    
 
            (store_mission_timer_a, "$g_round_finish_time"),
            (assign, "$g_round_ended", 1),

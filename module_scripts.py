@@ -824,7 +824,7 @@ scripts = [
       (try_for_range, ":cur_kingdom", kingdoms_begin, kingdoms_end),
         (call_script, "script_update_faction_notes", ":cur_kingdom"),
         (store_random_in_range, ":random_no", -60, 0),
-        (faction_set_slot, ":faction_no", slot_faction_ai_last_offensive_time, ":random_no"),
+        (faction_set_slot, ":faction_no", slot_faction_last_offensive_concluded, ":random_no"),
       (try_end),
 	  
       (try_for_range, ":cur_troop", original_kingdom_heroes_begin, active_npcs_end),
@@ -3903,6 +3903,7 @@ scripts = [
       (try_end),
 
       (try_begin), #mounted troops cost 65% more than the normal cost
+        (neg|is_between, ":troop_id", companions_begin, companions_end),
         (troop_is_mounted, ":troop_id"),
         (val_mul, ":wage", 5),
         (val_div, ":wage", 3),
@@ -8544,7 +8545,6 @@ scripts = [
   ("draw_this_round",
    [
     (store_script_param, ":value", 1),
-
     (try_begin),
       (eq, ":value", -9), #destroy mod round end
       (assign, "$g_round_ended", 1),
@@ -8632,6 +8632,29 @@ scripts = [
     (try_end),
     #LAST_MAN_STANDING achievement end
     ]),   
+    
+  #script_check_achievement_last_man_standing
+  #INPUT: arg1 = value
+  ("check_achievement_last_man_standing",
+   [
+   #LAST_MAN_STANDING achievement
+	  (try_begin),
+	    (store_script_param, ":value", 1),
+		(is_between, ":value", 0, 2), #defender or attacker wins
+	    (try_begin),
+		  (eq, "$g_multiplayer_game_type", multiplayer_game_type_battle),
+		  (multiplayer_get_my_player, ":my_player_no"),
+		  (is_between, ":my_player_no", 0, multiplayer_max_possible_player_id),
+		  (player_get_agent_id, ":my_player_agent", ":my_player_no"),
+		  (ge, ":my_player_agent", 0),
+		  (agent_is_alive, ":my_player_agent"),
+		  (agent_get_team, ":my_player_agent_team_no", ":my_player_agent"),
+		  (eq, ":my_player_agent_team_no", ":value"), #winner team
+		  (unlock_achievement, ACHIEVEMENT_LAST_MAN_STANDING),
+		(try_end),
+	  (try_end),
+    #LAST_MAN_STANDING achievement end
+    ]),
 
   #script_find_most_suitable_bot_to_control
   # INPUT: arg1 = value
@@ -16822,8 +16845,8 @@ scripts = [
 	          (store_faction_of_party, ":cur_object_faction", ":giver_center_no"),
 	          (store_num_parties_destroyed_by_player, ":num_looters_destroyed", "pt_looters"),
 	          (party_template_set_slot,"pt_looters",slot_party_template_num_killed,":num_looters_destroyed"),
-	          (quest_set_slot,"$random_merchant_quest_no",slot_quest_current_state,0),
-	          (quest_set_slot,"$random_merchant_quest_no",slot_quest_target_party_template,"pt_looters"),
+	          (quest_set_slot,":quest_no",slot_quest_current_state,0),
+	          (quest_set_slot,":quest_no",slot_quest_target_party_template,"pt_looters"),
 	          (assign, ":quest_gold_reward", 500),
 	          (assign, ":quest_xp_reward", 500),
 	          (assign, ":quest_expiration_days", 20),
@@ -17244,6 +17267,7 @@ scripts = [
 	            (try_for_range, ":cur_village", villages_begin, ":end_cond"),
 	              (party_slot_eq, ":cur_village", slot_town_lord, ":giver_troop"),
 	              (party_slot_eq, ":cur_village", slot_village_infested_by_bandits, 1),
+	              (party_slot_eq, ":cur_village", slot_village_state, svs_normal),
 	              (assign, ":cur_target_center", ":cur_village"),
 	              (assign, ":end_cond", 0),
 	            (try_end),
@@ -18257,6 +18281,7 @@ scripts = [
   (try_for_range, ":quest_giver", active_npcs_begin, mayors_end),
     (eq, ":quest_giver_found", -1),
 
+	(neg|troop_slot_eq, "trp_player", slot_troop_spouse, ":quest_giver"),
 	
 	(gt, ":quest_giver", "$g_troop_list_no"),
 	
@@ -18905,6 +18930,14 @@ scripts = [
           (try_end),    
         (try_end),          
 
+		#Quest bandits do not join battle
+		(this_or_next|neg|check_quest_active, "qst_track_down_bandits"),
+			(neg|quest_slot_eq, "qst_track_down_bandits", slot_quest_target_party, ":party_no"),
+		(this_or_next|neg|check_quest_active, "qst_troublesome_bandits"),
+			(neg|quest_slot_eq, "qst_troublesome_bandits", slot_quest_target_party, ":party_no"),
+			
+			
+			
         (store_distance_to_party_from_party, ":distance", ":party_no", "p_main_party"),
         (lt, ":distance", ":join_distance"),
 
@@ -21458,7 +21491,7 @@ scripts = [
            (party_slot_eq, ":commander_party", slot_party_ai_state, spai_holding_center), #if commander is holding a center
            (party_get_slot, ":commander_object", ":commander_party", slot_party_ai_object), #get commander's ai object (center they are holding)
            (party_get_battle_opponent, ":besieger_enemy", ":commander_object"), #get this object's battle opponent
-           (ge, ":besieger_enemy", 0),
+           (party_is_active, ":besieger_enemy"),
            (assign, ":besieged_center", ":commander_object"),
            (assign, ":commander_object", ":besieger_enemy"),
          (else_try),
@@ -21479,7 +21512,7 @@ scripts = [
 
          (store_faction_of_party, ":besieged_center_faction", ":besieged_center"),#get (battle opponent of our commander's ai object)'s faction
          (eq, ":besieged_center_faction", ":faction_no"), #if battle opponent of our commander's ai object is from same faction with current party
-
+         (party_is_active, ":commander_object"),
          #make also follow_or_not check if needed
 
          (call_script, "script_party_set_ai_state", ":party_no", spai_engaging_army, ":commander_object"), #go and help commander
@@ -21505,6 +21538,7 @@ scripts = [
          (is_between, ":besieged_center", walled_centers_begin, walled_centers_end), #if this object is a center
          (party_get_attached_to, ":attached_to_party", ":party_no"),
          (neq, ":attached_to_party", ":besieged_center"),
+         (party_is_active, ":besieged_center"),
 
          (call_script, "script_party_set_ai_state", ":party_no", spai_engaging_army, ":besieged_center"), #go and help commander         
                   
@@ -21865,7 +21899,7 @@ scripts = [
     
     (store_current_hours, ":current_time"),
     (try_begin),
-      (party_slot_eq, ":center_no", slot_town_lord, ":troop_no"),
+#      (party_slot_eq, ":center_no", slot_town_lord, ":troop_no"), #this was added to get lords in centers out and visiting their fiefs, but I've adjusted the decision checklist
       (is_between, ":center_no", walled_centers_begin, walled_centers_end),
       (party_set_slot, ":led_party", slot_party_last_in_any_center, ":current_time"),
       (try_begin),
@@ -23047,6 +23081,7 @@ scripts = [
 
            (gt, ":total_lords_participating", 2),
            (party_is_active, ":best_screening_party"),
+           (party_is_active, ":faction_marshal_party"),
            (call_script, "script_party_set_ai_state", ":best_screening_party", spai_screening_army, ":faction_marshal_party"),
 		   (try_begin),
 			(ge, "$cheat_mode", 1),
@@ -23068,8 +23103,8 @@ scripts = [
          (this_or_next|eq, ":new_strategy", sfai_default),
 			(eq, ":new_strategy", sfai_feast),				
 						
-         (faction_set_slot, ":faction_no", slot_faction_last_offensive_concluded, ":hours"),
          (call_script, "script_check_and_finish_active_army_quests_for_faction", ":faction_no"),       		 
+         (faction_set_slot, ":faction_no", slot_faction_last_offensive_concluded, ":hours"),
         (try_end),
     (try_end),
 	
@@ -23127,7 +23162,7 @@ scripts = [
          (call_script, "script_end_quest", "qst_follow_army"),
        (try_end),
        (eq, ":one_active", 1),
-       (faction_get_slot, ":last_offensive_time", ":faction_no", slot_faction_ai_last_offensive_time),
+       (faction_get_slot, ":last_offensive_time", ":faction_no", slot_faction_last_offensive_concluded),
        (store_current_hours, ":cur_hours"),
        (store_sub, ":total_time_served", ":cur_hours", ":last_offensive_time"),
        (store_mul, ":xp_reward", ":total_time_served", 5),
@@ -26028,6 +26063,11 @@ scripts = [
       (else_try),
         (eq, ":quest_no", "qst_kidnapped_girl"),
         (party_remove_members, "p_main_party", "trp_kidnapped_girl", 1),
+        (quest_get_slot, ":quest_target_party", "qst_kidnapped_girl", slot_quest_target_party),
+        (try_begin),
+          (party_is_active, ":quest_target_party"),
+          (remove_party, ":quest_target_party"),
+        (try_end),
       (else_try),
         (eq, ":quest_no", "qst_escort_lady"),
         (quest_get_slot, ":quest_object_troop", "qst_escort_lady", slot_quest_object_troop),
@@ -36405,6 +36445,8 @@ scripts = [
  	   (eq, ":actor", "$g_talk_troop"),
  	   (eq, ":center_object", "trp_player"),
 
+	   (neg|troop_slot_ge, ":troop_object", slot_troop_spouse, "trp_player"),
+	   
 	   (str_store_troop_name, s54, ":troop_object"),
 
 	   (try_begin),
@@ -37731,11 +37773,14 @@ scripts = [
 	(try_begin),
 		(eq, ":troop", "$g_talk_troop"),
 		(call_script, "script_cf_test_lord_incompatibility_to_s17", ":troop", ":troop_2"),
+		(str_store_string, s14, s17),
 	(else_try),	
 		(eq, ":troop_2", "$g_talk_troop"),
 		(call_script, "script_cf_test_lord_incompatibility_to_s17", ":troop_2", ":troop"),
+		(str_store_string, s14, s17),
+	(else_try),
+		(str_store_string, s14, "str_general_quarrel"),
 	(try_end),
-	(str_store_string, s14, s17),
 	
 ]),
 
@@ -39427,6 +39472,18 @@ scripts = [
           (try_end),
         (try_end),      
       (try_end),
+
+      #If lord has no walled center and is player faction, then assign player court
+      (try_begin),
+        (eq, ":result", -1),
+        (store_faction_of_troop, ":faction_no", ":troop_no"),
+        (eq, ":faction_no", "fac_player_supporters_faction"),
+		(is_between, "$g_player_court", walled_centers_begin, walled_centers_end),
+		(store_faction_of_party, ":player_court_faction", "$g_player_court"),
+		(eq, ":player_court_faction", "fac_player_supporters_faction"),
+		
+        (assign, ":result", "$g_player_court"),
+      (try_end),
       
       #If lord has no walled center and any not walled village then assign faction capital
       (try_begin),
@@ -40594,6 +40651,7 @@ scripts = [
 	  (is_between, ":cur_center_no", walled_centers_begin, walled_centers_end),
 	  
 	  (party_get_slot, ":enemy_strength_in_area", ":cur_center_no", slot_center_sortie_enemy_strength),
+	  (party_get_slot, ":enemy_strength_in_area", ":cur_center_no", slot_center_sortie_enemy_strength),
 	  (ge, ":enemy_strength_in_area", 50),
 	  
 	  (assign, ":action", spai_holding_center),
@@ -40890,6 +40948,7 @@ scripts = [
 	  (call_script, "script_lord_get_home_center", ":troop_no"),
 	  (assign, ":home_center", reg0),
 	  (gt, ":home_center", -1),
+	  (party_slot_eq, ":home_center", slot_town_lord, ":troop_no"), #newly added
 	  
 	  #if troop is very close to its home center increase by 20%
 	  (assign, ":distance_addition", 0),

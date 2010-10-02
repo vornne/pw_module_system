@@ -2611,7 +2611,7 @@ game_menus = [
        [
          (store_current_hours, ":cur_hours"),
          (faction_set_slot, "$g_cheat_selected_faction", slot_faction_ai_state, sfai_gathering_army),
-         (faction_set_slot, "$g_cheat_selected_faction", slot_faction_ai_last_offensive_time, ":cur_hours"),
+         (faction_set_slot, "$g_cheat_selected_faction", slot_faction_last_offensive_concluded, ":cur_hours"),
          (faction_set_slot, "$g_cheat_selected_faction", slot_faction_ai_offensive_max_followers, 1),
          (faction_set_slot, "$g_cheat_selected_faction", slot_faction_ai_object, -1),
          (jump_to_menu, "mnu_faction_orders"),
@@ -2619,9 +2619,9 @@ game_menus = [
        ),
       ("faction_orders_increase_time", [],"{!}Increase last offensive time by 24 hours.",
        [
-         (faction_get_slot, ":faction_ai_last_offensive_time", "$g_cheat_selected_faction", slot_faction_ai_last_offensive_time),
+         (faction_get_slot, ":faction_ai_last_offensive_time", "$g_cheat_selected_faction", slot_faction_last_offensive_concluded),
          (val_sub, ":faction_ai_last_offensive_time", 24),
-         (faction_set_slot, "$g_cheat_selected_faction", slot_faction_ai_last_offensive_time, ":faction_ai_last_offensive_time"),
+         (faction_set_slot, "$g_cheat_selected_faction", slot_faction_last_offensive_concluded, ":faction_ai_last_offensive_time"),
          (jump_to_menu, "mnu_faction_orders"),
         ]
        ),
@@ -3823,14 +3823,14 @@ game_menus = [
           (try_begin),
             (eq, "$g_battle_result", 1), #battle won
                         
-            #(eq, ":num_enemy_regulars_remaining", 0), #battle won
+            (this_or_next|le, ":num_enemy_regulars_remaining", 0), #battle won
             (le, ":num_enemy_regulars_remaining",  "$num_routed_enemies"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
 
             (assign, ":enemy_finished",1),
           (else_try),
             (eq, "$g_engaged_enemy", 1), 
             
-            #(eq, ":num_enemy_regulars_remaining", 0), 
+            (this_or_next|le, ":num_enemy_regulars_remaining", 0), 
             (le, "$g_enemy_fit_for_battle", "$num_routed_enemies"),  #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
             
             (ge, "$g_friend_fit_for_battle",1),
@@ -4229,6 +4229,7 @@ game_menus = [
       (else_try),
         (call_script, "script_party_count_members_with_full_health", "p_collective_enemy"),
         (assign, ":num_enemy_regulars_remaining", reg0),
+        (this_or_next|le, ":num_enemy_regulars_remaining", 0),
         (le, ":num_enemy_regulars_remaining", "$num_routed_enemies"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
         (assign, ":continue", 0),
         (party_get_num_companion_stacks, ":party_num_stacks", "p_collective_enemy"),
@@ -5009,8 +5010,8 @@ game_menus = [
           (try_begin),
             (eq, "$g_battle_result", 1), 
             
-            #(eq, ":num_enemy_regulars_remaining", 0), #battle won
-            (le, ":num_enemy_regulars_remaining",  "$num_routed_enemies"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
+            (this_or_next|le, ":num_enemy_regulars_remaining", 0), #battle won
+            (le, ":num_enemy_regulars_remaining", "$num_routed_enemies"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
             
             (assign, ":enemy_finished",1),
           (else_try),
@@ -5105,9 +5106,14 @@ game_menus = [
       (assign, ":enemy_party_strength", reg0),
       (val_div, ":enemy_party_strength", 5),
 
-      (assign, ":enemy_party_strength_for_p", ":enemy_party_strength"),
-      (val_mul, ":enemy_party_strength_for_p", ":player_party_strength"),
-      (val_div, ":enemy_party_strength_for_p", ":friend_party_strength"),
+      (try_begin),
+        (eq, ":friend_party_strength", 0),
+        (store_div, ":enemy_party_strength_for_p", ":enemy_party_strength", 2),
+      (else_try),
+        (assign, ":enemy_party_strength_for_p", ":enemy_party_strength"),
+        (val_mul, ":enemy_party_strength_for_p", ":player_party_strength"),
+        (val_div, ":enemy_party_strength_for_p", ":friend_party_strength"),
+      (try_end),
 
       (val_sub, ":enemy_party_strength", ":enemy_party_strength_for_p"),
       (inflict_casualties_to_party_group, "p_main_party", ":enemy_party_strength_for_p", "p_temp_casualties"),
@@ -5157,7 +5163,7 @@ game_menus = [
          (call_script, "script_party_count_members_with_full_health","p_collective_enemy"),
          (assign, ":num_enemy_regulars_remaining", reg0),
 
-         #(le, ":num_enemy_regulars_remaining", 0),
+         (this_or_next|le, ":num_enemy_regulars_remaining", 0),
          (le, ":num_enemy_regulars_remaining", "$num_routed_enemies"), #replaced for above line because we do not want routed agents to spawn again in next turn of battle.
 
          (assign, "$g_battle_result", 1),
@@ -5879,6 +5885,18 @@ game_menus = [
        "{s5}.",[(troop_get_slot, "$castle_meeting_selected_troop", "trp_temp_array_a", 2),(jump_to_menu,"mnu_castle_meeting_selected")]),
       ("guard_meet_s5",[(gt, "$num_castle_meeting_troops", 3),(troop_get_slot, ":troop_no", "trp_temp_array_a", 3),(str_store_troop_name, s5, ":troop_no")],
        "{s5}.",[(troop_get_slot, "$castle_meeting_selected_troop", "trp_temp_array_a", 3),(jump_to_menu,"mnu_castle_meeting_selected")]),
+      ("guard_meet_s5",[(gt, "$num_castle_meeting_troops", 4),(troop_get_slot, ":troop_no", "trp_temp_array_a", 4),(str_store_troop_name, s5, ":troop_no")],
+       "{s5}.",[(troop_get_slot, "$castle_meeting_selected_troop", "trp_temp_array_a", 4),(jump_to_menu,"mnu_castle_meeting_selected")]),
+      ("guard_meet_s5",[(gt, "$num_castle_meeting_troops", 5),(troop_get_slot, ":troop_no", "trp_temp_array_a", 5),(str_store_troop_name, s5, ":troop_no")],
+       "{s5}.",[(troop_get_slot, "$castle_meeting_selected_troop", "trp_temp_array_a", 5),(jump_to_menu,"mnu_castle_meeting_selected")]),
+      ("guard_meet_s5",[(gt, "$num_castle_meeting_troops", 6),(troop_get_slot, ":troop_no", "trp_temp_array_a", 6),(str_store_troop_name, s5, ":troop_no")],
+       "{s5}.",[(troop_get_slot, "$castle_meeting_selected_troop", "trp_temp_array_a", 6),(jump_to_menu,"mnu_castle_meeting_selected")]),
+      ("guard_meet_s5",[(gt, "$num_castle_meeting_troops", 7),(troop_get_slot, ":troop_no", "trp_temp_array_a", 7),(str_store_troop_name, s5, ":troop_no")],
+       "{s5}.",[(troop_get_slot, "$castle_meeting_selected_troop", "trp_temp_array_a", 7),(jump_to_menu,"mnu_castle_meeting_selected")]),
+      ("guard_meet_s5",[(gt, "$num_castle_meeting_troops", 8),(troop_get_slot, ":troop_no", "trp_temp_array_a", 8),(str_store_troop_name, s5, ":troop_no")],
+       "{s5}.",[(troop_get_slot, "$castle_meeting_selected_troop", "trp_temp_array_a", 8),(jump_to_menu,"mnu_castle_meeting_selected")]),
+      ("guard_meet_s5",[(gt, "$num_castle_meeting_troops", 9),(troop_get_slot, ":troop_no", "trp_temp_array_a", 9),(str_store_troop_name, s5, ":troop_no")],
+       "{s5}.",[(troop_get_slot, "$castle_meeting_selected_troop", "trp_temp_array_a", 9),(jump_to_menu,"mnu_castle_meeting_selected")]),
       
       ("forget_it",[],
        "Forget it.",
@@ -6442,11 +6460,16 @@ game_menus = [
 ##        (display_message, "@{!}player_str={reg0} friend_str={reg1} enemy_str={reg2}"),
 ##        (display_message, "@{!}enemy_party={reg3} ally_party={reg4}"),
 
-        (assign, ":enemy_party_strength_for_p", ":enemy_party_strength"),
-        (val_mul, ":enemy_party_strength_for_p", ":player_party_strength"),
-        (val_div, ":enemy_party_strength_for_p", ":friend_party_strength"),
-        (val_sub, ":enemy_party_strength", ":enemy_party_strength_for_p"),
+        (try_begin),
+          (eq, ":friend_party_strength", 0),
+          (store_div, ":enemy_party_strength_for_p", ":enemy_party_strength", 2),
+        (else_try),
+          (assign, ":enemy_party_strength_for_p", ":enemy_party_strength"),
+          (val_mul, ":enemy_party_strength_for_p", ":player_party_strength"),
+          (val_div, ":enemy_party_strength_for_p", ":friend_party_strength"),
+        (try_end),
 
+        (val_sub, ":enemy_party_strength", ":enemy_party_strength_for_p"),
         (inflict_casualties_to_party_group, "p_main_party", ":enemy_party_strength_for_p", "p_temp_casualties"),
         (call_script, "script_print_casualties_to_s0", "p_temp_casualties", 0),
         (str_store_string_reg, s8, s0),
@@ -7224,9 +7247,14 @@ game_menus = [
         (val_div, ":enemy_party_strength", 10),
 
         (store_add, ":friend_party_strength", ":player_party_strength", ":ally_party_strength"),
-        (assign, ":enemy_party_strength_for_p", ":enemy_party_strength"),
-        (val_mul, ":enemy_party_strength_for_p", ":player_party_strength"),
-        (val_div, ":enemy_party_strength_for_p", ":friend_party_strength"),
+        (try_begin),
+          (eq, ":friend_party_strength", 0),
+          (store_div, ":enemy_party_strength_for_p", ":enemy_party_strength", 2),
+        (else_try),
+          (assign, ":enemy_party_strength_for_p", ":enemy_party_strength"),
+          (val_mul, ":enemy_party_strength_for_p", ":player_party_strength"),
+          (val_div, ":enemy_party_strength_for_p", ":friend_party_strength"),
+        (try_end),
 
         (val_sub, ":enemy_party_strength", ":enemy_party_strength_for_p"),
         (inflict_casualties_to_party_group, "p_main_party", ":enemy_party_strength_for_p", "p_temp_casualties"),
@@ -9417,6 +9445,8 @@ game_menus = [
 	(assign, "$love_interest_in_town_4", 0),
 	(assign, "$love_interest_in_town_5", 0),
 	(assign, "$love_interest_in_town_6", 0),
+	(assign, "$love_interest_in_town_7", 0),
+	(assign, "$love_interest_in_town_8", 0),
 	
 	(try_for_range, ":lady_no", kingdom_ladies_begin, kingdom_ladies_end),
 		(troop_slot_eq, ":lady_no", slot_troop_cur_center, "$current_town"),
@@ -9455,7 +9485,13 @@ game_menus = [
 			(assign, "$love_interest_in_town_5", ":lady_no"),	
 		(else_try),
 			(eq, "$love_interest_in_town_6", 0),
-			(assign, "$love_interest_in_town_6", ":lady_no"),		
+			(assign, "$love_interest_in_town_6", ":lady_no"),
+		(else_try),
+			(eq, "$love_interest_in_town_7", 0),
+			(assign, "$love_interest_in_town_7", ":lady_no"),		
+		(else_try),
+			(eq, "$love_interest_in_town_8", 0),
+			(assign, "$love_interest_in_town_8", ":lady_no"),		
 		(try_end),	
 	(try_end),
 	
@@ -9568,6 +9604,9 @@ game_menus = [
         (str_clear, s1),
         (try_begin),
           (neg|party_slot_eq, "$current_town", slot_town_lord, "trp_player"),
+		  (troop_get_slot, ":player_spouse", "trp_player", slot_troop_spouse),
+          (neg|party_slot_eq, "$current_town", slot_town_lord, ":player_spouse"),
+
           (party_slot_ge, "$current_town", slot_town_lord, "trp_player"), #can rest for free in castles and towns with unassigned lords
           (store_faction_of_party, ":current_town_faction", "$current_town"),
           (neq, ":current_town_faction", "fac_player_supporters_faction"),
@@ -9839,6 +9878,13 @@ game_menus = [
 
 	("visit_lady_6",[(gt, "$love_interest_in_town_6", 0),(str_store_troop_name, s12, "$love_interest_in_town_6"),],
 	"Visit {s12}",[(assign, "$love_interest_in_town", "$love_interest_in_town_6"),(jump_to_menu, "mnu_garden"),]),
+	
+	("visit_lady_7",[(gt, "$love_interest_in_town_7", 0),(str_store_troop_name, s12, "$love_interest_in_town_7"),],
+	"Visit {s12}",[(assign, "$love_interest_in_town", "$love_interest_in_town_7"),(jump_to_menu, "mnu_garden"),]),
+
+	("visit_lady_8",[(gt, "$love_interest_in_town_8", 0),(str_store_troop_name, s12, "$love_interest_in_town_8"),],
+	"Visit {s12}",[(assign, "$love_interest_in_town", "$love_interest_in_town_8"),(jump_to_menu, "mnu_garden"),]),
+
 	
 	("leave",[], "Leave",[(jump_to_menu, "mnu_town")]),
 
