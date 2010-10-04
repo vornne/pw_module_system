@@ -35,6 +35,7 @@ slot_player_equip_end                 = 29
 ##  AGENT SLOTS            #############################
 ########################################################
 
+slot_agent_horse_last_rider           = 0
 
 ########################################################
 ##  SCENE PROP SLOTS       #############################
@@ -124,6 +125,7 @@ loop_player_check_interval            = 5
 
 max_distance_to_play_sound            = 10000
 max_distance_to_see_labels            = 1500
+max_distance_horse_rider              = 2000
 
 seconds_before_removing_dropped_item  = 300
 sell_item_gold_multiplier             = 80
