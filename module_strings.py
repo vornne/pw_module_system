@@ -267,6 +267,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("already_towing_cart", "Already towing another cart."),
   ("resource_required", "More resources required."),
 
+  ("chat_format", "[{s1}] {s0}"),
+  ("send_message_to_players_nearby", "Send message to players nearby:"),
+
   ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12}"),
   ("pw_welcome", "Welcome adventurer^^Join a faction and fight for control of the castles"),
 

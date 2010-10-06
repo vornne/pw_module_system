@@ -261,7 +261,7 @@ mission_templates = [
       (try_end),
       ]),
 
-    (0, 0, 0, [(game_key_clicked, gk_character_window)],
+    (0, 0, 0, [(game_key_clicked, gk_character_window),(call_script, "script_cf_no_input_presentation_active")],
      [(try_begin),
         (eq, "$g_display_agent_labels", 0),
         (assign, "$g_display_agent_labels", 1),
@@ -271,8 +271,15 @@ mission_templates = [
       (try_end),
       ]),
 
-    (0, 1, 1, [(key_clicked, key_slash)],
+    (0, 1, 1, [(key_clicked, key_slash),(call_script, "script_cf_no_input_presentation_active")],
      [(multiplayer_send_message_to_server, client_event_detach_scene_prop),
+      ]),
+
+    (0, 0.1, 0, [(game_key_clicked, gk_inventory_window),(call_script, "script_cf_no_input_presentation_active")],
+     [(assign, "$g_chat_box_string_id", "str_send_message_to_players_nearby"),
+      (assign, "$g_chat_box_client_event", client_event_local_chat),
+      (assign, "$g_chat_box_shift_client_event", client_event_local_chat_shout),
+      (start_presentation, "prsnt_chat_box"),
       ]),
 
     (1, 0, ti_once, [(neg|multiplayer_is_server)],

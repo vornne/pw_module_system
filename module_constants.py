@@ -146,6 +146,8 @@ loop_player_check_interval            = 5
 max_distance_to_play_sound            = 10000
 max_distance_to_see_labels            = 1500
 max_distance_horse_rider              = 2000
+max_distance_local_chat               = 3000
+max_distance_local_chat_shout         = 5000
 
 seconds_before_removing_dropped_item  = 300
 sell_item_gold_multiplier             = 80
