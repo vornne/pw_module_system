@@ -212,6 +212,8 @@ sounds = [
 
  ("failure", sf_2d|sf_priority_10|sf_vol_5, ["cue_failure.ogg"]),
  ("man_yawn",sf_priority_7|sf_vol_10, ["man_yawn_1.ogg"]),
+ ("man_cough",sf_priority_7, ["man_cough_1.ogg","man_cough_2.ogg","man_cough_3.ogg"]),
+ ("man_drown",sf_priority_7, ["man_stun_1.ogg","man_ugh_7.ogg","man_ugh_13.ogg","man_ugh_17.ogg"]),
  ("cut_wood",sf_priority_7,["shield_hit_cut_3.ogg","shield_hit_cut_5.ogg"]),
  ("cut_wood_break",sf_priority_7,["shield_hit_cut_4.ogg"]),
  ("cut_wood_scratch",sf_priority_7,["wooden_hit_high_armor_low_damage_1.ogg","wooden_hit_high_armor_low_damage_2b.ogg"]),

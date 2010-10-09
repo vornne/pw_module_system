@@ -39,6 +39,7 @@ slot_player_equip_end                 = 29
 ########################################################
 
 slot_agent_horse_last_rider           = 0
+slot_agent_drowning_count             = 1
 
 ########################################################
 ##  SCENE PROP SLOTS       #############################
@@ -152,6 +153,7 @@ team_faction_4                        = 6
 spawn_invulnerable_time               = 10
 
 loop_player_check_interval            = 5
+loop_horse_check_interval             = 30
 
 max_distance_to_play_sound            = 10000
 max_distance_to_see_labels            = 1500
