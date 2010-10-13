@@ -81,6 +81,14 @@ scene_prop_state_destroyed            = 1
 scene_prop_state_hidden               = 2
 scene_prop_state_regenerating         = 3
 
+slot_scene_prop_inventory_max_size    = 998
+slot_scene_prop_inventory_count       = 999
+slot_scene_prop_inventory_begin       = 1000
+slot_scene_prop_inventory_obj_begin   = 2000
+slot_scene_prop_inventory_obj_item_0  = 2990
+slot_scene_prop_inventory_mesh_begin  = 3000
+slot_scene_prop_inventory_mesh_item_0 = 3990
+
 ########################################################
 ##  ITEM SLOTS             #############################
 ########################################################
@@ -203,6 +211,9 @@ ship_forwards_maximum                 = 4
 ship_rotation_maximum                 = 5
 ship_forwards_multiplier              = 200
 ship_rotation_multiplier              = 5
+
+inventory_slots_per_row               = 6
+inventory_slot_spacing                = 100
 
 all_items_begin = "itm_straw_hat"
 all_items_end = "itm_all_items_end"
