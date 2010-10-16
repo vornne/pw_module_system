@@ -69,6 +69,7 @@ slot_scene_prop_target_rotation       = 18
 slot_scene_prop_attached_to_agent     = 19
 slot_scene_prop_controlling_agent     = 20
 slot_scene_prop_length                = 21
+slot_scene_prop_width                 = 22
 
 slot_scene_prop_next_resource_hp      = 30
 slot_scene_prop_state                 = 31
