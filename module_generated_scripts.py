@@ -28,5 +28,8 @@ def generate_initialize_item_slots():
     difficulty = get_difficulty(item[6])
     if difficulty > 0:
       script_body.append((item_set_slot, item_id, slot_item_difficulty, difficulty))
+    length = get_weapon_length(item[6])
+    if length > 0:
+      script_body.append((item_set_slot, item_id, slot_item_length, length))
   return script_body
 generate_script("initialize_item_slots", generate_initialize_item_slots())
