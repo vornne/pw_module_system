@@ -229,6 +229,11 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("leave_edit_mode", "Leave scene editing mode?"),
   ("distance_reg1_sq_distance_reg2", "Distance: {reg1}, sq distance: {reg2}."),
 
+  ("choose_faction_banner", "Choose the banner for your faction:"),
+  ("keep_current_banner", "Keep the current banner"),
+  ("next", "Next"),
+  ("previous", "Previous"),
+
   ("done", "Done"),
   ("use", "Use"),
   ("buy", "Buy"),
@@ -270,6 +275,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 
   ("chat_format", "[{s1}] {s0}"),
   ("send_message_to_players_nearby", "Send message to players nearby:"),
+  ("change_faction_name", "Change the name of your faction:"),
 
   ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12}"),
   ("pw_welcome", "Welcome adventurer^^Join a faction and fight for control of the castles"),

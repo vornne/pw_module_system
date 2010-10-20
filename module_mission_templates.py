@@ -342,6 +342,16 @@ mission_templates = [
      [(call_script, "script_cf_client_check_control_ship"),
       ]),
 
+    (0, 0.1, 0, [(key_clicked, key_f10),(call_script, "script_cf_no_input_presentation_active")],
+     [(assign, "$g_chat_box_string_id", "str_change_faction_name"),
+      (assign, "$g_chat_box_event_type", chat_event_type_set_faction_name),
+      (start_presentation, "prsnt_chat_box"),
+      ]),
+
+    (0, 0, 0, [(key_clicked, key_f9),(call_script, "script_cf_no_input_presentation_active")],
+     [(start_presentation, "prsnt_faction_banner_selection"),
+      ]),
+
     (1, 0, ti_once, [(neg|multiplayer_is_server)],
      [(assign, "$g_preset_message_display_enabled", 1),
       ]),
