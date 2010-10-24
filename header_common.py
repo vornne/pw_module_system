@@ -23,6 +23,7 @@ server_event_faction_set_name                   = 14
 client_event_chat_message_begin                 = 110
 client_event_chat_message_end                   = 120
 client_event_chat_message_type                  = 120
+client_event_drop_money_bag                     = 123
 client_event_change_faction_banner              = 124
 client_event_transfer_inventory                 = 125
 client_event_control_scene_prop                 = 126

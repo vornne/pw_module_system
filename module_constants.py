@@ -187,6 +187,7 @@ max_distance_local_chat_shout         = 5000
 ambient_distance_local_chat           = 1000
 ambient_distance_local_chat_shout     = 2000
 z_position_to_hide_object             = -4999
+max_distance_to_use                   = 200
 
 seconds_before_removing_dropped_item  = 300
 sell_item_gold_multiplier             = 80

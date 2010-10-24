@@ -248,6 +248,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("mine", "Mine"),
   ("s0__s1_", "{!}{s0} ({s1})"),
   ("s2_s3", "{!}{s2}^{s3}"),
+  ("drop_money_bag_containing", "Drop money bag containing:"),
+  ("pick_up_money_bag", "Pick up the nearest money bag"),
+  ("no_money_bag_nearby", "There are no money bags nearby."),
 
   ("troop_not_available", "Not available to you^{s0}"),
   ("troop_train", "Train to be {s1} for the {s2}"),

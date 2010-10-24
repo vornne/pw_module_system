@@ -352,6 +352,10 @@ mission_templates = [
      [(start_presentation, "prsnt_faction_banner_selection"),
       ]),
 
+    (0, 0, 0, [(game_key_clicked, gk_party_window),(call_script, "script_cf_no_input_presentation_active")],
+     [(start_presentation, "prsnt_money_bag"),
+      ]),
+
     (1, 0, ti_once, [(neg|multiplayer_is_server)],
      [(assign, "$g_preset_message_display_enabled", 1),
       ]),

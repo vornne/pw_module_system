@@ -214,6 +214,9 @@ def spr_ship_triggers(hit_points=1000, length=1000, width=200, sail=-1, sail_off
 def spr_ship_ramp_triggers():
   return [spr_call_script_use_trigger("script_use_ship_ramp")]
 
+def spr_money_bag_triggers():
+  return [spr_call_script_use_trigger("script_cf_use_money_bag")]
+
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
   ("inventory",sokf_type_container|sokf_place_at_origin,"package","bobaggage", []),
@@ -1811,6 +1814,8 @@ scene_props = [
   ("pw_cart_b",sokf_moveable|spr_use_time(1),"pw_cart_b","bo_pw_cart_b", spr_cart_triggers(horse=1, z_offset=-125, inventory_count=32, max_item_length=150)),
   ("pw_wheelbarrow",sokf_moveable|spr_use_time(1),"pw_hand_cart_a","bo_pw_hand_cart_a", spr_cart_triggers(z_offset=-90, inventory_count=3, max_item_length=70)),
   ("pw_hand_cart",sokf_moveable|spr_use_time(1),"pw_hand_cart_b","bo_pw_hand_cart_b", spr_cart_triggers(z_offset=-90, inventory_count=5, max_item_length=100)),
+
+  ("pw_money_bag",spr_use_time(0),"pw_money_bag","bo_pw_money_bag", spr_money_bag_triggers()),
 
   ("pw_ship_a",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_a","bo_pw_ship_a", spr_ship_triggers(hit_points=5000, length=800, width=150, sail="pw_ship_a_sail", sail_off="pw_ship_a_sail_off", collision="pw_ship_a_cd")),
   ("pw_ship_a_sail",sokf_moveable,"pw_ship_a_sail","bo_pw_ship_a_sail", []),
