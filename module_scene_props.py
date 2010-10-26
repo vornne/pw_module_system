@@ -107,6 +107,23 @@ def spr_teleport_door_triggers(pos_offset=(0,0,0)):
   return [spr_call_script_use_trigger("script_cf_use_teleport_door", pos_offset[0], pos_offset[1], pos_offset[2]),
     [link_scene_prop, link_scene_prop_self]]
 
+def spr_rotate_door_flags(use_time=1):
+  return sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|spr_use_time(use_time)|sokf_missiles_not_attached
+
+def spr_rotate_door_triggers(hit_points=1000, resource_class=item_class_wood, left=0):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
+      ]),
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_door", ":instance_id", ":hit_damage", hit_points, resource_class),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    spr_call_script_use_trigger("script_cf_use_rotate_door", left),
+    [init_scene_prop, "script_cf_init_rotate_door", left]]
+
 def spr_drawbridge_winch_triggers(target_scene_prop, rotation_steps=10, step_size=-8, animation_time=200):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -1734,6 +1751,29 @@ scene_props = [
   ("pw_door_teleport_arch_a",spr_use_time(1),"dungeon_door_direction_a","bo_dungeon_door_direction_a", spr_teleport_door_triggers(pos_offset=(100,0,-230))),
   ("pw_door_teleport_roof",spr_use_time(1),"house_roof_door","bo_house_roof_door", spr_teleport_door_triggers(pos_offset=(0,0,100))),
   ("pw_door_teleport_invisible",sokf_invisible|spr_use_time(1),"invisible_door","bo_invisible_door", spr_teleport_door_triggers(pos_offset=(0,50,0))),
+  ("pw_door_rotate_a",spr_rotate_door_flags(1),"castle_f_sally_door_a","bo_castle_f_sally_door_a", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_b",spr_rotate_door_flags(1),"castle_e_sally_door_a","bo_castle_e_sally_door_a", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_c",spr_rotate_door_flags(1),"castle_f_door_a","bo_castle_f_door_a", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_d",spr_rotate_door_flags(1),"tutorial_door_b","bo_tutorial_door_b", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_viking_left",spr_rotate_door_flags(1),"viking_keep_destroy_sally_door_left","bo_viking_keep_destroy_sally_door_left", spr_rotate_door_triggers(hit_points=5000, left=1)),
+  ("pw_door_rotate_viking_right",spr_rotate_door_flags(1),"viking_keep_destroy_sally_door_right","bo_viking_keep_destroy_sally_door_right", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_gatehouse_left",spr_rotate_door_flags(1),"gatehouse_door_left","bo_gatehouse_door_left", spr_rotate_door_triggers(hit_points=7000, left=1)),
+  ("pw_door_rotate_gatehouse_right",spr_rotate_door_flags(1),"gatehouse_door_right","bo_gatehouse_door_right", spr_rotate_door_triggers(hit_points=7000)),
+  ("pw_door_rotate_dungeon_cell_a",spr_rotate_door_flags(1),"dungeon_door_cell_a","bo_dungeon_door_cell_a", spr_rotate_door_triggers(hit_points=10000, resource_class=item_class_iron)),
+  ("pw_door_rotate_dungeon_cell_b",spr_rotate_door_flags(1),"dungeon_door_cell_b","bo_dungeon_door_cell_b", spr_rotate_door_triggers(hit_points=12000, resource_class=item_class_iron)),
+  ("pw_door_rotate_dungeon_a",spr_rotate_door_flags(1),"dungeon_door_entry_a","bo_dungeon_door_entry_a", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_dungeon_b",spr_rotate_door_flags(1),"dungeon_door_entry_b","bo_dungeon_door_entry_a", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_dungeon_c",spr_rotate_door_flags(1),"dungeon_door_entry_c","bo_dungeon_door_entry_a", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_e_left",spr_rotate_door_flags(1),"door_e_left","bo_door_left", spr_rotate_door_triggers(hit_points=5000, left=1)),
+  ("pw_door_rotate_e_right",spr_rotate_door_flags(1),"door_e_right","bo_door_right", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_f_left",spr_rotate_door_flags(1),"door_f_left","bo_door_left", spr_rotate_door_triggers(hit_points=5000, left=1)),
+  ("pw_door_rotate_f_right",spr_rotate_door_flags(1),"door_f_right","bo_door_right", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_h_left",spr_rotate_door_flags(1),"door_g_left","bo_door_left", spr_rotate_door_triggers(hit_points=5000, left=1)),
+  ("pw_door_rotate_h_right",spr_rotate_door_flags(1),"door_g_right","bo_door_right", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_towngate_left",spr_rotate_door_flags(2),"towngate_rectangle_door_left","bo_towngate_rectangle_door_left", spr_rotate_door_triggers(hit_points=10000, left=1)),
+  ("pw_door_rotate_towngate_right",spr_rotate_door_flags(2),"towngate_rectangle_door_right","bo_towngate_rectangle_door_right", spr_rotate_door_triggers(hit_points=10000)),
+  ("pw_door_rotate_earth_left",spr_rotate_door_flags(2),"earth_sally_gate_left","bo_earth_sally_gate_left", spr_rotate_door_triggers(hit_points=10000, left=1)),
+  ("pw_door_rotate_earth_right",spr_rotate_door_flags(2),"earth_sally_gate_right","bo_earth_sally_gate_right", spr_rotate_door_triggers(hit_points=10000)),
 
   ("pw_winch_frame",0,"winch_stabilizer_a","bo_winch_stabilizer_a", []),
   ("pw_portcullis_winch",sokf_moveable|spr_use_time(1),"winch","bo_winch", spr_portcullis_winch_triggers("pw_portcullis")),

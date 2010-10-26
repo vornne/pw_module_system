@@ -55,6 +55,8 @@ linked_scene_prop_slot_count          = 3
 
 slot_scene_prop_position              = 15
 slot_scene_prop_target_position       = 16
+slot_scene_prop_rotation              = 17
+slot_scene_prop_target_rotation       = 18
 
 slot_scene_prop_attached_to_agent     = 19
 
