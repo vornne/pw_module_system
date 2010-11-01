@@ -52,6 +52,7 @@ slot_scene_prop_gold_value            = 1
 slot_scene_prop_gold_multiplier       = 2
 slot_scene_prop_use_string            = 3
 slot_scene_prop_troop_id              = 4
+slot_scene_prop_full_hit_points       = 5
 
 slot_scene_prop_linked_scene_prop     = 10
 slot_scene_prop_linked_scene_prop_1   = 10

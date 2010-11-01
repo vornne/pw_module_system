@@ -217,6 +217,40 @@ def spr_ship_ramp_triggers():
 def spr_money_bag_triggers():
   return [spr_call_script_use_trigger("script_cf_use_money_bag")]
 
+def spr_structure_flags():
+  return sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+
+def spr_bridge_triggers(footing_spr, hit_points=1000):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
+      ]),
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_bridge", ":instance_id", ":hit_damage", 0),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    [link_scene_prop, footing_spr, footing_spr]]
+
+def spr_build_flags():
+  return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+
+def spr_bridge_footing_triggers():
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_hit_points, ":instance_id", destroy_scene_prop_hit_points),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_build"),
+      ]),
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_bridge_footing", ":instance_id", ":hit_damage"),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_use, [])]
+
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
   ("inventory",sokf_type_container|sokf_place_at_origin,"package","bobaggage", []),
@@ -1800,6 +1834,11 @@ scene_props = [
   ("pw_door_rotate_towngate_right",spr_rotate_door_flags(2),"towngate_rectangle_door_right","bo_towngate_rectangle_door_right", spr_rotate_door_triggers(hit_points=10000)),
   ("pw_door_rotate_earth_left",spr_rotate_door_flags(2),"earth_sally_gate_left","bo_earth_sally_gate_left", spr_rotate_door_triggers(hit_points=10000, left=1)),
   ("pw_door_rotate_earth_right",spr_rotate_door_flags(2),"earth_sally_gate_right","bo_earth_sally_gate_right", spr_rotate_door_triggers(hit_points=10000)),
+
+  ("pw_wooden_bridge_a",spr_structure_flags(),"bridge_wooden","bo_bridge_wooden", spr_bridge_triggers("pw_wooden_bridge_a_footing", hit_points=10000)),
+  ("pw_wooden_bridge_a_footing",spr_build_flags(),"box_a","bo_box_a", spr_bridge_footing_triggers()),
+  ("pw_rope_bridge",spr_structure_flags(),"rope_bridge_15m","bo_rope_bridge_15m", spr_bridge_triggers("pw_rope_bridge_footing", hit_points=2000)),
+  ("pw_rope_bridge_footing",spr_build_flags(),"castle_f_wall_way_a","bo_castle_f_wall_way_a", spr_bridge_footing_triggers()),
 
   ("pw_winch_frame",0,"winch_stabilizer_a","bo_winch_stabilizer_a", []),
   ("pw_portcullis_winch",sokf_moveable|spr_use_time(1),"winch","bo_winch", spr_portcullis_winch_triggers("pw_portcullis")),

@@ -325,6 +325,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("winch_drop", "Drop"),
   ("cut_down", "Cut down"),
   ("mine", "Mine"),
+  ("build", "Build"),
   ("s0__s1_", "{!}{s0} ({s1})"),
   ("drop_money_bag_containing", "Drop money bag containing:"),
   ("pick_up_money_bag", "Pick up the nearest money bag"),
