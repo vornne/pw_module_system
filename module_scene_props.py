@@ -251,6 +251,36 @@ def spr_bridge_footing_triggers():
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_use, [])]
 
+def spr_wall_triggers(build_spr, hit_points=1000, height=1000):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, height),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
+      ]),
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_wall", ":instance_id", ":hit_damage", 0),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    [link_scene_prop, build_spr],
+    [init_scene_prop, "script_cf_init_wall"]]
+
+def spr_build_wall_triggers():
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_hit_points, ":instance_id", destroy_scene_prop_hit_points),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_build"),
+      ]),
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_build_wall", ":instance_id", ":hit_damage"),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_use, [])]
+
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
   ("inventory",sokf_type_container|sokf_place_at_origin,"package","bobaggage", []),
@@ -1839,6 +1869,9 @@ scene_props = [
   ("pw_wooden_bridge_a_footing",spr_build_flags(),"box_a","bo_box_a", spr_bridge_footing_triggers()),
   ("pw_rope_bridge",spr_structure_flags(),"rope_bridge_15m","bo_rope_bridge_15m", spr_bridge_triggers("pw_rope_bridge_footing", hit_points=2000)),
   ("pw_rope_bridge_footing",spr_build_flags(),"castle_f_wall_way_a","bo_castle_f_wall_way_a", spr_bridge_footing_triggers()),
+
+  ("pw_wooden_palisade",spr_structure_flags(),"arena_palisade_a","bo_arena_palisade_a", spr_wall_triggers("pw_wooden_palisade_build", hit_points=15000, height=1600)),
+  ("pw_wooden_palisade_build",spr_build_flags(),"wood_a","bo_wood_a", spr_build_wall_triggers()),
 
   ("pw_winch_frame",0,"winch_stabilizer_a","bo_winch_stabilizer_a", []),
   ("pw_portcullis_winch",sokf_moveable|spr_use_time(1),"winch","bo_winch", spr_portcullis_winch_triggers("pw_portcullis")),
