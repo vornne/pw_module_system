@@ -262,4 +262,7 @@ banner_meshes_begin = "mesh_banner_a01"
 banner_meshes_end = "mesh_arms_a01"
 banner_meshes_end_minus_one = "mesh_banner_f21"
 
+banner_items_begin = "itm_pw_banner_pole_a01"
+banner_items_end = "itm_test_horse"
+
 commands_module_system_names_begin = "str_bot_count"

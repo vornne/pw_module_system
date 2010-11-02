@@ -330,6 +330,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("drop_money_bag_containing", "Drop money bag containing:"),
   ("pick_up_money_bag", "Pick up the nearest money bag"),
   ("no_money_bag_nearby", "There are no money bags nearby."),
+  ("buy_banner_faction", "Buy a banner for the {s1}"),
 
   ("troop_not_available", "Not available to you^{s0}"),
   ("troop_train", "Train to be {s1} for the {s2}"),

@@ -103,6 +103,10 @@ def spr_change_troop_triggers(troop_id, cost=0, use_string=None):
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string))
   return [init_trigger, spr_call_script_use_trigger("script_cf_change_troop")]
 
+def spr_buy_banner_triggers(banner_item_begin, use_string="str_buy_banner_faction"):
+  return [spr_item_init_trigger(banner_item_begin, use_string=use_string),
+    spr_call_script_use_trigger("script_cf_buy_banner")]
+
 def spr_teleport_door_triggers(pos_offset=(0,0,0)):
   return [spr_call_script_use_trigger("script_cf_use_teleport_door", pos_offset[0], pos_offset[1], pos_offset[2]),
     [link_scene_prop, link_scene_prop_self]]
@@ -1821,6 +1825,7 @@ scene_props = [
   ("pw_buy_woodcutter_axe",spr_use_time(1),"pw_wood_axe","bo_weapon", spr_buy_item_triggers("itm_woodcutter_axe")),
   ("pw_buy_mining_pick",spr_use_time(1),"pw_mining_pick","bo_weapon", spr_buy_item_triggers("itm_mining_pick")),
   ("pw_buy_repair_hammer",spr_use_time(1),"pw_repair_hammer","bo_weapon_small", spr_buy_item_triggers("itm_repair_hammer")),
+  ("pw_buy_banner",spr_use_time(1),"pw_banner_pole","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01")),
   ("pw_test_gold",spr_use_time(1),"tree_house_guard_a","bo_tree_house_guard_a", spr_gain_gold_triggers(10000)),
   ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a", spr_gain_health_triggers(30)),
   ("pw_test_poison",spr_use_time(1),"wood_b","bo_wood_b", spr_gain_health_triggers(-30)),
