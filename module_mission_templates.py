@@ -157,6 +157,7 @@ mission_templates = [
       (team_set_relation, team_faction_4, team_spawn_invulnerable, 0),
       (multiplayer_is_server),
       (call_script, "script_setup_owner_faction_for_castles"),
+      (call_script, "script_setup_factions_for_scene"),
       (call_script, "script_setup_all_linked_scene_props"),
       ]),
 

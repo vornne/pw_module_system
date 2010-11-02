@@ -114,6 +114,7 @@ item_class_iron                       = 5
 
 slot_faction_banner_mesh              = 0
 slot_faction_name_is_custom           = 1
+slot_faction_is_active                = 2
 
 ########################################################
 ##  SCENE SLOTS            #############################
@@ -148,6 +149,8 @@ player_array_entry_size               = 5
 
 slot_mission_data_castle_owner_faction_begin    = 0
 slot_mission_data_castle_owner_faction_end      = 8
+slot_mission_data_castle_is_active_begin        = 10
+slot_mission_data_castle_is_active_end          = 18
 slot_mission_data_faction_to_change_name_of     = 100
 
 slot_last_chat_message_event          = 0

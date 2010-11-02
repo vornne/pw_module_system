@@ -312,6 +312,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("zero", "0"),
   ("remaining_time_reg0_s0reg1_s1reg2", "Remaining time: {reg0}:{s0}{reg1}:{s1}{reg2}"),
   ("respawning_in_reg0_seconds", "Respawning in {reg0} seconds"),
+  ("number_of_factions_reg0", "Number of factions: {reg0}"),
 
   ("done", "Done"),
   ("use", "Use"),
@@ -354,6 +355,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("s0_has_been_outlawed", "{s0} has been outlawed!"),
   ("you_have_been_outlawed", "You have been outlawed!"),
   ("your_outlaw_rating_now_reg1", "Your outlaw rating is now {reg1}."),
+  ("scene_error_this_faction_is_not_active", "Scene error: this faction is not active!"),
 
   ("not_riding_cart_horse", "You are not riding a cart horse."),
   ("already_towing_cart", "Already towing another cart."),
