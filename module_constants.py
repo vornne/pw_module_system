@@ -20,6 +20,9 @@ player_spawn_state_invulnerable       = 1
 player_spawn_state_at_marker          = 2
 player_spawn_state_alive              = 3
 
+slot_player_next_chat_event           = 5
+slot_player_next_chat_event_type      = 6
+
 slot_player_equip_item_0              = 20
 slot_player_equip_item_1              = 21
 slot_player_equip_item_2              = 22
@@ -124,6 +127,13 @@ player_array_entry_size               = 4
 slot_mission_data_castle_owner_faction_begin    = 0
 slot_mission_data_castle_owner_faction_end      = 8
 
+slot_last_chat_message_event          = 0
+slot_last_chat_message_event_type     = 1
+slot_last_chat_message_not_recieved   = 2
+
+chat_event_type_local                 = 0
+chat_event_type_local_shout           = 1
+
 ########################################################
 ##  TEAM SLOTS             #############################
 ########################################################
@@ -148,6 +158,8 @@ max_distance_to_see_labels            = 1500
 max_distance_horse_rider              = 2000
 max_distance_local_chat               = 3000
 max_distance_local_chat_shout         = 5000
+ambient_distance_local_chat           = 1000
+ambient_distance_local_chat_shout     = 2000
 
 seconds_before_removing_dropped_item  = 300
 sell_item_gold_multiplier             = 80

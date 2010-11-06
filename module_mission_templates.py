@@ -275,10 +275,21 @@ mission_templates = [
      [(multiplayer_send_message_to_server, client_event_detach_scene_prop),
       ]),
 
+    (0.3, 0.3, 0, [(troop_slot_eq, "trp_last_chat_message", slot_last_chat_message_not_recieved, 1)],
+     [(troop_slot_eq, "trp_last_chat_message", slot_last_chat_message_not_recieved, 1),
+      (troop_get_slot, ":event", "trp_last_chat_message", slot_last_chat_message_event),
+      (troop_get_slot, ":type", "trp_last_chat_message", slot_last_chat_message_event_type),
+      (str_store_troop_name, s0, "trp_last_chat_message"),
+      (try_begin),
+        (gt, ":type", 0),
+        (multiplayer_send_int_to_server, client_event_chat_message_type, ":event", ":type"),
+      (try_end),
+      (multiplayer_send_string_to_server, ":event", s0),
+      ]),
+
     (0, 0.1, 0, [(game_key_clicked, gk_inventory_window),(call_script, "script_cf_no_input_presentation_active")],
      [(assign, "$g_chat_box_string_id", "str_send_message_to_players_nearby"),
-      (assign, "$g_chat_box_client_event", client_event_local_chat),
-      (assign, "$g_chat_box_shift_client_event", client_event_local_chat_shout),
+      (assign, "$g_chat_box_event_type", chat_event_type_local),
       (start_presentation, "prsnt_chat_box"),
       ]),
 
