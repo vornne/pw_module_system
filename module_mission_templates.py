@@ -389,6 +389,10 @@ mission_templates = [
      [(call_script, "script_preset_message", "str_pw_welcome", preset_message_read_object, 0, 0),
       ]),
 
+    (0, 0, 4.0, [(neg|multiplayer_is_server)],
+     [(call_script, "script_cf_turn_windmill_fans", 0),
+      ]),
+
     ]),
 
   ("edit_scene", 0, -1, "edit_scene", [(0,0,0,0,1,[])],

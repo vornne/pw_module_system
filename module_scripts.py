@@ -4717,6 +4717,18 @@ scripts = [
     (troop_set_slot, "trp_ship_array", slot_ship_array_collision_props_count, ":count"),
     ]),
 
+  ("cf_turn_windmill_fans",
+   [(store_script_param_1, ":fan_no"),
+
+    (scene_prop_get_instance, ":instance_id", "spr_windmill_fan_turning", ":fan_no"),
+    (gt, ":instance_id", -1),
+    (prop_instance_get_position, pos1, ":instance_id"),
+    (position_rotate_y, pos1, 45),
+    (prop_instance_animate_to_position, ":instance_id", pos1, 450),
+    (val_add, ":fan_no", 1),
+    (call_script, "script_cf_turn_windmill_fans", ":fan_no"),
+    ]),
+
   ("check_spawn_bots",
    [(store_script_param, ":dead_agent_id", 1),
 
