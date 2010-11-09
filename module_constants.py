@@ -10,18 +10,26 @@
 ########################################################
 
 slot_player_faction_id                = 0
-slot_player_spawn_invulnerable_time   = 1
-slot_player_spawn_at_marker           = 2
+slot_player_spawn_state               = 1
+slot_player_spawn_invulnerable_time   = 2
 slot_player_spawn_hit_points          = 3
+slot_player_spawn_entry_point         = 4
 
-slot_player_default_armor_head        = 10
-slot_player_default_armor_body        = 11
-slot_player_default_armor_foot        = 12
-slot_player_default_armor_gloves      = 13
-slot_player_bought_armor_head         = 14
-slot_player_bought_armor_body         = 15
-slot_player_bought_armor_foot         = 16
-slot_player_bought_armor_gloves       = 17
+player_spawn_state_dead               = 0
+player_spawn_state_invulnerable       = 1
+player_spawn_state_at_marker          = 2
+player_spawn_state_alive              = 3
+
+slot_player_equip_item_0              = 20
+slot_player_equip_item_1              = 21
+slot_player_equip_item_2              = 22
+slot_player_equip_item_3              = 23
+slot_player_equip_head                = 24
+slot_player_equip_body                = 25
+slot_player_equip_foot                = 26
+slot_player_equip_gloves              = 27
+slot_player_equip_horse               = 28
+slot_player_equip_end                 = 29
 
 ########################################################
 ##  AGENT SLOTS            #############################
