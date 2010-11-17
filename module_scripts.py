@@ -140,7 +140,13 @@ scripts = [
     (call_script, "script_initialize_game_rules"),
     ]),
 
-  ("game_set_multiplayer_mission_end", []),
+  ("game_set_multiplayer_mission_end",
+   [
+    (assign, "$g_stats_chart_opened_manually", 0),
+    (neg|is_presentation_active, "prsnt_stats_chart"),
+    (start_presentation, "prsnt_stats_chart"),
+    ]),
+
   ("game_enable_cheat_menu", []),
 
   ("game_get_console_command",
