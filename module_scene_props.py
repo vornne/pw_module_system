@@ -251,6 +251,9 @@ def spr_bridge_footing_triggers():
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_use, [])]
 
+def spr_ladder_flags():
+  return sokf_type_ladder|sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+
 def spr_wall_triggers(build_spr, hit_points=1000, height=1000):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -1872,6 +1875,12 @@ scene_props = [
 
   ("pw_wooden_palisade",spr_structure_flags(),"arena_palisade_a","bo_arena_palisade_a", spr_wall_triggers("pw_wooden_palisade_build", hit_points=15000, height=1600)),
   ("pw_wooden_palisade_build",spr_build_flags(),"wood_a","bo_wood_a", spr_build_wall_triggers()),
+  ("pw_ladder_6m",spr_ladder_flags(),"siege_ladder_move_6m","bo_siege_ladder_move_6m", spr_wall_triggers("pw_ladder_build", hit_points=400, height=600)),
+  ("pw_ladder_8m",spr_ladder_flags(),"siege_ladder_move_8m","bo_siege_ladder_move_8m", spr_wall_triggers("pw_ladder_build", hit_points=440, height=800)),
+  ("pw_ladder_10m",spr_ladder_flags(),"siege_ladder_move_10m","bo_siege_ladder_move_10m", spr_wall_triggers("pw_ladder_build", hit_points=480, height=1000)),
+  ("pw_ladder_12m",spr_ladder_flags(),"siege_ladder_move_12m","bo_siege_ladder_move_12m", spr_wall_triggers("pw_ladder_build", hit_points=560, height=1200)),
+  ("pw_ladder_14m",spr_ladder_flags(),"siege_ladder_move_14m","bo_siege_ladder_move_14m", spr_wall_triggers("pw_ladder_build", hit_points=600, height=2000)),
+  ("pw_ladder_build",spr_build_flags(),"package","bobaggage", spr_build_wall_triggers()),
 
   ("pw_winch_frame",0,"winch_stabilizer_a","bo_winch_stabilizer_a", []),
   ("pw_portcullis_winch",sokf_moveable|spr_use_time(1),"winch","bo_winch", spr_portcullis_winch_triggers("pw_portcullis")),
