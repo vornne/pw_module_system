@@ -53,25 +53,50 @@ def spr_call_script_use_trigger(script_name, *args):
   use_trigger[1].append(tuple(call_script_list))
   return use_trigger
 
-def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_string=None, tableau=None):
-  use_trigger = (ti_on_scene_prop_use,
+def spr_buy_item_flags(use_time=1):
+  use_time = max(use_time, 1)
+  return spr_use_time(use_time)
+
+def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_string=None, tableau=None, resources=[]):
+  buy_trigger = (ti_on_scene_prop_cancel_use,
      [(store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":instance_id"),
       (prop_instance_get_position, pos1, ":instance_id")])
   if pos_offset[0] != 0:
-    use_trigger[1].append((position_move_x, pos1, pos_offset[0]))
+    buy_trigger[1].append((position_move_x, pos1, pos_offset[0]))
   if pos_offset[1] != 0:
-    use_trigger[1].append((position_move_y, pos1, pos_offset[1]))
+    buy_trigger[1].append((position_move_y, pos1, pos_offset[1]))
   if pos_offset[2] != 0:
-    use_trigger[1].append((position_move_z, pos1, pos_offset[2]))
+    buy_trigger[1].append((position_move_z, pos1, pos_offset[2]))
   if rotate[0] != 0:
-    use_trigger[1].append((position_rotate_x, pos1, rotate[0]))
+    buy_trigger[1].append((position_rotate_x, pos1, rotate[0]))
   if rotate[1] != 0:
-    use_trigger[1].append((position_rotate_y, pos1, rotate[1]))
+    buy_trigger[1].append((position_rotate_y, pos1, rotate[1]))
   if rotate[2] != 0:
-    use_trigger[1].append((position_rotate_z, pos1, rotate[2]))
-  use_trigger[1].append((call_script, "script_cf_buy_item", ":agent_id", ":instance_id"))
-  return [spr_item_init_trigger(item_id, use_string, tableau), use_trigger]
+    buy_trigger[1].append((position_rotate_z, pos1, rotate[2]))
+  if len(resources) > 0:
+    buy_trigger[1].append((call_script, "script_cf_use_item_stockpile", ":agent_id", ":instance_id", -1, -1, -1, -1))
+  else:
+    buy_trigger[1].append((call_script, "script_cf_buy_item", ":agent_id", ":instance_id"))
+  craft_trigger = (ti_on_scene_prop_use, [])
+  init_trigger = spr_item_init_trigger(item_id, use_string, tableau)
+  if len(resources) > 0:
+    craft_trigger[1].extend([
+      (store_trigger_param_1, ":agent_id"),
+      (store_trigger_param_2, ":instance_id")])
+    operation_list = [call_script, "script_cf_use_item_stockpile", ":agent_id", ":instance_id"]
+    for resource in resources:
+      if type(resource) == type(tuple()):
+        for x in range(0, resource[1]):
+          operation_list.append(resource[0])
+      elif type(resource) == type(str()):
+        operation_list.append(resource)
+      else:
+        raise Exception("invalid resource entry", resource)
+    for unused in range(len(operation_list), 8):
+      operation_list.append(-1)
+    craft_trigger[1].append(tuple(operation_list[:8]))
+  return [init_trigger, buy_trigger, craft_trigger]
 
 def spr_gain_gold_triggers(gold_value, use_string="str_collect_reg1_gold"):
   return [(ti_on_scene_prop_init,
@@ -1811,23 +1836,23 @@ scene_props = [
   ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_resource_triggers("itm_iron_bar", resource_hp=70, tool_class=item_class_mining, hardness=3)),
   ("pw_iron_mine_b",spr_resource_flags(),"pw_iron_mine_b","bo_pw_iron_mine_b", spr_hit_resource_triggers("itm_iron_bar_med", resource_hp=90, tool_class=item_class_mining, hardness=3)),
 
-  ("pw_buy_light_heraldic_mail",spr_use_time(1),"heraldic_armor_new_c","bo_armor_body", spr_buy_item_triggers("itm_light_heraldic_mail", tableau="tableau_heraldic_armor_c")),
-  ("pw_buy_heraldic_mail_with_tunic",spr_use_time(1),"heraldic_armor_new_b","bo_armor_body", spr_buy_item_triggers("itm_heraldic_mail_with_tunic", tableau="tableau_heraldic_armor_b")),
-  ("pw_buy_heraldic_mail_with_tabard",spr_use_time(1),"heraldic_armor_new_d","bo_armor_body", spr_buy_item_triggers("itm_heraldic_mail_with_tabard", tableau="tableau_heraldic_armor_d")),
-  ("pw_buy_heraldic_mail_with_surcoat",spr_use_time(1),"heraldic_armor_new_a","bo_armor_body", spr_buy_item_triggers("itm_heraldic_mail_with_surcoat", tableau="tableau_heraldic_armor_a")),
-  ("pw_buy_shirt",spr_use_time(1),"shirt","bo_armor_body", spr_buy_item_triggers("itm_shirt")),
-  ("pw_buy_skullcap",spr_use_time(1),"skull_cap_new_a","bo_armor_head", spr_buy_item_triggers("itm_skullcap")),
-  ("pw_buy_curved_sword",spr_use_time(1),"khergit_sword","bo_weapon", spr_buy_item_triggers("itm_curved_sword")),
-  ("pw_buy_leather_boots",spr_use_time(1),"leather_boots_a","bo_armor_foot", spr_buy_item_triggers("itm_leather_boots")),
-  ("pw_buy_scale_gauntlets",spr_use_time(1),"scale_gauntlets_b_L","bo_armor_hand", spr_buy_item_triggers("itm_scale_gauntlets")),
-  ("pw_buy_tribal_warrior_outfit",spr_use_time(1),"tribal_warrior_outfit_a_new","bo_armor_body", spr_buy_item_triggers("itm_tribal_warrior_outfit")),
-  ("pw_buy_falchion",spr_use_time(1),"falchion_new","bo_weapon", spr_buy_item_triggers("itm_falchion")),
-  ("pw_buy_hunting_bow",spr_use_time(1),"hunting_bow","bo_weapon", spr_buy_item_triggers("itm_hunting_bow")),
-  ("pw_buy_arrows",spr_use_time(1),"arrow","bo_weapon_small", spr_buy_item_triggers("itm_arrows")),
-  ("pw_buy_cart_horse",spr_use_time(1),"wood_b","bo_wood_b", spr_buy_item_triggers("itm_cart_horse")),
-  ("pw_buy_woodcutter_axe",spr_use_time(1),"pw_wood_axe","bo_weapon", spr_buy_item_triggers("itm_woodcutter_axe")),
-  ("pw_buy_mining_pick",spr_use_time(1),"pw_mining_pick","bo_weapon", spr_buy_item_triggers("itm_mining_pick")),
-  ("pw_buy_repair_hammer",spr_use_time(1),"pw_repair_hammer","bo_weapon_small", spr_buy_item_triggers("itm_repair_hammer")),
+  ("pw_buy_light_heraldic_mail",spr_buy_item_flags(12),"heraldic_armor_new_c","bo_armor_body", spr_buy_item_triggers("itm_light_heraldic_mail", tableau="tableau_heraldic_armor_c")),
+  ("pw_buy_heraldic_mail_with_tunic",spr_buy_item_flags(17),"heraldic_armor_new_b","bo_armor_body", spr_buy_item_triggers("itm_heraldic_mail_with_tunic", tableau="tableau_heraldic_armor_b")),
+  ("pw_buy_heraldic_mail_with_tabard",spr_buy_item_flags(15),"heraldic_armor_new_d","bo_armor_body", spr_buy_item_triggers("itm_heraldic_mail_with_tabard", tableau="tableau_heraldic_armor_d")),
+  ("pw_buy_heraldic_mail_with_surcoat",spr_buy_item_flags(20),"heraldic_armor_new_a","bo_armor_body", spr_buy_item_triggers("itm_heraldic_mail_with_surcoat", tableau="tableau_heraldic_armor_a")),
+  ("pw_buy_shirt",spr_buy_item_flags(3),"shirt","bo_armor_body", spr_buy_item_triggers("itm_shirt")),
+  ("pw_buy_skullcap",spr_buy_item_flags(5),"skull_cap_new_a","bo_armor_head", spr_buy_item_triggers("itm_skullcap")),
+  ("pw_buy_curved_sword",spr_buy_item_flags(7),"khergit_sword","bo_weapon", spr_buy_item_triggers("itm_curved_sword", resources=["itm_iron_bar"])),
+  ("pw_buy_leather_boots",spr_buy_item_flags(6),"leather_boots_a","bo_armor_foot", spr_buy_item_triggers("itm_leather_boots")),
+  ("pw_buy_scale_gauntlets",spr_buy_item_flags(13),"scale_gauntlets_b_L","bo_armor_hand", spr_buy_item_triggers("itm_scale_gauntlets", resources=[("itm_iron_bar", 3)])),
+  ("pw_buy_tribal_warrior_outfit",spr_buy_item_flags(7),"tribal_warrior_outfit_a_new","bo_armor_body", spr_buy_item_triggers("itm_tribal_warrior_outfit", resources=[("itm_stick", 2), ("itm_iron_bar", 4)])),
+  ("pw_buy_falchion",spr_buy_item_flags(4),"falchion_new","bo_weapon", spr_buy_item_triggers("itm_falchion", resources=["itm_stick", "itm_iron_bar"])),
+  ("pw_buy_hunting_bow",spr_buy_item_flags(2),"hunting_bow","bo_weapon", spr_buy_item_triggers("itm_hunting_bow", resources=["itm_branch"])),
+  ("pw_buy_arrows",spr_buy_item_flags(2),"arrow","bo_weapon_small", spr_buy_item_triggers("itm_arrows")),
+  ("pw_buy_cart_horse",spr_buy_item_flags(1),"wood_b","bo_wood_b", spr_buy_item_triggers("itm_cart_horse")),
+  ("pw_buy_woodcutter_axe",spr_buy_item_flags(8),"pw_wood_axe","bo_weapon", spr_buy_item_triggers("itm_woodcutter_axe")),
+  ("pw_buy_mining_pick",spr_buy_item_flags(10),"pw_mining_pick","bo_weapon", spr_buy_item_triggers("itm_mining_pick")),
+  ("pw_buy_repair_hammer",spr_buy_item_flags(5),"pw_repair_hammer","bo_weapon_small", spr_buy_item_triggers("itm_repair_hammer")),
   ("pw_buy_banner",spr_use_time(1),"pw_banner_pole","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01")),
   ("pw_test_gold",spr_use_time(1),"tree_house_guard_a","bo_tree_house_guard_a", spr_gain_gold_triggers(10000)),
   ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a", spr_gain_health_triggers(30)),

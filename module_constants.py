@@ -78,6 +78,7 @@ slot_scene_prop_collision_kind        = 23
 slot_scene_prop_next_resource_hp      = 30
 slot_scene_prop_state                 = 31
 slot_scene_prop_state_time            = 32
+slot_scene_prop_stack_count           = 33
 
 scene_prop_state_active               = 0
 scene_prop_state_destroyed            = 1
