@@ -1922,6 +1922,8 @@ scene_props = [
   ("pw_castle_sign",0,"tree_house_guard_a","bo_tree_house_guard_a", [(ti_on_scene_prop_use, [])]),
   ("pw_castle_capture_point",spr_use_time(60),"pw_castle_flag_post","bo_pw_castle_flag_post", spr_capture_castle_triggers()),
 
+  ("pw_scene_day_time",sokf_invisible,"barrier_box","0", []),
+
   ("pw_buy_test_horse",spr_use_time(1),"wood_a","bo_wood_a", spr_buy_item_triggers("itm_test_horse")),
 
 ]

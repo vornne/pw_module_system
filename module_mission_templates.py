@@ -138,8 +138,7 @@ mission_templates = [
     ],
    [
     (ti_before_mission_start, 0, 0, [],
-     [(scene_set_day_time, 12),
-      (server_set_friendly_fire, 1),
+     [(server_set_friendly_fire, 1),
       (server_set_melee_friendly_fire, 1),
       (server_set_friendly_fire_damage_self_ratio, 0),
       (server_set_friendly_fire_damage_friend_ratio, 100),
@@ -155,6 +154,7 @@ mission_templates = [
       (team_set_relation, team_faction_3, team_spawn_invulnerable, 0),
       (team_set_relation, team_spawn_invulnerable, team_faction_4, 0),
       (team_set_relation, team_faction_4, team_spawn_invulnerable, 0),
+      (call_script, "script_scene_set_day_time"),
       (multiplayer_is_server),
       (call_script, "script_setup_owner_faction_for_castles"),
       (call_script, "script_setup_factions_for_scene"),
@@ -404,9 +404,9 @@ mission_templates = [
   ("edit_scene", 0, -1, "edit_scene", [(0,0,0,0,1,[])],
    [
     (ti_before_mission_start, 0, 0, [],
-     [(scene_set_day_time, 12),
-      (server_set_add_to_game_servers_list, 0),
+     [(server_set_add_to_game_servers_list, 0),
       (assign, "$g_edit_scene", 1),
+      (call_script, "script_scene_set_day_time"),
       ]),
 
     (ti_after_mission_start, 0, 0, [],

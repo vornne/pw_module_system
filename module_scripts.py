@@ -4735,6 +4735,18 @@ scripts = [
     (call_script, "script_cf_turn_windmill_fans", ":fan_no"),
     ]),
 
+  ("scene_set_day_time",
+   [
+    (try_begin),
+      (scene_prop_get_instance, ":instance_id", "spr_pw_scene_day_time", 0),
+      (prop_instance_get_variation_id, ":day_time", ":instance_id"),
+      (val_clamp, ":day_time", 0, 23),
+    (else_try),
+      (assign, ":day_time", 12),
+    (try_end),
+    (scene_set_day_time, ":day_time"),
+    ]),
+
   ("check_spawn_bots",
    [(store_script_param, ":dead_agent_id", 1),
 
