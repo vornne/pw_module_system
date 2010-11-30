@@ -24,5 +24,13 @@ from module_constants import *
 
 scenes = [
   ("scene_1",sf_generate,"none","none",(0,0),(300,300),-100,"0x000000033000124c000acab40000280700000c9f00000ab5",[],[],"outer_terrain_pw_1"),
+  ("scene_2",sf_generate,"none","none",(0,0),(100,100),-100,"0x00000001300389800003a4ea000058340000637a0000399b",[],[],"outer_terrain_plain"),
+  ("scene_3",sf_generate,"none","none",(0,0),(100,100),-100,"0x00000001300389800003a4ea000058340000637a0000399b",[],[],"outer_terrain_plain"),
+  ("scene_4",sf_generate,"none","none",(0,0),(100,100),-100,"0x00000001300389800003a4ea000058340000637a0000399b",[],[],"outer_terrain_plain"),
+  ("scene_5",sf_generate,"none","none",(0,0),(100,100),-100,"0x00000001300389800003a4ea000058340000637a0000399b",[],[],"outer_terrain_plain"),
+  ("scene_6",sf_generate,"none","none",(0,0),(100,100),-100,"0x00000001300389800003a4ea000058340000637a0000399b",[],[],"outer_terrain_plain"),
+  ("scene_7",sf_generate,"none","none",(0,0),(100,100),-100,"0x00000001300389800003a4ea000058340000637a0000399b",[],[],"outer_terrain_plain"),
+  ("scene_8",sf_generate,"none","none",(0,0),(100,100),-100,"0x00000001300389800003a4ea000058340000637a0000399b",[],[],"outer_terrain_plain"),
+  ("scene_9",sf_generate,"none","none",(0,0),(100,100),-100,"0x00000001300389800003a4ea000058340000637a0000399b",[],[],"outer_terrain_plain"),
   ("scenes_end",sf_generate,"none","none",(0,0),(100,100),-100,"0x00000001300389800003a4ea000058340000637a0000399b",[],[],"outer_terrain_plain"),
 ]

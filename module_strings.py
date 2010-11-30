@@ -359,6 +359,14 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("pw_welcome", "Welcome adventurer^^Join a faction and fight for control of the castles"),
 
   ("scene_name_1", "Test Scene"),
+  ("scene_name_2", "Scene 2"),
+  ("scene_name_3", "Scene 3"),
+  ("scene_name_4", "Scene 4"),
+  ("scene_name_5", "Scene 5"),
+  ("scene_name_6", "Scene 6"),
+  ("scene_name_7", "Scene 7"),
+  ("scene_name_8", "Scene 8"),
+  ("scene_name_9", "Scene 9"),
   ("scene_names_end", "scene_names_end"),
 
   ("castle_name_0", "Laszloburg Castle"),
