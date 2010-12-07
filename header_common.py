@@ -35,6 +35,17 @@ preset_message_fail_sound                       = 0x2000
 preset_message_error                            = preset_message_red|preset_message_fail_sound
 preset_message_info                             = preset_message_yellow
 
+net_value_upper_bound = 1 << 31
+net_sound_multiplier = 1 << 16
+net_sound_mask = (1 << 16) - 1
+
+net_pack_3_mask_1 = (1 << 10) - 1
+net_pack_3_mask_2 = net_pack_3_mask_1 << 10
+net_pack_3_mask_3 = net_pack_3_mask_1 << 20
+net_pack_3_value_upper_bound = (1 << 10)
+net_pack_3_multiplier_2 = (1 << 10)
+net_pack_3_multiplier_3 = (1 << 20)
+
 max_correctly_displayed_gold                    = 131071
 
 
