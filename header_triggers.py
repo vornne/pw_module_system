@@ -25,6 +25,14 @@ ti_battle_window_opened  = -24.0 #can only be used in module_mission_templates t
 ti_on_agent_spawn 	= -25.0 #can only be used in module_mission_templates triggers
 ti_on_agent_killed_or_wounded = -26.0 #can only be used in module_mission_templates triggers
 ti_on_agent_knocked_down = -27.0 #can only be used in module_mission_templates triggers
+ti_on_agent_hit          = -28.0 #can only be used in module_mission_templates triggers
+# Trigger Param 1: damage inflicted agent_id
+# Trigger Param 2: damage dealer agent_id
+# Trigger Param 3: inflicted damage
+# Register 0: damage dealer item_id
+# Position Register 0: position of the blow
+#                      rotation gives the direction of the blow
+
 ti_on_leave_area         = -30.0 #can only be used in module_mission_templates triggers
 ti_on_scene_prop_init    = -40.0 #can only be used in module_scene_props triggers
 ti_on_init_scene_prop    = ti_on_scene_prop_init
@@ -40,7 +48,8 @@ ti_on_scene_prop_destroy = -43.0 #can only be used in module_scene_props trigger
 # Trigger Param 1: prop instance number
 
 ti_on_scene_prop_use     = -44.0 #can only be used in module_scene_props triggers
-# Trigger Param 1: prop instance number
+# Trigger Param 1: user agent id
+# Trigger Param 2: prop instance number
 
 ti_on_scene_prop_is_animating = -45.0 #can only be used in module_scene_props triggers
 # Trigger Param 1: prop instance number
@@ -49,13 +58,41 @@ ti_on_scene_prop_is_animating = -45.0 #can only be used in module_scene_props tr
 ti_on_scene_prop_animation_finished = -46.0 #can only be used in module_scene_props triggers
 # Trigger Param 1: prop instance number
 
+ti_on_scene_prop_start_use = -47.0 #can only be used in module_scene_props triggers
+# Trigger Param 1: user agent id
+# Trigger Param 2: prop instance number
+
+ti_on_scene_prop_cancel_use = -48.0 #can only be used in module_scene_props triggers
+# Trigger Param 1: user agent id
+# Trigger Param 2: prop instance number
+
 ti_on_init_item          = -50.0 #can only be used in module_items triggers
 ti_on_weapon_attack      = -51.0 #can only be used in module_items triggers
+# Trigger Param 1: attacker agent id
 # Position Register 1: Weapon Item Position
 ti_on_missile_hit        = -52.0 #can only be used in module_items triggers
 # Position Register 1: Missile Position
 # Trigger Param 1: shooter agent id
-
+ti_on_item_picked_up     = -53.0 #can only be used in module_mission_templates triggers
+# Trigger Param 1: agent id
+# Trigger Param 2: item id
+# Trigger Param 3: scene prop id (will be deleted after this trigger)
+ti_on_item_dropped       = -54.0 #can only be used in module_mission_templates triggers
+# Trigger Param 1: agent id
+# Trigger Param 2: item id
+# Trigger Param 3: scene prop id
+ti_on_agent_mount        = -55.0 #can only be used in module_mission_templates triggers
+# Trigger Param 1: agent id
+# Trigger Param 2: horse agent id
+ti_on_agent_dismount     = -56.0 #can only be used in module_mission_templates triggers
+# Trigger Param 1: agent id
+# Trigger Param 2: horse agent id
+ti_on_item_wielded       = -57.0 #can only be used in module_mission_templates triggers
+# Trigger Param 1: agent id
+# Trigger Param 2: item id
+ti_on_item_unwielded     = -58.0 #can only be used in module_mission_templates triggers
+# Trigger Param 1: agent id
+# Trigger Param 2: item id
 ti_on_presentation_load  = -60.0 #can only be used in module_presentations triggers
 ti_on_presentation_run   = -61.0 #can only be used in module_presentations triggers
 # Trigger Param 1: current time in miliseconds

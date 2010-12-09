@@ -22,6 +22,7 @@ sokf_destructible          = 0x0000000000008000
 sokf_moveable              = 0x0000000000010000
 sokf_face_player           = 0x0000000000020000
 sokf_dynamic_physics       = 0x0000000000040000
+sokf_missiles_not_attached = 0x0000000000080000 #works only for dynamic mission objects
 
 
 spbf_hit_points_mask       = 0x00000000000000FF

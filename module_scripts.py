@@ -30,6 +30,7 @@ scripts = [
    [
       (faction_set_slot, "fac_player_supporters_faction", slot_faction_state, sfs_inactive),
       (assign, "$g_player_luck", 200),
+      (assign, "$g_player_luck", 200),
       (troop_set_slot, "trp_player", slot_troop_occupation, slto_kingdom_hero),
       (store_random_in_range, ":starting_training_ground", training_grounds_begin, training_grounds_end),
       (party_relocate_near_party, "p_main_party", ":starting_training_ground", 3),
@@ -2944,6 +2945,7 @@ scripts = [
         (party_set_slot, ":party", slot_party_last_in_combat, ":hours"),
       (try_end),
 
+      (assign, ":trigger_result", 1),
       (try_begin),
         (ge, ":root_defender_party", 0),
         (ge, ":root_attacker_party", 0),
@@ -2954,9 +2956,7 @@ scripts = [
         (neq, ":defender_faction", "fac_player_faction"),
         (neq, ":attacker_faction", "fac_player_faction"),
         (store_relation, ":reln", ":defender_faction", ":attacker_faction"),
-        (ge, ":reln", 0),
-        (set_trigger_result, 1),
-      (else_try),
+        (lt, ":reln", 0),
         (assign, ":trigger_result", 0),
 
         (try_begin),
@@ -3074,6 +3074,14 @@ scripts = [
             (try_for_range, ":troop_iterator", 0, ":num_stacks"),
               (party_stack_get_troop_id, ":cur_troop_id", ":collective_casualties", ":troop_iterator"),
               (troop_is_hero, ":cur_troop_id"),
+              
+              (try_begin),
+                #abort quest if troop loses a battle during rest time
+                (check_quest_active, "qst_lend_surgeon"),
+                (quest_slot_eq, "qst_lend_surgeon", slot_quest_giver_troop, ":cur_troop_id"),
+                (call_script, "script_abort_quest", "qst_lend_surgeon", 0),
+              (try_end),
+              
               (call_script, "script_remove_troop_from_prison", ":cur_troop_id"),
                               
               (troop_set_slot, ":cur_troop_id", slot_troop_leaded_party, -1),
@@ -3413,8 +3421,8 @@ scripts = [
              (try_end),      
            (try_end),
          (try_end),  
-         (set_trigger_result, ":trigger_result"),
        (try_end),
+       (set_trigger_result, ":trigger_result"),
   ]),
 
   #script_game_event_battle_end:
@@ -4357,6 +4365,9 @@ scripts = [
         (assign, ":troop_faction", "$players_kingdom"),
       (else_try),
         (store_troop_faction, ":troop_faction", ":troop_no"),
+		
+
+		
       (try_end),
       (str_clear, s49),
 	  
@@ -9646,7 +9657,7 @@ scripts = [
         ###############
         #CLIENT EVENTS#
         ###############
-        (neq, multiplayer_is_server),
+        (neg|multiplayer_is_dedicated_server),
         (try_begin),      
           (eq, ":event_type", multiplayer_event_return_renaming_server_allowed),
           (store_script_param, ":value", 3),
@@ -13328,6 +13339,7 @@ scripts = [
 		#Price of manufactured goods drift towards primary raw material 
 		(try_begin),
 			(item_get_slot, ":raw_material", ":cur_good", slot_item_primary_raw_material),
+            (neq, ":raw_material", 0),
 	        (store_sub, ":raw_material_price_slot", ":raw_material", trade_goods_begin),
 	        (val_add, ":raw_material_price_slot", slot_town_trade_good_prices_begin),
 			(party_get_slot, ":raw_material_price", ":center_no", ":raw_material_price_slot"),
@@ -19412,6 +19424,13 @@ scripts = [
 	  (try_end),
 	  #Political ramifications end
 	  
+	  
+		(try_begin),
+			(ge, "$cheat_mode", 1),
+			(str_store_troop_name, s4, ":troop_no"),
+			(display_message, "@{!}DEBUG - {s4} faction changed in normal faction change"), 
+		(try_end),
+	  
       (troop_set_faction, ":troop_no", ":faction_no"),
       (troop_set_slot, ":troop_no", slot_troop_recruitment_random, 0),
       (troop_set_slot, ":troop_no", slot_lord_recruitment_argument, 0),
@@ -19455,6 +19474,13 @@ scripts = [
 		(assign, ":new_center", reg1),
 		
 		(eq, ":closest_male_relative", ":troop_no"),
+		
+		(try_begin),
+			(ge, "$cheat_mode", 1),
+			(str_store_troop_name, s4, ":kingdom_lady"),
+			(display_message, "@{!}DEBUG - {s4} faction changed by guardian moving"), 
+		(try_end),
+		
 		(troop_set_faction, ":kingdom_lady", ":faction_no"),
 		(troop_slot_eq, ":kingdom_lady", slot_troop_prisoner_of_party, -1),
 		(troop_set_slot, ":kingdom_lady", slot_troop_cur_center, ":new_center"),
@@ -19760,53 +19786,76 @@ scripts = [
 		(val_add, "$total_promotion_changes", 10),
 		
 		#smaller factions are more dramatically influenced by internal jealousies
-		(try_begin),
-			(neg|faction_slot_ge, ":lord_troop_faction", slot_faction_number_of_parties, 4),
-			(assign, ":faction_size_multiplier", 6),
-		(else_try),
-			(neg|faction_slot_ge, ":lord_troop_faction", slot_faction_number_of_parties, 8),
-			(assign, ":faction_size_multiplier", 5),
-		(else_try),
-			(neg|faction_slot_ge, ":lord_troop_faction", slot_faction_number_of_parties, 16),
-			(assign, ":faction_size_multiplier", 4),
-		(else_try),
-			(neg|faction_slot_ge, ":lord_troop_faction", slot_faction_number_of_parties, 32),
-			(assign, ":faction_size_multiplier", 3),
-		(else_try),	
-			(assign, ":faction_size_multiplier", 2),
-		(try_end),
+		#Disabled as of NOV 2010
+#		(try_begin),
+#			(neg|faction_slot_ge, ":lord_troop_faction", slot_faction_number_of_parties, 4),
+#			(assign, ":faction_size_multiplier", 6),
+#		(else_try),
+#			(neg|faction_slot_ge, ":lord_troop_faction", slot_faction_number_of_parties, 8),
+#			(assign, ":faction_size_multiplier", 5),
+#		(else_try),
+#			(neg|faction_slot_ge, ":lord_troop_faction", slot_faction_number_of_parties, 16),
+#			(assign, ":faction_size_multiplier", 4),
+#		(else_try),
+#			(neg|faction_slot_ge, ":lord_troop_faction", slot_faction_number_of_parties, 32),
+#			(assign, ":faction_size_multiplier", 3),
+#		(else_try),	
+#			(assign, ":faction_size_multiplier", 2),
+#		(try_end),
 		
 		#factional politics -- each lord in the faction adjusts his relation according to the relation with the lord receiving the faction
 		(try_for_range, ":other_lord", active_npcs_begin, active_npcs_end),
 			(troop_slot_eq, ":other_lord", slot_troop_occupation, slto_kingdom_hero),
 			(neq, ":other_lord", ":lord_troop_id"),
 			
-#		    (store_troop_faction, ":lord_troop_faction", ":lord_troop_id"),
 		    (store_troop_faction, ":other_troop_faction", ":other_lord"),
 		    (eq, ":lord_troop_faction", ":other_troop_faction"),
 
 		    (neq, ":other_lord", ":faction_leader"),
 			
 	        (call_script, "script_troop_get_relation_with_troop", ":other_lord", ":lord_troop_id"),
-		    (store_div, ":relation_reduction", reg0, 10),
-		    (val_sub, ":relation_reduction", 2),
+			(assign, ":relation_with_troop", reg0),
+
+			#relation reduction = relation/10 minus 2. So,0 = -2, 8 = -1, 16+ = no change or bonus, 24+ gain one point
+		    (store_div, ":relation_with_liege_change", ":relation_with_troop", 8), #changed from 16
+		    (val_sub, ":relation_with_liege_change", 2),
+
+		    (val_clamp, ":relation_with_liege_change", -5, 3),
 			
-		    (neq, ":relation_reduction", 0),
-		    (val_clamp, ":relation_reduction", -5, 3),
-		  	(val_mul, ":relation_reduction", ":faction_size_multiplier"),
-		  	(val_div, ":relation_reduction", 2),
+			(try_begin),
+				#upstanding and goodnatured lords will not lose relation unless they actively dislike the other lord
+				(this_or_next|troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_upstanding),
+					(troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_goodnatured),
+				(ge, ":relation_with_troop", 0),
+				(val_max, ":relation_with_liege_change", 0),
+			(else_try),
+				#penalty is increased for lords who have the more unpleasant reputation types
+				(this_or_next|troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_selfrighteous),
+				(this_or_next|troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_debauched),
+					(troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_quarrelsome),
+				(lt, ":relation_with_liege_change", 0),
+				(val_mul, ":relation_with_liege_change", 3),
+				(val_div, ":relation_with_liege_change", 2),
+			(try_end),
+
+			
+		    (neq, ":relation_with_liege_change", 0),
+			#removed Nov 2010
+#		  	(val_mul, ":relation_reduction", ":faction_size_multiplier"),
+#		  	(val_div, ":relation_reduction", 2),
+			#removed Nov 2010
 			
 			(try_begin),
 				(troop_slot_eq, ":other_lord", slot_troop_stance_on_faction_issue, ":lord_troop_id"),
-				(val_add, ":relation_reduction", 1),
-				(val_max, ":relation_reduction", 1),
+				(val_add, ":relation_with_liege_change", 1),
+				(val_max, ":relation_with_liege_change", 1),
 			(try_end),
 			
- 	        (call_script, "script_troop_change_relation_with_troop", ":other_lord", ":faction_leader", ":relation_reduction"),
-			(val_add, "$total_promotion_changes", ":relation_reduction"),
+ 	        (call_script, "script_troop_change_relation_with_troop", ":other_lord", ":faction_leader", ":relation_with_liege_change"),
+			(val_add, "$total_promotion_changes", ":relation_with_liege_change"),
 			
 		    (try_begin),
-				(this_or_next|le, ":relation_reduction", -8),
+				(this_or_next|le, ":relation_with_liege_change", -4), #Nov 2010 - changed from -8
 				(this_or_next|troop_slot_eq, ":other_lord", slot_troop_promised_fief, 1), #1 is any fief
 					(troop_slot_eq, ":other_lord", slot_troop_promised_fief, ":center_no"),
 				(call_script, "script_add_log_entry", logent_troop_feels_cheated_by_troop_over_land, ":other_lord", ":center_no", ":lord_troop_id", ":lord_troop_faction"),
@@ -22379,6 +22428,7 @@ scripts = [
        (eq, ":faction_no", "$players_kingdom"),      
        (neq, ":new_strategy", ":old_faction_ai_state"),
        (check_quest_active, "qst_report_to_army"),
+       (ge, ":faction_marshal", 0),
               
        (str_store_troop_name_link, s11, ":faction_marshal"),
        (store_current_hours, ":hours"),
@@ -25743,11 +25793,11 @@ scripts = [
         (eq, ":battle_tactic", btactic_follow_leader),
         (team_get_leader, ":ai_leader", ":team_no"),
         (try_begin),
+          (ge, ":ai_leader", 0),
           (agent_is_alive, ":ai_leader"),
           (agent_set_speed_limit, ":ai_leader", 9),
           (call_script, "script_team_get_average_position_of_enemies", ":team_no"),
           (copy_position, pos60, pos0),
-          (ge, ":ai_leader", 0),
           (agent_get_position, pos61, ":ai_leader"),
           (position_transform_position_to_local, pos62, pos61, pos60), #pos62 = vector to enemy w.r.t leader
           (position_normalize_origin, ":distance_to_enemy", pos62),
@@ -30162,6 +30212,13 @@ scripts = [
 	  (try_begin),
 		(troop_get_slot, ":spouse", "trp_player", slot_troop_spouse),
 	    (is_between, ":spouse", kingdom_ladies_begin, kingdom_ladies_end),
+		
+		(try_begin),
+			(ge, "$cheat_mode", 1),
+			(str_store_troop_name, s4, ":spouse"),
+			(display_message, "@{!}DEBUG - {s4} faction changed by marriage, case 1"), 
+		(try_end),
+		
 	    (troop_set_faction, ":spouse", "$players_kingdom"),
 	  (try_end),
 	  	  
@@ -30274,6 +30331,14 @@ scripts = [
 	  (try_begin),
 		(troop_get_slot, ":spouse", "trp_player", slot_troop_spouse),
 	    (is_between, ":spouse", kingdom_ladies_begin, kingdom_ladies_end),
+		
+		(try_begin),
+			(ge, "$cheat_mode", 1),
+			(str_store_troop_name, s4, ":spouse"),
+			(display_message, "@{!}DEBUG - {s4} faction changed by marriage, case 3"), 
+		(try_end),
+		
+		
 	    (troop_set_faction, ":spouse", "fac_player_supporters_faction"),
 	  (try_end),
 	  
@@ -30397,6 +30462,14 @@ scripts = [
 	(try_begin),
 		(troop_get_slot, ":spouse", "trp_player", slot_troop_spouse),
 	    (is_between, ":spouse", kingdom_ladies_begin, kingdom_ladies_end),
+		
+		
+		(try_begin),
+			(ge, "$cheat_mode", 1),
+			(str_store_troop_name, s4, ":spouse"),
+			(display_message, "@{!}DEBUG - {s4} faction changed by marriage, case 2"), 
+		(try_end),
+		
 	    (troop_set_faction, ":spouse", "fac_player_supporters_faction"),
 	(try_end),
 		 	
@@ -38325,7 +38398,8 @@ scripts = [
 		(assign, ":chance_of_enmity", reg0),
 		(gt, ":chance_of_enmity", 0),
 	
-		(lt, ":random", ":chance_of_enmity"),
+	
+		(lt, ":random", ":chance_of_enmity"), #50 or 100 percent, usually
 	
 	
 		(str_store_troop_name, s5, ":lord_1"),
@@ -38349,12 +38423,14 @@ scripts = [
 		(is_between, ":lord_1_faction", kingdoms_begin, kingdoms_end),
 		
 		(call_script, "script_cf_troop_can_intrigue", ":lord_2", 0),
-
+		(neq, ":lord_2", ":faction_2_leader"),
+		(neq, ":lord_2", ":faction_1_leader"),
+		
 		(str_store_troop_name, s5, ":faction_1_leader"),
 		(str_store_troop_name, s6, ":lord_2"),		
 
 		(try_begin),
-			(eq, "$cheat_mode", 1),
+			(ge, "$cheat_mode", 1),
 			(display_message, "str_check_reg8_s5_attempts_to_win_over_s6"),
 		(try_end),
 			
@@ -38366,6 +38442,14 @@ scripts = [
 
 		(try_begin),
 			(gt, ":lord_1_score", ":faction_2_leader_score"),
+			
+			
+			(try_begin),
+				(ge, "$cheat_mode", 1),
+				(str_store_troop_name, s4, ":lord_2"),
+				(display_message, "@{!}DEBUG - {s4} faction changed in subornment"), 
+			(try_end),
+			
 			(call_script, "script_change_troop_faction", ":lord_2", ":lord_1_faction"),		
 		(try_end),
 	(try_end),
@@ -39248,7 +39332,8 @@ scripts = [
 		(display_message, "@{!}DEBUG -- Total feast changes: {reg4}"),
 		
 		(assign, reg4, "$total_policy_dispute_changes"),
-		(display_message, "@{!}DEBUG -- Total policy dispute changes: {reg4}"),
+		(assign, reg5, "$number_of_controversial_policy_decisions"),		
+		(display_message, "@{!}DEBUG -- Total policy dispute changes: {reg4} from {reg5} decisions"),
 
 		(assign, reg4, "$total_indictment_changes"),
 		(display_message, "@{!}DEBUG -- Total faction switch changes: {reg4}"),
@@ -39295,14 +39380,18 @@ scripts = [
 		(assign, ":relation", 0),
 	(else_try),
 		(eq, ":troop1", "trp_player"),
-		(troop_get_slot, ":relation", ":troop2", slot_troop_player_relation),
+		(call_script, "script_troop_get_player_relation", ":troop2"),
+		(assign, ":relation", reg0),
 	(else_try),
 		(eq, ":troop2", "trp_player"),
-		(troop_get_slot, ":relation", ":troop1", slot_troop_player_relation),
+		(call_script, "script_troop_get_player_relation", ":troop1"),
+		(assign, ":relation", reg0),
 	(else_try),
 		(store_add, ":troop1_slot_for_troop2", ":troop2", slot_troop_relations_begin),
 		(troop_get_slot, ":relation", ":troop1", ":troop1_slot_for_troop2"),
 	(try_end),
+	
+	
 	(val_clamp, ":relation", -100, 101),
 	(assign, reg0, ":relation"),
 	
@@ -39629,11 +39718,11 @@ scripts = [
 		(store_random_in_range, ":random", 0, 50), #2% loss brings it down to about 36% by age 90, but of course can be counteracted by new level gain
 		(try_begin),
 			(lt, ":random", ":strength"),
-			(troop_raise_attribute, ca_strength, -1),
+			(troop_raise_attribute, ":troop_no", ca_strength, -1),
 		(try_end),
 		(try_begin),
 			(lt, ":random", ":agility"),
-			(troop_raise_attribute, ca_agility, -1),
+			(troop_raise_attribute, ":troop_no", ca_agility, -1),
 		(try_end),
 	(try_end),
 
@@ -40403,8 +40492,21 @@ scripts = [
 		(assign, "$player_has_homage", 1),
 	(else_try),
 		(eq, ":groom", "trp_player"),
+		
+		(try_begin),
+			(ge, "$cheat_mode", 1),
+			(str_store_troop_name, s4, ":bride"),
+			(display_message, "@{!} DEBUG - {s4} faction change in marriage case 5"),
+		(try_end),
 		(troop_set_faction, ":bride", "$players_kingdom"),
 	(else_try),
+	
+		(try_begin),
+			(ge, "$cheat_mode", 1),
+			(str_store_troop_name, s4, ":bride"),
+			(display_message, "@{!}DEBUG - {s4} faction changed by marriage, case 6"), 
+		(try_end),
+	
 		(troop_set_faction, ":bride", ":groom_faction"),
 	(try_end),
 
@@ -40900,6 +41002,7 @@ scripts = [
 	  
 	  (try_begin),
 	    (gt, ":besieger_party", 0),
+        (party_is_active, ":besieger_party"),
 	    
 	    (assign, ":action", spai_engaging_army),
 	    (assign, ":object", ":besieger_party"),
@@ -40922,6 +41025,7 @@ scripts = [
       (faction_slot_eq, ":faction_no", slot_faction_marshall, ":troop_no"),
       (faction_slot_eq, ":faction_no", slot_faction_ai_state, sfai_attacking_enemy_army),
       (faction_get_slot, ":faction_object", ":faction_no", slot_faction_ai_object),
+      (party_is_active, ":faction_object"),
       
       (assign, ":action", spai_engaging_army),
       (assign, ":object", ":faction_object"),
@@ -41216,6 +41320,7 @@ scripts = [
       
       (faction_get_slot, ":faction_object", ":faction_no", slot_faction_ai_object),
       (party_get_slot, ":raider_party", ":faction_object", slot_village_raided_by),
+      (party_is_active, ":raider_party"),
       
       #think about adding one more condition here, what if raider army is so powerfull, again lords will go and engage enemy one by one?
       (party_get_slot, ":enemy_strength_nearby", ":faction_object", slot_center_sortie_enemy_strength),
@@ -43417,6 +43522,8 @@ scripts = [
 	
 	(call_script, "script_troop_get_relation_with_troop", ":lord", ":suitor"),
 	(assign, ":lord_suitor_relation", reg0),
+	
+
 
 	(troop_get_slot, ":suitor_renown", ":suitor", slot_troop_renown),
 
@@ -43520,6 +43627,8 @@ scripts = [
 		
 	(else_try),
 		(lt, ":lord_suitor_relation", -4),
+		
+
 		
 		(assign, ":explainer_string", "str_i_do_not_care_for_you_sir_and_i_consider_it_my_duty_to_protect_the_ladies_of_my_household_from_undesirable_suitors"),
 		(assign, ":result", -3),
@@ -43902,9 +44011,11 @@ scripts = [
 	(faction_get_slot, ":faction_leader", ":faction_no", slot_faction_leader),
 
 	(try_begin),
-		(eq, "$cheat_mode", 1),
+		(ge, "$cheat_mode", 1),
 		(str_store_faction_name, s3, ":faction_no"),
 		(display_message, "str_calculating_effect_for_policy_for_s3"),
+		
+		(val_add, "$number_of_controversial_policy_decisions", 1),
 	(try_end),
 	
 	(try_begin),
@@ -43949,6 +44060,7 @@ scripts = [
 		(store_faction_of_troop, ":lord_faction", ":lord"),
 		(eq, ":lord_faction", ":faction_no"),
 		(neq, ":lord", ":faction_leader"),
+		
 		(try_begin),
 			(this_or_next|troop_slot_eq, ":lord", slot_lord_reputation_type, lrep_martial),
 			(this_or_next|troop_slot_eq, ":lord", slot_lord_reputation_type, lrep_quarrelsome),
@@ -43966,7 +44078,7 @@ scripts = [
 			(this_or_next|troop_slot_eq, ":lord", slot_lord_reputation_type, lrep_custodian), #new for enfiefed commoners
 				(troop_slot_eq, ":lord", slot_lord_reputation_type, lrep_upstanding),
 			(call_script, "script_troop_change_relation_with_troop", ":faction_leader", ":lord", ":honorable_relation_effect"),
-			(val_add, "$total_policy_dispute_changes", ":hawk_relation_effect"),
+			(val_add, "$total_policy_dispute_changes", ":honorable_relation_effect"),
 			
 		(try_end),
 
@@ -46743,8 +46855,17 @@ scripts = [
 	#Indictments, cont: Finalize where the lord goes
 	(try_begin),
 		(is_between, ":new_faction", kingdoms_begin, kingdoms_end),
+		
+		
+		(try_begin),
+			(ge, "$cheat_mode", 1),
+			(str_store_troop_name, s4, ":troop_no"),
+			(display_message, "@{!}DEBUG - {s4} faction changed in indictment"), 
+		(try_end),		
+		
 		(call_script, "script_change_troop_faction", ":troop_no", ":new_faction"),
 		(try_begin), #new-begin
+		  (neq, ":new_faction", "fac_player_supporters_faction"),
 		  (troop_slot_eq, ":troop_no", slot_troop_occupation, slto_inactive), 
 		  (troop_set_slot, ":troop_no", slot_troop_occupation, slto_kingdom_hero), 
 		(try_end), #new-end

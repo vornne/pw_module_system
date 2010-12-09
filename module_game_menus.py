@@ -2565,6 +2565,20 @@ game_menus = [
          (jump_to_menu, "mnu_faction_orders"),
         ]
        ),
+	   
+      ("faction_orders_political_collapse", [],"{!}CHEAT - Cause all lords in faction to fall out with their liege.",
+       [
+	   (try_for_range, ":lord", active_npcs_begin, active_npcs_end),
+			(troop_slot_eq, ":lord", slot_troop_occupation, slto_kingdom_hero),
+			(store_faction_of_troop, ":troop_faction", ":lord"),
+			(eq, ":troop_faction", "$g_cheat_selected_faction"),
+			(faction_get_slot, ":faction_liege", ":troop_faction", slot_faction_leader),
+			(call_script, "script_troop_change_relation_with_troop", ":lord", ":faction_liege", -200),
+	   (try_end),
+	   
+	   ]
+       ),
+	   
       ("faction_orders_defend", [],"{!}Force defend.",
        [
          (faction_set_slot, "$g_cheat_selected_faction", slot_faction_ai_state, sfai_default),
@@ -11039,8 +11053,10 @@ game_menus = [
            (assign, "$g_last_rest_payment_until", -1),
            (rest_for_hours, ":num_hours", 5, 0), #rest while not attackable
            (change_screen_return),
-		   
-		  
+        ]),
+      ("go_back_dot",[],"Go back.",
+       [
+           (jump_to_menu,"mnu_town_trade"),
         ]),
     ]
   ),

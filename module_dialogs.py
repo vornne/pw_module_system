@@ -3605,6 +3605,12 @@ dialogs = [
      (store_repeat_object, "$g_faction_selected"),
      ]],
 
+   [anyone|plyr, "minister_diplomatic_kingdoms_select",
+   [],
+   "Never mind", "minister_pretalk",
+   []],
+	 
+	 
    [anyone, "minister_diplomatic_initiative_type",
    [],
    "What do you wish to tell him?", "minister_diplomatic_initiative_type_select",
@@ -12339,7 +12345,7 @@ dialogs = [
       (eq, ":power_ratio_for_selected_center", 0),
       (str_store_string, s7, "str_reason_6"),
     (else_try),
-      (is_between, ":power_ratio_for_selected_center", 140, 200),
+      (lt, ":power_ratio_for_selected_center", 200),
       (str_store_string, s7, "str_reason_7"),
     (else_try),
       (is_between, ":power_ratio_for_selected_center", 200, 300),
@@ -12355,7 +12361,7 @@ dialogs = [
 	  (eq, ":power_ratio_for_cur_object", 0),
 	  (str_store_string, s8, "str_reason_6"),
 	(else_try),
-	  (is_between, ":power_ratio_for_cur_object", 140, 200),
+	  (lt, ":power_ratio_for_cur_object", 200),
 	  (str_store_string, s8, "str_reason_7"),
 	(else_try),
 	  (is_between, ":power_ratio_for_cur_object", 200, 300),
@@ -15895,6 +15901,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
   [anyone|plyr,"spouse_talk",
    [],
    "We shall speak later, my {wife/husband}", "close_window",[
+   (assign, "$g_leave_encounter", 1),
  ]],
 
  
@@ -23956,7 +23963,8 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
    "Continue with your preparations. One hour from now, I need that fire.", "village_elder_ask_set_fire_10",
    [
      (party_get_slot, ":bound_center", "$current_town", slot_village_bound_center),  
-     (store_current_hours, ":cur_time"),     
+     (store_current_hours, ":cur_time"),    
+	 (val_add, ":cur_time", 1),
      (assign, ":fire_time", ":cur_time"),
      (party_set_slot, ":bound_center", slot_town_last_nearby_fire_time, ":fire_time"),
      (try_begin),
@@ -23985,7 +23993,7 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
      (party_get_slot, ":bound_center", "$current_town", slot_village_bound_center),  
      (store_time_of_day, ":cur_day_hour"),
      (store_current_hours, ":cur_time"),
-     (store_sub, ":difference", 23, ":cur_day_hour"), #fire will be at 23 midnight today
+     (store_sub, ":difference", 24, ":cur_day_hour"), #fire will be at 24 midnight today
      (store_add, ":fire_time", ":cur_time", ":difference"),
      (party_set_slot, ":bound_center", slot_town_last_nearby_fire_time, ":fire_time"),
      (try_begin),

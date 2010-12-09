@@ -1,4 +1,4 @@
-80
+82
 grass 6442469688324 5
  grass_a  0
  grass_b  0
@@ -286,6 +286,10 @@ bush_new_3 300647713804 1
  bush_new_b  0
 bush_new_4 300647713804 1
  bush_new_c  0
+dry_bush 300647713804 1
+ dry_bush  0
+dry_leaves 300647713804 1
+ dry_leaves  0
 tree_new_2 17184066572 2
  tree_b01  bo_tree_b01
  0 0

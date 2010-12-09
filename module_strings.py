@@ -1238,7 +1238,7 @@ strings = [
   ("npc13_home_description_2", "Eventually I had to leave, and sometimes I wonder if there is a little herdsboy swaddled on her back, as she takes the cows up to pasture each morning. I'd be tempted to try to find her -- but no, no, one should never look back."),
   ("npc14_home_description_2", "If anyone were ever to unify this little land of ours, I'd sign up to serve them, free of charge. I'd put together an army of Rhodok spears with Nord footmen on the flanks and Vaegir archers in front, take along some Khergit scouts to find and fix the enemy, and some Swadian lancers and Sarranid mamlukes to finish them off. I'd take that army over the mountains and make the whole world kneel to Calradia.... Of course, that's what the Emperors thought, and in the end the tribes took away their Empire."),
   ("npc15_home_description_2", "And here's the funny thing -- when the Rhodok lands first rebelled against the Swadians, they all said they weren't going to have any noble lords ruling over them. You can guess how long that lasted. One Rhodok hill chieftain sets himself up in Culmarr, calls himself 'Count', and the good burghers of Jelkala and Veluca have to lick his boots if they want to sell their wine and velvet outside Calradia. And if you want to keep the counts under control, and the peasants providing the towns with food rather than selling to the highest bidder, then you need a King too, don't you? The Rhodok lands are no different than anyone else, whatever guff they talk about 'ancient liberties' and 'freedom.'"),
-  ("npc16_home_description_2", "Still, it was a thin living, and there were always too many mouths around to feed. The Vaegir king and the Khergit khan don't make life any easier for us, squeezing for tax money the villages they control, and raiding for plunder the villages they don't. Of course, I can't say I'd do any differently do the same if I had a castle and an army all of my own. The mighty do whatever they can, and the humble do whatever they must."),
+  ("npc16_home_description_2", "Still, it was a thin living, and there were always too many mouths around to feed. The Vaegir king and the Khergit khan don't make life any easier for us, squeezing for tax money the villages they control, and raiding for plunder the villages they don't. Of course, I can't say I wouldn't do the same if I had a castle and an army all of my own. The mighty do whatever they can, and the humble do whatever they must."),
 
   ("npc1_home_recap", "I'm from the high steppe, near {s21}."),
   ("npc2_home_recap", "I was born over the mountains.  I'm a merchant, the son of a merchant, and the grandson of a merchant."),
@@ -2182,13 +2182,14 @@ strings = [
   ("credits_6", "Writing:^Steve Negus^Armagan Yavuz^Ryan A. Span"),
   ("credits_7", "Original Music:^Jesse Hopkins"),
   ("credits_8", "Voice Talent:^Tassilo Egloffstein"),
-  ("credits_9", "Tutorial written by:^Steve Negus^Armagan Yavuz^Edward Spoerl^^^\
-Horse Motion Capture Animation Supplied by:^Richard Widgery & Kinetic Impulse^^^\
-Physics:^Havok^^^\
-Sound and Music Program Library:^FMODex Sound System by Firelight Technologies^^^\
-Skybox Textures:^Jay Weston^^^\
-Chinese Translation:^Hetairoi; Gaodatailang; silentjealousy; Ginn; fallout13; James; D.Kaede; Kan2; alixyang; muyiboy^^^\
-TaleWorlds Director of Communications:^Ali Erkin ^^^\
+  ("credits_9", "This game has been supported by The Scientific and Technological Research Council of Turkey.^^\
+Tutorial written by:^Steve Negus^Armagan Yavuz^Edward Spoerl^^\
+Horse Motion Capture Animation Supplied by:^Richard Widgery & Kinetic Impulse^^\
+Physics:^Havok^^\
+Sound and Music Program Library:^FMODex Sound System by Firelight Technologies^^\
+Skybox Textures:^Jay Weston^^\
+Chinese Translation:^Hetairoi; Gaodatailang; silentjealousy; Ginn; fallout13; James; D.Kaede; Kan2; alixyang; muyiboy^^\
+TaleWorlds Director of Communications:^Ali Erkin^^\
 TaleWorlds Forum Programming:^Brett Flannigan ^^^\
 TaleWorlds.com Forum Administrators and Moderators:^\
 Janus^\
@@ -3951,9 +3952,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("reason_8", "We believe it to be moderately well defended."),
   ("reason_9", "We believe it to be weakly defended."),
   
-  ("has_decided_that_an_attack_on_", "has decided that an attack on "),
+  ("has_decided_that_an_attack_on_", "has decided to attack"),
   ("this_would_be_better_worth_the_effort", "This would be better worth the effort, taking into consideration its value, and its distance, and the likely number of defenders."),
-  ("has_decided_to_defend_", "has decided to defend "),
+  ("has_decided_to_defend_", "has decided to defend"),
   ("before_going_offensive_we_should_protect_our_lands_if_there_is_any_threat_so_this_can_be_reason_marshall_choosed_defending_s4", "Before going offensive we should protect our lands if there is any threat. So this can be reason marshall choosed defending {s4}."),
   
   ("are_you_all_right", "Now... Let me explain my proposition"),

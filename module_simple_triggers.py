@@ -936,6 +936,10 @@ simple_triggers = [
     [	  
 	(call_script, "script_cf_random_political_event"),
 	
+	#Added Nov 2010 begins - do this twice
+	(call_script, "script_cf_random_political_event"),
+	#Added Nov 2010 ends
+	
 	#This generates quarrels and occasional reconciliations and interventions	
 	]),
 	
@@ -957,7 +961,7 @@ simple_triggers = [
 		(try_end),
 		
 	    (try_begin),
-	      (eq, "$cheat_mode", 2),
+	      (eq, "$cheat_mode", 1),
           (str_store_troop_name, s9, ":troop_no"),
           (display_message, "@{!}DEBUG -- Doing political calculations for {s9}"),
         (try_end),
@@ -1012,9 +1016,16 @@ simple_triggers = [
 		
 			(faction_get_slot, ":faction_leader", ":faction", slot_faction_leader),
 			(neq, ":troop_no", ":faction_leader"),
+			
+			#I don't know why these are necessary, but they appear to be
+			(neg|is_between, ":troop_no", "trp_kingdom_1_lord", "trp_knight_1_1"),
+			(neg|is_between, ":troop_no", pretenders_begin, pretenders_end),
+			
 			(call_script, "script_troop_get_relation_with_troop", ":troop_no", ":faction_leader"),
 			(le, reg0, -75),
 
+			
+			
 			(call_script, "script_cf_troop_can_intrigue", ":troop_no", 0), #Should include battle, prisoner, in a castle with others 
 		
 			(store_random_in_range, ":who_moves_first", 0, 2),
@@ -1034,6 +1045,12 @@ simple_triggers = [
 				(str_store_faction_name_link, s3, ":faction"),
 				
 				(call_script, "script_change_troop_faction", ":troop_no", ":new_faction"),
+				
+				(try_begin),
+					(ge, "$cheat_mode", 1),
+					(str_store_troop_name, s4, ":troop_no"),
+					(display_message, "@{!}DEBUG - {s4} faction changed in defection"), 
+				(try_end),	
 				
 				(troop_get_type, reg4, ":troop_no"),
 				(str_store_string, s4, "str_lord_defects_ordinary"),
@@ -1072,10 +1089,10 @@ simple_triggers = [
 			(lt, reg0, 0),
 			(assign, ":relation", reg0),
 			(store_sub, ":chance_of_convergence", 0, ":relation"),
-			(store_random_in_range, ":random", 0, 200),
+			(store_random_in_range, ":random", 0, 300),
 			(lt, ":random", ":chance_of_convergence"),
 			(call_script, "script_troop_change_relation_with_troop", ":troop_no", ":active_npc", 1),
-			(assign, "$total_relation_changes_through_convergence", 1),
+			(val_add, "$total_relation_changes_through_convergence", 1),
 		(try_end),				
         ]),
 	
@@ -1286,6 +1303,37 @@ simple_triggers = [
   # Decide faction ai flag check
    (0,
    [
+   
+
+    (try_begin),
+		(ge, "$cheat_mode", 1),
+	
+		(try_for_range, ":king", "trp_kingdom_1_lord", "trp_knight_1_1"),
+		
+			(store_add, ":proper_faction", ":king", "fac_kingdom_1"),
+			(val_sub, ":proper_faction", "trp_kingdom_1_lord"),
+			(store_faction_of_troop, ":actual_faction", ":king"),
+
+			
+			(neq, ":proper_faction", ":actual_faction"),
+			(neq, ":actual_faction", "fac_commoners"),
+			(ge, "$cheat_mode", 2),
+			(neq, ":king", "trp_kingdom_2_lord"),
+			
+			(str_store_troop_name, s4, ":king"),
+			(str_store_faction_name, s5, ":actual_faction"),
+			(str_store_faction_name, s6, ":proper_faction"),
+			(str_store_string, s65, "@{!}DEBUG - {s4} is in {s5}, should be in {s6}, disabling political cheat mode"),
+#			(display_message, "@{s65}"),
+			(rest_for_hours, 0, 0, 0),
+			
+			(assign, "$cheat_mode", 1),
+			(jump_to_menu, "mnu_debug_alert_from_s65"),
+		(try_end),
+	
+	
+	(try_end),
+   
      (eq, "$g_recalculate_ais", 1),
      (assign, "$g_recalculate_ais", 0),
      (call_script, "script_recalculate_ais"),
@@ -3629,6 +3677,13 @@ simple_triggers = [
         (assign, ":continue", 1),
       (try_end),
       (eq, ":continue", 1),
+	  
+		(try_begin),
+			(ge, "$cheat_mode", 1),
+			(str_store_troop_name, s4, ":troop_no"),
+			(display_message, "@{!}DEBUG - {s4} faction changed from slot_troop_change_to_faction"), 
+		(try_end),	  
+		
       (call_script, "script_change_troop_faction", ":troop_no", ":new_faction_no"),
       (troop_set_slot, ":troop_no", slot_troop_change_to_faction, 0),
       (try_begin),
@@ -3824,10 +3879,25 @@ simple_triggers = [
      (assign, ":village_no", "$next_center_will_be_fired"),
      (party_get_slot, ":is_there_already_fire", ":village_no", slot_village_smoke_added),
      (eq, ":is_there_already_fire", 0),
+	 
+	 
      (try_begin),
        (party_get_slot, ":bound_center", ":village_no", slot_village_bound_center),  
        (party_get_slot, ":last_nearby_fire_time", ":bound_center", slot_town_last_nearby_fire_time),
        (store_current_hours, ":cur_hours"),
+	   
+	   (try_begin),
+		(eq, "$cheat_mode", 1),
+		(is_between, ":village_no", centers_begin, centers_end),
+		(is_between, ":bound_center", centers_begin, centers_end),
+		(str_store_party_name, s4, ":village_no"),
+		(str_store_party_name, s5, ":bound_center"),
+		(store_current_hours, reg3),
+        (party_get_slot, reg4, ":bound_center", slot_town_last_nearby_fire_time),
+		(display_message, "@{!}DEBUG - Checking fire at {s4} for {s5} - current time {reg3}, last nearby fire {reg4}"),
+	   (try_end),
+	   
+	   
        (eq, ":cur_hours", ":last_nearby_fire_time"),
        (party_add_particle_system, ":village_no", "psys_map_village_fire"),
        (party_add_particle_system, ":village_no", "psys_map_village_fire_smoke"),       
@@ -3837,22 +3907,7 @@ simple_triggers = [
        (party_clear_particle_systems, ":village_no"),
      (try_end),  
      
-     
-     (assign, ":village_no", "$next_center_will_be_fired"),
-       (party_get_slot, ":is_there_already_fire", ":village_no", slot_village_smoke_added),
-       (eq, ":is_there_already_fire", 0),
-       (try_begin),
-         (party_get_slot, ":bound_center", ":village_no", slot_village_bound_center),  
-         (party_get_slot, ":last_nearby_fire_time", ":bound_center", slot_town_last_nearby_fire_time),
-         (store_current_hours, ":cur_hours"),
-         (eq, ":cur_hours", ":last_nearby_fire_time"),
-         (party_add_particle_system, ":village_no", "psys_map_village_fire"),
-         (party_add_particle_system, ":village_no", "psys_map_village_fire_smoke"),       
-       (else_try),  
-         (store_add, ":last_nearby_fire_finish_time", ":last_nearby_fire_time", fire_duration),
-         (eq, ":last_nearby_fire_finish_time", ":cur_hours"),
-         (party_clear_particle_systems, ":village_no"),
-       (try_end),  
+
    ]),
    
   (24,
@@ -3902,7 +3957,9 @@ simple_triggers = [
 	(check_quest_active, "qst_lend_companion"),
 	(quest_get_slot, ":giver_troop", "qst_lend_companion", slot_quest_giver_troop),
 	(store_faction_of_troop, ":giver_troop_faction", ":giver_troop"),
-	(neg|is_between, ":giver_troop_faction", kingdoms_begin, kingdoms_end),
+    (store_relation, ":faction_relation", ":giver_troop_faction", "$players_kingdom"),
+    (this_or_next|lt, ":faction_relation", 0),
+    (neg|is_between, ":giver_troop_faction", kingdoms_begin, kingdoms_end),
     (call_script, "script_abort_quest", "qst_lend_companion", 0),
    (try_end),
 
