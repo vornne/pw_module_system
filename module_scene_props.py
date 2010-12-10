@@ -206,7 +206,6 @@ def spr_ship_triggers(hit_points=1000, length=1000, width=200, sail=-1, sail_off
       (call_script, "script_cf_damage_ship", ":instance_id", ":hit_damage", hit_points, 0),
       ]),
     (ti_on_scene_prop_destroy, []),
-    spr_call_script_use_trigger("script_cf_use_ship_climb_side"),
     [init_scene_prop, "script_setup_ship", spr_tag(sail), spr_tag(sail_off), spr_tag(ramp)]]
 
 def spr_ship_ramp_triggers():
@@ -1810,14 +1809,14 @@ scene_props = [
   ("pw_wheelbarrow",sokf_moveable|spr_use_time(1),"pw_hand_cart_a","bo_pw_hand_cart_a", spr_cart_triggers(z_offset=-90)),
   ("pw_hand_cart",sokf_moveable|spr_use_time(1),"pw_hand_cart_b","bo_pw_hand_cart_b", spr_cart_triggers(z_offset=-90)),
 
-  ("pw_ship_a",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|spr_use_time(3),"pw_ship_a","bo_pw_ship_a", spr_ship_triggers(hit_points=5000, length=800, width=150, sail="pw_ship_a_sail", sail_off="pw_ship_a_sail_off")),
+  ("pw_ship_a",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_a","bo_pw_ship_a", spr_ship_triggers(hit_points=5000, length=800, width=150, sail="pw_ship_a_sail", sail_off="pw_ship_a_sail_off")),
   ("pw_ship_a_sail",sokf_moveable,"pw_ship_a_sail","bo_pw_ship_a_sail", []),
   ("pw_ship_a_sail_off",sokf_moveable,"pw_ship_a_sail_off","bo_pw_ship_a_sail_off", []),
-  ("pw_ship_c",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|spr_use_time(5),"pw_ship_c","bo_pw_ship_c", spr_ship_triggers(hit_points=10000, length=1400, width=300, sail="pw_ship_c_sail", sail_off="pw_ship_c_sail_off", ramp="pw_ship_c_ramp")),
+  ("pw_ship_c",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_c","bo_pw_ship_c", spr_ship_triggers(hit_points=10000, length=1400, width=300, sail="pw_ship_c_sail", sail_off="pw_ship_c_sail_off", ramp="pw_ship_c_ramp")),
   ("pw_ship_c_sail",sokf_moveable,"pw_ship_c_sail","bo_pw_ship_c_sail", []),
   ("pw_ship_c_sail_off",sokf_moveable,"pw_ship_c_sail_off","bo_pw_ship_c_sail_off", []),
   ("pw_ship_c_ramp",sokf_moveable|spr_use_time(1),"pw_ship_c_ramp","bo_pw_ship_c_ramp", spr_ship_ramp_triggers()),
-  ("pw_ship_d",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|spr_use_time(4),"pw_ship_d","bo_pw_ship_d", spr_ship_triggers(hit_points=7000, length=900, width=250, sail="pw_ship_d_sail")),
+  ("pw_ship_d",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_d","bo_pw_ship_d", spr_ship_triggers(hit_points=7000, length=900, width=250, sail="pw_ship_d_sail")),
   ("pw_ship_d_sail",sokf_moveable,"pw_ship_d_sail","bo_pw_ship_d_sail", []),
 
   ("pw_castle_sign",spr_use_time(2),"tree_house_guard_a","bo_tree_house_guard_a",
