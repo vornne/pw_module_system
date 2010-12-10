@@ -5,6 +5,8 @@
 ###################################################
 
 server_event_preset_message                     = 0
+server_event_agent_play_sound                   = 1
+
 
 preset_message_default                          = 0x0
 preset_message_item                             = 0x2

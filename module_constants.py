@@ -73,6 +73,8 @@ player_array_entry_size               = 3
 
 loop_player_check_interval            = 5
 
+max_distance_to_play_sound            = 10000
+
 all_items_begin = "itm_straw_hat"
 all_items_end = "itm_all_items_end"
 
