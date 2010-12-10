@@ -6,6 +6,8 @@
 
 server_event_preset_message                     = 0
 server_event_agent_play_sound                   = 1
+server_event_scene_prop_play_sound              = 2
+server_event_play_sound_at_position             = 3
 
 
 preset_message_default                          = 0x0
