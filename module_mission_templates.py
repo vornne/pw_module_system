@@ -114,6 +114,23 @@ mission_templates = [
      [(finish_mission),
       ]),
 
+    (ti_battle_window_opened, 0, 0, [],
+     [(try_begin),
+        (eq, "$g_display_agent_labels", 1),
+        (start_presentation, "prsnt_display_agent_labels"),
+      (try_end),
+      ]),
+
+    (0, 0, 0, [(game_key_clicked, gk_character_window)],
+     [(try_begin),
+        (eq, "$g_display_agent_labels", 0),
+        (assign, "$g_display_agent_labels", 1),
+        (start_presentation, "prsnt_display_agent_labels"),
+      (else_try),
+        (assign, "$g_display_agent_labels", 0),
+      (try_end),
+      ]),
+
     (0, 1, 1, [(key_clicked, key_slash)],
      [(multiplayer_send_message_to_server, client_event_detach_scene_prop),
       ]),

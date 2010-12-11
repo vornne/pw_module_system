@@ -240,6 +240,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("winch_raise", "Raise"),
   ("winch_drop", "Drop"),
   ("s0__s1_", "{!}{s0} ({s1})"),
+  ("s2_s3", "{!}{s2}^{s3}"),
 
   ("troop_not_available", "Not available to you^{s0}"),
   ("troop_train", "Train to be {s1} for the {s2}"),

@@ -100,6 +100,7 @@ slot_mission_data_castle_owner_faction_end      = 8
 loop_player_check_interval            = 5
 
 max_distance_to_play_sound            = 10000
+max_distance_to_see_labels            = 1500
 
 seconds_before_removing_dropped_item  = 300
 sell_item_gold_multiplier             = 80
