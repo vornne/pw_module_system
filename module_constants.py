@@ -56,6 +56,13 @@ slot_troop_equipment_foot_begin       = 7 * troop_slot_count_per_equipment_type
 slot_troop_equipment_hand_begin       = 8 * troop_slot_count_per_equipment_type
 slot_troop_equipment_horse_begin      = 9 * troop_slot_count_per_equipment_type
 
+slot_player_array_size                = 0
+slot_player_array_begin               = 1
+
+player_array_unique_id                = 0
+player_array_troop_id                 = 1
+player_array_gold_value               = 2
+player_array_entry_size               = 3
 
 ########################################################
 ##  TEAM SLOTS             #############################
@@ -63,6 +70,8 @@ slot_troop_equipment_horse_begin      = 9 * troop_slot_count_per_equipment_type
 
 
 ########################################################
+
+loop_player_check_interval            = 5
 
 all_items_begin = "itm_straw_hat"
 all_items_end = "itm_all_items_end"
