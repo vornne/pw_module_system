@@ -22,6 +22,7 @@ server_event_faction_set_name                   = 14
 server_event_return_game_rules                  = 15
 server_event_return_server_name                 = 16
 server_event_return_password                    = 17
+server_event_set_player_score_kill_death        = 18
 
 client_event_spectate                           = 102
 client_event_request_game_rules                 = 103

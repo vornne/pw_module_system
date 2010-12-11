@@ -23,6 +23,7 @@ player_spawn_state_alive              = 3
 slot_player_next_chat_event           = 5
 slot_player_next_chat_event_type      = 6
 slot_player_list_button_id            = 7
+slot_player_outlaw_rating             = 8
 
 slot_player_equip_item_0              = 20
 slot_player_equip_item_1              = 21
@@ -141,7 +142,8 @@ player_array_unique_id                = 0
 player_array_troop_id                 = 1
 player_array_faction_id               = 2
 player_array_gold_value               = 3
-player_array_entry_size               = 4
+player_array_outlaw_rating            = 4
+player_array_entry_size               = 5
 
 slot_mission_data_castle_owner_faction_begin    = 0
 slot_mission_data_castle_owner_faction_end      = 8
@@ -178,6 +180,7 @@ team_faction_4                        = 6
 spawn_invulnerable_time               = 10
 
 loop_player_check_interval            = 5
+loop_player_check_outlaw_interval     = 60
 loop_horse_check_interval             = 30
 
 max_distance_to_play_sound            = 10000
@@ -219,6 +222,9 @@ ship_rotation_multiplier              = 5
 
 escape_menu_item_height               = 35
 admin_panel_item_height               = 40
+
+outlaw_rating_for_kill                = 5
+outlaw_rating_outlawed                = 15
 
 inventory_slots_per_row               = 6
 inventory_slot_spacing                = 100

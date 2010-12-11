@@ -347,6 +347,10 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("not_a_member_of_s1", "You are not a member of the {s1}."),
   ("s1_captured_s2", "The {s1} have captured {s2}!"),
   ("door_locked_by_s1", "The door is locked by the {s1}."),
+  ("s0_killed_faction_member", "{s0} killed a member of the same faction!"),
+  ("s0_has_been_outlawed", "{s0} has been outlawed!"),
+  ("you_have_been_outlawed", "You have been outlawed!"),
+  ("your_outlaw_rating_now_reg1", "Your outlaw rating is now {reg1}."),
 
   ("not_riding_cart_horse", "You are not riding a cart horse."),
   ("already_towing_cart", "Already towing another cart."),
