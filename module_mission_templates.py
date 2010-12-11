@@ -190,6 +190,7 @@ mission_templates = [
     (ti_on_agent_killed_or_wounded, 0, 0, [],
      [(store_trigger_param_1, ":dead_agent_id"),
       (store_trigger_param_2, ":killer_agent_id"),
+      (call_script, "script_client_check_show_respawn_time_counter", ":dead_agent_id"),
       (call_script, "script_apply_consequences_for_agent_death", ":dead_agent_id", ":killer_agent_id"),
       (multiplayer_is_server),
       (call_script, "script_setup_agent_for_respawn", ":dead_agent_id"),
@@ -317,6 +318,10 @@ mission_templates = [
      [(try_begin),
         (eq, "$g_display_agent_labels", 1),
         (start_presentation, "prsnt_display_agent_labels"),
+      (try_end),
+      (try_begin),
+        (gt, "$g_respawn_start_time", 0),
+        (start_presentation, "prsnt_respawn_time_counter"),
       (try_end),
       ]),
 

@@ -311,6 +311,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("edit_scene", "Edit scene"),
   ("zero", "0"),
   ("remaining_time_reg0_s0reg1_s1reg2", "Remaining time: {reg0}:{s0}{reg1}:{s1}{reg2}"),
+  ("respawning_in_reg0_seconds", "Respawning in {reg0} seconds"),
 
   ("done", "Done"),
   ("use", "Use"),
