@@ -1710,6 +1710,7 @@ scene_props = [
   ("pw_buy_cart_horse",spr_use_time(1),"wood_b","bo_wood_b", spr_buy_item_triggers("itm_cart_horse")),
   ("pw_buy_woodcutter_axe",spr_use_time(1),"pw_wood_axe","bo_weapon", spr_buy_item_triggers("itm_woodcutter_axe")),
   ("pw_buy_mining_pick",spr_use_time(1),"pw_mining_pick","bo_weapon", spr_buy_item_triggers("itm_mining_pick")),
+  ("pw_buy_repair_hammer",spr_use_time(1),"pw_repair_hammer","bo_weapon_small", spr_buy_item_triggers("itm_repair_hammer")),
   ("pw_test_gold",spr_use_time(1),"tree_house_guard_a","bo_tree_house_guard_a", spr_gain_gold_triggers(10000)),
   ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a", spr_gain_health_triggers(30)),
   ("pw_test_poison",spr_use_time(1),"wood_b","bo_wood_b", spr_gain_health_triggers(-30)),

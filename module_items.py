@@ -237,6 +237,8 @@ items = [
  245, weight(4)|spd_rtng(80)|weapon_length(72)|swing_damage(20,cut)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_wood_cutting)]],
 ["mining_pick", "Mining Pick", [("pw_mining_pick",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_unbalanced|itp_cant_use_on_horseback, itc_parry_polearm|itcf_overswing_polearm|itcf_carry_axe_back,
  423, weight(5)|spd_rtng(70)|weapon_length(100)|swing_damage(30,pierce)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_mining)]],
+["repair_hammer", "Repair Hammer", [("pw_repair_hammer",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_bow_back,
+ 634, weight(3)|spd_rtng(92)|weapon_length(120)|swing_damage(5,blunt)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_repair)]],
 
 ["test_horse", "Test Horse", [("giant_horse",0)], itp_type_horse, 0,
  0, hit_points(500)|body_armor(100)|difficulty(0)|horse_speed(400)|horse_maneuver(100)|horse_charge(50)|horse_scale(130), imodbit_spirited],

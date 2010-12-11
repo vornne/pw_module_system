@@ -151,6 +151,13 @@ sell_item_gold_multiplier             = 80
 winch_type_drawbridge                 = 0
 winch_type_portcullis                 = 1
 
+repairable_hit                        = 0
+repairable_destroyed                  = 1
+repairable_hit_destroyed              = 2
+repairable_repairing                  = 3
+repairable_resource_required          = 4
+repairable_repaired                   = 5
+
 destroy_scene_prop_hit_points         = 200
 fell_tree_hit_points                  = 500
 
