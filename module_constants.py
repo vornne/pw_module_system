@@ -219,6 +219,7 @@ slot_mission_data_faction_to_change_name_of     = 100
 slot_last_chat_message_event          = 0
 slot_last_chat_message_event_type     = 1
 slot_last_chat_message_not_recieved   = 2
+slot_last_chat_message_buffer_color_begin       = 10
 
 chat_event_type_local                 = 0
 chat_event_type_local_shout           = 1
@@ -294,6 +295,11 @@ ship_rotation_multiplier              = 5
 
 escape_menu_item_height               = 35
 admin_panel_item_height               = 40
+chat_overlay_item_height              = 20
+chat_overlay_max_lines                = 100
+chat_overlay_ring_buffer_begin        = 60
+chat_overlay_ring_buffer_size         = 10
+chat_overlay_ring_buffer_end          = chat_overlay_ring_buffer_begin + chat_overlay_ring_buffer_size
 
 outlaw_rating_for_kill                = 5
 outlaw_rating_outlawed                = 15
