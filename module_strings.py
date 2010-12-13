@@ -326,6 +326,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("done", "Done"),
   ("use", "Use"),
   ("buy", "Buy"),
+  ("buy_sell_craft", "Buy / Sell / Craft"),
   ("dont_have_enough_money", "You don't have enough money."),
   ("cant_equip_item", "You can't equip this item."),
   ("collect_reg1_gold", "Collect {reg1} gold"),
@@ -341,6 +342,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("pick_up_money_bag", "Pick up the nearest money bag"),
   ("no_money_bag_nearby", "There are no money bags nearby."),
   ("buy_banner_faction", "Buy a banner for the {s1}"),
+  ("stack_count_reg1_s0", "Stack count: {reg1}^{s0}"),
 
   ("troop_not_available", "Not available to you^{s0}"),
   ("troop_train", "Train to be {s1} for the {s2}"),
@@ -370,6 +372,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("already_towing_cart", "Already towing another cart."),
   ("resource_required", "More resources required."),
   ("not_at_mast_or_rudder", "You are not close enough to the mast or rudder."),
+  ("wrong_resources", "You don't seem to have the right resources."),
 
   ("chat_format", "[{s1}] {s0}"),
   ("send_message_to_players_nearby", "Send message to players nearby:"),

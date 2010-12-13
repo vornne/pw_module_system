@@ -32,7 +32,7 @@ def spr_check_hit_points(hp, low_hp=destroy_scene_prop_hit_points):
     raise Exception("Hit points value must be between " + `low_hp + 1` + " and " + `max_correctly_displayed_hp`)
   return hp
 
-def spr_item_init_trigger(item_id, use_string=None, tableau=None):
+def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=False):
   init_trigger = (ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_item_id, item_id),
@@ -41,6 +41,11 @@ def spr_item_init_trigger(item_id, use_string=None, tableau=None):
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string))
   if tableau is not None:
     init_trigger[1].append((cur_scene_prop_set_tableau_material, tableau, 0))
+  if stockpile is True:
+    init_trigger[1].extend([
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count_update_time, -1),
+      (prop_instance_get_variation_id_2, ":initial_stack_count", ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count, ":initial_stack_count")])
   return init_trigger
 
 def spr_call_script_use_trigger(script_name, *args):
@@ -79,7 +84,7 @@ def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_strin
   else:
     buy_trigger[1].append((call_script, "script_cf_buy_item", ":agent_id", ":instance_id"))
   craft_trigger = (ti_on_scene_prop_use, [])
-  init_trigger = spr_item_init_trigger(item_id, use_string, tableau)
+  init_trigger = spr_item_init_trigger(item_id, use_string, tableau, stockpile=(len(resources) > 0))
   if len(resources) > 0:
     craft_trigger[1].extend([
       (store_trigger_param_1, ":agent_id"),

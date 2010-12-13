@@ -79,6 +79,7 @@ slot_scene_prop_next_resource_hp      = 30
 slot_scene_prop_state                 = 31
 slot_scene_prop_state_time            = 32
 slot_scene_prop_stack_count           = 33
+slot_scene_prop_stack_count_update_time = 34
 
 scene_prop_state_active               = 0
 scene_prop_state_destroyed            = 1
@@ -187,6 +188,7 @@ spawn_invulnerable_time               = 10
 loop_player_check_interval            = 5
 loop_player_check_outlaw_interval     = 60
 loop_horse_check_interval             = 30
+stack_count_check_interval            = 5
 
 max_distance_to_play_sound            = 10000
 max_distance_to_see_labels            = 1500
