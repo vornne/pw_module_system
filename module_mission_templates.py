@@ -181,6 +181,8 @@ mission_templates = [
     (ti_server_player_joined, 0, 0, [],
      [(store_trigger_param_1, ":player_id"),
       (call_script, "script_setup_player_joined", ":player_id"),
+      (multiplayer_is_server),
+      (call_script, "script_player_check_name", ":player_id"),
       ]),
 
     (ti_on_agent_spawn, 0, 0, [],

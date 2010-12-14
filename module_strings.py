@@ -386,6 +386,11 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12}"),
   ("pw_welcome", "Welcome adventurer^^Join a faction and fight for control of the castles"),
 
+  ("name_server_log_s10", "Player {s0} ({reg2}): {s10}"),
+  ("kicked_using_other_players_name", "Kicked for using another player's name."),
+  ("http_s1_id_reg1_uid_reg2_name_s0", "http://{s1}/checkplayer.php?id={reg1}&uid={reg2}&name={s0}"),
+  ("name_server", "localhost/pwnameserver"),
+
   ("scene_name_1", "Test Scene"),
   ("scene_name_2", "Scene 2"),
   ("scene_name_3", "Scene 3"),
