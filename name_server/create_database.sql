@@ -9,3 +9,25 @@ CREATE TABLE player_names (
   PRIMARY KEY (id),
   UNIQUE KEY (name)
 );
+
+CREATE TABLE clans (
+  id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(28) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY (name)
+);
+
+CREATE TABLE clan_tags (
+  id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  clan_id INT(5) UNSIGNED NOT NULL,
+  tag VARCHAR(28) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY (tag)
+);
+
+CREATE TABLE clan_players (
+  id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  clan_id INT(5) UNSIGNED NOT NULL,
+  unique_id INT(7) UNSIGNED NOT NULL,
+  PRIMARY KEY (id)
+);

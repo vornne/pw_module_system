@@ -388,6 +388,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 
   ("name_server_log_s10", "Player {s0} ({reg2}): {s10}"),
   ("kicked_using_other_players_name", "Kicked for using another player's name."),
+  ("kicked_using_other_clan_tag", "Kicked for using another clan's tag."),
   ("http_s1_id_reg1_uid_reg2_name_s0", "http://{s1}/checkplayer.php?id={reg1}&uid={reg2}&name={s0}"),
   ("name_server", "localhost/pwnameserver"),
 

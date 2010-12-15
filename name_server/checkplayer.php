@@ -12,8 +12,32 @@
     return -2;
   }
 
+  function player_check_clan_tag($player_uid, $escaped_name)
+  {
+    $clan_tag_end = strpos($escaped_name, '_');
+    if ($clan_tag_end !== false)
+    {
+      $clan_tag = substr($escaped_name, 0, $clan_tag_end);
+      $result = mysql_query("SELECT clan_id FROM clan_tags WHERE tag = '$clan_tag';");
+      if (!$result) return pw_database_error();
+      if ($row = mysql_fetch_assoc($result))
+      {
+        $result = mysql_query("SELECT id FROM clan_players WHERE clan_id = '$row[clan_id]' AND unique_id = '$player_uid';");
+        if (!$result) return pw_database_error();
+        if (mysql_num_rows($result) == 0)
+        {
+          return 2;
+        }
+      }
+    }
+    return 0;
+  }
+
   function player_register_name($player_uid, $escaped_name)
   {
+    $return_code = player_check_clan_tag($player_uid, $escaped_name);
+    if ($return_code > 0) return $return_code;
+
     $result = mysql_query("SELECT id, unique_id FROM player_names WHERE name = '$escaped_name';");
     if (!$result) return pw_database_error();
     if ($row = mysql_fetch_assoc($result))
@@ -22,6 +46,19 @@
       {
         $result = mysql_query("UPDATE player_names SET last_used_time = CURRENT_TIMESTAMP() WHERE id = '$row[id]';");
         if (!$result) return pw_database_error();
+      }
+      elseif (player_check_clan_tag($row["unique_id"], $escaped_name) == 2)
+      {
+        $result = mysql_query("UPDATE player_names SET unique_id = '$player_uid' WHERE id = '$row[id]';");
+        if (!$result) return pw_database_error();
+        $result = mysql_query("SELECT id FROM player_names WHERE unique_id = '$player_uid' ORDER BY last_used_time;");
+        if (!$result) return pw_database_error();
+        $extra_player_names = mysql_num_rows($result) - pw_name_server_config::max_names_per_player;
+        if ($extra_player_names > 0)
+        {
+          $result = mysql_query("DELETE FROM player_names WHERE unique_id = '$player_uid' ORDER BY last_used_time LIMIT $extra_player_names;");
+          if (!$result) return pw_database_error();
+        }
       }
       else
       {
