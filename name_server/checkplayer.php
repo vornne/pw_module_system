@@ -4,12 +4,19 @@
     const db_connect_wrapper_filename = "databaseconnect.php";
     const db_name = "pw_player_names";
     const max_names_per_player = 5;
+
+    const password_error = -3;
+    const database_error = -2;
+    const input_error = -1;
+    const success = 0;
+    const name_error = 1;
+    const clan_tag_error = 2;
   }
 
   function pw_database_error()
   {
     error_log("pw database error: " . mysql_error());
-    return -2;
+    return pw_name_server_config::database_error;
   }
 
   function player_check_clan_tag($player_uid, $escaped_name)
@@ -26,14 +33,14 @@
         if (!$result) return pw_database_error();
         if (mysql_num_rows($result) == 0)
         {
-          return 2;
+          return pw_name_server_config::clan_tag_error;
         }
       }
     }
     return 0;
   }
 
-  function player_register_name($player_uid, $escaped_name)
+  function player_register_name($player_uid, $escaped_name, $warband_server_id)
   {
     $return_code = player_check_clan_tag($player_uid, $escaped_name);
     if ($return_code > 0) return $return_code;
@@ -62,7 +69,7 @@
       }
       else
       {
-        return 1;
+        return pw_name_server_config::name_error;
       }
     }
     else
@@ -78,35 +85,51 @@
       }
       else
       {
-        $result = mysql_query("INSERT INTO player_names (unique_id, name) VALUES ('$player_uid', '$escaped_name');");
+        $result = mysql_query("INSERT INTO player_names (unique_id, name, inserted_by_warband_server_id) VALUES ('$player_uid', '$escaped_name', '$warband_server_id');");
         if (!$result) return pw_database_error();
       }
     }
-    return 0;
+    return pw_name_server_config::success;
   }
+
+  function warband_server_id($server_password)
+  {
+    $result = mysql_query("SELECT id FROM warband_servers WHERE password = SHA1('$server_password');");
+    if (!$result)
+    {
+      pw_database_error();
+    }
+    elseif ($row = mysql_fetch_assoc($result))
+    {
+      return $row["id"];
+    }
+    return NULL;
+  }
+
+  $server_password = filter_input(INPUT_GET, "password", FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
+  if (!$server_password) die((string)pw_name_server_config::input_error);
+
+  require(pw_name_server_config::db_connect_wrapper_filename);
+  $db_connection = pw_mysql_connect();
+  if (!$db_connection) die ((string)pw_name_server_config::database_error);
+
+  mysql_select_db(pw_name_server_config::db_name, $db_connection);
+
+  $server_password = mysql_real_escape_string($server_password);
+  $warband_server_id = warband_server_id($server_password);
+  if ($warband_server_id === NULL) die((string)pw_name_server_config::password_error);
 
   $id_restrictions = array("options"=>array("min_range"=>1, "max_range"=>250));
   $player_id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT, $id_restrictions);
   $id_restrictions = array("options"=>array("min_range"=>1, "max_range"=>10000000));
   $player_uid = filter_input(INPUT_GET, "uid", FILTER_VALIDATE_INT, $id_restrictions);
   $player_name = filter_input(INPUT_GET, "name", FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
+  if (!$player_id || !$player_uid || !$player_name) die((string)pw_name_server_config::input_error);
 
-  $return_code = -1;
-  if ($player_id && $player_uid && $player_name)
-  {
-    require(pw_name_server_config::db_connect_wrapper_filename);
-    $db_connection = pw_mysql_connect();
-    if ($db_connection)
-    {
-      mysql_select_db(pw_name_server_config::db_name, $db_connection);
-      $escaped_name = mysql_real_escape_string($player_name);
-      $return_code = player_register_name($player_uid, $escaped_name);
-      mysql_close($db_connection);
-    }
-    echo "$return_code|$player_id|$player_uid|$player_name";
-  }
-  else
-  {
-    echo "$return_code";
-  }
+  $escaped_name = mysql_real_escape_string($player_name);
+  $return_code = player_register_name($player_uid, $escaped_name, $warband_server_id);
+
+  echo "$return_code|$player_id|$player_uid|$player_name";
+
+  mysql_close($db_connection);
 ?>

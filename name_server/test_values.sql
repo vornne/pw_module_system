@@ -1,5 +1,7 @@
 USE pw_player_names;
 
+INSERT INTO warband_servers (name, password) VALUES ("Test server", SHA1("WD915Kyi18"));
+
 INSERT INTO player_names (unique_id, name) VALUES (390403, "Laszlo");
 INSERT INTO player_names (unique_id, name) VALUES (390403, "KoS_Laszlo");
 INSERT INTO player_names (unique_id, name) VALUES (408812, "Vornne");

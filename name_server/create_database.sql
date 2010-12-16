@@ -6,6 +6,7 @@ CREATE TABLE player_names (
   unique_id INT(7) UNSIGNED NOT NULL,
   name VARCHAR(28) NOT NULL,
   last_used_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  inserted_by_warband_server_id INT(5) UNSIGNED DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY (name)
 );
@@ -30,4 +31,12 @@ CREATE TABLE clan_players (
   clan_id INT(5) UNSIGNED NOT NULL,
   unique_id INT(7) UNSIGNED NOT NULL,
   PRIMARY KEY (id)
+);
+
+CREATE TABLE warband_servers (
+  id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(20) NOT NULL,
+  password CHAR(40) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY (password)
 );
