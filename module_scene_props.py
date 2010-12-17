@@ -288,6 +288,9 @@ def spr_build_wall_triggers():
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_use, [])]
 
+def spr_capture_castle_triggers():
+  return [spr_call_script_use_trigger("script_cf_capture_castle")]
+
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
   ("inventory",sokf_type_container|sokf_place_at_origin,"package","bobaggage", []),
@@ -1916,19 +1919,8 @@ scene_props = [
   ("pw_ship_d_sail",sokf_moveable,"pw_ship_d_sail","bo_pw_ship_d_sail", []),
   ("pw_ship_d_cd",sokf_invisible,"0","bo_pw_ship_d_cd", []),
 
-  ("pw_castle_sign",spr_use_time(2),"tree_house_guard_a","bo_tree_house_guard_a",
-   [(ti_on_scene_prop_use,
-     [(store_trigger_param_1, ":agent_id"),
-      (store_trigger_param_2, ":instance_id"),
-      (agent_get_player_id, ":player_id", ":agent_id"),
-      (player_is_active, ":player_id"),
-      (player_get_slot, ":player_faction_id", ":player_id", slot_player_faction_id),
-      (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
-      (assign, ":faction_id", reg0),
-      (assign, ":castle_no", reg1),
-      (neq, ":faction_id", ":player_faction_id"),
-      (call_script, "script_capture_castle", ":player_faction_id", ":castle_no"),
-      ])]),
+  ("pw_castle_sign",0,"tree_house_guard_a","bo_tree_house_guard_a", [(ti_on_scene_prop_use, [])]),
+  ("pw_castle_capture_point",spr_use_time(60),"pw_castle_flag_post","bo_pw_castle_flag_post", spr_capture_castle_triggers()),
 
   ("pw_buy_test_horse",spr_use_time(1),"wood_a","bo_wood_a", spr_buy_item_triggers("itm_test_horse")),
 
