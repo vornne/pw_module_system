@@ -376,6 +376,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("not_at_mast_or_rudder", "You are not close enough to the mast or rudder."),
   ("craft_not_skilled", "You don't seem to be skilled enough."),
   ("craft_wrong_resources", "You don't seem to have the right resources."),
+  ("no_horse", "You have no horse."),
+  ("too_wounded_to_rest", "Too wounded to rest here."),
 
   ("chat_format", "[{s1}] {s0}"),
   ("send_message_to_players_nearby", "Send message to players nearby:"),

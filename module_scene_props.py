@@ -115,14 +115,18 @@ def spr_gain_gold_triggers(gold_value, use_string="str_collect_reg1_gold"):
       ]),
     spr_call_script_use_trigger("script_cf_gain_gold")]
 
-def spr_gain_health_triggers(heal_pct, heal_limit_pct=100, horse=0, use_string="str_rest"):
+def spr_rest_triggers(heal_pct, min_health_pct=30, horse=0, use_string="str_rest"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
       ]),
+    (ti_on_scene_prop_start_use,
+     [(store_trigger_param_1, ":agent_id"),
+      (call_script, "script_cf_rest", ":agent_id", horse, 0, min_health_pct),
+      ]),
     (ti_on_scene_prop_use,
      [(store_trigger_param_1, ":agent_id"),
-      (call_script, "script_cf_gain_health", ":agent_id", heal_pct, heal_limit_pct, horse),
+      (call_script, "script_cf_rest", ":agent_id", horse, heal_pct, min_health_pct),
       ]),
     ]
 
@@ -1894,8 +1898,18 @@ scene_props = [
   ("pw_buy_banner",spr_use_time(1),"pw_banner_pole","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01")),
 
   ("pw_test_gold",spr_use_time(1),"tree_house_guard_a","bo_tree_house_guard_a", spr_gain_gold_triggers(10000)),
-  ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a", spr_gain_health_triggers(30)),
-  ("pw_test_poison",spr_use_time(1),"wood_b","bo_wood_b", spr_gain_health_triggers(-30)),
+  ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a", spr_rest_triggers(30)),
+  ("pw_test_poison",spr_use_time(1),"wood_b","bo_wood_b", spr_rest_triggers(-30, min_health_pct=0)),
+
+  ("pw_rest_bed_a",spr_use_time(60),"bed_a","bo_bed_a", spr_rest_triggers(40, min_health_pct=20)),
+  ("pw_rest_bed_b",spr_use_time(40),"bed_b","bo_bed_b", spr_rest_triggers(20, min_health_pct=40)),
+  ("pw_rest_bed_c",spr_use_time(45),"bed_c","bo_bed_c", spr_rest_triggers(30, min_health_pct=20)),
+  ("pw_rest_bed_e",spr_use_time(60),"bed_e","bo_bed_e", spr_rest_triggers(50, min_health_pct=20)),
+  ("pw_rest_bed_f",spr_use_time(30),"bed_f","bo_bed_f", spr_rest_triggers(15, min_health_pct=40)),
+  ("pw_rest_dungeon_bed_a",spr_use_time(20),"dungeon_bed_a","bo_bed_b", spr_rest_triggers(10, min_health_pct=50)),
+  ("pw_rest_dungeon_bed_b",spr_use_time(20),"dungeon_bed_b","bo_dungeon_bed_b", spr_rest_triggers(8, min_health_pct=50)),
+  ("pw_rest_horse_trough",spr_use_time(20),"feeding_trough_a","bo_feeding_trough_a", spr_rest_triggers(30, min_health_pct=30, horse=1)),
+  ("pw_rest_horse_hay",spr_use_time(40),"pw_horse_hay","bo_pw_horse_hay", spr_rest_triggers(70, min_health_pct=30, horse=1)),
 
   ("spawn_marker",0,"0","0", []),
   ("pw_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_weapon_big", spr_change_troop_triggers("trp_peasant", cost=100, use_string="str_troop_leave_faction")),
