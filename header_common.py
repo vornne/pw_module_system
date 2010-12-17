@@ -23,6 +23,7 @@ server_event_return_game_rules                  = 15
 server_event_return_server_name                 = 16
 server_event_return_password                    = 17
 
+client_event_spectate                           = 102
 client_event_request_game_rules                 = 103
 client_event_admin_set_server_name              = 104
 client_event_admin_set_password                 = 105

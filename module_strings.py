@@ -233,6 +233,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("keep_current_banner", "Keep the current banner"),
   ("next", "Next"),
   ("previous", "Previous"),
+  ("spectate", "Spectate"),
+  ("join_game", "Join Game"),
   ("choose_an_option", "Choose an option:"),
   ("change_options", "Change Options"),
   ("change_controls", "Change Controls"),
