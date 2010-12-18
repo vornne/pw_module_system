@@ -118,7 +118,7 @@ troops = [
    str_10|agi_10|int_4|cha_4|level(1),wpex(60,50,50,10,20,20),knows_athletics_2|knows_wound_treatment_5|knows_riding_1,default_face_1,default_face_2],
   ["lord","Lord","the lord",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
    ["itm_skullcap","itm_courtly_outfit","itm_nobleman_outfit","itm_blue_hose","itm_leather_boots","itm_worn_sword"],
-   str_15|agi_14|int_4|cha_4|level(1),wpex(110,110,110,50,50,50),knows_ironflesh_5|knows_power_strike_3|knows_athletics_2|knows_riding_5,default_face_1,default_face_2],
+   str_15|agi_14|int_4|cha_4|level(1),wpex(110,110,110,50,50,50),knows_leadership_1|knows_ironflesh_5|knows_power_strike_3|knows_athletics_2|knows_riding_5,default_face_1,default_face_2],
   ["ruffian","Ruffian","a ruffian",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_head_wrappings","itm_nomad_vest","itm_nomad_armor","itm_wrapping_boots","itm_club"],
    str_15|agi_12|int_4|cha_4|level(1),wpex(80,80,80,50,50,80),knows_ironflesh_2|knows_power_strike_2|knows_athletics_3|knows_riding_1,default_face_1,default_face_2],

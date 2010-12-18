@@ -370,6 +370,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("you_have_been_outlawed", "You have been outlawed!"),
   ("your_outlaw_rating_now_reg1", "Your outlaw rating is now {reg1}."),
   ("scene_error_this_faction_is_not_active", "Scene error: this faction is not active!"),
+  ("you_are_not_lord_of_s1", "You are not the lord of the {s1}."),
+  ("you_are_now_lord_of_s1", "You are now the lord of the {s1}."),
+  ("s10_now_lord_of_s1", "{s10} is now the lord of the {s1}."),
 
   ("not_riding_cart_horse", "You are not riding a cart horse."),
   ("already_towing_cart", "Already towing another cart."),

@@ -24,6 +24,8 @@ slot_player_next_chat_event           = 5
 slot_player_next_chat_event_type      = 6
 slot_player_list_button_id            = 7
 slot_player_outlaw_rating             = 8
+slot_player_is_lord                   = 9
+slot_player_non_lord_troop_id         = 10
 
 slot_player_equip_item_0              = 20
 slot_player_equip_item_1              = 21
@@ -125,6 +127,8 @@ item_class_iron                       = 5
 slot_faction_banner_mesh              = 0
 slot_faction_name_is_custom           = 1
 slot_faction_is_active                = 2
+slot_faction_lord_player_uid          = 3
+slot_faction_lord_last_seen_time      = 4
 
 ########################################################
 ##  SCENE SLOTS            #############################
@@ -192,7 +196,7 @@ team_faction_3                        = 5
 team_faction_4                        = 6
 
 spawn_invulnerable_time               = 10
-
+lord_wait_for_reconnect_interval      = 300
 loop_player_check_interval            = 5
 loop_player_check_outlaw_interval     = 60
 loop_horse_check_interval             = 30

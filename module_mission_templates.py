@@ -279,6 +279,18 @@ mission_templates = [
       (eq, "$g_loop_player_id", 0),
       ], []),
 
+    (30, 0, 0, [(multiplayer_is_server)],
+     [(store_mission_timer_a, ":current_time"),
+      (try_for_range, ":faction_id", factions_begin, factions_end),
+        (faction_slot_ge,":faction_id", slot_faction_lord_player_uid, 1),
+        (faction_get_slot, ":lord_last_seen_time", ":faction_id", slot_faction_lord_last_seen_time),
+        (store_sub, ":lord_last_seen_interval", ":current_time", ":lord_last_seen_time"),
+        (gt, ":lord_last_seen_interval", lord_wait_for_reconnect_interval),
+        (faction_set_slot, ":faction_id", slot_faction_lord_player_uid, 0),
+        (faction_set_slot, ":faction_id", slot_faction_lord_last_seen_time, 0),
+      (try_end),
+      ]),
+
     (0, 0, 2,
      [(multiplayer_is_server),
       (assign, ":agent_id", -1),
