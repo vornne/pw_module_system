@@ -1248,7 +1248,7 @@ presentations = [
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
       (gt, "$g_respawn_start_time", 0),
-      #(eq, "$g_game_ended", 0),
+      (eq, "$g_game_ended", 0),
 
       (assign, "$g_last_respawn_counter_value", -1),
       (str_clear, s0),
@@ -1274,7 +1274,7 @@ presentations = [
       ]),
     (ti_on_presentation_run,
      [(try_begin),
-        #(eq, "$g_game_ended", 0),
+        (eq, "$g_game_ended", 0),
         (store_mission_timer_a, ":current_time"),
         (store_add, ":respawn_remaining_time", "$g_respawn_start_time", "$g_respawn_period"),
         (val_sub, ":respawn_remaining_time", ":current_time"),

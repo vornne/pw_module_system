@@ -160,6 +160,7 @@ scripts = [
 
   ("game_set_multiplayer_mission_end",
    [
+    (assign, "$g_game_ended", 1),
     (assign, "$g_stats_chart_opened_manually", 0),
     (neg|is_presentation_active, "prsnt_stats_chart"),
     (start_presentation, "prsnt_stats_chart"),
@@ -1152,7 +1153,7 @@ scripts = [
       (eq, ":command", command_start_map),
       (try_begin),
         (is_between, ":value", scenes_begin, scenes_end),
-        (start_multiplayer_mission, game_type_mission_templates_begin, ":value", 1),
+        (assign, "$g_next_scene", ":value"),
       (else_try),
         (assign, ":error_string_id", "str_invalid_scene"),
       (try_end),
