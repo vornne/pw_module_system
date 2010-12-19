@@ -26,6 +26,7 @@ slot_player_list_button_id            = 7
 slot_player_outlaw_rating             = 8
 slot_player_is_lord                   = 9
 slot_player_non_lord_troop_id         = 10
+slot_player_poll_faction_id           = 11
 
 slot_player_equip_item_0              = 20
 slot_player_equip_item_1              = 21
@@ -130,6 +131,38 @@ slot_faction_is_active                = 2
 slot_faction_lord_player_uid          = 3
 slot_faction_lord_last_seen_time      = 4
 
+slot_faction_poll_end_time            = 20
+slot_faction_poll_voter_count         = 21
+slot_faction_poll_yes_votes           = 22
+slot_faction_poll_no_votes            = 23
+slot_faction_poll_type                = 24
+slot_faction_poll_value_1             = 25
+slot_faction_poll_value_2             = 26
+slot_faction_poll_target_unique_id    = 27
+
+poll_type_change_scene                = 0
+poll_type_kick_player                 = 1
+poll_type_ban_player                  = 2
+poll_type_faction_lord                = 10
+
+poll_cost_change_scene                = 1000
+poll_cost_kick_player                 = 500
+poll_cost_ban_player                  = 700
+poll_cost_faction_lord                = 500
+
+poll_vote_no                          = 0
+poll_vote_yes                         = 1
+poll_vote_admin_no                    = 2
+poll_vote_admin_yes                   = 3
+poll_vote_abstain                     = 4
+poll_result_no                        = -1
+poll_result_yes                       = -2
+poll_result_admin_no                  = -3
+poll_result_admin_yes                 = -4
+poll_result_existing                  = -5
+poll_result_invalid                   = -6
+poll_result_color                     = 0xFF0000
+
 ########################################################
 ##  SCENE SLOTS            #############################
 ########################################################
@@ -202,6 +235,7 @@ loop_player_check_outlaw_interval     = 60
 loop_horse_check_interval             = 30
 loop_health_check_interval            = 15
 stack_count_check_interval            = 5
+poll_time_duration                    = 60
 
 max_distance_to_play_sound            = 10000
 max_distance_to_see_labels            = 1500

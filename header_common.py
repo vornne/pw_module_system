@@ -23,7 +23,10 @@ server_event_return_game_rules                  = 15
 server_event_return_server_name                 = 16
 server_event_return_password                    = 17
 server_event_set_player_score_kill_death        = 18
+server_event_show_poll                          = 19
 
+client_event_poll_vote                          = 100
+client_event_request_poll                       = 101
 client_event_spectate                           = 102
 client_event_request_game_rules                 = 103
 client_event_admin_set_server_name              = 104

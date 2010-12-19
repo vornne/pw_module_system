@@ -361,6 +361,10 @@ mission_templates = [
       (try_end),
       ]),
 
+    (2, 0, 0, [(multiplayer_is_server)],
+     [(call_script, "script_check_polls_ended"),
+      ]),
+
     (1, 5, 0,
      [(multiplayer_is_server),
       (store_mission_timer_a, ":current_time"),
