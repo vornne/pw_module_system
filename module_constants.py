@@ -22,6 +22,7 @@ player_spawn_state_alive              = 3
 
 slot_player_next_chat_event           = 5
 slot_player_next_chat_event_type      = 6
+slot_player_list_button_id            = 7
 
 slot_player_equip_item_0              = 20
 slot_player_equip_item_1              = 21
@@ -217,6 +218,7 @@ ship_forwards_multiplier              = 200
 ship_rotation_multiplier              = 5
 
 escape_menu_item_height               = 35
+admin_panel_item_height               = 40
 
 inventory_slots_per_row               = 6
 inventory_slot_spacing                = 100
@@ -252,3 +254,5 @@ game_type_names_end = "str_game_types_end"
 banner_meshes_begin = "mesh_banner_a01"
 banner_meshes_end = "mesh_arms_a01"
 banner_meshes_end_minus_one = "mesh_banner_f21"
+
+commands_module_system_names_begin = "str_bot_count"
