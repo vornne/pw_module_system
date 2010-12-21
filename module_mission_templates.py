@@ -290,8 +290,8 @@ mission_templates = [
       (try_end),
       ]),
 
-    (ti_escape_pressed, 0, 0, [],
-     [(finish_mission),
+    (ti_escape_pressed, 0, 0, [(call_script, "script_cf_no_input_presentation_active")],
+     [(start_presentation, "prsnt_escape_menu"),
       ]),
 
     (ti_battle_window_opened, 0, 0, [],

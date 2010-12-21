@@ -216,6 +216,8 @@ ship_rotation_maximum                 = 5
 ship_forwards_multiplier              = 200
 ship_rotation_multiplier              = 5
 
+escape_menu_item_height               = 35
+
 inventory_slots_per_row               = 6
 inventory_slot_spacing                = 100
 

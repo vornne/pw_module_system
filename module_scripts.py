@@ -750,6 +750,7 @@ scripts = [
     (neg|is_presentation_active, "prsnt_show_inventory"),
     (neg|is_presentation_active, "prsnt_faction_banner_selection"),
     (neg|is_presentation_active, "prsnt_money_bag"),
+    (neg|is_presentation_active, "prsnt_escape_menu"),
     ]),
 
   ("initialize_banner_info",
