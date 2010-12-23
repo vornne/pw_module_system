@@ -163,6 +163,9 @@ poll_result_existing                  = -5
 poll_result_invalid                   = -6
 poll_result_color                     = 0xFF0000
 
+faction_cost_change_banner            = 500
+faction_cost_change_name              = 500
+
 ########################################################
 ##  SCENE SLOTS            #############################
 ########################################################

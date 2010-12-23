@@ -262,6 +262,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("choose_poll_ban", "Ban a player"),
   ("choose_poll_faction_lord", "Change your faction's lord"),
   ("choose_a_scene", "Choose a scene:"),
+  ("faction_admin", "Faction Administration"),
+  ("change_faction_banner", "Change faction banner"),
+  ("change_faction_name", "Change faction name"),
 
   ("poll_change_scene", "Change scene to {s1}"),
   ("poll_kick_player", "Kick player {s1}"),
@@ -402,6 +405,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("you_are_not_lord_of_s1", "You are not the lord of the {s1}."),
   ("you_are_now_lord_of_s1", "You are now the lord of the {s1}."),
   ("s10_now_lord_of_s1", "{s10} is now the lord of the {s1}."),
+  ("s10_now_known_as_s1", "The {s10} are now known as the {s1}."),
+  ("banner_used_by_s1", "That banner is used by the {s1}."),
 
   ("not_riding_cart_horse", "You are not riding a cart horse."),
   ("already_towing_cart", "Already towing another cart."),
