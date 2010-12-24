@@ -226,6 +226,11 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("game_type_1", "Conquest"),
   ("game_types_end", "game_types_end"),
 
+  ("fac_1_default_name", "Red Faction"),
+  ("fac_2_default_name", "White Faction"),
+  ("fac_3_default_name", "Blue Faction"),
+  ("fac_4_default_name", "Green Faction"),
+
   ("leave_edit_mode", "Leave scene editing mode?"),
   ("distance_reg1_sq_distance_reg2", "Distance: {reg1}, sq distance: {reg2}."),
 
