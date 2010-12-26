@@ -109,6 +109,7 @@ slot_item_difficulty                  = 0
 slot_item_length                      = 1
 slot_item_class                       = 2
 slot_item_resource_amount             = 3
+slot_item_gender                      = 4
 
 item_class_none                       = 0
 item_class_repair                     = 1

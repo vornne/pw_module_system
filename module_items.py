@@ -45,6 +45,8 @@ imodbits_horse_good = imodbit_spirited|imodbit_heavy
 imodbits_good   = imodbit_sturdy|imodbit_thick|imodbit_hardened|imodbit_reinforced
 imodbits_bad    = imodbit_rusty|imodbit_chipped|imodbit_tattered|imodbit_ragged|imodbit_cracked|imodbit_bent
 
+imodbit_female        = imodbit_meek
+
 item_class = -100.0
 
 def init_heraldic_item(tableau):

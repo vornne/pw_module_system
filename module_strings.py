@@ -345,6 +345,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("drop_money_bag", "Drop money bag"),
   ("buy_banner_faction", "Buy a banner for the {s1}"),
   ("stack_count_reg1_s0", "Stack count: {reg1}^{s0}"),
+  ("womens_clothes", "Women's clothes"),
 
   ("troop_not_available", "Not available to you^{s0}"),
   ("troop_train", "Train to be {s1} for the {s2}"),

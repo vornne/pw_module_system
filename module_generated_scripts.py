@@ -32,6 +32,8 @@ def generate_initialize_item_slots():
     length = get_weapon_length(item[6])
     if length > 0:
       script_body.append((item_set_slot, item_id, slot_item_length, length))
+    if (item[7] & imodbit_female == imodbit_female):
+      script_body.append((item_set_slot, item_id, slot_item_gender, tf_female))
   for entry in item_class_list:
     script_body.append((item_set_slot, entry[0], slot_item_class, entry[1]))
     if len(entry) > 2 and entry[2] > 0:
