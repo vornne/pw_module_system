@@ -150,12 +150,11 @@ scripts = [
 
   ("game_quick_start",
    [
-    (store_random_in_range, "$g_profile_troop_body_item", "itm_linen_tunic", "itm_tribal_warrior_outfit"),
-    (store_random_in_range, "$g_profile_troop_foot_item", "itm_hunter_boots", "itm_leather_boots"),
     (call_script, "script_initialize_troop_equipment_slots"),
     (call_script, "script_initialize_item_slots"),
     (call_script, "script_initialize_banner_info"),
     (call_script, "script_initialize_game_rules"),
+    (call_script, "script_store_profile_troop_equipment"),
     ]),
 
   ("game_set_multiplayer_mission_end",
@@ -892,6 +891,28 @@ scripts = [
   ("game_get_skill_modifier_for_troop", []),
   ("game_check_party_sees_party", []),
   ("game_get_party_speed_multiplier", []),
+
+  ("get_random_equipment",
+   [(store_script_param, ":begin_item_id", 1),
+    (store_script_param, ":end_item_id", 2),
+
+    (assign, ":end_slot", 0),
+    (try_for_range, ":item_id", ":begin_item_id", ":end_item_id"),
+      (item_slot_eq, ":item_id", slot_item_gender, 0),
+      (troop_set_slot, "trp_temp_array", ":end_slot", ":item_id"),
+      (val_add, ":end_slot", 1),
+    (try_end),
+    (store_random_in_range, ":random_slot", 0, ":end_slot"),
+    (troop_get_slot, reg0, "trp_temp_array", ":random_slot"),
+    ]),
+
+  ("store_profile_troop_equipment",
+   [
+    (call_script, "script_get_random_equipment", "itm_linen_tunic", "itm_tribal_warrior_outfit"),
+    (assign, "$g_profile_troop_body_item", reg0),
+    (call_script, "script_get_random_equipment", "itm_sarranid_boots_a", "itm_khergit_leather_boots"),
+    (assign, "$g_profile_troop_foot_item", reg0),
+    ]),
 
   ("add_troop_to_cur_tableau_for_profile",
    [(store_script_param, ":troop_no",1),
