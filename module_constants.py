@@ -47,6 +47,7 @@ slot_agent_horse_last_rider           = 0
 slot_agent_drowning_count             = 1
 slot_agent_poison_amount              = 2
 slot_agent_poisoner_agent_id          = 3
+slot_agent_freeze_instance_id         = 4
 
 slot_agent_money_bag_1_value          = 10
 slot_agent_money_bag_2_value          = 11
@@ -327,3 +328,5 @@ banner_items_begin = "itm_pw_banner_pole_a01"
 banner_items_end = "itm_test_horse"
 
 commands_module_system_names_begin = "str_bot_count"
+
+admin_action_log_strings_begin = "str_log_admin_kick"

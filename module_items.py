@@ -866,6 +866,14 @@ itm_faction_banner("kingdom_f"),
 
 ["test_horse", "Test Horse", [("giant_horse",0)], itp_type_horse, 0,
  0, hit_points(500)|body_armor(100)|difficulty(0)|horse_speed(400)|horse_maneuver(100)|horse_charge(50)|horse_scale(130), imodbit_spirited],
+["invisible_head", "Invisible Head", [("invisible",0)], itp_type_head_armor|itp_covers_head, 0,
+ 0, weight(1)|head_armor(60)|difficulty(0), imodbits_none],
+["invisible_body", "Invisible Body", [("invisible",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 0, weight(1)|body_armor(60)|leg_armor(30)|difficulty(0), imodbits_none],
+["invisible_foot", "Invisible Foot", [("invisible",0)], itp_type_foot_armor|itp_attach_armature, 0,
+ 0, weight(1)|leg_armor(35)|difficulty(0), imodbits_none],
+["invisible_hand", "Invisible Hand", [("invisible",0)], itp_type_hand_armor, 0,
+ 0, weight(1)|body_armor(10)|difficulty(0), imodbits_none],
 
 ["all_items_end", "all_items_end", [("shield_round_a", 0)], 0, 0, 1, 0, 0],
 ]

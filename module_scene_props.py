@@ -2281,6 +2281,9 @@ scene_props = [
 
   ("pw_buy_test_horse",spr_use_time(1),"wood_a","bo_wood_a", spr_buy_item_triggers("itm_test_horse")),
 
+  ("freeze_agent",sokf_moveable,"0","bo_freeze_agent", []),
+  ("freeze_horse_agent",sokf_moveable,"0","bo_freeze_horse_agent", []),
+
 ]
 
 def fill_scene_props_list(list_var, trigger_id, modify_function):
