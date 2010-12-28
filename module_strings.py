@@ -292,6 +292,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("log_admin_get_invisible", "became invisible"),
   ("log_admin_get_horse", "spawned an admin horse"),
   ("log_admin_remove_horses", "removed admin horses"),
+  ("log_admin_cheat_money", "took {reg0} gold"),
 
   ("poll_change_scene", "Change scene to {s1}"),
   ("poll_kick_player", "Kick player {s1}"),
@@ -402,6 +403,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("build", "Build"),
   ("s0__s1_", "{!}{s0} ({s1})"),
   ("drop_money_bag", "Drop money bag"),
+  ("admin_cheat_money", "Give yourself money (Admin)"),
   ("buy_banner_faction", "Buy a banner for the {s1}"),
   ("stack_count_reg1_s0", "Stack count: {reg1}^{s0}"),
   ("womens_clothes", "Women's clothes"),
