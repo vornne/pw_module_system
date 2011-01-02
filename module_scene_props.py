@@ -228,6 +228,18 @@ def spr_hit_resource_triggers(resource_item, resource_hp=100, hardness=1, tool_c
       ]),
     (ti_on_scene_prop_use, [])]
 
+def spr_process_resource_triggers(script_name, use_string):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
+      ]),
+    (ti_on_scene_prop_use,
+     [(store_trigger_param_1, ":agent_id"),
+      (store_trigger_param_2, ":instance_id"),
+      (call_script, script_name, ":agent_id", ":instance_id"),
+      ]),
+    ]
+
 def spr_ship_triggers(hit_points=1000, length=1000, width=200, sail=-1, sail_off=-1, ramp=-1, collision="pw_ship_a_cd"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -1841,6 +1853,9 @@ scene_props = [
   ("pw_iron_mine",spr_resource_flags(),"pw_iron_mine","bo_pw_iron_mine", spr_hit_resource_triggers("itm_iron_bar", resource_hp=60, tool_class=item_class_mining, hardness=3)),
   ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_resource_triggers("itm_iron_bar", resource_hp=70, tool_class=item_class_mining, hardness=3)),
   ("pw_iron_mine_b",spr_resource_flags(),"pw_iron_mine_b","bo_pw_iron_mine_b", spr_hit_resource_triggers("itm_iron_bar_med", resource_hp=90, tool_class=item_class_mining, hardness=3)),
+
+  ("pw_process_wood",spr_use_time(20),"bench_tavern_b","bo_bench_tavern_b", spr_process_resource_triggers("script_cf_process_wood", use_string="str_process_wood")),
+  ("pw_process_iron",spr_use_time(30),"smithy_forge","bo_smithy_forge", spr_process_resource_triggers("script_cf_process_iron", use_string="str_process_iron")),
 
   ("pw_buy_light_heraldic_mail",spr_buy_item_flags(12),"heraldic_armor_new_c","bo_armor_body", spr_buy_item_triggers("itm_light_heraldic_mail", tableau="tableau_heraldic_armor_c")),
   ("pw_buy_heraldic_mail_with_tunic",spr_buy_item_flags(17),"heraldic_armor_new_b","bo_armor_body", spr_buy_item_triggers("itm_heraldic_mail_with_tunic", tableau="tableau_heraldic_armor_b")),

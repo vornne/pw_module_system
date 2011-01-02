@@ -220,6 +220,8 @@ sounds = [
  ("mining_hit",sf_priority_7,["hit_wood_metal_7.ogg","hit_metal_metal_1.ogg","hit_metal_metal_2.ogg","hit_metal_metal_4.ogg","hit_metal_metal_5.ogg"]),
  ("mining_scratch",sf_priority_7,["hit_metal_metal_3.ogg","hit_metal_metal_6.ogg"]),
  ("repair_wood",sf_priority_7|sf_vol_10, ["hit_wood_wood_1.ogg","hit_wood_wood_2.ogg","hit_wood_wood_3.ogg","hit_wood_wood_4.ogg","hit_wood_metal_4.ogg","hit_wood_metal_5.ogg","hit_wood_metal_6.ogg"]),
+ ("saw_wood",sf_priority_7|sf_vol_10, ["d_saw_short3.ogg"]),
+ ("blacksmith",sf_priority_7|sf_vol_10, ["d_blacksmith2.ogg"]),
  ("damage_ship",sf_priority_7|sf_vol_10,["shield_broken.ogg"]),
  ("sounds_end", 0, []),
 ]
