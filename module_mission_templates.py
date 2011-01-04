@@ -97,6 +97,43 @@ mission_templates = [
 
     ]),
 
-    ("edit_scene", 0, -1, "edit_scene", [(0,0,0,0,1,[])],
-     [(ti_before_mission_start, 0, 0, [], [(scene_set_day_time, 12)]), (ti_escape_pressed, 0, 0, [], [(finish_mission)])]),
+  ("edit_scene", 0, -1, "edit_scene", [(0,0,0,0,1,[])],
+   [
+    (ti_before_mission_start, 0, 0, [],
+     [(scene_set_day_time, 12),
+      (server_set_add_to_game_servers_list, 0),
+      (assign, "$g_edit_scene", 1),
+      ]),
+
+    (ti_escape_pressed, 0, 0, [],
+     [(question_box, "str_leave_edit_mode"),
+      ]),
+
+    (ti_question_answered, 0, 0, [],
+     [(store_trigger_param_1, ":answer"),
+      (eq, ":answer", 0),
+      (finish_mission),
+      ]),
+
+    (0, 0, 0, [(key_clicked, key_f12)],
+     [(scene_prop_get_instance, ":instance_id", "spr_pw_test_gold", 0),
+      (prop_instance_get_position, pos1, ":instance_id"),
+      (get_player_agent_no, ":agent_id"),
+      (agent_is_alive, ":agent_id"),
+      (agent_get_position, pos2, ":agent_id"),
+      (get_distance_between_positions, reg1, pos1, pos2),
+      (get_sq_distance_between_positions, reg2, pos1, pos2),
+      (display_message, "str_distance_reg1_sq_distance_reg2"),
+      ]),
+
+    (0, 0, 0, [(key_clicked, key_f11)],
+     [(get_player_agent_no, ":agent_id"),
+      (agent_is_alive, ":agent_id"),
+      (agent_get_position, pos1, ":agent_id"),
+      (position_move_x, 50),
+      (set_spawn_position, pos1),
+      (spawn_horse, "itm_test_horse"),
+      ]),
+
+    ]),
 ]

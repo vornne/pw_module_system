@@ -226,6 +226,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("game_type_1", "Conquest"),
   ("game_types_end", "game_types_end"),
 
+  ("leave_edit_mode", "Leave scene editing mode?"),
+  ("distance_reg1_sq_distance_reg2", "Distance: {reg1}, sq distance: {reg2}."),
+
   ("done", "Done"),
   ("use", "Use"),
   ("buy", "Buy"),

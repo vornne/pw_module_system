@@ -1423,4 +1423,6 @@ scene_props = [
   ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a", spr_gain_health_triggers(30)),
   ("pw_test_poison",spr_use_time(1),"wood_b","bo_wood_b", spr_gain_health_triggers(-30)),
 
+  ("pw_buy_test_horse",spr_use_time(1),"wood_a","bo_wood_a", spr_buy_item_triggers("itm_test_horse")),
+
 ]
