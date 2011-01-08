@@ -431,7 +431,7 @@ mission_templates = [
 
     (0, 0, 0, [(game_key_clicked, gk_character_window),(call_script, "script_cf_no_input_presentation_active")],
      [(try_begin),
-        (eq, "$g_display_agent_labels", 0),
+        (neg|is_presentation_active, "prsnt_display_agent_labels"),
         (assign, "$g_display_agent_labels", 1),
         (start_presentation, "prsnt_display_agent_labels"),
       (else_try),
