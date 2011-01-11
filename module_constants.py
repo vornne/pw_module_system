@@ -58,12 +58,30 @@ slot_scene_prop_target_position       = 16
 
 slot_scene_prop_attached_to_agent     = 19
 
+slot_scene_prop_next_resource_hp      = 30
+slot_scene_prop_state                 = 31
+slot_scene_prop_state_time            = 32
+
+scene_prop_state_active               = 0
+scene_prop_state_destroyed            = 1
+scene_prop_state_hidden               = 2
+scene_prop_state_regenerating         = 3
+
 ########################################################
 ##  ITEM SLOTS             #############################
 ########################################################
 
 slot_item_difficulty                  = 0
 slot_item_length                      = 1
+slot_item_class                       = 2
+slot_item_resource_amount             = 3
+
+item_class_none                       = 0
+item_class_repair                     = 1
+item_class_wood_cutting               = 2
+item_class_wood                       = 3
+item_class_mining                     = 4
+item_class_iron                       = 5
 
 ########################################################
 ##  FACTION SLOTS          #############################
@@ -132,6 +150,9 @@ sell_item_gold_multiplier             = 80
 
 winch_type_drawbridge                 = 0
 winch_type_portcullis                 = 1
+
+destroy_scene_prop_hit_points         = 200
+fell_tree_hit_points                  = 500
 
 all_items_begin = "itm_straw_hat"
 all_items_end = "itm_all_items_end"

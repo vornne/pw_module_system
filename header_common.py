@@ -55,6 +55,7 @@ net_pack_3_multiplier_2 = (1 << 10)
 net_pack_3_multiplier_3 = (1 << 20)
 
 max_correctly_displayed_gold                    = 131071
+max_correctly_displayed_hp                      = 15000
 
 
 bignum = 0x40000000000000000000000000000000

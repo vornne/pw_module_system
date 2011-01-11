@@ -16,6 +16,8 @@ import string
 #  5) Triggers: Simple triggers that are associated with the scene prop
 ####################################################################################################################
 
+from header_item_modifiers import *
+
 link_scene_prop = -100.0
 link_scene_prop_self = 1
 init_scene_prop = -101.0
@@ -24,6 +26,11 @@ def spr_tag(name):
   if name != -1:
     name = "spr_"+name
   return name
+
+def spr_check_hit_points(hp, low_hp=destroy_scene_prop_hit_points):
+  if hp <= low_hp or hp > max_correctly_displayed_hp:
+    raise Exception("Hit points value must be between " + `low_hp + 1` + " and " + `max_correctly_displayed_hp`)
+  return hp
 
 def spr_item_init_trigger(item_id, use_string=None, tableau=None):
   init_trigger = (ti_on_scene_prop_init,
@@ -124,6 +131,48 @@ def spr_cart_triggers(horse=0, z_offset=0):
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_attached_to_agent, -1),
       ]),
     spr_call_script_use_trigger("script_cf_use_cart", horse)]
+
+def spr_tree_flags():
+  return sokf_destructible|sokf_show_hit_point_bar|sokf_moveable|sokf_missiles_not_attached
+
+def spr_tree_triggers(full_hp=1000, resource_hp=200, hardness=1, branch=0, use_string="str_cut_down"):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(full_hp, fell_tree_hit_points)),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, full_hp - resource_hp),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
+      ]),
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_tree", ":instance_id", ":hit_damage", full_hp, resource_hp, hardness, branch),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_animation_finished,
+     [(store_trigger_param_1, ":instance_id"),
+      (call_script, "script_cf_check_harvest_tree_after_felled", ":instance_id"),
+      ]),
+    (ti_on_scene_prop_use, [])]
+
+def spr_resource_flags():
+  return sokf_destructible|sokf_show_hit_point_bar|sokf_moveable|sokf_missiles_not_attached
+
+def spr_hit_resource_triggers(resource_item, resource_hp=100, hardness=1, tool_class=-1, use_string="str_mine"):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
+      (call_script, "script_init_resource", ":instance_id", resource_hp),
+      ]),
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_resource", ":instance_id", ":hit_damage", resource_hp, resource_item, hardness, tool_class),
+      ]),
+    (ti_on_scene_prop_destroy,
+     [(store_trigger_param_1, ":instance_id"),
+      (call_script, "script_cf_destroy_resource", ":instance_id")
+      ]),
+    (ti_on_scene_prop_use, [])]
 
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
@@ -1535,6 +1584,116 @@ scene_props = [
   ("interior_dungeon_a",0,"dungeon_a","bo_dungeon_a", []),
   ("interior_window_cover",0,"window_cover","bo_window_cover", []),
 
+  ("rock_1",0,"rock1","bo_rock1", []),
+  ("rock_2",0,"rock2","bo_rock2", []),
+  ("rock_3",0,"rock3","bo_rock3", []),
+  ("rock_4",0,"rock4","bo_rock4", []),
+  ("rock_5",0,"rock5","bo_rock5", []),
+  ("rock_6",0,"rock6","bo_rock6", []),
+  ("rock_7",0,"rock7","bo_rock7", []),
+  ("rock_a",0,"rock_a","borock_a", []),
+  ("rock_b",0,"rock_b","borock_b", []),
+  ("rock_c",0,"rock_c","bo_rock_c", []),
+  ("rock_d",0,"rock_d","bo_rock_d", []),
+  ("rock_e",0,"rock_e","bo_rock_e", []),
+  ("rock_f",0,"rock_f","bo_rock_f", []),
+  ("rock_g",0,"rock_g","bo_rock_g", []),
+  ("rock_h",0,"rock_h","bo_rock_h", []),
+  ("rock_i",0,"rock_i","bo_rock_i", []),
+  ("rock_k",0,"rock_k","bo_rock_k", []),
+  ("tree_stump_a",0,"tree_stump_a","bo_tree_stump_a", []),
+  ("tree_stump_b",0,"tree_stump_b","bo_tree_stump_b", []),
+  ("tree_stump_c",0,"tree_stump_c","bo_tree_stump_c", []),
+
+  ("pw_tree_a1",spr_tree_flags(),"tree_a01","bo_tree_a01", spr_tree_triggers(full_hp=7000)),
+  ("pw_tree_a2",spr_tree_flags(),"tree_a02","bo_tree_a02", spr_tree_triggers(full_hp=6000, branch=imod_cracked)),
+  ("pw_tree_b1",spr_tree_flags(),"tree_b01","bo_tree_b01", spr_tree_triggers(full_hp=8000)),
+  ("pw_tree_b2",spr_tree_flags(),"tree_b02","bo_tree_b02", spr_tree_triggers(full_hp=8000, branch=imod_cracked)),
+  ("pw_tree_c1",spr_tree_flags(),"tree_c01","bo_tree_c01", spr_tree_triggers(full_hp=7000)),
+  ("pw_tree_c2",spr_tree_flags(),"tree_c02","bo_tree_c02", spr_tree_triggers(full_hp=6000)),
+  ("pw_tree_e1",spr_tree_flags(),"tree_e_1","bo_tree_e_1", spr_tree_triggers(full_hp=4000, branch=imod_cracked)),
+  ("pw_tree_e2",spr_tree_flags(),"tree_e_2","bo_tree_e_2", spr_tree_triggers(full_hp=4000, branch=imod_cracked)),
+  ("pw_tree_e3",spr_tree_flags(),"tree_e_3","bo_tree_e_3", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_f1",spr_tree_flags(),"tree_f_1","bo_tree_f_1", spr_tree_triggers(full_hp=4000, branch=imod_cracked)),
+  ("pw_tree_f2",spr_tree_flags(),"tree_f_2","bo_tree_f_1", spr_tree_triggers(full_hp=4000, branch=imod_cracked)),
+  ("pw_tree_f3",spr_tree_flags(),"tree_f_3","bo_tree_f_1", spr_tree_triggers(full_hp=4000, branch=imod_cracked)),
+  ("pw_tree_aspen_a",spr_tree_flags(),"aspen_a","bo_aspen_a", spr_tree_triggers(full_hp=4000, branch=imod_cracked)),
+  ("pw_tree_aspen_b",spr_tree_flags(),"aspen_b","bo_aspen_b", spr_tree_triggers(full_hp=4000, branch=imod_cracked)),
+  ("pw_tree_aspen_c",spr_tree_flags(),"aspen_c","bo_aspen_c", spr_tree_triggers(full_hp=4000, branch=imod_cracked)),
+  ("pw_tree_pine_1a",spr_tree_flags(),"pine_1_a","bo_pine_1_a", spr_tree_triggers(full_hp=10000, resource_hp=300, branch=imod_bent)),
+  ("pw_tree_pine_1b",spr_tree_flags(),"pine_1_b","bo_pine_1_b", spr_tree_triggers(full_hp=10000, resource_hp=300, branch=imod_bent)),
+  ("pw_tree_pine_2a",spr_tree_flags(),"pine_2_a","bo_pine_2_a", spr_tree_triggers(full_hp=10000, resource_hp=300, branch=imod_bent)),
+  ("pw_tree_pine_3a",spr_tree_flags(),"pine_3_a","bo_pine_3_a", spr_tree_triggers(full_hp=10000, resource_hp=300, branch=imod_bent)),
+  ("pw_tree_pine_4a",spr_tree_flags(),"pine_4_a","bo_pine_4_a", spr_tree_triggers(full_hp=10000, resource_hp=300, branch=imod_bent)),
+  ("pw_tree_pine_6a",spr_tree_flags(),"pine_6_a","bo_pine_6_a", spr_tree_triggers(full_hp=10000, resource_hp=300, branch=imod_bent)),
+  ("pw_tree_plane_a",spr_tree_flags(),"tree_plane_a","bo_tree_plane_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_plane_b",spr_tree_flags(),"tree_plane_b","bo_tree_plane_b", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_plane_c",spr_tree_flags(),"tree_plane_c","bo_tree_plane_c", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_plane_d",spr_tree_flags(),"plane_d","bo_plane_d", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_beech_d",spr_tree_flags(),"beech_d","bo_beech_d", spr_tree_triggers(full_hp=7000)),
+  ("pw_tree_beech_e",spr_tree_flags(),"beech_e","bo_beech_e", spr_tree_triggers(full_hp=8000)),
+  ("pw_tree_tall_a",spr_tree_flags(),"tall_tree_a","bo_tall_tree_a", spr_tree_triggers(full_hp=7000, resource_hp=400)),
+  ("pw_tree_snowy_a",spr_tree_flags(),"tree_snowy_a","bo_tree_snowy_a", spr_tree_triggers(full_hp=9000, branch=imod_cracked)),
+  ("pw_tree_snowy_b",spr_tree_flags(),"snowy_pine_2","bo_snowy_pine_2", spr_tree_triggers(full_hp=9000, branch=imod_cracked)),
+  ("pw_tree_1a",spr_tree_flags(),"tree_1_a","bo_tree_1_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_1b",spr_tree_flags(),"tree_1_b","bo_tree_1_b", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_2a",spr_tree_flags(),"tree_2_a","bo_tree_2_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_2b",spr_tree_flags(),"tree_2_b","bo_tree_2_b", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_3a",spr_tree_flags(),"tree_3_a","bo_tree_3_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_3b",spr_tree_flags(),"tree_3_b","bo_tree_3_b", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_4a",spr_tree_flags(),"tree_4_a","bo_tree_4_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_4b",spr_tree_flags(),"tree_4_b","bo_tree_4_b", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_5a",spr_tree_flags(),"tree_5_a","bo_tree_5_a", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_5b",spr_tree_flags(),"tree_5_b","bo_tree_5_b", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_5c",spr_tree_flags(),"tree_5_c","bo_tree_5_c", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_5d",spr_tree_flags(),"tree_5_d","bo_tree_5_d", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_6a",spr_tree_flags(),"tree_6_a","bo_tree_6_a", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_6b",spr_tree_flags(),"tree_6_b","bo_tree_6_b", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_6c",spr_tree_flags(),"tree_6_c","bo_tree_6_c", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_6d",spr_tree_flags(),"tree_6_d","bo_tree_6_d", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_7a",spr_tree_flags(),"tree_7_a","bo_tree_7_a", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_7b",spr_tree_flags(),"tree_7_b","bo_tree_7_b", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_7c",spr_tree_flags(),"tree_7_c","bo_tree_7_c", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_8a",spr_tree_flags(),"tree_8_a","bo_tree_8_a", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_8b",spr_tree_flags(),"tree_8_b","bo_tree_8_b", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_8c",spr_tree_flags(),"tree_8_c","bo_tree_8_c", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_9a",spr_tree_flags(),"tree_9_a","bo_tree_9_a", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_9b",spr_tree_flags(),"tree_9_b","bo_tree_9_a", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_9c",spr_tree_flags(),"tree_9_c","bo_tree_9_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_10a",spr_tree_flags(),"tree_10_a","bo_tree_10_a", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_10b",spr_tree_flags(),"tree_10_b","bo_tree_10_a", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_10c",spr_tree_flags(),"tree_10_c","bo_tree_10_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_11a",spr_tree_flags(),"tree_11_a","bo_tree_11_a", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_11b",spr_tree_flags(),"tree_11_b","bo_tree_11_a", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_11c",spr_tree_flags(),"tree_11_c","bo_tree_11_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_12a",spr_tree_flags(),"tree_12_a","bo_tree_12_a", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_12b",spr_tree_flags(),"tree_12_b","bo_tree_12_b", spr_tree_triggers(full_hp=5000, branch=imod_cracked)),
+  ("pw_tree_12c",spr_tree_flags(),"tree_12_c","bo_tree_12_c", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_14a",spr_tree_flags(),"tree_14_a","bo_tree_14_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_14b",spr_tree_flags(),"tree_14_b","bo_tree_14_b", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_14c",spr_tree_flags(),"tree_14_c","bo_tree_14_c", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_15a",spr_tree_flags(),"tree_15_a","bo_tree_15_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_15b",spr_tree_flags(),"tree_15_b","bo_tree_15_b", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_15c",spr_tree_flags(),"tree_15_c","bo_tree_15_c", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_16a",spr_tree_flags(),"tree_16_a","bo_tree_16_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_16b",spr_tree_flags(),"tree_16_b","bo_tree_16_b", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_17a",spr_tree_flags(),"tree_17_a","bo_tree_17_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_17b",spr_tree_flags(),"tree_17_b","bo_tree_17_b", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_17c",spr_tree_flags(),"tree_17_c","bo_tree_17_c", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_17d",spr_tree_flags(),"tree_17_d","bo_tree_17_d", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_18a",spr_tree_flags(),"tree_18_a","bo_tree_18_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_18b",spr_tree_flags(),"tree_18_b","bo_tree_18_b", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_19a",spr_tree_flags(),"tree_19_a","bo_tree_19_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_20a",spr_tree_flags(),"tree_20_a","bo_tree_20_a", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_20b",spr_tree_flags(),"tree_20_b","bo_tree_20_b", spr_tree_triggers(full_hp=5000)),
+  ("pw_tree_palm_a",spr_tree_flags(),"palm_a","bo_palm_a", spr_tree_triggers(full_hp=4000)),
+  ("pw_tree_trunk_a",0,"pw_tree_trunk_a","bo_pw_tree_trunk_a", []),
+  ("pw_tree_trunk_b",0,"pw_tree_trunk_b","bo_pw_tree_trunk_b", []),
+
+  ("pw_iron_mine",spr_resource_flags(),"pw_iron_mine","bo_pw_iron_mine", spr_hit_resource_triggers("itm_iron_bar", resource_hp=60, tool_class=item_class_mining, hardness=3)),
+  ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_resource_triggers("itm_iron_bar", resource_hp=70, tool_class=item_class_mining, hardness=3)),
+  ("pw_iron_mine_b",spr_resource_flags(),"pw_iron_mine_b","bo_pw_iron_mine_b", spr_hit_resource_triggers("itm_iron_bar_med", resource_hp=90, tool_class=item_class_mining, hardness=3)),
+
   ("pw_buy_light_heraldic_mail",spr_use_time(1),"heraldic_armor_new_c","bo_armor_body", spr_buy_item_triggers("itm_light_heraldic_mail", tableau="tableau_heraldic_armor_c")),
   ("pw_buy_heraldic_mail_with_tunic",spr_use_time(1),"heraldic_armor_new_b","bo_armor_body", spr_buy_item_triggers("itm_heraldic_mail_with_tunic", tableau="tableau_heraldic_armor_b")),
   ("pw_buy_heraldic_mail_with_tabard",spr_use_time(1),"heraldic_armor_new_d","bo_armor_body", spr_buy_item_triggers("itm_heraldic_mail_with_tabard", tableau="tableau_heraldic_armor_d")),
@@ -1549,6 +1708,8 @@ scene_props = [
   ("pw_buy_hunting_bow",spr_use_time(1),"hunting_bow","bo_weapon", spr_buy_item_triggers("itm_hunting_bow")),
   ("pw_buy_arrows",spr_use_time(1),"arrow","bo_weapon_small", spr_buy_item_triggers("itm_arrows")),
   ("pw_buy_cart_horse",spr_use_time(1),"wood_b","bo_wood_b", spr_buy_item_triggers("itm_cart_horse")),
+  ("pw_buy_woodcutter_axe",spr_use_time(1),"pw_wood_axe","bo_weapon", spr_buy_item_triggers("itm_woodcutter_axe")),
+  ("pw_buy_mining_pick",spr_use_time(1),"pw_mining_pick","bo_weapon", spr_buy_item_triggers("itm_mining_pick")),
   ("pw_test_gold",spr_use_time(1),"tree_house_guard_a","bo_tree_house_guard_a", spr_gain_gold_triggers(10000)),
   ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a", spr_gain_health_triggers(30)),
   ("pw_test_poison",spr_use_time(1),"wood_b","bo_wood_b", spr_gain_health_triggers(-30)),

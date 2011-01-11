@@ -212,5 +212,10 @@ sounds = [
 
  ("failure", sf_2d|sf_priority_10|sf_vol_5, ["cue_failure.ogg"]),
  ("man_yawn",sf_priority_7|sf_vol_10, ["man_yawn_1.ogg"]),
+ ("cut_wood",sf_priority_7,["shield_hit_cut_3.ogg","shield_hit_cut_5.ogg"]),
+ ("cut_wood_break",sf_priority_7,["shield_hit_cut_4.ogg"]),
+ ("cut_wood_scratch",sf_priority_7,["wooden_hit_high_armor_low_damage_1.ogg","wooden_hit_high_armor_low_damage_2b.ogg"]),
+ ("mining_hit",sf_priority_7,["hit_wood_metal_7.ogg","hit_metal_metal_1.ogg","hit_metal_metal_2.ogg","hit_metal_metal_4.ogg","hit_metal_metal_5.ogg"]),
+ ("mining_scratch",sf_priority_7,["hit_metal_metal_3.ogg","hit_metal_metal_6.ogg"]),
  ("sounds_end", 0, []),
 ]

@@ -45,6 +45,8 @@ imodbits_horse_good = imodbit_spirited|imodbit_heavy
 imodbits_good   = imodbit_sturdy|imodbit_thick|imodbit_hardened|imodbit_reinforced
 imodbits_bad    = imodbit_rusty|imodbit_chipped|imodbit_tattered|imodbit_ragged|imodbit_cracked|imodbit_bent
 
+item_class = -100.0
+
 def init_heraldic_item(tableau):
   return [(ti_on_init_item,
    [(store_trigger_param_1, ":agent_id"),
@@ -212,8 +214,47 @@ items = [
 ["cart_horse", "Cart Horse", [("sumpter_horse",0)], itp_type_horse, 0,
  5100, hit_points(150)|body_armor(10)|difficulty(1)|horse_speed(25)|horse_maneuver(20)|horse_charge(20)|horse_scale(120), imodbits_none],
 
+["stick", "Stick", [("wooden_stick",0)], itp_type_thrown|itp_primary|itp_next_item_as_melee, itcf_throw_axe|itcf_carry_quiver_back,
+ 23, weight(5)|spd_rtng(90)|shoot_speed(8)|thrust_damage(1,blunt)|max_ammo(1)|weapon_length(63), imodbits_none, [(item_class, item_class_wood, 100)]],
+["stick_melee", "Stick", [("wooden_stick",0)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_quiver_back,
+ 23, weight(5)|spd_rtng(90)|swing_damage(5,blunt)|weapon_length(63), imodbits_none, [(item_class, item_class_wood, 100)]],
+["branch", "Branch", [("pw_branch_a",0),("pw_branch_b",imodbit_cracked),("pw_branch_c",imodbit_bent)], itp_type_polearm|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_thrust_polearm|itcf_overswing_polearm|itcf_carry_spear,
+ 54, weight(25)|spd_rtng(30)|weapon_length(250)|swing_damage(20,blunt)|thrust_damage(10,blunt), imodbit_cracked|imodbit_bent, [(item_class, item_class_wood, 500)]],
+["wood_pole", "Wooden Pole", [("pw_wood_pole",0)], itp_type_polearm|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_thrust_polearm|itcf_overswing_polearm|itcf_carry_spear,
+ 85, weight(15)|spd_rtng(70)|weapon_length(150)|swing_damage(20,blunt)|thrust_damage(10,blunt), imodbits_none, [(item_class, item_class_wood, 400)]],
+["wood_block", "Wood Block", [("pw_wood_block",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_sword_back,
+ 74, weight(30)|spd_rtng(50)|weapon_length(32)|swing_damage(5,blunt)|thrust_damage(5,blunt), imodbits_none, [(item_class, item_class_wood, 800)]],
+["board", "Board", [("pw_board",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_sword_back,
+ 103, weight(10)|spd_rtng(80)|weapon_length(50)|swing_damage(10,blunt)|thrust_damage(10,blunt), imodbits_none, [(item_class, item_class_wood, 200)]],
+["iron_bar", "Short Iron Bar", [("pw_iron_bar",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_sword_back,
+ 320, weight(35)|spd_rtng(70)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(17), imodbits_none, [(item_class, item_class_iron, 100)]],
+["iron_bar_med", "Iron Bar", [("pw_iron_bar_med",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_sword_back,
+ 640, weight(50)|spd_rtng(60)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(35), imodbits_none, [(item_class, item_class_iron, 200)]],
+["iron_bar_long", "Long Iron Bar", [("pw_iron_bar_long",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_sword_back,
+ 1280, weight(100)|spd_rtng(50)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(53), imodbits_none, [(item_class, item_class_iron, 400)]],
+
+["woodcutter_axe", "Woodcutter's Axe", [("pw_wood_axe",0)], itp_type_two_handed_wpn|itp_two_handed|itp_bonus_against_shield|itp_primary|itp_wooden_parry|itp_unbalanced|itp_cant_use_on_horseback, itc_nodachi|itcf_carry_axe_back,
+ 245, weight(4)|spd_rtng(80)|weapon_length(72)|swing_damage(20,cut)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_wood_cutting)]],
+["mining_pick", "Mining Pick", [("pw_mining_pick",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_unbalanced|itp_cant_use_on_horseback, itc_parry_polearm|itcf_overswing_polearm|itcf_carry_axe_back,
+ 423, weight(5)|spd_rtng(70)|weapon_length(100)|swing_damage(30,pierce)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_mining)]],
+
 ["test_horse", "Test Horse", [("giant_horse",0)], itp_type_horse, 0,
  0, hit_points(500)|body_armor(100)|difficulty(0)|horse_speed(400)|horse_maneuver(100)|horse_charge(50)|horse_scale(130), imodbit_spirited],
 
 ["all_items_end", "all_items_end", [("shield_round_a", 0)], 0, 0, 1, 0, 0],
 ]
+
+item_class_list = []
+def fill_item_class_list():
+  for item_id, item in enumerate(items):
+    if len(item) <= 8:
+      continue
+    trigger_list = item[8]
+    for i, trigger in enumerate(trigger_list):
+      if trigger[0] == item_class:
+        list_entry = [item_id]
+        list_entry.extend(trigger[1:])
+        item_class_list.append(list_entry)
+        trigger_list.pop(i)
+        break
+fill_item_class_list()

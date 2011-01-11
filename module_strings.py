@@ -239,6 +239,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("winch_lower", "Lower"),
   ("winch_raise", "Raise"),
   ("winch_drop", "Drop"),
+  ("cut_down", "Cut down"),
+  ("mine", "Mine"),
   ("s0__s1_", "{!}{s0} ({s1})"),
   ("s2_s3", "{!}{s2}^{s3}"),
 
