@@ -38,6 +38,10 @@ slot_player_equip_foot                = 26
 slot_player_equip_gloves              = 27
 slot_player_equip_horse               = 28
 slot_player_equip_end                 = 29
+slot_player_equip_item_0_ammo         = 30
+slot_player_equip_item_1_ammo         = 31
+slot_player_equip_item_2_ammo         = 32
+slot_player_equip_item_3_ammo         = 33
 
 ########################################################
 ##  AGENT SLOTS            #############################
