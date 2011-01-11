@@ -338,6 +338,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("mine", "Mine"),
   ("process_wood", "Process wood"),
   ("process_iron", "Process iron"),
+  ("stockpile", "Stockpile"),
   ("build", "Build"),
   ("s0__s1_", "{!}{s0} ({s1})"),
   ("drop_money_bag_containing", "Drop money bag containing:"),

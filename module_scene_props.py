@@ -240,6 +240,10 @@ def spr_process_resource_triggers(script_name, use_string):
       ]),
     ]
 
+def spr_stockpile_resource_triggers(item_id, use_string="str_stockpile"):
+  return [spr_item_init_trigger(item_id, use_string=use_string, stockpile=True),
+    spr_call_script_use_trigger("script_cf_use_resource_stockpile")]
+
 def spr_ship_triggers(hit_points=1000, length=1000, width=200, sail=-1, sail_off=-1, ramp=-1, collision="pw_ship_a_cd"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -1854,6 +1858,9 @@ scene_props = [
   ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_resource_triggers("itm_iron_bar", resource_hp=70, tool_class=item_class_mining, hardness=3)),
   ("pw_iron_mine_b",spr_resource_flags(),"pw_iron_mine_b","bo_pw_iron_mine_b", spr_hit_resource_triggers("itm_iron_bar_med", resource_hp=90, tool_class=item_class_mining, hardness=3)),
 
+  ("pw_stockpile_wood_block",spr_use_time(1),"wood_heap_a","bo_wood_heap_a", spr_stockpile_resource_triggers("itm_wood_block")),
+  ("pw_stockpile_wood_branch",spr_use_time(1),"wood_heap_b","bo_wood_heap_b", spr_stockpile_resource_triggers("itm_branch")),
+  ("pw_stockpile_iron_bar",spr_use_time(1),"pw_chest_c","bo_pw_chest_c", spr_stockpile_resource_triggers("itm_iron_bar")),
   ("pw_process_wood",spr_use_time(20),"bench_tavern_b","bo_bench_tavern_b", spr_process_resource_triggers("script_cf_process_wood", use_string="str_process_wood")),
   ("pw_process_iron",spr_use_time(30),"smithy_forge","bo_smithy_forge", spr_process_resource_triggers("script_cf_process_iron", use_string="str_process_iron")),
 
