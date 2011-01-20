@@ -130,5 +130,6 @@ troops = [
 
   ["active_players_array","active_players_array","active_players_array",0,0,0,0,[],0,0,0,0,0],
   ["inactive_players_array","inactive_players_array","inactive_players_array",0,0,0,0,[],0,0,0,0,0],
+  ["mission_data","mission_data","mission_data",0,0,0,0,[],0,0,0,0,0],
 
 ]

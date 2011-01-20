@@ -236,6 +236,18 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("collect_reg1_gold", "Collect {reg1} gold"),
   ("rest", "Rest"),
 
+  ("troop_not_available", "Not available to you^{s0}"),
+  ("troop_train", "Train to be {s1} for the {s2}"),
+  ("troop_leave_faction", "Leave your faction and become {s1}"),
+  ("troop_assume_role", "Assume the role of {s1} of the {s2}"),
+  ("troop_become", "Become {s1} with the {s2}"),
+  ("troop_cost", "{s0}^Cost: {reg10}"),
+  ("troop_strength_agility", "{s0}^Strength: {reg10}^Agility: {reg11}"),
+  ("troop_weapon_proficiencies", "{s0}^One handed: {reg10}^Two Handed: {reg11}^Polearms: {reg12}^Archery: {reg13}^Crossbows: {reg14}^Throwing: {reg15}"),
+  ("joined_the_s1", "You have joined the {s1}."),
+  ("must_leave_s1_first", "You must leave the {s1} first."),
+  ("not_a_member_of_s1", "You are not a member of the {s1}."),
+
   ("scene_name_1", "Test Scene"),
   ("scene_names_end", "scene_names_end"),
 

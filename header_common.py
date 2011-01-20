@@ -9,6 +9,10 @@ server_event_agent_play_sound                   = 1
 server_event_scene_prop_play_sound              = 2
 server_event_play_sound_at_position             = 3
 server_event_agent_equip_armor                  = 4
+server_event_player_set_slot                    = 5
+server_event_scene_prop_set_slot                = 6
+server_event_faction_set_slot                   = 7
+server_event_troop_set_slot                     = 8
 
 
 preset_message_default                          = 0x0

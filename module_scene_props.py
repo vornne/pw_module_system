@@ -74,6 +74,17 @@ def spr_gain_health_triggers(heal_pct, heal_limit_pct=100, horse=0, use_string="
       ]),
     ]
 
+def spr_change_troop_triggers(troop_id, cost=0, use_string=None):
+  init_trigger = (ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_troop_id, troop_id),
+      ])
+  if cost != 0:
+    init_trigger[1].append((call_script, "script_scene_prop_get_gold_value", ":instance_id", -1, cost))
+  if use_string is not None:
+    init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string))
+  return [init_trigger, spr_call_script_use_trigger("script_cf_change_troop")]
+
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
   ("inventory",sokf_type_container|sokf_place_at_origin,"package","bobaggage", []),
@@ -1422,6 +1433,19 @@ scene_props = [
   ("pw_test_gold",spr_use_time(1),"tree_house_guard_a","bo_tree_house_guard_a", spr_gain_gold_triggers(10000)),
   ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a", spr_gain_health_triggers(30)),
   ("pw_test_poison",spr_use_time(1),"wood_b","bo_wood_b", spr_gain_health_triggers(-30)),
+
+  ("pw_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_weapon_big", spr_change_troop_triggers("trp_peasant", cost=100, use_string="str_troop_leave_faction")),
+  ("pw_change_troop_serf",spr_use_time(30),"trident","bo_weapon_big", spr_change_troop_triggers("trp_serf", cost=300)),
+  ("pw_change_troop_footman",spr_use_time(60),"heavy_practicesword","bo_weapon", spr_change_troop_triggers("trp_footman", cost=2000)),
+  ("pw_change_troop_archer",spr_use_time(60),"hunting_bow","bo_weapon", spr_change_troop_triggers("trp_archer", cost=2300)),
+  ("pw_change_troop_crossbowman",spr_use_time(60),"crossbow_a","bo_weapon", spr_change_troop_triggers("trp_crossbowman", cost=2500)),
+  ("pw_change_troop_lancer",spr_use_time(70),"arena_lance","bo_weapon_big", spr_change_troop_triggers("trp_lancer", cost=3000)),
+  ("pw_change_troop_man_at_arms",spr_use_time(90),"shield_heater_c","bo_shield_kite_small", spr_change_troop_triggers("trp_man_at_arms", cost=10000)),
+  ("pw_change_troop_engineer",spr_use_time(80),"pw_repair_hammer","bo_weapon_small", spr_change_troop_triggers("trp_engineer", cost=5000)),
+  ("pw_change_troop_doctor",spr_use_time(100),"package","bobaggage", spr_change_troop_triggers("trp_doctor", cost=7000)),
+  ("pw_change_troop_lord",spr_use_time(70),"gothic_chair","bogothic_chair", spr_change_troop_triggers("trp_lord", cost=1000, use_string="str_troop_assume_role")),
+  ("pw_change_troop_ruffian",spr_use_time(40),"sledgehammer","bo_weapon", spr_change_troop_triggers("trp_ruffian", cost=500, use_string="str_troop_become")),
+  ("pw_change_troop_brigand",spr_use_time(50),"spiked_club","bo_weapon", spr_change_troop_triggers("trp_brigand", cost=700, use_string="str_troop_become")),
 
   ("pw_buy_test_horse",spr_use_time(1),"wood_a","bo_wood_a", spr_buy_item_triggers("itm_test_horse")),
 

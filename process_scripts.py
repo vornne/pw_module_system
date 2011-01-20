@@ -2,6 +2,7 @@ import string
 
 from module_info import *
 from module_scripts import *
+from module_generated_scripts import *
 
 from process_common import *
 from process_operations import *

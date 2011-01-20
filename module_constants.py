@@ -9,6 +9,9 @@
 ##  PLAYER SLOTS           #############################
 ########################################################
 
+slot_player_faction_id                = 0
+slot_player_respawn_at_scene_prop     = 1
+
 # Keep these the same as the equipment slots (ek_* in header_items)
 slot_player_current_armor_head        = 4
 slot_player_current_armor_body        = 5
@@ -28,6 +31,7 @@ slot_scene_prop_item_id               = 0
 slot_scene_prop_gold_value            = 1
 slot_scene_prop_gold_multiplier       = 2
 slot_scene_prop_use_string            = 3
+slot_scene_prop_troop_id              = 4
 
 ########################################################
 ##  ITEM SLOTS             #############################
@@ -65,8 +69,12 @@ slot_player_array_begin               = 1
 
 player_array_unique_id                = 0
 player_array_troop_id                 = 1
-player_array_gold_value               = 2
-player_array_entry_size               = 3
+player_array_faction_id               = 2
+player_array_gold_value               = 3
+player_array_entry_size               = 4
+
+slot_mission_data_castle_owner_faction_begin    = 0
+slot_mission_data_castle_owner_faction_end      = 8
 
 ########################################################
 ##  TEAM SLOTS             #############################
