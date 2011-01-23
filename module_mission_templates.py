@@ -408,6 +408,10 @@ mission_templates = [
       (call_script, "script_game_set_multiplayer_mission_end"),
       ]),
 
+    (0, 0, redraw_castle_banners_interval, [(multiplayer_is_server)],
+     [(call_script, "script_redraw_castle_banners", -1),
+      ]),
+
     (ti_escape_pressed, 0, 0, [(call_script, "script_cf_no_input_presentation_active")],
      [(start_presentation, "prsnt_escape_menu"),
       ]),

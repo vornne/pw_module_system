@@ -135,6 +135,7 @@ slot_faction_name_is_custom           = 1
 slot_faction_is_active                = 2
 slot_faction_lord_player_uid          = 3
 slot_faction_lord_last_seen_time      = 4
+slot_faction_castle_banner_type_begin = 5
 
 slot_faction_poll_end_time            = 20
 slot_faction_poll_voter_count         = 21
@@ -246,6 +247,7 @@ loop_player_check_outlaw_interval     = 60
 loop_horse_check_interval             = 30
 loop_health_check_interval            = 15
 stack_count_check_interval            = 5
+redraw_castle_banners_interval        = 60
 poll_time_duration                    = 60
 
 max_distance_to_play_sound            = 10000

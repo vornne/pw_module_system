@@ -70,6 +70,17 @@ def tableau_shield_banner(mesh_tableau, banner_xy, banner_scale, camera_width_he
     (cur_tableau_set_camera_parameters, 0, camera_width_height[0], camera_width_height[1], 0, 100000),
     ]
 
+def tableau_castle_banner():
+  return [(store_script_param, ":faction_id", 1),
+    (set_fixed_point_multiplier, 100),
+    (init_position, pos1),
+    (position_set_y, pos1, 100),
+    (position_set_x, pos1, -9),
+    (faction_get_slot, ":banner_mesh", ":faction_id", slot_faction_banner_mesh),
+    (cur_tableau_add_mesh, ":banner_mesh", pos1, 0, 0),
+    (cur_tableau_set_camera_parameters, 0, 100, 200, 0, 100000),
+    ]
+
 tableaus = [
   ("game_character_sheet", 0, "tableau_with_transparency", 1024, 1024, 0, 0, 266, 532, []),
   ("game_inventory_window", 0, "tableau_with_transparency", 1024, 1024, 0, 0, 180, 270, []),
@@ -147,5 +158,8 @@ tableaus = [
   ("heraldic_armor_b", 0, "sample_heraldic_armor_b", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_b", banner_xyz=(-5,150,10), banner_scale=100)),
   ("heraldic_armor_c", 0, "sample_heraldic_armor_c", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_c", banner_xyz=(0,150,10), banner_scale=100)),
   ("heraldic_armor_d", 0, "sample_heraldic_armor_d", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_d", banner_xyz=(0,145,10), banner_scale=100)),
+
+  ("castle_banner_a", 0, "tableau_with_transparency", 512, 256, 0, 0, 0, 0, tableau_castle_banner()),
+  ("castle_banner_b", 0, "tableau_with_transparency", 512, 256, 0, 0, 0, 0, tableau_castle_banner()),
 
 ]

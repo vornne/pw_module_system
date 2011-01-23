@@ -60,6 +60,10 @@ def itm_faction_banner(banner_id):
   return ["pw_banner_pole_" + banner_id, "Banner", [("pw_banner_pole_" + banner_id,0)], itp_type_polearm|itp_two_handed|itp_primary|itp_wooden_parry, itc_parry_polearm|itcf_carry_spear,
    4300, weight(7.0)|difficulty(14)|spd_rtng(70)|weapon_length(250)|swing_damage(10, blunt)|thrust_damage(5, blunt), imodbits_none]
 
+def itm_castle_banner(faction, suffix):
+  return ["pw_banner_castle_" + faction + suffix, "Castle Banner", [("pw_banner_castle",0)], itp_no_pick_up_from_ground, 0,
+   0, 0, imodbits_none, [(ti_on_init_item, [(cur_item_set_tableau_material, "tableau_castle_banner_" + suffix, faction)])]]
+
 items = [
 ["no_item", "INVALID ITEM", [("invalid_item", 0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger,
  0, weight(1)|spd_rtng(1)|weapon_length(1)|swing_damage(1, blunt)|thrust_damage(1, blunt), imodbits_none],
@@ -863,6 +867,14 @@ itm_faction_banner("kingdom_c"),
 itm_faction_banner("kingdom_d"),
 itm_faction_banner("kingdom_e"),
 itm_faction_banner("kingdom_f"),
+itm_castle_banner("fac_1", "a"),
+itm_castle_banner("fac_2", "a"),
+itm_castle_banner("fac_3", "a"),
+itm_castle_banner("fac_4", "a"),
+itm_castle_banner("fac_1", "b"),
+itm_castle_banner("fac_2", "b"),
+itm_castle_banner("fac_3", "b"),
+itm_castle_banner("fac_4", "b"),
 
 ["test_horse", "Test Horse", [("giant_horse",0)], itp_type_horse, 0,
  0, hit_points(500)|body_armor(100)|difficulty(0)|horse_speed(400)|horse_maneuver(100)|horse_charge(50)|horse_scale(130), imodbit_spirited],
