@@ -459,6 +459,41 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 
   ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12}"),
   ("pw_welcome", "Welcome adventurer^^Join a faction and fight for control of the castles"),
+  ("pw_editor_welcome", "Press F1 for editing information."),
+  ("pw_editor_info", "-- General editing information^^\
+* Make sure the first few scene props placed are not scripted (start with pw): instance id 0 can't be handled by some scripts.^\
+* Factions are numbered from 0 - 5, with commoners = 0, outlaws = 1, and the 4 castle factions starting from 2.^\
+* Castles are numbered from 0 - 7, and start the mission owned by the corresponding castle faction: for example, the default 'White Faction' starts with castles 1 and 5.^\
+* Factions are enabled for the scene if at least one capture point is placed for one of their starting castles.^\
+^-- Edit scene mode keys^\
+F1 = this information^\
+F2 = scene prop editor value information^\
+F10 = move agent to the positions of all scene props added to the ship collision list when the scene was loaded^\
+F11 = spawn test horse at agent position^\
+F12 = measure distance to the first spr_pw_test_gold"),
+  ("pw_editor_values_info", "Scene prop editor values 1 and 2^^\
+pw_buy_*, pw_stockpile_*:^value 1 = faction + multiplier^value 2 = initial stockpile count^^\
+pw_change_troop_*:^value 1 = faction + multiplier^^\
+pw_door_rotate_*:^value 1 = faction + multiplier^value 2 = initial door state (0 = closed, 1 = open)^^\
+pw_door_teleport_*:^value 1 = faction + multiplier^value 2 = linking id with x^^\
+pw iron mines:^value 1 = initial hit points / 1000^^\
+pw bridges:^value 2 = linking id with x_footing^^\
+pw walls, ladders:^value 2 = linking id with x_build^^\
+pw portcullises, drawbridges:^value 2 = linking id with x_winch^^\
+pw ships:^value 1 = initial ramp position (0 = center, 1 = left, 2 = right)^^\
+pw_castle_capture_point:^value 1 = faction / castle id^^\
+pw_castle_sign:^value 1 = faction / castle id^value 2 = castle name string no (name must not be one used by another castle)^^\
+pw_castle_money_chest:^value 1 = faction / castle id^value 2 = initial gold^^\
+pw_scene_day_time:^value 1 = scene hour of day (0 - 23)^^\
+pw_scene_ambient_sound:^value 1 = sound id offset from snd_fire_loop^value 2 = probability the sound will be played (0 - 100) or 127 = looping^^\
+^The values can be modified in the scene editor panel, scene prop section: the two fields, labelled 'Var No' and 'Var 2 No'. These can each store an integer in the range 0 - 127.^\
+^The scene props with 'value 1 = faction + multiplier' share the same code for storing a combination of faction id / castle id and gold value multiplier in value 1:^\
+0 is the commoner faction, which normally means the prop is not associated with any faction, 1 for outlaws, and 2 - 9 associate the scene prop with a castle (which defaults to the corresponding faction id from 2 - 5).^\
+The other part is a multiple of 10, representing specific gold value multipliers:^\
+0 = 100%, the default value^10 = 20%^20 = 40%^30 = 60%^40 = 80%^50 = 120%^60 = 140%^70 = 160%^80 = 180%^90 = 200%^100 = 350%^110 = 500%^120 = 1000%^\
+These two separate values are combined: for example, 31 = outlaw faction and 60% value, 116 = castle 4 (starts as faction 0 - red faction) and 500% value.^\
+^The scene props with 'value 2 = linking id with x' mean that they are designed to be linked to another scene prop, x representing the first scene prop's name:^\
+On scene load, the props are linked by searching for the nearest prop in the scene of the specified type, with the same value 2, and that hasn't already been linked; so for example, with a teleport door pair on opposite sides of the scene, you could set the value 2 of both to 53 and not use that number for any of the other props of the same type, so they are linked correctly even when not close together, or if someone else adds more props of the same type in between."),
 
   ("name_server_error_code_reg0", "Name server: error code {reg0}."),
   ("name_server_invalid_response", "Name server: invalid response '{reg0}|{reg1}|{reg2}|{s0}'."),

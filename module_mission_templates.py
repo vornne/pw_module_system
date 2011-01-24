@@ -518,6 +518,7 @@ mission_templates = [
 
     (ti_after_mission_start, 0, 0, [],
      [(call_script, "script_setup_ship_collision_props"),
+      (display_message, "str_pw_editor_welcome"),
       ]),
 
     (ti_escape_pressed, 0, 0, [],
@@ -528,6 +529,14 @@ mission_templates = [
      [(store_trigger_param_1, ":answer"),
       (eq, ":answer", 0),
       (finish_mission),
+      ]),
+
+    (0, 0, 0, [(key_clicked, key_f1)],
+     [(call_script, "script_preset_message", "str_pw_editor_info", preset_message_read_object, 0, 0),
+      ]),
+
+    (0, 0, 0, [(key_clicked, key_f2)],
+     [(call_script, "script_preset_message", "str_pw_editor_values_info", preset_message_read_object, 0, 0),
       ]),
 
     (0, 0, 0, [(key_clicked, key_f12)],
