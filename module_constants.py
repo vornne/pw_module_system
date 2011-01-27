@@ -202,6 +202,7 @@ max_distance_to_use                   = 200
 
 seconds_before_removing_dropped_item  = 300
 sell_item_gold_multiplier             = 80
+craft_skill_reward_gold_multiplier    = 100
 
 winch_type_drawbridge                 = 0
 winch_type_portcullis                 = 1

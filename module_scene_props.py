@@ -62,7 +62,7 @@ def spr_buy_item_flags(use_time=1):
   use_time = max(use_time, 1)
   return spr_use_time(use_time)
 
-def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_string=None, tableau=None, resources=[]):
+def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_string=None, tableau=None, resources=[], skill_required=0):
   buy_trigger = (ti_on_scene_prop_cancel_use,
      [(store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":instance_id"),
@@ -80,7 +80,7 @@ def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_strin
   if rotate[2] != 0:
     buy_trigger[1].append((position_rotate_z, pos1, rotate[2]))
   if len(resources) > 0:
-    buy_trigger[1].append((call_script, "script_cf_use_item_stockpile", ":agent_id", ":instance_id", -1, -1, -1, -1))
+    buy_trigger[1].append((call_script, "script_cf_use_item_stockpile", ":agent_id", ":instance_id", -1, -1, -1, -1, -1))
   else:
     buy_trigger[1].append((call_script, "script_cf_buy_item", ":agent_id", ":instance_id"))
   craft_trigger = (ti_on_scene_prop_use, [])
@@ -89,7 +89,7 @@ def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_strin
     craft_trigger[1].extend([
       (store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":instance_id")])
-    operation_list = [call_script, "script_cf_use_item_stockpile", ":agent_id", ":instance_id"]
+    operation_list = [call_script, "script_cf_use_item_stockpile", ":agent_id", ":instance_id", skill_required]
     for resource in resources:
       if type(resource) == type(tuple()):
         for x in range(0, resource[1]):
@@ -98,9 +98,10 @@ def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_strin
         operation_list.append(resource)
       else:
         raise Exception("invalid resource entry", resource)
-    for unused in range(len(operation_list), 8):
+    script_use_item_stockpile_tuple_size = 9
+    for unused in range(len(operation_list), script_use_item_stockpile_tuple_size):
       operation_list.append(-1)
-    craft_trigger[1].append(tuple(operation_list[:8]))
+    craft_trigger[1].append(tuple(operation_list[:script_use_item_stockpile_tuple_size]))
   return [init_trigger, buy_trigger, craft_trigger]
 
 def spr_gain_gold_triggers(gold_value, use_string="str_collect_reg1_gold"):
@@ -1851,8 +1852,8 @@ scene_props = [
   ("pw_buy_leather_boots",spr_buy_item_flags(6),"leather_boots_a","bo_armor_foot", spr_buy_item_triggers("itm_leather_boots")),
   ("pw_buy_scale_gauntlets",spr_buy_item_flags(13),"scale_gauntlets_b_L","bo_armor_hand", spr_buy_item_triggers("itm_scale_gauntlets", resources=[("itm_iron_bar", 3)])),
   ("pw_buy_tribal_warrior_outfit",spr_buy_item_flags(7),"tribal_warrior_outfit_a_new","bo_armor_body", spr_buy_item_triggers("itm_tribal_warrior_outfit", resources=[("itm_stick", 2), ("itm_iron_bar", 4)])),
-  ("pw_buy_falchion",spr_buy_item_flags(4),"falchion_new","bo_weapon", spr_buy_item_triggers("itm_falchion", resources=["itm_stick", "itm_iron_bar"])),
-  ("pw_buy_hunting_bow",spr_buy_item_flags(2),"hunting_bow","bo_weapon", spr_buy_item_triggers("itm_hunting_bow", resources=["itm_branch"])),
+  ("pw_buy_falchion",spr_buy_item_flags(4),"falchion_new","bo_weapon", spr_buy_item_triggers("itm_falchion", resources=["itm_stick", "itm_iron_bar"], skill_required=2)),
+  ("pw_buy_hunting_bow",spr_buy_item_flags(2),"hunting_bow","bo_weapon", spr_buy_item_triggers("itm_hunting_bow", resources=["itm_branch"], skill_required=1)),
   ("pw_buy_arrows",spr_buy_item_flags(2),"arrow","bo_weapon_small", spr_buy_item_triggers("itm_arrows")),
   ("pw_buy_cart_horse",spr_buy_item_flags(1),"wood_b","bo_wood_b", spr_buy_item_triggers("itm_cart_horse")),
   ("pw_buy_woodcutter_axe",spr_buy_item_flags(8),"pw_wood_axe","bo_weapon", spr_buy_item_triggers("itm_woodcutter_axe")),
