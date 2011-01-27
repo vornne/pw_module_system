@@ -207,6 +207,8 @@ slot_mission_data_castle_owner_faction_begin    = 0
 slot_mission_data_castle_owner_faction_end      = 8
 slot_mission_data_castle_is_active_begin        = 10
 slot_mission_data_castle_is_active_end          = 18
+slot_mission_data_castle_name_string_begin      = 20
+slot_mission_data_castle_name_string_end        = 28
 slot_mission_data_faction_to_change_name_of     = 100
 
 slot_last_chat_message_event          = 0

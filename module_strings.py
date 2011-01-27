@@ -478,6 +478,12 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("castle_name_1", "Vornneston Castle"),
   ("castle_name_2", "Horrible Dump"),
   ("castle_name_3", "Far Away Fairyland"),
+  ("castle_name_4", "Hooligan's Hideout"),
+  ("castle_name_5", "The Fish Market"),
+  ("castle_name_6", "Generic Castle 6"),
+  ("castle_name_7", "Generic Castle 7"),
+  ("castle_name_8", "Generic Castle 8"),
+  ("castle_name_9", "Generic Castle 9"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]

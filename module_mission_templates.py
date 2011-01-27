@@ -498,6 +498,7 @@ mission_templates = [
      [(server_set_add_to_game_servers_list, 0),
       (assign, "$g_edit_scene", 1),
       (call_script, "script_scene_set_day_time"),
+      (call_script, "script_setup_castle_names"),
       ]),
 
     (ti_after_mission_start, 0, 0, [],
