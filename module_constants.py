@@ -209,6 +209,8 @@ slot_mission_data_castle_is_active_begin        = 10
 slot_mission_data_castle_is_active_end          = 18
 slot_mission_data_castle_name_string_begin      = 20
 slot_mission_data_castle_name_string_end        = 28
+slot_mission_data_castle_money_chest_begin      = 30
+slot_mission_data_castle_money_chest_end        = 38
 slot_mission_data_faction_to_change_name_of     = 100
 
 slot_last_chat_message_event          = 0
@@ -264,6 +266,7 @@ max_distance_to_use                   = 200
 
 seconds_before_removing_dropped_item  = 300
 sell_item_gold_multiplier             = 80
+castle_tax_gold_multiplier            = 10
 craft_skill_reward_gold_multiplier    = 100
 base_export_multiplier                = 100
 

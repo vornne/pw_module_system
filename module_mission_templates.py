@@ -159,6 +159,7 @@ mission_templates = [
       (multiplayer_is_server),
       (call_script, "script_setup_owner_faction_for_castles"),
       (call_script, "script_setup_factions_for_scene"),
+      (call_script, "script_setup_castle_money_chests"),
       (call_script, "script_setup_all_linked_scene_props"),
       ]),
 

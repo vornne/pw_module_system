@@ -361,6 +361,17 @@ def spr_build_wall_triggers():
 def spr_capture_castle_triggers():
   return [spr_call_script_use_trigger("script_cf_capture_castle")]
 
+def spr_castle_money_chest_triggers(use_string="str_gold_reg2"):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count_update_time, -1),
+      (prop_instance_get_variation_id_2, ":initial_gold_value", ":instance_id"),
+      (val_mul, ":initial_gold_value", 1000),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count, ":initial_gold_value"),
+      ]),
+    (ti_on_scene_prop_use, [])]
+
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
   ("inventory",sokf_type_container|sokf_place_at_origin,"package","bobaggage", []),
@@ -2299,6 +2310,7 @@ scene_props = [
 
   ("pw_castle_sign",0,"tree_house_guard_a","bo_tree_house_guard_a", [(ti_on_scene_prop_use, [])]),
   ("pw_castle_capture_point",spr_use_time(60),"pw_castle_flag_post","bo_pw_castle_flag_post", spr_capture_castle_triggers()),
+  ("pw_castle_money_chest",0,"pw_chest_b","bo_pw_chest_b", spr_castle_money_chest_triggers()),
 
   ("pw_scene_day_time",sokf_invisible,"barrier_box","0", []),
 

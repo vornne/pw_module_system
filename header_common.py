@@ -37,6 +37,7 @@ client_event_admin_action                       = 108
 client_event_chat_message_begin                 = 110
 client_event_chat_message_end                   = 120
 client_event_chat_message_type                  = 120
+client_event_transfer_gold                      = 121
 client_event_request_stack_count                = 122
 client_event_drop_money_bag                     = 123
 client_event_change_faction_banner              = 124
