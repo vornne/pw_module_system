@@ -112,7 +112,7 @@ troops = [
    str_15|agi_14|int_4|cha_4|level(1),wpex(100,120,110,10,30,10),knows_ironflesh_4|knows_power_strike_4|knows_athletics_2|knows_riding_4,default_face_1,default_face_2],
   ["engineer","Engineer","an engineer",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_felt_hat_b","itm_common_hood","itm_pelt_coat","itm_leather_apron","itm_hunter_boots","itm_nomad_boots","itm_old_knife"],
-   str_10|agi_12|int_4|cha_4|level(1),wpex(90,80,100,50,80,50),knows_ironflesh_2|knows_power_strike_2|knows_athletics_2|knows_engineer_5|knows_riding_2,default_face_1,default_face_2],
+   str_10|agi_12|int_4|cha_4|level(1),wpex(90,80,100,50,80,50),knows_ironflesh_2|knows_power_strike_2|knows_athletics_2|knows_engineer_5|knows_riding_2|knows_looting_1,default_face_1,default_face_2],
   ["doctor","Doctor","a doctor",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_fur_hat","itm_headcloth","itm_fur_coat","itm_leather_vest","itm_ankle_boots","itm_woolen_hose"],
    str_10|agi_10|int_4|cha_4|level(1),wpex(60,50,50,10,20,20),knows_athletics_2|knows_wound_treatment_5|knows_riding_1,default_face_1,default_face_2],
@@ -121,10 +121,10 @@ troops = [
    str_15|agi_14|int_4|cha_4|level(1),wpex(110,110,110,50,50,50),knows_leadership_1|knows_ironflesh_5|knows_power_strike_3|knows_athletics_2|knows_riding_5,default_face_1,default_face_2],
   ["ruffian","Ruffian","a ruffian",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_head_wrappings","itm_nomad_vest","itm_nomad_armor","itm_wrapping_boots","itm_club"],
-   str_15|agi_12|int_4|cha_4|level(1),wpex(80,80,80,50,50,80),knows_ironflesh_2|knows_power_strike_2|knows_athletics_3|knows_riding_1,default_face_1,default_face_2],
+   str_15|agi_12|int_4|cha_4|level(1),wpex(80,80,80,50,50,80),knows_ironflesh_2|knows_power_strike_2|knows_athletics_3|knows_riding_1|knows_looting_2,default_face_1,default_face_2],
   ["brigand","Brigand","a brigand",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_nomad_cap","itm_khergit_armor","itm_nomad_vest","itm_wrapping_boots","itm_hunter_boots","itm_old_knife","itm_blunt_falchion"],
-   str_12|agi_12|int_4|cha_4|level(1),wpex(70,60,70,100,80,80),knows_ironflesh_2|knows_power_draw_2|knows_athletics_3|knows_riding_1,default_face_1,default_face_2],
+   str_12|agi_12|int_4|cha_4|level(1),wpex(70,60,70,100,80,80),knows_ironflesh_2|knows_power_draw_2|knows_athletics_3|knows_riding_1|knows_looting_4,default_face_1,default_face_2],
 
   ["playable_troops_end","playable_troops_end","playable_troops_end",0,0,0,0,[],0,0,0,0,0],
 

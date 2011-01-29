@@ -496,6 +496,7 @@ pw_skills = [
   "engineer",
   "wound_treatment",
   "labouring",
+  "looting",
   ]
 
 def get_skill_name(skill):

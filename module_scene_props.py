@@ -361,16 +361,31 @@ def spr_build_wall_triggers():
 def spr_capture_castle_triggers():
   return [spr_call_script_use_trigger("script_cf_capture_castle")]
 
-def spr_castle_money_chest_triggers(use_string="str_gold_reg2"):
+def spr_chest_flags(use_time=1):
+  return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached|spr_use_time(max(use_time, 1))
+
+def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count_update_time, -1),
       (prop_instance_get_variation_id_2, ":initial_gold_value", ":instance_id"),
       (val_mul, ":initial_gold_value", 1000),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count, ":initial_gold_value"),
       ]),
-    (ti_on_scene_prop_use, [])]
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_chest", ":instance_id", ":hit_damage", hit_points),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_cancel_use,
+     [(store_trigger_param_1, ":agent_id"),
+      (store_trigger_param_2, ":instance_id"),
+      (call_script, "script_cf_pick_lock", ":agent_id", ":instance_id", 1),
+      ]),
+    spr_call_script_use_trigger("script_cf_pick_lock", 0)]
 
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
@@ -2206,6 +2221,7 @@ scene_props = [
   ("pw_buy_woodcutter_axe",spr_buy_item_flags(8),"pw_wood_axe","bo_weapon", spr_buy_item_triggers("itm_woodcutter_axe", resources=["itm_iron_bar", "itm_wood_pole"], skill_required=2)),
   ("pw_buy_mining_pick",spr_buy_item_flags(10),"pw_mining_pick","bo_weapon", spr_buy_item_triggers("itm_mining_pick", resources=["itm_iron_bar_long"], skill_required=3)),
   ("pw_buy_repair_hammer",spr_buy_item_flags(7),"pw_repair_hammer","bo_weapon_small", spr_buy_item_triggers("itm_repair_hammer", resources=["itm_iron_bar", "itm_stick"], skill_required=2)),
+  ("pw_buy_lock_pick",spr_buy_item_flags(24),"pw_lock_pick","bo_weapon_small", spr_buy_item_triggers("itm_lock_pick", resources=["itm_iron_bar"], skill_required=3)),
   ("pw_buy_surgeon_scalpel",spr_buy_item_flags(30),"dagger_b_scabbard","bo_weapon_small", spr_buy_item_triggers("itm_surgeon_scalpel", resources=["itm_iron_bar"], skill_required=4)),
   ("pw_buy_poisoned_dagger",spr_buy_item_flags(15),"scab_dagger","bo_weapon_small", spr_buy_item_triggers("itm_poisoned_dagger")),
   ("pw_buy_banner",spr_use_time(10),"pw_banner_pole","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01")),
@@ -2310,7 +2326,7 @@ scene_props = [
 
   ("pw_castle_sign",0,"tree_house_guard_a","bo_tree_house_guard_a", [(ti_on_scene_prop_use, [])]),
   ("pw_castle_capture_point",spr_use_time(60),"pw_castle_flag_post","bo_pw_castle_flag_post", spr_capture_castle_triggers()),
-  ("pw_castle_money_chest",0,"pw_chest_b","bo_pw_chest_b", spr_castle_money_chest_triggers()),
+  ("pw_castle_money_chest",spr_chest_flags(30),"pw_chest_b","bo_pw_chest_b", spr_castle_money_chest_triggers(hit_points=3000)),
 
   ("pw_scene_day_time",sokf_invisible,"barrier_box","0", []),
 

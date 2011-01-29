@@ -95,6 +95,7 @@ slot_scene_prop_state                 = 31
 slot_scene_prop_state_time            = 32
 slot_scene_prop_stack_count           = 33
 slot_scene_prop_stack_count_update_time = 34
+slot_scene_prop_unlocked              = 35
 
 scene_prop_state_active               = 0
 scene_prop_state_destroyed            = 1
@@ -125,6 +126,7 @@ item_class_wood_cutting               = 2
 item_class_wood                       = 3
 item_class_mining                     = 4
 item_class_iron                       = 5
+item_class_lock_pick                  = 6
 
 ########################################################
 ##  FACTION SLOTS          #############################
