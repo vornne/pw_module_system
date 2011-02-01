@@ -54,7 +54,8 @@ def init_heraldic_item(tableau):
    [(store_trigger_param_1, ":agent_id"),
     (store_trigger_param_2, ":troop_id"),
     (call_script, "script_item_set_banner", tableau, ":agent_id", ":troop_id"),
-    ])]
+    ]),
+  (item_class, item_class_heraldic)]
 
 def itm_faction_banner(banner_id):
   return ["pw_banner_pole_" + banner_id, "Banner", [("pw_banner_pole_" + banner_id,0)], itp_type_polearm|itp_two_handed|itp_primary|itp_wooden_parry, itc_parry_polearm|itcf_carry_spear,

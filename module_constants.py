@@ -127,6 +127,7 @@ item_class_wood                       = 3
 item_class_mining                     = 4
 item_class_iron                       = 5
 item_class_lock_pick                  = 6
+item_class_heraldic                   = 7
 
 ########################################################
 ##  FACTION SLOTS          #############################
