@@ -104,6 +104,9 @@ def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_strin
     craft_trigger[1].append(tuple(operation_list[:script_use_item_stockpile_tuple_size]))
   return [init_trigger, buy_trigger, craft_trigger]
 
+def spr_export_item_triggers(item_id, use_string="str_export"):
+  return [spr_item_init_trigger(item_id, use_string), spr_call_script_use_trigger("script_cf_export_item")]
+
 def spr_gain_gold_triggers(gold_value, use_string="str_collect_reg1_gold"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -1861,6 +1864,14 @@ scene_props = [
   ("pw_stockpile_wood_block",spr_use_time(1),"wood_heap_a","bo_wood_heap_a", spr_stockpile_resource_triggers("itm_wood_block")),
   ("pw_stockpile_wood_branch",spr_use_time(1),"wood_heap_b","bo_wood_heap_b", spr_stockpile_resource_triggers("itm_branch")),
   ("pw_stockpile_iron_bar",spr_use_time(1),"pw_chest_c","bo_pw_chest_c", spr_stockpile_resource_triggers("itm_iron_bar")),
+  ("pw_export_wood_stick",spr_use_time(2),"chest_simple","bo_chest_simple", spr_export_item_triggers("itm_stick")),
+  ("pw_export_wood_branch",spr_use_time(5),"wood_heap_b","bo_wood_heap_b", spr_export_item_triggers("itm_branch")),
+  ("pw_export_wood_pole",spr_use_time(6),"pw_wood_pole","bo_weapon_big", spr_export_item_triggers("itm_wood_pole")),
+  ("pw_export_wood_block",spr_use_time(5),"wood_heap_a","bo_wood_heap_a", spr_export_item_triggers("itm_wood_block")),
+  ("pw_export_board",spr_use_time(6),"pw_board","bo_weapon_small", spr_export_item_triggers("itm_board")),
+  ("pw_export_iron_bar",spr_use_time(10),"pw_iron_bar","bo_weapon_small", spr_export_item_triggers("itm_iron_bar")),
+  ("pw_export_iron_bar_med",spr_use_time(10),"pw_iron_bar_med","bo_weapon_small", spr_export_item_triggers("itm_iron_bar_med")),
+  ("pw_export_iron_bar_long",spr_use_time(10),"pw_iron_bar_long","bo_weapon_small", spr_export_item_triggers("itm_iron_bar_long")),
   ("pw_process_wood",spr_use_time(20),"bench_tavern_b","bo_bench_tavern_b", spr_process_resource_triggers("script_cf_process_wood", use_string="str_process_wood")),
   ("pw_process_iron",spr_use_time(30),"smithy_forge","bo_smithy_forge", spr_process_resource_triggers("script_cf_process_iron", use_string="str_process_iron")),
 

@@ -2771,6 +2771,19 @@ scripts = [
     (call_script, "script_reward_gold", ":player_id", ":gold_value"),
     ]),
 
+  ("cf_export_item",
+   [(store_script_param, ":agent_id", 1),
+    (store_script_param, ":instance_id", 2),
+
+    (agent_get_player_id, ":player_id", ":agent_id"),
+    (player_is_active, ":player_id"),
+    (scene_prop_get_slot, ":item_id", ":instance_id", slot_scene_prop_item_id),
+    (is_between, ":item_id", all_items_begin, all_items_end),
+    (call_script, "script_cf_agent_consume_item", ":agent_id", ":item_id", 1),
+    (call_script, "script_scene_prop_get_gold_value", ":instance_id", ":item_id", base_export_multiplier),
+    (call_script, "script_reward_gold", ":player_id", reg0),
+    ]),
+
   ("cf_gain_gold",
    [(store_script_param, ":agent_id", 1),
     (store_script_param, ":instance_id", 2),
