@@ -486,7 +486,8 @@ mission_templates = [
       ]),
 
     (0, 0, ti_once, [(neg|multiplayer_is_server)],
-     [(call_script, "script_preset_message", "str_pw_welcome", preset_message_read_object, 0, 0),
+     [(str_store_welcome_message, s10),
+      (call_script, "script_preset_message", "str_pw_welcome", preset_message_read_object, 0, 0),
       ]),
 
     (0, 0, 4.0, [(neg|multiplayer_is_server)],

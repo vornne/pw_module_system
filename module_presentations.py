@@ -1008,6 +1008,12 @@ presentations = [
       (overlay_set_size, reg0, pos2),
       (val_add, ":cur_y", escape_menu_item_height),
 
+      (create_button_overlay, reg0, "str_show_info", 0),
+      (assign, "$g_presentation_obj_escape_menu_show_info", reg0),
+      (overlay_set_color, reg0, 0xFFFFFF),
+      (overlay_set_size, reg0, pos2),
+      (val_add, ":cur_y", escape_menu_item_height),
+
       (create_button_overlay, reg0, "str_request_poll", 0),
       (assign, "$g_presentation_obj_escape_menu_request_poll", reg0),
       (overlay_set_color, reg0, 0xFFFFFF),
@@ -1077,6 +1083,10 @@ presentations = [
 
       (val_sub, ":cur_y", escape_menu_item_height),
       (position_set_y, pos1, ":cur_y"),
+      (overlay_set_position, "$g_presentation_obj_escape_menu_show_info", pos1),
+
+      (val_sub, ":cur_y", escape_menu_item_height),
+      (position_set_y, pos1, ":cur_y"),
       (overlay_set_position, "$g_presentation_obj_escape_menu_request_poll", pos1),
 
       (try_begin),
@@ -1121,6 +1131,11 @@ presentations = [
         (eq, ":object", "$g_presentation_obj_escape_menu_show_rules"),
         (presentation_set_duration, 0),
         (multiplayer_send_message_to_server, client_event_request_game_rules),
+      (else_try),
+        (eq, ":object", "$g_presentation_obj_escape_menu_show_info"),
+        (presentation_set_duration, 0),
+        (str_store_welcome_message, s10),
+        (call_script, "script_preset_message", "str_pw_welcome", preset_message_read_object, 0, 0),
       (else_try),
         (eq, ":object", "$g_presentation_obj_escape_menu_request_poll"),
         (presentation_set_duration, 0),

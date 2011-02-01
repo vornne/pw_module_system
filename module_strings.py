@@ -244,6 +244,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("change_options", "Change Options"),
   ("change_controls", "Change Controls"),
   ("show_rules", "Show Game Rules"),
+  ("show_info", "Show Game Information"),
   ("admin_panel", "Administrator Panel"),
   ("admin_tools", "Administrator Tools"),
   ("kick_player", "Kick a player"),
@@ -458,7 +459,28 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("change_faction_name", "Change the name of your faction:"),
 
   ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12}"),
-  ("pw_welcome", "Welcome adventurer^^Join a faction and fight for control of the castles"),
+  ("pw_welcome", "{s10}^^\
+General Information^^\
+When you first join the game, you start in the commoners faction as a peasant; to train as another troop type and join a faction at the same time, go to one of the castles and use a training station. \
+You can only join another faction as a commoner, or to become a commoner. The outlaws faction can be joined by training as one, but you will also get transferred to it after multiple team kills. \
+Troop type, faction, gold, and outlaw rating are saved every few seconds, and if you get disconnected from the game, when you rejoin your previous stats will be given back, minus some gold. \
+For a certain period after a player spawns they will be invulnerable to attack, and also unable to attack others; when this period is over the default weapons will be given.^^\
+To buy items from stockpiles, click the use button rather than holding it down; if you are holding that exact item in your hand, it will be sold rather than buying a new one. When bought, items are spawned right on top of the stockpile, so you might have to aim around until the 'Equip' overlay shows. \
+Holding down the use key until the bar finishes is for crafting the item: you need to have the required engineering skill and resources equipped. If the item stockpile has no 'Stack count' line in the stats overlay, it is not craftable, and an unlimited amount of items can be bought at it.^^\
+Trees can be cut down for wood and mines hit for iron with the required labouring skill and tools; trees regrow after a while, but once mines are gone they will not come back. \
+These resources can be refined with engineering skill at stations in the castles - the carpenter's bench and the forge - and then used for crafting weapons or other items. \
+Certain destructable items like doors or bridges can be repaired with engineering skill, tools, and resources like wood (of which any wood item will do, though items can have different resource values).^^\
+To sail a ship requires two players (or one player moving around a lot): using the up and down arrow keys near the main mast will change the forward or backward movement; using the left and right arrow keys near the rudder will steer the ship, as long as the steering player doesn't move away; up or down keys at the rudder will center it. \
+When the ramp is resting on the deck, using will move it away from the player, extending over the side, then using once more will move it back to the center; if the ship is not moving the ramp will angle down near ground level. The up arrow key can be used to climb up the side of the ship from close beside the middle section of the hull. \
+Ships will be damaged when colliding with the ground, large objects in the water, or other ships, but they can be repaired with wood by engineers; otherwise, after enough damage they will sink. \
+If you stay under water for too long you will drown - more quickly the faster you move.^^\
+The money bag window (which is toggled with the native inventory key) can be used to drop money bag items, or access money chests. The value of the last money bag picked up is used when dropping one or pressing attack to get the money, rather than the particular bag you have wielded (due to game engine limitations). \
+To deposit gold in a chest you must be near it, and to withdraw you also either need to be the lord of the associated faction, break the chest open with a weapon, or use a lock pick to open it (looting skill makes success more likely). To tell if a money chest is unlocked, press and release the use button: if you hear a click sound it is locked, but if no sound it is unlocked. \
+When you die, a bag with a small percentage of your money and part of the value of your armor will be dropped, along with all your equipped items.^^\
+Troops with the wound treatment skill can heal other badly wounded players by hitting them with the surgeon's scalpel, up to a certain percentage of full health; while resting on beds can be used by less wounded troops to heal fully - each type of bed can have a different minimum health required. \
+Players hit with a poisoned dagger will die slowly over time, unless a doctor treats them with a healing herb leaf.^^\
+Enemy castles can be captured for your faction by using the flag pole (probably on top of the castle keep) while holding a your faction's banner item. The banner and name of a faction can be changed by the lord; when the banner is changed, armor on players of that faction will be updated, but items will not.^^\
+To shout with the local chat messages, hold down right shift while pressing enter."),
   ("pw_editor_welcome", "Press F1 for editing information."),
   ("pw_editor_info", "-- General editing information^^\
 * Make sure the first few scene props placed are not scripted (start with pw): instance id 0 can't be handled by some scripts.^\
