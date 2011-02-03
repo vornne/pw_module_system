@@ -357,10 +357,9 @@ def find_object(objects,object_id):
   result = -1
   num_objects = len(objects)
   i_object = 0
-  object_id_lowercase = object_id.lower()
   while (i_object < num_objects) and (result == -1):
     object = objects[i_object]
-    if (object[0].lower() == object_id_lowercase):
+    if (object[0] == object_id):
       result = i_object
     i_object += 1
   return result
