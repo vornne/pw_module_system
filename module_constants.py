@@ -43,6 +43,11 @@ slot_player_equip_end                 = 29
 slot_agent_horse_last_rider           = 0
 slot_agent_drowning_count             = 1
 
+slot_agent_money_bag_1_value          = 10
+slot_agent_money_bag_2_value          = 11
+slot_agent_money_bag_3_value          = 12
+slot_agent_money_bag_4_value          = 13
+
 ########################################################
 ##  SCENE PROP SLOTS       #############################
 ########################################################

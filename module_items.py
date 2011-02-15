@@ -244,6 +244,9 @@ items = [
 ["repair_hammer", "Repair Hammer", [("pw_repair_hammer",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_bow_back,
  634, weight(3)|spd_rtng(92)|weapon_length(120)|swing_damage(5,blunt)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_repair)]],
 
+["money_bag", "Money Bag", [("pw_money_bag",0)], itp_type_one_handed_wpn|itp_primary, itcf_carry_quiver_right_vertical|itcf_thrust_onehanded,
+ 0, weight(1)|spd_rtng(80), imodbits_none, [(ti_on_weapon_attack, [(store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_money_bag_item", ":agent_id")])]],
+
 itm_faction_banner("a01"),
 itm_faction_banner("a02"),
 itm_faction_banner("a03"),

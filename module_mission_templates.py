@@ -198,6 +198,20 @@ mission_templates = [
       (call_script, "script_check_spawn_bots", ":dead_agent_id"),
       ]),
 
+    (ti_on_item_picked_up, 0, 0, [],
+     [(store_trigger_param_1, ":agent_id"),
+      (store_trigger_param_2, ":item_id"),
+      (store_trigger_param_3, ":instance_id"),
+      (call_script, "script_check_on_item_picked_up", ":agent_id", ":item_id", ":instance_id"),
+      ]),
+
+    (ti_on_item_dropped, 0, 0, [],
+     [(store_trigger_param_1, ":agent_id"),
+      (store_trigger_param_2, ":item_id"),
+      (store_trigger_param_3, ":instance_id"),
+      (call_script, "script_check_on_item_dropped", ":agent_id", ":item_id", ":instance_id", 0),
+      ]),
+
     (ti_on_agent_mount, 0, 0, [],
      [(store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":horse_agent_id"),

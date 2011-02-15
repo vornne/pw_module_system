@@ -342,9 +342,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("export", "Export"),
   ("build", "Build"),
   ("s0__s1_", "{!}{s0} ({s1})"),
-  ("drop_money_bag_containing", "Drop money bag containing:"),
-  ("pick_up_money_bag", "Pick up the nearest money bag"),
-  ("no_money_bag_nearby", "There are no money bags nearby."),
+  ("drop_money_bag", "Drop money bag"),
   ("buy_banner_faction", "Buy a banner for the {s1}"),
   ("stack_count_reg1_s0", "Stack count: {reg1}^{s0}"),
 
