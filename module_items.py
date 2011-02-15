@@ -244,6 +244,16 @@ items = [
 ["repair_hammer", "Repair Hammer", [("pw_repair_hammer",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_bow_back,
  634, weight(3)|spd_rtng(92)|weapon_length(120)|swing_damage(5,blunt)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_repair)]],
 
+["surgeon_scalpel", "Surgeon's Scalpel", [("dagger_b",0),("dagger_b_scabbard",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_thrust_onehanded|itcf_carry_dagger_front_left|itcf_show_holster_when_drawn,
+ 7560, weight(0.75)|difficulty(0)|spd_rtng(50)|weapon_length(36)|thrust_damage(15, pierce), imodbits_sword],
+["herb_a", "Healing Herb", [("pw_herb_a",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_thrust_onehanded|itcf_carry_dagger_front_left,
+ 240, weight(0.25)|difficulty(0)|spd_rtng(50)|weapon_length(60)|thrust_damage(1, pierce), imodbits_none],
+
+["dagger", "Dagger", [("dagger",0),("scab_dagger",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_left|itcf_show_holster_when_drawn,
+ 533, weight(0.75)|difficulty(0)|spd_rtng(105)|weapon_length(47)|swing_damage(18,cut)|thrust_damage(24,pierce), imodbits_sword],
+["poisoned_dagger", "Poisoned Dagger", [("pw_dagger_poison",0),("scab_dagger",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_left|itcf_show_holster_when_drawn,
+ 1570, weight(0.75)|difficulty(0)|spd_rtng(105)|weapon_length(47)|swing_damage(18,cut)|thrust_damage(24,pierce), imodbits_sword],
+
 ["money_bag", "Money Bag", [("pw_money_bag",0)], itp_type_one_handed_wpn|itp_primary, itcf_carry_quiver_right_vertical|itcf_thrust_onehanded,
  0, weight(1)|spd_rtng(80), imodbits_none, [(ti_on_weapon_attack, [(store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_money_bag_item", ":agent_id")])]],
 

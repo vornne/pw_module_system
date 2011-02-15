@@ -42,6 +42,8 @@ slot_player_equip_end                 = 29
 
 slot_agent_horse_last_rider           = 0
 slot_agent_drowning_count             = 1
+slot_agent_poison_amount              = 2
+slot_agent_poisoner_agent_id          = 3
 
 slot_agent_money_bag_1_value          = 10
 slot_agent_money_bag_2_value          = 11
@@ -193,6 +195,7 @@ spawn_invulnerable_time               = 10
 loop_player_check_interval            = 5
 loop_player_check_outlaw_interval     = 60
 loop_horse_check_interval             = 30
+loop_health_check_interval            = 15
 stack_count_check_interval            = 5
 
 max_distance_to_play_sound            = 10000
@@ -248,6 +251,9 @@ all_items_end = "itm_all_items_end"
 
 wielded_items_begin = "itm_club"
 wielded_items_end = "itm_all_items_end"
+
+scripted_items_begin = "itm_surgeon_scalpel"
+scripted_items_end = "itm_money_bag"
 
 playable_troops_begin = "trp_peasant"
 playable_troops_end = "trp_playable_troops_end"
