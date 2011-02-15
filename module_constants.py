@@ -217,6 +217,9 @@ slot_ship_array_begin                 = 1
 slot_ship_array_collision_props_count = 100
 slot_ship_array_collision_props_begin = 101
 
+slot_removed_plants_count             = 0
+slot_removed_plants_begin             = 1
+
 ########################################################
 ##  TEAM SLOTS             #############################
 ########################################################
@@ -267,7 +270,6 @@ repairable_resource_required          = 4
 repairable_repaired                   = 5
 
 destroy_scene_prop_hit_points         = 200
-fell_tree_hit_points                  = 500
 sink_ship_hit_points                  = 500
 
 ship_station_not_on_ship              = 0

@@ -135,4 +135,5 @@ troops = [
   ["temp_array","temp_array","temp_array",0,0,0,0,[],0,0,0,0,0],
   ["last_chat_message","-","-",0,0,0,0,[],0,0,0,0,0],
   ["ship_array","ship_array","ship_array",0,0,0,0,[],0,0,0,0,0],
+  ["removed_scene_props","removed_scene_props","removed_scene_props",0,0,0,0,[],0,0,0,0,0],
 ]
