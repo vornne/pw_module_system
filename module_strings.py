@@ -396,6 +396,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("winch_drop", "Drop"),
   ("cut_down", "Cut down"),
   ("mine", "Mine"),
+  ("harvest", "Harvest"),
   ("process_wood", "Process wood"),
   ("process_iron", "Process iron"),
   ("stockpile", "Stockpile"),
