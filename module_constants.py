@@ -346,3 +346,6 @@ banner_items_end = "itm_test_horse"
 commands_module_system_names_begin = "str_bot_count"
 
 admin_action_log_strings_begin = "str_log_admin_kick"
+
+ambient_sounds_begin = "snd_fire_loop"
+ambient_sounds_end = "snd_sounds_end"

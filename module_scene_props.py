@@ -2329,6 +2329,7 @@ scene_props = [
   ("pw_castle_money_chest",spr_chest_flags(30),"pw_chest_b","bo_pw_chest_b", spr_castle_money_chest_triggers(hit_points=3000)),
 
   ("pw_scene_day_time",sokf_invisible,"barrier_box","0", []),
+  ("pw_scene_ambient_sound",sokf_invisible,"barrier_cone","0", []),
 
   ("pw_buy_test_horse",spr_use_time(1),"wood_a","bo_wood_a", spr_buy_item_triggers("itm_test_horse")),
 

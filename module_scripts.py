@@ -10,6 +10,7 @@ from header_items import *
 from header_triggers import *
 from header_terrain_types import *
 from header_music import *
+from header_sounds import *
 
 
 ####################################################################################################################
@@ -5903,6 +5904,35 @@ scripts = [
       (assign, ":day_time", 12),
     (try_end),
     (scene_set_day_time, ":day_time"),
+    ]),
+
+  ("cf_play_scene_ambient_sound",
+   [(store_script_param, ":instance_id", 1),
+
+    (assign, ":fail", 1),
+    (prop_instance_get_variation_id, ":sound_id", ":instance_id"),
+    (val_add, ":sound_id", ambient_sounds_begin),
+    (prop_instance_get_variation_id_2, ":probability", ":instance_id"),
+    (try_begin),
+      (ge, ":sound_id", ambient_sounds_end),
+    (else_try),
+      (eq, ":probability", 127),
+      (try_begin),
+        (scene_prop_slot_eq, ":instance_id", slot_scene_prop_state, scene_prop_state_active),
+        (play_sound, ":sound_id", sf_looping),
+        (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_destroyed),
+      (try_end),
+    (else_try),
+      (store_random_in_range, ":random", 0, 100),
+      (lt, ":random", ":probability"),
+      (mission_cam_get_position, pos1),
+      (prop_instance_get_position, pos2, ":instance_id"),
+      (get_distance_between_positions, ":distance", pos1, pos2),
+      (lt, ":distance", max_distance_to_play_sound),
+      (play_sound_at_position, ":sound_id", pos2, sf_vol_15|sf_priority_7),
+      (assign, ":fail", 0),
+    (try_end),
+    (eq, ":fail", 0),
     ]),
 
   ("check_spawn_bots",
