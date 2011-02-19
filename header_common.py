@@ -24,6 +24,7 @@ server_event_return_server_name                 = 16
 server_event_return_password                    = 17
 server_event_set_player_score_kill_death        = 18
 server_event_show_poll                          = 19
+server_event_set_overflow_gold                  = 20
 
 client_event_poll_vote                          = 100
 client_event_request_poll                       = 101
@@ -179,6 +180,7 @@ admin_action_get_invisible                      = 8
 admin_action_get_horse                          = 9
 admin_action_remove_horses                      = 10
 
+max_possible_gold                               = 1000000000
 max_correctly_displayed_gold                    = 131071
 max_correctly_displayed_hp                      = 15000
 

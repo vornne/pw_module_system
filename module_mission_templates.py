@@ -433,6 +433,7 @@ mission_templates = [
         (gt, "$g_respawn_start_time", 0),
         (start_presentation, "prsnt_respawn_time_counter"),
       (try_end),
+      (start_presentation, "prsnt_gold"),
       ]),
 
     (0, 0, 0, [(game_key_clicked, gk_character_window),(call_script, "script_cf_no_input_presentation_active")],
