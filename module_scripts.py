@@ -10,7 +10,6 @@ from header_items import *
 from header_triggers import *
 from header_terrain_types import *
 from header_music import *
-from ID_animations import *
 
 
 ####################################################################################################################
@@ -85,7 +84,7 @@ scripts = [
     (assign, ":camera_distance", 380),
     (assign, ":camera_yaw", -15),
     (assign, ":camera_pitch", -18),
-    (assign, ":animation", anim_stand_man),
+    (assign, ":animation", "anim_stand_man"),
 
     (position_set_z, pos5, ":cam_height"),
     (position_rotate_x, pos5, -90),

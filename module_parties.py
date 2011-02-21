@@ -1,9 +1,5 @@
 from header_common import *
 from header_parties import *
-from ID_troops import *
-from ID_factions import *
-from ID_party_templates import *
-from ID_map_icons import *
 
 ####################################################################################################################
 #  Each party record contains the following fields:
@@ -28,5 +24,5 @@ from ID_map_icons import *
 no_menu = 0
 
 parties = [
-  ("main_party","Main Party",pf_limit_members,no_menu,pt_none,0,0,ai_bhvr_hold,0,(17, 52.5),[(trp_player,1,0)]),
+  ("main_party","Main Party",pf_limit_members,no_menu,"pt_none",0,0,ai_bhvr_hold,0,(17, 52.5),[("trp_player",1,0)]),
 ]

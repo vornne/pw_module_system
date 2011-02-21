@@ -4,11 +4,13 @@ from module_party_templates import *
 
 from process_common import *
 
+import module_factions
+import module_troops
 
 def save_party_template_troop(file,troop):
   if troop:
 #    add_tag_use(tag_uses,tag_troop,troop[0])
-    file.write("%d %d %d "%(troop[0],troop[1],troop[2]))
+    file.write("%d %d %d "%(find_str_id(module_troops.troops, troop[0]),troop[1],troop[2]))
     if (len(troop) > 3):
       file.write("%d "%troop[3])
     else:
@@ -22,7 +24,7 @@ def save_party_templates():
   file.write("%d\n"%(len(party_templates)))
   for party_template in party_templates:
 #    add_tag_use(tag_uses,tag_faction,party_template[4])
-    file.write("pt_%s %s %d %d %d %d "%(convert_to_identifier(party_template[0]),replace_spaces(party_template[1]),party_template[2],party_template[3], party_template[4], party_template[5]))
+    file.write("pt_%s %s %d %d %d %d "%(convert_to_identifier(party_template[0]),replace_spaces(party_template[1]),party_template[2],party_template[3], find_str_id(module_factions.factions, party_template[4]), party_template[5]))
     members = party_template[6]
     if (len(members) > 6):
       print "Error! NUMBER OF TEMPLATE MEMBERS EXCEEDS 6 " + party_template[0]

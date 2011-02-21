@@ -1,6 +1,3 @@
-from ID_items import *
-from ID_quests import *
-from ID_factions import *
 ##############################################################
 # These constants are used in various files.
 # If you need to define a value that will be used in those files,

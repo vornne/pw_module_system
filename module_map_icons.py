@@ -2,7 +2,6 @@ from header_map_icons import *
 from module_constants import *
 from header_operations import *
 from header_triggers import *
-from ID_sounds import *
 
 ####################################################################################################################
 #  Each map icon record contains the following fields:

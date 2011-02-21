@@ -7,6 +7,8 @@ from module_mission_templates import *
 from process_common import *
 from process_operations import *
 
+import module_items
+
 mission_template_name_pos = 0
 mission_template_flags_pos = 1
 mission_template_types_pos = 2
@@ -29,7 +31,8 @@ def save_mission_template_group(file,entry):
     print "ERROR: Too many item_overrides!"
     error()
   file.write("%d %d %d %d %d %d  "%(entry[0],entry[1],entry[2],entry[3],entry[4], len(entry[5])))
-  for item_override in entry[5]:
+  for item_override_str in entry[5]:
+    item_override = find_str_id(module_items.items, item_override_str)
     add_tag_use(tag_uses,tag_item,item_override)
     file.write("%d "%(item_override))
   file.write("\n")

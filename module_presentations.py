@@ -1,7 +1,6 @@
 from header_common import *
 from header_presentations import *
 from header_mission_templates import *
-from ID_meshes import *
 from header_operations import *
 from header_triggers import *
 from module_constants import *
@@ -16,7 +15,7 @@ import string
 ####################################################################################################################
 
 presentations = [
-  ("game_credits",prsntf_read_only,mesh_load_window,[
+  ("game_credits",prsntf_read_only,"mesh_load_window",[
       (ti_on_presentation_load,
        [(assign, "$g_presentation_credits_obj_1", -1),
         (assign, "$g_presentation_credits_obj_2", -1),
@@ -273,7 +272,7 @@ presentations = [
         ]),
       ]),
 
-  ("game_profile_banner_selection", 0, mesh_load_window, [
+  ("game_profile_banner_selection", 0, "mesh_load_window", [
     (ti_on_presentation_load, [
       (set_fixed_point_multiplier, 1000),
       (str_store_string, s1, "str_profile_banner_selection_text"),
@@ -349,8 +348,8 @@ presentations = [
       ]),
     ]),
 
-  ("game_custom_battle_designer", prsntf_manual_end_only, mesh_cb_ui_main, []),
+  ("game_custom_battle_designer", prsntf_manual_end_only, "mesh_cb_ui_main", []),
   ("game_multiplayer_admin_panel", prsntf_manual_end_only, 0, []),
-  ("game_before_quit", 0, mesh_load_window, []),
+  ("game_before_quit", 0, "mesh_load_window", []),
 
   ]

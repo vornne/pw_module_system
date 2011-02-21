@@ -7,6 +7,9 @@ from process_operations import *
 
 from process_common import *
 
+import module_party_templates
+import module_factions
+import module_troops
 
 def save_parties(parties):
   file = open(export_dir + "parties.txt","w")
@@ -30,9 +33,9 @@ def save_parties(parties):
       menu_no = menu_param
     file.write("%d "%(menu_no))
     
-    file.write("%d %d %d %d %d "%(party[4], party[5], party[6], party[6],party[7]))
+    file.write("%d %d %d %d %d "%(find_str_id(module_party_templates.party_templates, party[4]), find_str_id(module_factions.factions, party[5]), party[6], party[6],party[7]))
     ai_behavior_object = 0
-    ai_param = party[8]
+    ai_param = find_str_id(parties, party[8])
     if (type(ai_param) == types.StringType):
       ai_behavior_object = find_object(parties,ai_param)
       if (ai_behavior_object < 0):
@@ -49,7 +52,7 @@ def save_parties(parties):
     file.write("%d "%len(member_list))
     for member in member_list:
       add_tag_use(tag_uses,tag_troop,member[0])
-      file.write("%d %d 0 %d "%(member[0],member[1],member[2]))
+      file.write("%d %d 0 %d "%(find_str_id(module_troops.troops, member[0]),member[1],member[2]))
     bearing = 0.0
     if (len(party) > 11):
       bearing = (3.1415926 / 180.0) * party[11]

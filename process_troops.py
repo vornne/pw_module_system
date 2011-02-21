@@ -6,6 +6,9 @@ from module_troops import *
 from process_common import *
 #from process_operations import *
 
+import module_factions
+import module_items
+import module_scenes
 
 num_face_numeric_keys = 4
 
@@ -31,13 +34,13 @@ def save_troops():
 #      if (id_no >= 0):  add_tag_use(tag_uses,tag_troop,id_no)
 #    if (troop[6] > 0):  add_tag_use(tag_uses,tag_faction,troop[6])
 
-    file.write("\ntrp_%s %s %s %s %d %d %d %d %d %d\n  "%(convert_to_identifier(troop[0]),replace_spaces(troop[1]),replace_spaces(troop[2]), replace_spaces(str(troop[13])), troop[3],troop[4],troop[5], troop[6], troop[14], troop[15]))
+    file.write("\ntrp_%s %s %s %s %d %d %d %d %d %d\n  "%(convert_to_identifier(troop[0]),replace_spaces(troop[1]),replace_spaces(troop[2]), replace_spaces(str(troop[13])), troop[3], find_str_id(module_scenes.scenes, troop[4]) ,troop[5], find_str_id(module_factions.factions, troop[6]), troop[14], troop[15]))
     inventory_list = troop[7]
 #    inventory_list.append(itm_arrows)
 #    inventory_list.append(itm_bolts)
     for inventory_item in inventory_list:
 #      add_tag_use(tag_uses,tag_item,inventory_item)
-      file.write("%d 0 "%inventory_item)
+      file.write("%d 0 "%find_str_id(module_items.items, inventory_item))
     for i in xrange(64 - len(inventory_list)):
       file.write("-1 0 ")
     file.write("\n ")

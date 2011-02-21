@@ -3,6 +3,8 @@ from process_common import *
 from module_info import *
 from module_skins import *
 
+from header_common import *
+import module_particle_systems
 import string
 
 # WARNING: The following should be the same as the number in face_generator.h
@@ -69,9 +71,9 @@ def export_skins(skins):
     blood_particles_2 = 0
     constraints = []
     if len(skin) > 15:
-      blood_particles_1 = skin[15]
+      blood_particles_1 = find_str_id(module_particle_systems.particle_systems, skin[15])
     if len(skin) > 16:
-      blood_particles_2 = skin[16]
+      blood_particles_2 = find_str_id(module_particle_systems.particle_systems, skin[16])
     if len(skin) > 17:
       constraints = skin[17]
     

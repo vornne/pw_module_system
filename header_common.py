@@ -75,6 +75,18 @@ def find_object(objects,object_id):
     i_object += 1
   return result
 
+def find_str_id(objects, object_id):
+  if isinstance(object_id, str):
+    object_str = object_id.partition("_")[2]
+    if not object_str:
+      object_str = object_id
+    object_id = -1
+    for i, object_i in enumerate(objects):
+      if (object_i[0] == object_str):
+        object_id = i
+        break
+  return object_id
+
 s0  =  0
 s1  =  1
 s2  =  2

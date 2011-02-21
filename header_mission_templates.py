@@ -8,9 +8,6 @@ from header_common import *
 from header_operations import *
 from header_triggers import *
 from header_troops import *
-from ID_scenes import *
-from ID_items import *
-from ID_strings import *
 
 from header_mission_types import *
 

@@ -3,6 +3,8 @@ import string
 from process_common import *
 from module_items import *
 
+import module_factions
+
 def get_item_code(item):
   prefix = "it_"
   code = prefix + item[0]
@@ -45,7 +47,7 @@ def write_items(variable_list,variable_uses,tag_uses,quick_strings):
     if (len(item) > 9):
       ofile.write(" %d\n"%(len(item[9])))
       for item_faction in item[9]:
-        ofile.write(" %d"%item_faction)
+        ofile.write(" %d"%find_str_id(module_factions.factions, item_faction))
       ofile.write("\n")
     else:
       ofile.write(" 0\n")

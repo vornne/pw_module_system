@@ -55,7 +55,10 @@ def save_python_header(action_codes):
   ofile.write("\n\n")
   ofile.close()
 
+import copy
+
 print "Exporting animations..."
-action_codes = compile_action_sets(animations)
+animations_copy = copy.deepcopy(animations)
+action_codes = compile_action_sets(animations_copy)
 save_python_header(action_codes)
-write_actions(animations,len(action_codes),action_codes,"actions.txt")
+write_actions(animations_copy,len(action_codes),action_codes,"actions.txt")

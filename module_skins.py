@@ -1,5 +1,4 @@
 from header_skins import *
-from ID_particle_systems import *
 ####################################################################################################################
 #  Each skin record contains the following fields:
 #  1) Skin id: used for referencing skins.
@@ -151,7 +150,7 @@ skins = [
      ], #man_face_textures,
     [(voice_die,"snd_man_die"),(voice_hit,"snd_man_hit"),(voice_grunt,"snd_man_grunt"),(voice_grunt_long,"snd_man_grunt_long"),(voice_yell,"snd_man_yell"),(voice_stun,"snd_man_stun"),(voice_victory,"snd_man_victory")], #voice sounds
     "skel_human", 1.0,
-    psys_game_blood,psys_game_blood_2,
+    "psys_game_blood","psys_game_blood_2",
     [[1.7, comp_greater_than, (1.0,face_width), (1.0,temple_width)], #constraints: ex: 1.7 > (face_width + temple_width)
      [0.3, comp_less_than, (1.0,face_width), (1.0,temple_width)],
      [1.7, comp_greater_than, (1.0,face_width), (1.0,face_depth)],
@@ -181,7 +180,7 @@ skins = [
      ],#woman_face_textures
     [(voice_die,"snd_woman_die"),(voice_hit,"snd_woman_hit"),(voice_yell,"snd_woman_yell")], #voice sounds
     "skel_human", 1.0,
-    psys_game_blood,psys_game_blood_2,
+    "psys_game_blood","psys_game_blood_2",
   ),
   
 ##  (

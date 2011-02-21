@@ -1,5 +1,4 @@
 from header_common import *
-from ID_animations import *
 from header_mission_templates import *
 from header_tableau_materials import *
 from header_items import *

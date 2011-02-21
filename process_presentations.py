@@ -2,17 +2,18 @@ import string
 
 from module_info import *
 from module_presentations import *
-from ID_meshes import *
 
 from process_common import *
 from process_operations import *
+
+import module_meshes
 
 def save_presentations(variable_list,variable_uses,tag_uses,quick_strings):
   ofile = open(export_dir + "presentations.txt","w")
   ofile.write("presentationsfile version 1\n")
   ofile.write(" %d\n"%(len(presentations)))
   for presentation in presentations:
-    ofile.write("prsnt_%s %d %d "%(presentation[0], presentation[1], presentation[2]))
+    ofile.write("prsnt_%s %d %d "%(presentation[0], presentation[1], find_str_id(module_meshes.meshes, presentation[2])))
     save_simple_triggers(ofile,presentation[3], variable_list,variable_uses,tag_uses,quick_strings)
     ofile.write("\n")
   ofile.close()
