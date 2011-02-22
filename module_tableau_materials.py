@@ -51,6 +51,25 @@ def tableau_armor_banner(mesh_tableau, banner_xyz=(0,0,0), banner_scale=100, mes
     (cur_tableau_set_camera_parameters, 0, 200, 200, 0, 100000)])
   return script
 
+def tableau_armor_color(mesh_tableau):
+  return [(store_script_param, ":banner_mesh", 1),
+    (set_fixed_point_multiplier, 100),
+    (troop_get_slot, ":background_color", "trp_banner_background_color_array", ":banner_mesh"),
+    (cur_tableau_set_background_color, ":background_color"),
+    (init_position, pos1),
+    (cur_tableau_add_mesh, mesh_tableau, pos1, 0, 0),
+    (cur_tableau_set_camera_parameters, 0, 200, 200, 0, 100000),
+    ]
+
+def tableau_armor_vertex_color(mesh_tableau):
+  return [(store_script_param, ":banner_mesh", 1),
+    (set_fixed_point_multiplier, 100),
+    (troop_get_slot, ":background_color", "trp_banner_background_color_array", ":banner_mesh"),
+    (init_position, pos1),
+    (cur_tableau_add_mesh_with_vertex_color, mesh_tableau, pos1, 0, 0, ":background_color"),
+    (cur_tableau_set_camera_parameters, 0, 200, 200, 0, 100000),
+    ]
+
 def tableau_shield_banner(mesh_tableau, banner_xy, banner_scale, camera_width_height):
   return [(store_script_param, ":banner_mesh", 1),
     (set_fixed_point_multiplier, 100),
@@ -171,6 +190,25 @@ tableaus = [
   ("heraldic_armor_b", 0, "sample_heraldic_armor_b", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_b", banner_xyz=(-5,150,10), banner_scale=100)),
   ("heraldic_armor_c", 0, "sample_heraldic_armor_c", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_c", banner_xyz=(0,150,10), banner_scale=100)),
   ("heraldic_armor_d", 0, "sample_heraldic_armor_d", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_d", banner_xyz=(0,145,10), banner_scale=100)),
+
+  ("heraldic_leather_vest_a", 0, "leather_vest_a", 1024, 1024, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_leather_vest_a", banner_xyz=(-61,110,10), banner_scale=60)),
+  ("heraldic_padded_cloth_a", 0, "padded_cloth_a", 1024, 1024, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_padded_cloth_a", banner_xyz=(-61,120,10), banner_scale=60)),
+  ("heraldic_padded_cloth_b", 0, "padded_cloth_b", 1024, 1024, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_padded_cloth_b", banner_xyz=(-63,120,10), banner_scale=60)),
+  ("heraldic_tabard_b", 0, "tabard_b", 1024, 1024, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_tabard_b", banner_xyz=(52,110,10), banner_scale=50)),
+  ("heraldic_brigandine_b", 0, "brigandine_b", 1024, 1024, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_brigandine_b", banner_xyz=(-59,115,10), banner_scale=70)),
+  ("heraldic_coat_of_plates", 0, "coat_of_plates_red", 1024, 1024, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_coat_of_plates", banner_xyz=(20,25,10), banner_scale=80)),
+  ("heraldic_lamellar_armor_d", 0, "lamellar_armor_d", 1024, 1024, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_lamellar_armor_d", banner_xyz=(62,29,10), banner_scale=70)),
+  ("heraldic_mail_long_surcoat", 0, "mail_long_surcoat", 1024, 1024, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_mail_long_surcoat", banner_xyz=(54,70,10), banner_scale=40)),
+  ("heraldic_surcoat_over_mail", 0, "surcoat_over_mail", 1024, 1024, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_surcoat_over_mail", banner_xyz=(-60,70,10), banner_scale=40)),
+
+  ("colored_arena_tunic", 0, "arena_tunicW", 512, 512, 0, 0, 0, 0, tableau_armor_color("mesh_tableau_mesh_colored_arena_tunic")),
+  ("colored_arena_armor", 0, "arena_armorW", 512, 512, 0, 0, 0, 0, tableau_armor_color("mesh_tableau_mesh_colored_arena_armor")),
+  ("colored_lamellar_leather", 0, "lamellar_leather", 512, 512, 0, 0, 0, 0, tableau_armor_color("mesh_tableau_mesh_colored_lamellar_leather")),
+  ("colored_lamellar_vest_b", 0, "lamellar_vest_b", 1024, 1024, 0, 0, 0, 0, tableau_armor_color("mesh_tableau_mesh_colored_lamellar_vest_b")),
+
+  ("colored_helmets_new_b", 0, "helmets_new_b", 512, 512, 0, 0, 0, 0, tableau_armor_vertex_color("mesh_tableau_mesh_colored_helmets_new_b")),
+  ("colored_helmets_new_d", 0, "helmets_new_d", 512, 512, 0, 0, 0, 0, tableau_armor_vertex_color("mesh_tableau_mesh_colored_helmets_new_d")),
+  ("colored_helmets_new_e", 0, "helmets_new_e", 512, 512, 0, 0, 0, 0, tableau_armor_vertex_color("mesh_tableau_mesh_colored_helmets_new_e")),
 
   ("castle_banner_a", 0, "tableau_with_transparency", 512, 256, 0, 0, 0, 0, tableau_castle_banner()),
   ("castle_banner_b", 0, "tableau_with_transparency", 512, 256, 0, 0, 0, 0, tableau_castle_banner()),

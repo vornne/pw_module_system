@@ -458,4 +458,21 @@ meshes = [
 
   ("tableau_mesh_pw_banner_pole", 0, "tableau_mesh_pw_banner_pole",  0, 0, 0, 0, 0, 0, 1, 1, 1),
 
+  ("tableau_mesh_heraldic_leather_vest_a", 0, "tableau_mesh_heraldic_leather_vest_a",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_heraldic_padded_cloth_a", 0, "tableau_mesh_heraldic_padded_cloth_a",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_heraldic_padded_cloth_b", 0, "tableau_mesh_heraldic_padded_cloth_b",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_heraldic_tabard_b", 0, "tableau_mesh_heraldic_tabard_b",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_heraldic_brigandine_b", 0, "tableau_mesh_heraldic_brigandine_b",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_heraldic_coat_of_plates", 0, "tableau_mesh_heraldic_coat_of_plates",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_heraldic_lamellar_armor_d", 0, "tableau_mesh_heraldic_lamellar_armor_d",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_heraldic_mail_long_surcoat", 0, "tableau_mesh_heraldic_mail_long_surcoat",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_heraldic_surcoat_over_mail", 0, "tableau_mesh_heraldic_surcoat_over_mail",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_colored_arena_tunic", 0, "tableau_mesh_colored_arena_tunic",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_colored_arena_armor", 0, "tableau_mesh_colored_arena_armor",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_colored_lamellar_leather", 0, "tableau_mesh_colored_lamellar_leather",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_colored_lamellar_vest_b", 0, "tableau_mesh_colored_lamellar_vest_b",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_colored_helmets_new_b", 0, "tableau_mesh_colored_helmets_new_b",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_colored_helmets_new_d", 0, "tableau_mesh_colored_helmets_new_d",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("tableau_mesh_colored_helmets_new_e", 0, "tableau_mesh_colored_helmets_new_e",  0, 0, 0, 0, 0, 0, 1, 1, 1),
+
 ]
