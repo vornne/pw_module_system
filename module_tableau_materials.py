@@ -81,6 +81,19 @@ def tableau_castle_banner():
     (cur_tableau_set_camera_parameters, 0, 100, 200, 0, 100000),
     ]
 
+def tableau_banner_pole():
+  return [(store_script_param, ":banner_mesh", 1),
+    (set_fixed_point_multiplier, 100),
+    (init_position, pos1),
+    (position_set_y, pos1, 100),
+    (position_set_x, pos1, -1),
+    (cur_tableau_add_mesh, ":banner_mesh", pos1, 0, 0),
+    (init_position, pos1),
+    (position_set_z, pos1, 100),
+    (cur_tableau_add_mesh, "mesh_tableau_mesh_pw_banner_pole", pos1, 0, 0),
+    (cur_tableau_set_camera_parameters, 0, 100, 200, 0, 100000),
+    ]
+
 tableaus = [
   ("game_character_sheet", 0, "tableau_with_transparency", 1024, 1024, 0, 0, 266, 532, []),
   ("game_inventory_window", 0, "tableau_with_transparency", 1024, 1024, 0, 0, 180, 270, []),
@@ -161,5 +174,7 @@ tableaus = [
 
   ("castle_banner_a", 0, "tableau_with_transparency", 512, 256, 0, 0, 0, 0, tableau_castle_banner()),
   ("castle_banner_b", 0, "tableau_with_transparency", 512, 256, 0, 0, 0, 0, tableau_castle_banner()),
+
+  ("faction_banner_pole", 0, "heraldic_banner_pole", 512, 1024, 0, 0, 0, 0, tableau_banner_pole()),
 
 ]

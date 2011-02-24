@@ -2224,7 +2224,7 @@ scene_props = [
   ("pw_buy_lock_pick",spr_buy_item_flags(24),"pw_lock_pick","bo_weapon_small", spr_buy_item_triggers("itm_lock_pick", resources=["itm_iron_bar"], skill_required=3)),
   ("pw_buy_surgeon_scalpel",spr_buy_item_flags(30),"dagger_b_scabbard","bo_weapon_small", spr_buy_item_triggers("itm_surgeon_scalpel", resources=["itm_iron_bar"], skill_required=4)),
   ("pw_buy_poisoned_dagger",spr_buy_item_flags(15),"scab_dagger","bo_weapon_small", spr_buy_item_triggers("itm_poisoned_dagger")),
-  ("pw_buy_banner",spr_use_time(10),"pw_banner_pole","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01")),
+  ("pw_buy_banner",spr_use_time(10),"pw_banner_pole_only","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01")),
 
   ("pw_test_gold",spr_use_time(1),"tree_house_guard_a","bo_tree_house_guard_a", spr_gain_gold_triggers(10000)),
   ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a", spr_rest_triggers(30)),
