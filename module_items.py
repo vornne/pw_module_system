@@ -729,6 +729,17 @@ items = [
 ["money_bag", "Money Bag", [("pw_money_bag",0)], itp_type_one_handed_wpn|itp_primary, itcf_carry_quiver_right_vertical|itcf_thrust_onehanded,
  0, weight(1)|spd_rtng(80), imodbits_none, [(ti_on_weapon_attack, [(store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_money_bag_item", ":agent_id")])]],
 
+["torch", "Torch", [("pw_torch", 0),("pw_torch",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_spear,
+ 50, weight(2.5)|difficulty(0)|spd_rtng(95)|weapon_length(95)|swing_damage(5,blunt)|thrust_damage(0,pierce), imodbits_none,
+ [(ti_on_init_item,
+   [(set_position_delta, 0, 60, 0),
+    (particle_system_add_new, "psys_torch_fire"),
+    (particle_system_add_new, "psys_torch_smoke"),
+    (set_current_color,150, 130, 70),
+    (add_point_light, 10, 30),
+    ])
+  ]],
+
 itm_faction_banner("a01"),
 itm_faction_banner("a02"),
 itm_faction_banner("a03"),
