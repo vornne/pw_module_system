@@ -62,7 +62,7 @@ def spr_buy_item_flags(use_time=1):
   use_time = max(use_time, 1)
   return spr_use_time(use_time)
 
-def spr_buy_item_triggers(item_id, pos_offset=(0,0,0), rotate=(0,0,0), use_string=None, tableau=None, resources=[], skill_required=0):
+def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_string=None, tableau=None, resources=[], skill_required=0):
   buy_trigger = (ti_on_scene_prop_cancel_use,
      [(store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":instance_id"),
@@ -2176,11 +2176,11 @@ scene_props = [
   ("pw_buy_barbed_arrows",spr_buy_item_flags(1),"barbed_arrow","bo_weapon", spr_buy_item_triggers("itm_barbed_arrows", resources=[], skill_required=1)),
   ("pw_buy_khergit_arrows",spr_buy_item_flags(2),"arrow","bo_weapon", spr_buy_item_triggers("itm_khergit_arrows", resources=[], skill_required=1)),
   ("pw_buy_bodkin_arrows",spr_buy_item_flags(2),"piercing_arrow","bo_weapon", spr_buy_item_triggers("itm_bodkin_arrows", resources=[], skill_required=1)),
-  ("pw_buy_hunting_crossbow",spr_buy_item_flags(10),"crossbow_a","bo_weapon_small", spr_buy_item_triggers("itm_hunting_crossbow", resources=["itm_iron_bar", "itm_stick"], skill_required=1)),
-  ("pw_buy_light_crossbow",spr_buy_item_flags(12),"crossbow_b","bo_weapon_small", spr_buy_item_triggers("itm_light_crossbow", resources=["itm_iron_bar", "itm_stick"], skill_required=2)),
-  ("pw_buy_crossbow",spr_buy_item_flags(15),"crossbow_a","bo_weapon_small", spr_buy_item_triggers("itm_crossbow", resources=["itm_iron_bar", "itm_stick"], skill_required=3)),
-  ("pw_buy_heavy_crossbow",spr_buy_item_flags(20),"crossbow_c","bo_weapon_small", spr_buy_item_triggers("itm_heavy_crossbow", resources=["itm_iron_bar", "itm_stick"], skill_required=4)),
-  ("pw_buy_sniper_crossbow",spr_buy_item_flags(30),"crossbow_c","bo_weapon_small", spr_buy_item_triggers("itm_sniper_crossbow", resources=["itm_iron_bar", "itm_stick"], skill_required=5)),
+  ("pw_buy_hunting_crossbow",spr_buy_item_flags(10),"crossbow_a","bo_weapon_small", spr_buy_item_triggers("itm_hunting_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_bar", "itm_stick"], skill_required=1)),
+  ("pw_buy_light_crossbow",spr_buy_item_flags(12),"crossbow_b","bo_weapon_small", spr_buy_item_triggers("itm_light_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_bar", "itm_stick"], skill_required=2)),
+  ("pw_buy_crossbow",spr_buy_item_flags(15),"crossbow_a","bo_weapon_small", spr_buy_item_triggers("itm_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_bar", "itm_stick"], skill_required=3)),
+  ("pw_buy_heavy_crossbow",spr_buy_item_flags(20),"crossbow_c","bo_weapon_small", spr_buy_item_triggers("itm_heavy_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_bar", "itm_stick"], skill_required=4)),
+  ("pw_buy_sniper_crossbow",spr_buy_item_flags(30),"crossbow_c","bo_weapon_small", spr_buy_item_triggers("itm_sniper_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_bar", "itm_stick"], skill_required=5)),
   ("pw_buy_bolts",spr_buy_item_flags(1),"bolt","bo_weapon_small", spr_buy_item_triggers("itm_bolts", resources=[], skill_required=1)),
   ("pw_buy_steel_bolts",spr_buy_item_flags(2),"bolt","bo_weapon_small", spr_buy_item_triggers("itm_steel_bolts", resources=[], skill_required=1)),
   ("pw_buy_tab_shield_round_b",spr_buy_item_flags(8),"tableau_shield_round_3","bo_shield_round", spr_buy_item_triggers("itm_tab_shield_round_b", resources=["itm_board"], skill_required=1, tableau="tableau_round_shield_3")),
