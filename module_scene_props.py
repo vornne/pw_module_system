@@ -1796,6 +1796,7 @@ scene_props = [
   ("interior_tutorial_3",0,"tutorial_3_scene","bo_tutorial_3_scene", []),
   ("interior_dungeon_a",0,"dungeon_a","bo_dungeon_a", []),
   ("interior_window_cover",0,"window_cover","bo_window_cover", []),
+  ("merchant_shelf_a",0,"merchant_shelf_a","bo_merchant_shelf_a", []),
 
   ("rock_1",0,"rock1","bo_rock1", []),
   ("rock_2",0,"rock2","bo_rock2", []),
