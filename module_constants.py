@@ -242,10 +242,6 @@ slot_removed_plants_begin             = 1
 team_default                          = 0
 team_spawn_invulnerable               = 1
 team_spectators                       = 2
-team_faction_1                        = 3
-team_faction_2                        = 4
-team_faction_3                        = 5
-team_faction_4                        = 6
 
 spawn_invulnerable_time               = 10
 lord_wait_for_reconnect_interval      = 300

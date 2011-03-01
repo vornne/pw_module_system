@@ -2045,21 +2045,6 @@ scripts = [
     (player_spawn_new_agent, ":player_id", reg0),
     ]),
 
-  ("player_set_faction_team",
-   [(store_script_param, ":player_id", 1),
-
-    (player_get_agent_id, ":agent_id", ":player_id"),
-    (player_get_slot, ":faction_id", ":player_id", slot_player_faction_id),
-    (try_begin),
-      (is_between, ":faction_id", castle_factions_begin, factions_end),
-      (store_sub, ":faction_team", ":faction_id", castle_factions_begin),
-      (val_add, ":faction_team", team_faction_1),
-      (agent_set_team, ":agent_id", ":faction_team"),
-    (else_try),
-      (agent_set_team, ":agent_id", team_default),
-    (try_end),
-    ]),
-
   ("player_check_spawn_agent",
    [(store_script_param, ":player_id", 1),
 
@@ -2121,7 +2106,7 @@ scripts = [
           (player_set_slot, ":player_id", slot_player_spawn_state, player_spawn_state_alive),
           (player_set_slot, ":player_id", slot_player_spawn_invulnerable_time, 0),
           (player_get_troop_id, ":troop_id", ":player_id"),
-          (call_script, "script_player_set_faction_team", ":player_id"),
+          (agent_set_team, ":agent_id", team_default),
           (call_script, "script_player_equip_stored_default_items", ":player_id"),
         (try_end),
       (try_end),
@@ -2154,7 +2139,7 @@ scripts = [
       (try_end),
       (try_begin),
         (neq, ":spawn_state", player_spawn_state_invulnerable),
-        (call_script, "script_player_set_faction_team", ":player_id"),
+        (agent_set_team, ":agent_id", team_default),
       (try_end),
     (try_end),
     ]),
@@ -2491,7 +2476,6 @@ scripts = [
       (ge, ":outlaw_rating", outlaw_rating_outlawed),
       (player_set_troop_id, ":player_id", "trp_ruffian"),
       (call_script, "script_change_faction", ":player_id", "fac_outlaws", 1),
-      (call_script, "script_player_set_faction_team", ":player_id"),
     (try_end),
     ]),
 
