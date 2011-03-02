@@ -90,10 +90,10 @@ troops = [
 ####################################################################################################################
 
   ["peasant","Peasant","a peasant",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_straw_hat","itm_felt_hat","itm_coarse_tunic","itm_leather_apron","itm_wrapping_boots","itm_woolen_hose","itm_old_knife"],
+   ["itm_straw_hat","itm_felt_hat","itm_coarse_tunic","itm_leather_apron","itm_wrapping_boots","itm_woolen_hose","itm_old_knife","itm_hatchet"],
    str_8|agi_8|int_4|cha_4|level(1),wpe(50,10,20,30),knows_labouring_2|knows_riding_1,default_face_1,default_face_2],
   ["serf","Serf","a serf",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_head_wrappings","itm_shirt","itm_wrapping_boots"],
+   ["itm_head_wrappings","itm_shirt","itm_wrapping_boots","itm_hatchet","itm_small_mining_pick"],
    pw_str_5|agi_5|int_4|cha_4|level(1),wpe(30,10,10,10),knows_labouring_5|knows_engineer_1|knows_riding_1,default_face_1,default_face_2],
   ["footman","Footman","a footman",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_leather_cap","itm_woolen_cap","itm_tabard","itm_rawhide_coat","itm_hide_boots","itm_ankle_boots","itm_crude_spear","itm_rusty_sword","itm_blunt_falchion"],

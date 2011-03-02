@@ -707,6 +707,10 @@ items = [
 ["iron_bar_long", "Long Iron Bar", [("pw_iron_bar_long",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_sword_back,
  1280, weight(100)|spd_rtng(50)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(53), imodbits_none, [(item_class, item_class_iron, 400)]],
 
+["hatchet", "Hatchet", [("pw_hatchet",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_axe_left_hip,
+ 40, weight(3)|spd_rtng(75)|weapon_length(50)|swing_damage(10,cut)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_wood_cutting)]],
+["small_mining_pick", "Small Mining Pick", [("pw_small_mining_pick",0)], itp_type_one_handed_wpn|itp_primary|itp_unbalanced|itp_wooden_parry, itc_parry_polearm|itcf_overswing_polearm|itcf_carry_axe_back,
+ 80, weight(3)|spd_rtng(70)|weapon_length(70)|swing_damage(15,pierce)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_mining)]],
 ["woodcutter_axe", "Woodcutter's Axe", [("pw_wood_axe",0)], itp_type_two_handed_wpn|itp_two_handed|itp_bonus_against_shield|itp_primary|itp_wooden_parry|itp_unbalanced|itp_cant_use_on_horseback, itc_nodachi|itcf_carry_axe_back,
  245, weight(4)|spd_rtng(80)|weapon_length(72)|swing_damage(20,cut)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_wood_cutting)]],
 ["mining_pick", "Mining Pick", [("pw_mining_pick",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_unbalanced|itp_cant_use_on_horseback, itc_parry_polearm|itcf_overswing_polearm|itcf_carry_axe_back,
