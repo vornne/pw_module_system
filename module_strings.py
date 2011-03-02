@@ -421,6 +421,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("troop_leave_faction", "Leave your faction and become {s1}"),
   ("troop_assume_role", "Assume the role of {s1} of the {s2}"),
   ("troop_become", "Become {s1} with the {s2}"),
+  ("troop_become_for", "Become {s1} for the {s2}"),
   ("troop_cost", "{s0}^Cost: {reg10}"),
   ("troop_strength_agility", "{s0}^Strength: {reg10}^Agility: {reg11}"),
   ("troop_weapon_proficiencies", "{s0}^One handed: {reg10}^Two Handed: {reg11}^Polearms: {reg12}^Archery: {reg13}^Crossbows: {reg14}^Throwing: {reg15}"),
@@ -444,6 +445,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("s10_now_lord_of_s1", "{s10} is now the lord of the {s1}."),
   ("s10_now_known_as_s1", "The {s10} are now known as the {s1}."),
   ("banner_used_by_s1", "That banner is used by the {s1}."),
+  ("s1_doesnt_need_merc", "The {s1} doesn't need mercenaries."),
 
   ("not_riding_cart_horse", "You are not riding a cart horse."),
   ("already_towing_cart", "Already towing another cart."),

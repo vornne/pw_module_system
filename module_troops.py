@@ -125,6 +125,9 @@ troops = [
   ["brigand","Brigand","a brigand",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_nomad_cap","itm_khergit_armor","itm_nomad_vest","itm_wrapping_boots","itm_hunter_boots","itm_old_knife","itm_blunt_falchion"],
    str_12|agi_12|int_4|cha_4|level(1),wpex(70,60,70,100,80,80),knows_ironflesh_2|knows_power_draw_2|knows_athletics_3|knows_riding_1|knows_looting_4,default_face_1,default_face_2],
+  ["mercenary","Mercenary","a mercenary",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_woolen_cap","itm_padded_coif","itm_linen_tunic","itm_rawhide_coat","itm_nomad_vest","itm_tabard","itm_wrapping_boots","itm_hunter_boots","itm_blunt_falchion","itm_rusty_sword","itm_crude_spear","itm_old_shield","itm_flimsy_crossbow","itm_crude_bolts"],
+   str_14|agi_14|int_4|cha_4|level(1),wpex(90,70,80,60,80,70),knows_ironflesh_3|knows_power_strike_1|knows_athletics_3|knows_riding_2|knows_engineer_1,default_face_1,default_face_2],
 
   ["playable_troops_end","playable_troops_end","playable_troops_end",0,0,0,0,[],0,0,0,0,0],
 

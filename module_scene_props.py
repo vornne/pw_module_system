@@ -130,20 +130,24 @@ def spr_rest_triggers(heal_pct, min_health_pct=30, horse=0, use_string="str_rest
       ]),
     ]
 
-def spr_change_troop_triggers(troop_id, cost=0, use_string=None):
+def spr_change_troop_triggers(troop_id, cost=0, mercenary=False, use_string=None):
   init_trigger = (ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_troop_id, troop_id),
       ])
   if cost != 0:
     init_trigger[1].append((call_script, "script_scene_prop_get_gold_value", ":instance_id", -1, cost))
+  if mercenary is True:
+    init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_is_mercenary, 1))
   if use_string is not None:
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string))
   return [init_trigger, spr_call_script_use_trigger("script_cf_change_troop")]
 
-def spr_buy_banner_triggers(banner_item_begin, use_string="str_buy_banner_faction"):
-  return [spr_item_init_trigger(banner_item_begin, use_string=use_string),
-    spr_call_script_use_trigger("script_cf_buy_banner")]
+def spr_buy_banner_triggers(banner_item_begin, mercenary=False, use_string="str_buy_banner_faction"):
+  init_trigger = spr_item_init_trigger(banner_item_begin, use_string=use_string)
+  if mercenary is True:
+    init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_is_mercenary, 1))
+  return [init_trigger, spr_call_script_use_trigger("script_cf_buy_banner")]
 
 def spr_teleport_door_triggers(pos_offset=(0,0,0)):
   return [spr_call_script_use_trigger("script_cf_use_teleport_door", pos_offset[0], pos_offset[1], pos_offset[2]),
@@ -2227,6 +2231,7 @@ scene_props = [
   ("pw_buy_poisoned_dagger",spr_buy_item_flags(15),"scab_dagger","bo_weapon_small", spr_buy_item_triggers("itm_poisoned_dagger")),
   ("pw_buy_torch",spr_use_time(1),"pw_torch","bo_weapon_small", spr_buy_item_triggers("itm_torch", resources=["itm_stick"], skill_required=1)),
   ("pw_buy_banner",spr_use_time(10),"pw_banner_pole_only","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01")),
+  ("pw_buy_banner_mercenary",spr_use_time(15),"pw_banner_pole_only","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01", mercenary=True)),
 
   ("pw_test_gold",spr_use_time(1),"tree_house_guard_a","bo_tree_house_guard_a", spr_gain_gold_triggers(10000)),
   ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a", spr_rest_triggers(30)),
@@ -2255,6 +2260,7 @@ scene_props = [
   ("pw_change_troop_lord",spr_use_time(70),"gothic_chair","bogothic_chair", spr_change_troop_triggers("trp_lord", cost=1000, use_string="str_troop_assume_role")),
   ("pw_change_troop_ruffian",spr_use_time(40),"sledgehammer","bo_weapon", spr_change_troop_triggers("trp_ruffian", cost=500, use_string="str_troop_become")),
   ("pw_change_troop_brigand",spr_use_time(50),"spiked_club","bo_weapon", spr_change_troop_triggers("trp_brigand", cost=700, use_string="str_troop_become")),
+  ("pw_change_troop_mercenary",spr_use_time(50),"spiked_mace","bo_weapon", spr_change_troop_triggers("trp_mercenary", cost=3500, mercenary=True, use_string="str_troop_become_for")),
 
   ("pw_door_teleport_small_arch_a",spr_use_time(1),"tutorial_door_a","bo_tutorial_door_a", spr_teleport_door_triggers(pos_offset=(-55,50,-98))),
   ("pw_door_teleport_square_a",spr_use_time(1),"tutorial_door_b","bo_tutorial_door_b", spr_teleport_door_triggers(pos_offset=(70,50,0))),
