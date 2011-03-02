@@ -258,6 +258,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("become_invisible", "Become invisible"),
   ("spawn_admin_horse", "Spawn admin horse"),
   ("remove_admin_horses", "Remove admin horses"),
+  ("reset_sunken_ships", "Reset sunken ships"),
   ("quit", "Quit"),
   ("choose_a_player_to_s0", "Choose a player to {s0}:"),
   ("kick", "kick"),
@@ -293,6 +294,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("log_admin_get_invisible", "became invisible"),
   ("log_admin_get_horse", "spawned an admin horse"),
   ("log_admin_remove_horses", "removed admin horses"),
+  ("log_admin_reset_ships", "reset sunken ships"),
   ("log_admin_cheat_money", "took {reg0} gold"),
 
   ("poll_change_scene", "Change scene to {s1}"),

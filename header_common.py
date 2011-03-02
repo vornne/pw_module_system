@@ -179,6 +179,7 @@ admin_action_get_armor                          = 7
 admin_action_get_invisible                      = 8
 admin_action_get_horse                          = 9
 admin_action_remove_horses                      = 10
+admin_action_reset_ships                        = 11
 
 max_possible_gold                               = 1000000000
 max_correctly_displayed_gold                    = 131071

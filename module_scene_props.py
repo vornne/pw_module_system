@@ -278,6 +278,7 @@ def spr_ship_triggers(hit_points=1000, length=1000, width=200, sail=-1, sail_off
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points, sink_ship_hit_points)),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, length),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_width, width),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_collision_kind, spr_tag(collision)),
