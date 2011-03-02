@@ -1301,6 +1301,7 @@ scripts = [
     (assign, "$g_game_ended", 0),
     (assign, "$g_spawn_marker_count", 0),
     (assign, "$g_spawned_bot_count", 0),
+    (assign, "$g_overflow_gold_value", 0),
     (troop_set_slot, "trp_ship_array", 0, 0),
     (troop_set_slot, "trp_ship_array", slot_ship_array_collision_props_count, 0),
     (faction_set_slot, "fac_1", slot_faction_banner_mesh, "mesh_banner_kingdom_f"),
