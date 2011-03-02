@@ -35,6 +35,7 @@ client_event_admin_set_password                 = 105
 client_event_admin_set_welcome_message          = 106
 client_event_admin_set_game_rule                = 107
 client_event_admin_action                       = 108
+client_event_faction_admin_action               = 109
 client_event_chat_message_begin                 = 110
 client_event_chat_message_end                   = 120
 client_event_chat_message_type                  = 120
@@ -180,6 +181,8 @@ admin_action_get_invisible                      = 8
 admin_action_get_horse                          = 9
 admin_action_remove_horses                      = 10
 admin_action_reset_ships                        = 11
+
+faction_admin_action_change_banner              = 0
 
 max_possible_gold                               = 1000000000
 max_correctly_displayed_gold                    = 131071

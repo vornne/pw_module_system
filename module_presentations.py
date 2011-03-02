@@ -2901,7 +2901,7 @@ presentations = [
         (val_add, ":selected_banner", banner_meshes_begin),
         (try_begin),
           (is_between, ":selected_banner", banner_meshes_begin, banner_meshes_end),
-          (multiplayer_send_int_to_server, client_event_change_faction_banner, ":selected_banner"),
+          (multiplayer_send_2_int_to_server, client_event_faction_admin_action, faction_admin_action_change_banner, ":selected_banner"),
         (try_end),
         (presentation_set_duration, 0),
       (try_end),
