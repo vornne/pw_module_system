@@ -2220,7 +2220,7 @@ scene_props = [
   ("pw_buy_plated_charger",spr_buy_item_flags(40),"plated_charger","bo_horse", spr_buy_item_triggers("itm_plated_charger")),
 
   ("pw_buy_woodcutter_axe",spr_buy_item_flags(8),"pw_wood_axe","bo_weapon", spr_buy_item_triggers("itm_woodcutter_axe", resources=["itm_iron_bar", "itm_wood_pole"], skill_required=2)),
-  ("pw_buy_mining_pick",spr_buy_item_flags(10),"pw_mining_pick","bo_weapon", spr_buy_item_triggers("itm_mining_pick", resources=["itm_iron_bar_long"], skill_required=3)),
+  ("pw_buy_mining_pick",spr_buy_item_flags(10),"pw_mining_pick","bo_weapon", spr_buy_item_triggers("itm_mining_pick", resources=["itm_iron_bar_med", "itm_wood_pole"], skill_required=3)),
   ("pw_buy_repair_hammer",spr_buy_item_flags(7),"pw_repair_hammer","bo_weapon_small", spr_buy_item_triggers("itm_repair_hammer", resources=["itm_iron_bar", "itm_stick"], skill_required=2)),
   ("pw_buy_lock_pick",spr_buy_item_flags(24),"pw_lock_pick","bo_weapon_small", spr_buy_item_triggers("itm_lock_pick", resources=["itm_iron_bar"], skill_required=3)),
   ("pw_buy_surgeon_scalpel",spr_buy_item_flags(30),"dagger_b_scabbard","bo_weapon_small", spr_buy_item_triggers("itm_surgeon_scalpel", resources=["itm_iron_bar"], skill_required=4)),
