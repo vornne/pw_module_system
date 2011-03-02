@@ -688,8 +688,8 @@ items = [
 ["plated_charger", "Plated Charger", [("plated_charger",0)], itp_type_horse, 0,
  10340, hit_points(180)|body_armor(65)|difficulty(5)|horse_speed(40)|horse_maneuver(45)|horse_charge(40)|horse_scale(112), imodbits_none],
 
-["stick", "Stick", [("wooden_stick",0)], itp_type_thrown|itp_primary|itp_next_item_as_melee, itcf_throw_axe|itcf_carry_quiver_back,
- 23, weight(5)|spd_rtng(90)|shoot_speed(8)|thrust_damage(1,blunt)|max_ammo(1)|weapon_length(63), imodbits_none, [(item_class, item_class_wood, 100)]],
+["stick", "Stick", [("wooden_stick",0)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_quiver_back,
+ 23, weight(5)|spd_rtng(90)|swing_damage(5,blunt)|weapon_length(63), imodbits_none, [(item_class, item_class_wood, 100)]],
 ["stick_melee", "Stick", [("wooden_stick",0)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_quiver_back,
  23, weight(5)|spd_rtng(90)|swing_damage(5,blunt)|weapon_length(63), imodbits_none, [(item_class, item_class_wood, 100)]],
 ["branch", "Branch", [("pw_branch_a",0),("pw_branch_b",imodbit_cracked),("pw_branch_c",imodbit_bent)], itp_type_polearm|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_thrust_polearm|itcf_overswing_polearm|itcf_carry_spear,
