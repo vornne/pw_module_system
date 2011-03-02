@@ -5635,6 +5635,7 @@ scripts = [
       (scene_prop_get_slot, ":ramp_instance_id", ":hull_instance_id", slot_scene_prop_linked_ramp),
       (scene_prop_get_slot, ":forwards", ":hull_instance_id", slot_scene_prop_position),
       (scene_prop_get_slot, ":target_forwards", ":hull_instance_id", slot_scene_prop_target_position),
+      (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_position, ":target_forwards"),
       (neq, ":forwards", 0),
 
       (prop_instance_get_position, pos1, ":hull_instance_id"),
@@ -5819,7 +5820,6 @@ scripts = [
       (prop_instance_animate_to_position, ":ramp_instance_id", pos5, 100),
       (scene_prop_set_slot, ":ramp_instance_id", slot_scene_prop_position, ":ramp_target"),
     (try_end),
-    (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_position, ":target_forwards"),
     ]),
 
   ("animate_ship_parts",
@@ -5827,9 +5827,9 @@ scripts = [
     (store_script_param, ":animation_time", 2),
 
     (prop_instance_animate_to_position, ":instance_id", pos20, ":animation_time"),
-    (scene_prop_get_slot, ":target_forwards", ":instance_id", slot_scene_prop_target_position),
+    (scene_prop_get_slot, ":forwards", ":instance_id", slot_scene_prop_position),
     (try_begin),
-      (gt, ":target_forwards", 0),
+      (gt, ":forwards", 0),
       (scene_prop_get_slot, ":sail_instance_id", ":instance_id", slot_scene_prop_linked_sail),
     (else_try),
       (scene_prop_get_slot, ":sail_instance_id", ":instance_id", slot_scene_prop_linked_sail_off),
@@ -5895,6 +5895,7 @@ scripts = [
       (call_script, "script_agent_play_sound", ":agent_id", "snd_repair_wood"),
     (else_try),
       (eq, ":result", repairable_repaired),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_active),
       (prop_instance_get_position, pos20, ":instance_id"),
       (prop_instance_get_starting_position, pos21, ":instance_id"),
       (position_get_z, ":sunk_z", pos20),
