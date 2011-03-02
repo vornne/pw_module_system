@@ -340,7 +340,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("map_time_limit", "Game time limit (minutes):"),
   ("team_point_limit", "team_point_limit:"),
   ("defender_spawn_count", "defender_spawn_count:"),
-  ("disallow_ranged_weapons", "disallow_ranged_weapons:"),
+  ("disallow_ranged_weapons", "Admin gold disabled:"),
   ("max_players", "Maximum number of players:"),
   ("friendly_fire", "friendly_fire:"),
   ("melee_friendly_fire", "melee_friendly_fire:"),
