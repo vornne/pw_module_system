@@ -331,7 +331,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("combat_gold_bonus", "Combat gold bonus (%):"),
   ("round_gold_bonus", "round_gold_bonus:"),
   ("player_banners_allowed", "player_banners_allowed:"),
-  ("force_default_armor", "force_default_armor:"),
+  ("force_default_armor", "No loot from killing commoners:"),
   ("team_points_gained_for_flags", "team_points_gained_for_flags:"),
   ("points_gained_for_capturing_flags", "points_gained_for_capturing_flags:"),
   ("map_time_limit", "Game time limit (minutes):"),
