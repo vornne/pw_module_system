@@ -6480,6 +6480,12 @@ scripts = [
         (call_script, "script_redraw_castle_banners", ":castle_no"), #need a delay to make sure the faction banner is updated on clients first?
       (try_end),
     (else_try),
+      (eq, ":action", faction_admin_action_kick_player),
+      (player_is_active, ":value_1"),
+      (player_slot_eq, ":value_1", slot_player_faction_id, ":faction_id"),
+      (neq, ":value_1", ":sender_player_id"),
+      (call_script, "script_change_faction", ":value_1", "fac_commoners", 0),
+    (else_try),
       (assign, ":fail", 1),
     (try_end),
     (eq, ":fail", 0),

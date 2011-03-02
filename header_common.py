@@ -183,6 +183,7 @@ admin_action_remove_horses                      = 10
 admin_action_reset_ships                        = 11
 
 faction_admin_action_change_banner              = 0
+faction_admin_action_kick_player                = 1
 
 max_possible_gold                               = 1000000000
 max_correctly_displayed_gold                    = 131071

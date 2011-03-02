@@ -175,6 +175,7 @@ poll_result_color                     = 0xFF0000
 
 faction_cost_change_banner            = 500
 faction_cost_change_name              = 500
+faction_cost_kick_player              = 1000
 
 ########################################################
 ##  SCENE SLOTS            #############################

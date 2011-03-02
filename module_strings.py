@@ -280,6 +280,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("faction_admin", "Faction Administration"),
   ("change_faction_banner", "Change faction banner"),
   ("change_faction_name", "Change faction name"),
+  ("kick_player_from_faction", "Kick player from faction"),
 
   ("log_admin_target_player", "Admin {s0} ({reg0}) {s3} player {s1} ({reg1})."),
   ("log_admin_target_self", "Admin {s0} ({reg0}) {s3}."),
