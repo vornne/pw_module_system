@@ -5478,6 +5478,7 @@ scripts = [
     (store_script_param, ":instance_id", 2),
     (store_script_param, ":server", 3),
 
+    (scene_prop_slot_eq, ":instance_id", slot_scene_prop_state, scene_prop_state_active),
     (set_fixed_point_multiplier, 100),
     (prop_instance_get_position, pos1, ":instance_id"),
     (agent_get_position, pos2, ":agent_id"),
