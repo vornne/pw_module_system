@@ -200,7 +200,7 @@ def spr_cart_triggers(horse=0, z_offset=0, inventory_count=0, max_item_length=10
 def spr_tree_flags():
   return sokf_destructible|sokf_show_hit_point_bar|sokf_moveable|sokf_missiles_not_attached
 
-def spr_tree_triggers(full_hp=1000, fell_hp=500, resource_hp=200, hardness=1, resource_imod=0, regrow_interval=3600, use_string="str_cut_down"):
+def spr_tree_triggers(full_hp=1000, fell_hp=500, resource_hp=100, hardness=1, resource_imod=0, regrow_interval=3600, use_string="str_cut_down"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(full_hp, fell_hp)),
