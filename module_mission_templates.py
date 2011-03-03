@@ -278,6 +278,7 @@ mission_templates = [
             (gt, ":outlaw_rating", 0),
             (val_sub, ":outlaw_rating", 1),
             (player_set_slot, ":player_id", slot_player_outlaw_rating, ":outlaw_rating"),
+            (multiplayer_send_3_int_to_player, ":player_id", server_event_player_set_slot, ":player_id", slot_player_outlaw_rating, ":outlaw_rating"),
           (try_end),
         (try_end),
       (try_end),
