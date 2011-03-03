@@ -3635,7 +3635,7 @@ scripts = [
         (le, ":skill", 0),
         (val_mul, ":hit_damage", 10),
       (else_try),
-        (val_mul, ":hit_damage", 30),
+        (val_mul, ":hit_damage", 50),
         (val_mul, ":hit_damage", ":skill"),
       (try_end),
     (else_try),
