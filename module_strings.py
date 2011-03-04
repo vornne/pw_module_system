@@ -489,10 +489,12 @@ Enemy castles can be captured for your faction by using the flag pole (probably 
 To shout with the local chat messages, hold down right shift while pressing enter."),
   ("pw_editor_welcome", "Press F1 for editing information."),
   ("pw_editor_info", "-- General editing information^^\
+* Active scene props (starting with pw) do not work in this mode, only on a dedicated server.^\
 * Make sure the first few scene props placed are not scripted (start with pw): instance id 0 can't be handled by some scripts.^\
 * Factions are numbered from 0 - 5, with commoners = 0, outlaws = 1, and the 4 castle factions starting from 2.^\
 * Castles are numbered from 0 - 7, and start the mission owned by the corresponding castle faction: for example, the default 'White Faction' starts with castles 1 and 5.^\
 * Factions are enabled for the scene if at least one capture point is placed for one of their starting castles.^\
+* Spawn points are 0 - 4 for commoners, 10 - 14 for outlaws, 20 - 24 for castle 1, and so on, up to 90 - 94 for castle 8.^\
 ^-- Edit scene mode keys^\
 F1 = this information^\
 F2 = scene prop editor value information^\
@@ -508,7 +510,7 @@ pw iron mines:^value 1 = initial hit points / 1000^^\
 pw bridges:^value 2 = linking id with x_footing^^\
 pw walls, ladders:^value 2 = linking id with x_build^^\
 pw portcullises, drawbridges:^value 2 = linking id with x_winch^^\
-pw ships:^value 1 = initial ramp position (0 = center, 1 = left, 2 = right)^^\
+pw ships:^value 1 = initial ramp position (0 = center, 1 = left, 2 = right)^Only place the hull, the other parts are spawned at mission start.^^\
 pw_castle_capture_point:^value 1 = faction / castle id^^\
 pw_castle_sign:^value 1 = faction / castle id^value 2 = castle name string no (name must not be one used by another castle)^^\
 pw_castle_money_chest:^value 1 = faction / castle id^value 2 = initial gold^^\
