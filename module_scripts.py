@@ -2342,7 +2342,7 @@ scripts = [
       (player_set_slot, ":player_id", slot_player_faction_id, ":faction_id"),
       (store_add, ":temp_index", ":active_index", player_array_gold_value),
       (troop_get_slot, ":gold_value", "trp_active_players_array", ":temp_index"),
-      (store_random_in_range, ":keep_percentage", 50, 80),
+      (store_random_in_range, ":keep_percentage", 80, 90),
       (val_mul, ":gold_value", ":keep_percentage"),
       (val_div, ":gold_value", 100),
       (call_script, "script_player_adjust_gold", ":player_id", ":gold_value", 0),
