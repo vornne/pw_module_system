@@ -721,7 +721,7 @@ items = [
  1260, weight(0.25)|spd_rtng(100)|weapon_length(23)|swing_damage(1,blunt)|thrust_damage(5,pierce), imodbits_none, [(item_class, item_class_lock_pick)]],
 
 ["surgeon_scalpel", "Surgeon's Scalpel", [("dagger_b",0),("dagger_b_scabbard",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_thrust_onehanded|itcf_carry_dagger_front_left|itcf_show_holster_when_drawn,
- 7560, weight(0.75)|difficulty(0)|spd_rtng(50)|weapon_length(36)|thrust_damage(15, pierce), imodbits_sword],
+ 3560, weight(0.75)|difficulty(0)|spd_rtng(50)|weapon_length(36)|thrust_damage(15, pierce), imodbits_sword],
 ["herb_a", "Healing Herb", [("pw_herb_a",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_thrust_onehanded|itcf_carry_dagger_front_left,
  240, weight(0.25)|difficulty(0)|spd_rtng(50)|weapon_length(60)|thrust_damage(1, pierce), imodbits_none],
 
