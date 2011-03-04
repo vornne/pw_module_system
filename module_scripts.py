@@ -5718,7 +5718,7 @@ scripts = [
         (copy_position, pos3, pos1),
         (copy_position, pos1, pos5),
         (store_mul, ":damage", ":forwards", ":forwards"),
-        (val_mul, ":damage", 100),
+        (val_mul, ":damage", 10),
         (call_script, "script_cf_damage_ship", ":hull_instance_id", ":damage", 0, 1),
         (copy_position, pos1, pos3),
       (try_end),
