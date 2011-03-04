@@ -28,7 +28,7 @@ server_event_set_overflow_gold                  = 20
 
 client_event_poll_vote                          = 100
 client_event_request_poll                       = 101
-client_event_spectate                           = 102
+client_event_request_spawn_point                = 102
 client_event_request_game_rules                 = 103
 client_event_admin_set_server_name              = 104
 client_event_admin_set_password                 = 105
