@@ -2295,7 +2295,7 @@ scene_props = [
   ("pw_door_rotate_earth_left",spr_rotate_door_flags(2),"earth_sally_gate_left","bo_earth_sally_gate_left", spr_rotate_door_triggers(hit_points=10000, left=1)),
   ("pw_door_rotate_earth_right",spr_rotate_door_flags(2),"earth_sally_gate_right","bo_earth_sally_gate_right", spr_rotate_door_triggers(hit_points=10000)),
 
-  ("pw_wooden_bridge_a",spr_structure_flags(),"bridge_wooden","bo_bridge_wooden", spr_bridge_triggers("pw_wooden_bridge_a_footing", hit_points=10000)),
+  ("pw_wooden_bridge_a",spr_structure_flags(),"bridge_wooden","bo_bridge_wooden", spr_bridge_triggers("pw_wooden_bridge_a_footing", hit_points=15000)),
   ("pw_wooden_bridge_a_footing",spr_build_flags(),"box_a","bo_box_a", spr_bridge_footing_triggers()),
   ("pw_rope_bridge",spr_structure_flags(),"rope_bridge_15m","bo_rope_bridge_15m", spr_bridge_triggers("pw_rope_bridge_footing", hit_points=2000)),
   ("pw_rope_bridge_footing",spr_build_flags(),"castle_f_wall_way_a","bo_castle_f_wall_way_a", spr_bridge_footing_triggers()),
