@@ -2975,9 +2975,10 @@ scripts = [
     (try_end),
     ]),
 
-  ("castle_receive_tax",
+  ("castle_receive_gold",
    [(store_script_param, ":castle_slot", 1),
     (store_script_param, ":gold_value", 2),
+    (store_script_param, ":multiplier", 3),
 
     (try_begin),
       (is_between, ":castle_slot", slot_mission_data_castle_owner_faction_begin, slot_mission_data_castle_owner_faction_end),
@@ -2985,7 +2986,7 @@ scripts = [
       (troop_get_slot, ":instance_id", "trp_mission_data", ":castle_slot"),
       (gt, ":instance_id", 0),
       (scene_prop_get_slot, ":chest_gold", ":instance_id", slot_scene_prop_stack_count),
-      (val_mul, ":gold_value", castle_tax_gold_multiplier),
+      (val_mul, ":gold_value", ":multiplier"),
       (val_div, ":gold_value", 100),
       (val_add, ":chest_gold", ":gold_value"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count, ":chest_gold"),
@@ -3254,6 +3255,8 @@ scripts = [
       (call_script, "script_player_add_equipped_items", ":player_id", ":troop_id"),
       (call_script, "script_player_add_spawn_items", ":player_id", 1),
       (call_script, "script_player_respawn_in_place", ":player_id"),
+      (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
+      (call_script, "script_castle_receive_gold", reg1, ":gold_cost", castle_training_gold_multiplier),
     (try_end),
     ]),
 
@@ -3371,7 +3374,7 @@ scripts = [
     (eq, ":fail", 0),
     (call_script, "script_player_adjust_gold", ":player_id", ":gold_value", -1),
     (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
-    (call_script, "script_castle_receive_tax", reg1, ":gold_value"),
+    (call_script, "script_castle_receive_gold", reg1, ":gold_value", castle_tax_gold_multiplier),
     ]),
 
   ("cf_sell_item",

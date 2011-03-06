@@ -271,6 +271,7 @@ max_distance_to_use                   = 200
 seconds_before_removing_dropped_item  = 300
 sell_item_gold_multiplier             = 80
 castle_tax_gold_multiplier            = 10
+castle_training_gold_multiplier       = 50
 craft_skill_reward_gold_multiplier    = 100
 base_export_multiplier                = 100
 
