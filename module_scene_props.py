@@ -89,19 +89,20 @@ def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_strin
     craft_trigger[1].extend([
       (store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":instance_id")])
-    operation_list = [call_script, "script_cf_use_item_stockpile", ":agent_id", ":instance_id", skill_required]
+    resource_list = []
     for resource in resources:
       if type(resource) == type(tuple()):
         for x in range(0, resource[1]):
-          operation_list.append(resource[0])
+          resource_list.append(resource[0])
       elif type(resource) == type(str()):
-        operation_list.append(resource)
+        resource_list.append(resource)
       else:
         raise Exception("invalid resource entry", resource)
-    script_use_item_stockpile_tuple_size = 9
-    for unused in range(len(operation_list), script_use_item_stockpile_tuple_size):
-      operation_list.append(-1)
-    craft_trigger[1].append(tuple(operation_list[:script_use_item_stockpile_tuple_size]))
+    for unused in range(len(resource_list), 4):
+      resource_list.append(-1)
+    operation_list = [call_script, "script_cf_use_item_stockpile", ":agent_id", ":instance_id", skill_required]
+    operation_list.extend(resource_list[:4])
+    craft_trigger[1].append(tuple(operation_list))
   return [init_trigger, buy_trigger, craft_trigger]
 
 def spr_export_item_triggers(item_id, use_string="str_export"):
