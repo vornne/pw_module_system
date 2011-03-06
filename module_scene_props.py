@@ -1932,8 +1932,8 @@ scene_props = [
   ("pw_export_iron_bar",spr_use_time(10),"pw_iron_bar","bo_weapon_small", spr_export_item_triggers("itm_iron_bar")),
   ("pw_export_iron_bar_med",spr_use_time(10),"pw_iron_bar_med","bo_weapon_small", spr_export_item_triggers("itm_iron_bar_med")),
   ("pw_export_iron_bar_long",spr_use_time(10),"pw_iron_bar_long","bo_weapon_small", spr_export_item_triggers("itm_iron_bar_long")),
-  ("pw_process_wood",spr_use_time(20),"bench_tavern_b","bo_bench_tavern_b", spr_process_resource_triggers("script_cf_process_wood", use_string="str_process_wood")),
-  ("pw_process_iron",spr_use_time(30),"smithy_forge","bo_smithy_forge", spr_process_resource_triggers("script_cf_process_iron", use_string="str_process_iron")),
+  ("pw_process_wood",spr_use_time(6),"bench_tavern_b","bo_bench_tavern_b", spr_process_resource_triggers("script_cf_process_wood", use_string="str_process_wood")),
+  ("pw_process_iron",spr_use_time(8),"smithy_forge","bo_smithy_forge", spr_process_resource_triggers("script_cf_process_iron", use_string="str_process_iron")),
 
   ("pw_buy_straw_hat",spr_buy_item_flags(1),"straw_hat_new","bo_armor_head", spr_buy_item_triggers("itm_straw_hat", resources=[], skill_required=1)),
   ("pw_buy_head_wrappings",spr_buy_item_flags(1),"head_wrapping","bo_armor_head", spr_buy_item_triggers("itm_head_wrappings", resources=[], skill_required=1)),
