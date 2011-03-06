@@ -2548,7 +2548,7 @@ scripts = [
     (try_end),
     (try_begin),
       (gt, ":armor_value", 0),
-      (store_random_in_range, ":loot_multiplier", 20, 51),
+      (store_random_in_range, ":loot_multiplier", 50, 71),
       (val_mul, ":armor_value", ":loot_multiplier"),
       (val_div, ":armor_value", 100),
       (val_add, ":gold_loot", ":armor_value"),
