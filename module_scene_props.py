@@ -62,6 +62,8 @@ def spr_buy_item_flags(use_time=1):
   use_time = max(use_time, 1)
   return spr_use_time(use_time)
 
+crafting_info = []
+
 def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_string=None, tableau=None, resources=[], skill_required=0):
   buy_trigger = (ti_on_scene_prop_cancel_use,
      [(store_trigger_param_1, ":agent_id"),
@@ -103,6 +105,7 @@ def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_strin
     operation_list = [call_script, "script_cf_use_item_stockpile", ":agent_id", ":instance_id", skill_required]
     operation_list.extend(resource_list[:4])
     craft_trigger[1].append(tuple(operation_list))
+    crafting_info.append([item_id, skill_required, resources])
   return [init_trigger, buy_trigger, craft_trigger]
 
 def spr_export_item_triggers(item_id, use_string="str_export"):
