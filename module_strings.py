@@ -504,6 +504,7 @@ F11 = spawn test horse at agent position^\
 F12 = measure distance to the first spr_pw_test_gold"),
   ("pw_editor_values_info", "Scene prop editor values 1 and 2^^\
 pw_buy_*, pw_stockpile_*:^value 1 = faction + multiplier^value 2 = initial stockpile count^^\
+pw_export_*:^value 1 = faction + multiplier^value 2 = faction tax multiplier^^\
 pw_change_troop_*:^value 1 = faction + multiplier^^\
 pw_door_rotate_*:^value 1 = faction + multiplier^value 2 = initial door state (0 = closed, 1 = open)^^\
 pw_door_teleport_*:^value 1 = faction + multiplier^value 2 = linking id with x^^\

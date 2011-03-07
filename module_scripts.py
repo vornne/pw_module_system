@@ -3402,7 +3402,11 @@ scripts = [
     (is_between, ":item_id", all_items_begin, all_items_end),
     (call_script, "script_cf_agent_consume_item", ":agent_id", ":item_id", 1),
     (call_script, "script_scene_prop_get_gold_value", ":instance_id", ":item_id", base_export_multiplier),
-    (call_script, "script_player_adjust_gold", ":player_id", reg0, 1),
+    (assign, ":gold_value", reg0),
+    (call_script, "script_player_adjust_gold", ":player_id", ":gold_value", 1),
+    (prop_instance_get_variation_id_2, ":tax_multiplier", ":instance_id"),
+    (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
+    (call_script, "script_castle_receive_gold", reg1, ":gold_value", ":tax_multiplier"),
     ]),
 
   ("cf_gain_gold",
