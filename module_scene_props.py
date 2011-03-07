@@ -174,6 +174,13 @@ def spr_rotate_door_triggers(hit_points=1000, resource_class=item_class_wood, le
     spr_call_script_use_trigger("script_cf_use_rotate_door", left),
     [init_scene_prop, "script_cf_init_rotate_door", left]]
 
+def spr_rotate_door_no_hit_flags(use_time=1):
+  return sokf_moveable|spr_use_time(use_time)
+
+def spr_rotate_door_no_hit_triggers(left=0):
+  return [spr_call_script_use_trigger("script_cf_use_rotate_door", left),
+    [init_scene_prop, "script_cf_init_rotate_door", left]]
+
 def spr_drawbridge_winch_triggers(target_scene_prop, rotation_steps=10, step_size=-8, animation_time=200):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -2283,8 +2290,8 @@ scene_props = [
   ("pw_door_rotate_viking_right",spr_rotate_door_flags(1),"viking_keep_destroy_sally_door_right","bo_viking_keep_destroy_sally_door_right", spr_rotate_door_triggers(hit_points=5000)),
   ("pw_door_rotate_gatehouse_left",spr_rotate_door_flags(1),"gatehouse_door_left","bo_gatehouse_door_left", spr_rotate_door_triggers(hit_points=7000, left=1)),
   ("pw_door_rotate_gatehouse_right",spr_rotate_door_flags(1),"gatehouse_door_right","bo_gatehouse_door_right", spr_rotate_door_triggers(hit_points=7000)),
-  ("pw_door_rotate_dungeon_cell_a",spr_rotate_door_flags(1),"dungeon_door_cell_a","bo_dungeon_door_cell_a", spr_rotate_door_triggers(hit_points=10000, resource_class=item_class_iron)),
-  ("pw_door_rotate_dungeon_cell_b",spr_rotate_door_flags(1),"dungeon_door_cell_b","bo_dungeon_door_cell_b", spr_rotate_door_triggers(hit_points=12000, resource_class=item_class_iron)),
+  ("pw_door_rotate_dungeon_cell_a",spr_rotate_door_no_hit_flags(2),"dungeon_door_cell_a","bo_dungeon_door_cell_a", spr_rotate_door_no_hit_triggers()),
+  ("pw_door_rotate_dungeon_cell_b",spr_rotate_door_no_hit_flags(2),"dungeon_door_cell_b_fixed","bo_dungeon_door_cell_b_fixed", spr_rotate_door_no_hit_triggers()),
   ("pw_door_rotate_dungeon_a",spr_rotate_door_flags(1),"dungeon_door_entry_a","bo_dungeon_door_entry_a", spr_rotate_door_triggers(hit_points=5000)),
   ("pw_door_rotate_dungeon_b",spr_rotate_door_flags(1),"dungeon_door_entry_b","bo_dungeon_door_entry_a", spr_rotate_door_triggers(hit_points=5000)),
   ("pw_door_rotate_dungeon_c",spr_rotate_door_flags(1),"dungeon_door_entry_c","bo_dungeon_door_entry_a", spr_rotate_door_triggers(hit_points=5000)),
