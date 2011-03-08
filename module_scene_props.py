@@ -2273,6 +2273,7 @@ scene_props = [
   ("pw_change_troop_man_at_arms",spr_use_time(90),"shield_heater_c","bo_shield_kite_small", spr_change_troop_triggers("trp_man_at_arms", cost=5000)),
   ("pw_change_troop_engineer",spr_use_time(80),"pw_repair_hammer","bo_weapon_small", spr_change_troop_triggers("trp_engineer", cost=2500)),
   ("pw_change_troop_doctor",spr_use_time(100),"package","bobaggage", spr_change_troop_triggers("trp_doctor", cost=3500)),
+  ("pw_change_troop_sailor",spr_use_time(70),"scimeter","bo_weapon", spr_change_troop_triggers("trp_sailor", cost=2000)),
   ("pw_change_troop_lord",spr_use_time(70),"gothic_chair","bogothic_chair", spr_change_troop_triggers("trp_lord", cost=500, use_string="str_troop_assume_role")),
   ("pw_change_troop_ruffian",spr_use_time(40),"sledgehammer","bo_weapon", spr_change_troop_triggers("trp_ruffian", cost=800, use_string="str_troop_become")),
   ("pw_change_troop_brigand",spr_use_time(50),"spiked_club","bo_weapon", spr_change_troop_triggers("trp_brigand", cost=900, use_string="str_troop_become")),

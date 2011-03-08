@@ -485,6 +485,18 @@ knows_labouring_8 = knows_reserved_1_8
 knows_labouring_9 = knows_reserved_1_9
 knows_labouring_10 = knows_reserved_1_10
 
+skl_sailing = skl_reserved_2
+knows_sailing_1 = knows_reserved_2_1
+knows_sailing_2 = knows_reserved_2_2
+knows_sailing_3 = knows_reserved_2_3
+knows_sailing_4 = knows_reserved_2_4
+knows_sailing_5 = knows_reserved_2_5
+knows_sailing_6 = knows_reserved_2_6
+knows_sailing_7 = knows_reserved_2_7
+knows_sailing_8 = knows_reserved_2_8
+knows_sailing_9 = knows_reserved_2_9
+knows_sailing_10 = knows_reserved_2_10
+
 pw_skills = [
   "ironflesh",
   "power_strike",
@@ -497,6 +509,7 @@ pw_skills = [
   "wound_treatment",
   "labouring",
   "looting",
+  "sailing",
   ]
 
 def get_skill_name(skill):
