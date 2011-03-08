@@ -2702,6 +2702,8 @@ scripts = [
     (store_script_param, ":add_abs_sub", 3),
 
     (try_begin),
+      (ge, ":gold_value", 0),
+      (this_or_next|eq, ":add_abs_sub", 0),
       (gt, ":gold_value", 0),
       (player_get_gold, ":original_player_gold", ":player_id"),
       (try_begin),
