@@ -260,7 +260,7 @@ poll_time_duration                    = 60
 
 max_distance_to_play_sound            = 10000
 max_distance_to_see_labels            = 1500
-max_distance_horse_rider              = 2000
+max_distance_horse_rider              = 5000
 max_distance_local_chat               = 3000
 max_distance_local_chat_shout         = 5000
 ambient_distance_local_chat           = 1000
