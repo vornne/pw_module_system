@@ -439,6 +439,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("not_a_member_of_s1", "You are not a member of the {s1}."),
   ("s1_captured_s2", "The {s1} have captured {s2}!"),
   ("door_locked_by_s1", "The door is locked by the {s1}."),
+  ("door_bolted", "The door is bolted on the other side."),
   ("s0_killed_faction_member", "{s0} killed a member of the same faction!"),
   ("s0_has_been_outlawed", "{s0} has been outlawed!"),
   ("you_have_been_outlawed", "You have been outlawed!"),
@@ -506,7 +507,7 @@ F12 = measure distance to the first spr_pw_test_gold"),
 pw_buy_*, pw_stockpile_*:^value 1 = faction + multiplier^value 2 = initial stockpile count^^\
 pw_export_*:^value 1 = faction + multiplier^value 2 = faction tax multiplier^^\
 pw_change_troop_*:^value 1 = faction + multiplier^^\
-pw_door_rotate_*:^value 1 = faction + multiplier^value 2 = initial door state (0 = closed, 1 = open)^^\
+pw_door_rotate_*:^value 1 = faction + multiplier^value 2 = options bitfield (0x1 = start open, 0x2 = bolted)^^\
 pw_door_teleport_*:^value 1 = faction + multiplier^value 2 = linking id with x^^\
 pw iron mines:^value 1 = initial hit points / 1000^^\
 pw bridges:^value 2 = linking id with x_footing^^\
