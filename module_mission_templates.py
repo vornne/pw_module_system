@@ -477,7 +477,7 @@ mission_templates = [
       (multiplayer_send_string_to_server, ":event", s0),
       ]),
 
-    (0, 0.1, 0, [(game_key_clicked, gk_inventory_window),(call_script, "script_cf_no_input_presentation_active")],
+    (0, 0.05, 0, [(game_key_clicked, gk_inventory_window),(call_script, "script_cf_no_input_presentation_active")],
      [(assign, "$g_chat_box_string_id", "str_send_message_to_players_nearby"),
       (assign, "$g_chat_box_event_type", chat_event_type_local),
       (start_presentation, "prsnt_chat_box"),
