@@ -115,7 +115,7 @@ troops = [
    str_10|agi_12|int_4|cha_4|level(1),wpex(90,80,100,50,80,50),knows_ironflesh_2|knows_power_strike_2|knows_athletics_2|knows_engineer_5|knows_riding_2|knows_looting_1|knows_sailing_4,default_face_1,default_face_2],
   ["doctor","Doctor","a doctor",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_fur_hat","itm_headcloth","itm_fur_coat","itm_leather_vest","itm_ankle_boots","itm_woolen_hose"],
-   str_10|agi_10|int_4|cha_4|level(1),wpex(60,50,50,10,20,20),knows_athletics_2|knows_wound_treatment_5|knows_riding_1,default_face_1,default_face_2],
+   str_10|agi_10|int_4|cha_4|level(1),wpex(60,50,50,10,20,20),knows_athletics_2|knows_power_strike_1|knows_wound_treatment_5|knows_riding_1,default_face_1,default_face_2],
   ["sailor","Sailor","a sailor",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_fur_hat_b","itm_woolen_cap","itm_tabard","itm_pelt_coat","itm_ankle_boots","itm_wrapping_boots","itm_club","itm_blunt_falchion"],
    str_14|agi_12|int_4|cha_4|level(1),wpex(95,80,80,50,50,70),knows_ironflesh_3|knows_power_strike_3|knows_athletics_2|knows_sailing_9|knows_riding_1,default_face_1,default_face_2],
