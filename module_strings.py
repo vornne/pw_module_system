@@ -500,6 +500,7 @@ To shout with the local chat messages, hold down right shift while pressing ente
 ^-- Edit scene mode keys^\
 F1 = this information^\
 F2 = scene prop editor value information^\
+F9 = spawn new random player agent^\
 F10 = move agent to the positions of all scene props added to the ship collision list when the scene was loaded^\
 F11 = spawn test horse at agent position^\
 F12 = measure distance to the first spr_pw_test_gold"),
