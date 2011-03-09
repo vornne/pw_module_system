@@ -306,8 +306,10 @@ chat_overlay_ring_buffer_begin        = 60
 chat_overlay_ring_buffer_size         = 10
 chat_overlay_ring_buffer_end          = chat_overlay_ring_buffer_begin + chat_overlay_ring_buffer_size
 
-outlaw_rating_for_kill                = 5
+outlaw_rating_for_kill                = 2
+outlaw_rating_for_team_kill           = 5
 outlaw_rating_outlawed                = 15
+outlaw_rating_maximum                 = 30
 
 inventory_slots_per_row               = 6
 inventory_slot_spacing                = 100
