@@ -25,6 +25,8 @@ server_event_return_password                    = 17
 server_event_set_player_score_kill_death        = 18
 server_event_show_poll                          = 19
 server_event_set_overflow_gold                  = 20
+server_event_faction_chat                       = 21
+server_event_faction_lord_chat                  = 22
 
 client_event_poll_vote                          = 100
 client_event_request_poll                       = 101

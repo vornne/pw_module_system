@@ -463,6 +463,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 
   ("chat_format", "[{s1}] {s0}"),
   ("send_message_to_players_nearby", "Send message to players nearby:"),
+  ("send_message_to_the_s11", "Send message to the {s11}:"),
   ("change_faction_name", "Change the name of your faction:"),
 
   ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12}"),
@@ -488,7 +489,7 @@ When you die, a bag with a small percentage of your money and part of the value 
 Troops with the wound treatment skill can heal other badly wounded players by hitting them with the surgeon's scalpel, up to a certain percentage of full health; while resting on beds can be used by less wounded troops to heal fully - each type of bed can have a different minimum health required. \
 Players hit with a poisoned dagger will die slowly over time, unless a doctor treats them with a healing herb leaf.^^\
 Enemy castles can be captured for your faction by using the flag pole (probably on top of the castle keep) while holding a your faction's banner item. The banner and name of a faction can be changed by the lord; when the banner is changed, armor on players of that faction will be updated, but items will not.^^\
-To shout with the local chat messages, hold down right shift while pressing enter."),
+To shout with the local chat messages, hold down right shift while pressing enter. With faction chat messages, the lord can send messages that are displayed in big letters in the same way, with right shift."),
   ("pw_editor_welcome", "Press F1 for editing information."),
   ("pw_editor_info", "-- General editing information^^\
 * Active scene props (starting with pw) do not work in this mode, only on a dedicated server.^\

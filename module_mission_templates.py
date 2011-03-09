@@ -483,6 +483,16 @@ mission_templates = [
       (start_presentation, "prsnt_chat_box"),
       ]),
 
+    (0, 0.05, 0, [(game_key_clicked, gk_quests_window),(call_script, "script_cf_no_input_presentation_active")],
+     [(multiplayer_get_my_player, ":player_id"),
+      (player_get_slot, ":faction_id", ":player_id", slot_player_faction_id),
+      (is_between, ":faction_id", castle_factions_begin, factions_end),
+      (str_store_faction_name, s11, ":faction_id"),
+      (assign, "$g_chat_box_string_id", "str_send_message_to_the_s11"),
+      (assign, "$g_chat_box_event_type", chat_event_type_faction),
+      (start_presentation, "prsnt_chat_box"),
+      ]),
+
     (0, 0, 0,
      [(this_or_next|key_clicked, key_up),
       (this_or_next|key_clicked, key_down),

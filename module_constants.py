@@ -228,6 +228,8 @@ slot_last_chat_message_buffer_color_begin       = 10
 chat_event_type_local                 = 0
 chat_event_type_local_shout           = 1
 chat_event_type_set_faction_name      = 2
+chat_event_type_faction               = 4
+chat_event_type_faction_lord          = 5
 
 slot_ship_array_count                 = 0
 slot_ship_array_begin                 = 1
