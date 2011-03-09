@@ -5891,7 +5891,7 @@ scripts = [
       (try_begin),
         (neq, ":inactive_sail_instance_id", -1),
         (neg|scene_prop_slot_eq, ":hull_instance_id", slot_scene_prop_state, scene_prop_state_destroyed),
-        (copy_position, pos4, pos1),
+        (init_position, pos4),
         (position_set_z, pos4, z_position_to_hide_object),
         (prop_instance_stop_animating, ":inactive_sail_instance_id"),
         (prop_instance_set_position, ":inactive_sail_instance_id", pos4),
