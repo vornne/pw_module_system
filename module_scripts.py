@@ -5362,7 +5362,7 @@ scripts = [
         (store_sub, ":damage", ":drowning_count", 3),
         (try_begin),
           (gt, ":damage", 1),
-          (val_mul, ":damage", ":damage"),
+          (val_mul, ":damage", 2),
           (store_agent_hit_points, ":hit_points", ":agent_id", 1),
           (val_sub, ":hit_points", ":damage"),
           (agent_deliver_damage_to_agent, ":agent_id", ":agent_id", 5),
