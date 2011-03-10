@@ -236,8 +236,8 @@ slot_ship_array_begin                 = 1
 slot_ship_array_collision_props_count = 100
 slot_ship_array_collision_props_begin = 101
 
-slot_removed_plants_count             = 0
-slot_removed_plants_begin             = 1
+slot_removed_resources_count          = 0
+slot_removed_resources_begin          = 1
 
 ########################################################
 ##  TEAM SLOTS             #############################

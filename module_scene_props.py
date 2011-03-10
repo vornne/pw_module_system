@@ -216,56 +216,59 @@ def spr_tree_triggers(full_hp=1000, fell_hp=500, resource_hp=100, hardness=1, re
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(full_hp, fell_hp)),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, full_hp - resource_hp),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, full_hp),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
       ]),
     (ti_on_scene_prop_hit,
      [(store_trigger_param_1, ":instance_id"),
       (store_trigger_param_2, ":hit_damage"),
-      (call_script, "script_cf_hit_tree", ":instance_id", ":hit_damage", full_hp, spr_check_hit_points(fell_hp), resource_hp, hardness, resource_imod, regrow_interval),
+      (call_script, "script_cf_hit_tree", ":instance_id", ":hit_damage", spr_check_hit_points(fell_hp), resource_hp, hardness, resource_imod, regrow_interval),
       ]),
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_animation_finished,
      [(store_trigger_param_1, ":instance_id"),
-      (call_script, "script_cf_plant_animation_finished", ":instance_id", full_hp, resource_hp),
+      (call_script, "script_cf_resource_animation_finished", ":instance_id", resource_hp),
       ]),
     (ti_on_scene_prop_use, [])]
 
-def spr_hit_plant_triggers(resource_item, full_hp=1000, resource_hp=200, hardness=1, tool_class=-1, skill=-1, regrow_interval=600, use_string="str_harvest", sound=-1):
+def spr_hit_plant_triggers(resource_item, full_hp=1000, resource_hp=200, hardness=1, tool_class=-1, skill=-1, attack_range=21, spawn_on_ground=1, regrow_interval=600, use_string="str_harvest", effect_script=-1):
   return [(ti_on_scene_prop_init,
     [(store_trigger_param_1, ":instance_id"),
      (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(full_hp)),
      (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, full_hp - resource_hp),
+     (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, full_hp),
      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
      ]),
     (ti_on_scene_prop_hit,
      [(store_trigger_param_1, ":instance_id"),
       (store_trigger_param_2, ":hit_damage"),
-      (call_script, "script_cf_hit_plant", ":instance_id", ":hit_damage", full_hp, resource_hp, resource_item, hardness, tool_class, skill, regrow_interval, sound),
+      (call_script, "script_cf_hit_regrowing_resource", ":instance_id", ":hit_damage", resource_hp, resource_item, hardness, tool_class, skill, attack_range, spawn_on_ground, regrow_interval, effect_script),
       ]),
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_animation_finished,
      [(store_trigger_param_1, ":instance_id"),
-      (call_script, "script_cf_plant_animation_finished", ":instance_id", full_hp, resource_hp),
+      (call_script, "script_cf_resource_animation_finished", ":instance_id", resource_hp),
       ]),
     (ti_on_scene_prop_use, [])]
 
 def spr_resource_flags():
   return sokf_destructible|sokf_show_hit_point_bar|sokf_moveable|sokf_missiles_not_attached
 
-def spr_hit_resource_triggers(resource_item, resource_hp=100, hardness=1, tool_class=-1, use_string="str_mine"):
+def spr_hit_mine_triggers(resource_item, resource_hp=100, hardness=1, regrow_interval=14400, use_string="str_mine"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
-      (call_script, "script_init_resource", ":instance_id", resource_hp),
+      (call_script, "script_initialize_resource_hit_points", ":instance_id", resource_hp),
       ]),
     (ti_on_scene_prop_hit,
      [(store_trigger_param_1, ":instance_id"),
       (store_trigger_param_2, ":hit_damage"),
-      (call_script, "script_cf_hit_resource", ":instance_id", ":hit_damage", resource_hp, resource_item, hardness, tool_class),
+      (call_script, "script_cf_hit_regrowing_resource", ":instance_id", ":hit_damage", resource_hp, resource_item, hardness, item_class_mining, "skl_labouring", 21, 0, regrow_interval, "script_hit_iron_mine_effect"),
       ]),
-    (ti_on_scene_prop_destroy,
+    (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_animation_finished,
      [(store_trigger_param_1, ":instance_id"),
-      (call_script, "script_cf_destroy_resource", ":instance_id")
+      (call_script, "script_cf_resource_animation_finished", ":instance_id", resource_hp),
       ]),
     (ti_on_scene_prop_use, [])]
 
@@ -1926,14 +1929,14 @@ scene_props = [
   ("pw_tree_palm_a",spr_tree_flags(),"palm_a","bo_palm_a", spr_tree_triggers(full_hp=1500, fell_hp=700)),
   ("pw_tree_trunk_a",0,"pw_tree_trunk_a","bo_pw_tree_trunk_a", []),
   ("pw_tree_trunk_b",0,"pw_tree_trunk_b","bo_pw_tree_trunk_b", []),
-  ("pw_stick_bush_2a",spr_resource_flags(),"bushes02_a","bo_pw_bushes02_a", spr_hit_plant_triggers("itm_stick", full_hp=1000, resource_hp=50, skill="skl_labouring", regrow_interval=70, sound="snd_cut_wood_scratch")),
-  ("pw_stick_bush_2b",spr_resource_flags(),"bushes02_b","bo_pw_bushes02_b", spr_hit_plant_triggers("itm_stick", full_hp=700, resource_hp=50, regrow_interval=60, sound="snd_cut_wood_scratch")),
-  ("pw_stick_bush_2c",spr_resource_flags(),"bushes02_c","bo_pw_bushes02_c", spr_hit_plant_triggers("itm_stick", full_hp=1500, resource_hp=50, regrow_interval=120, sound="snd_cut_wood_scratch")),
-  ("pw_herb_bush_a",spr_resource_flags(),"pw_herb_bush_a","bo_pw_herb_bush_a", spr_hit_plant_triggers("itm_herb_a", full_hp=300, resource_hp=50)),
+  ("pw_stick_bush_2a",spr_resource_flags(),"bushes02_a","bo_pw_bushes02_a", spr_hit_plant_triggers("itm_stick", full_hp=1000, resource_hp=50, regrow_interval=70, effect_script="script_hit_bush_effect")),
+  ("pw_stick_bush_2b",spr_resource_flags(),"bushes02_b","bo_pw_bushes02_b", spr_hit_plant_triggers("itm_stick", full_hp=700, resource_hp=50, regrow_interval=60, effect_script="script_hit_bush_effect")),
+  ("pw_stick_bush_2c",spr_resource_flags(),"bushes02_c","bo_pw_bushes02_c", spr_hit_plant_triggers("itm_stick", full_hp=1500, resource_hp=50, regrow_interval=120, effect_script="script_hit_bush_effect")),
+  ("pw_herb_bush_a",spr_resource_flags(),"pw_herb_bush_a","bo_pw_herb_bush_a", spr_hit_plant_triggers("itm_herb_a", full_hp=400, resource_hp=40, regrow_interval=600)),
 
-  ("pw_iron_mine",spr_resource_flags(),"pw_iron_mine","bo_pw_iron_mine", spr_hit_resource_triggers("itm_iron_ore", resource_hp=60, tool_class=item_class_mining, hardness=4)),
-  ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_resource_triggers("itm_iron_ore", resource_hp=70, tool_class=item_class_mining, hardness=4)),
-  ("pw_iron_mine_b",spr_resource_flags(),"pw_iron_mine_b","bo_pw_iron_mine_b", spr_hit_resource_triggers("itm_iron_ore", resource_hp=50, tool_class=item_class_mining, hardness=4)),
+  ("pw_iron_mine",spr_resource_flags(),"pw_iron_mine","bo_pw_iron_mine", spr_hit_mine_triggers("itm_iron_ore", resource_hp=60, hardness=4)),
+  ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_iron_ore", resource_hp=70, hardness=4)),
+  ("pw_iron_mine_b",spr_resource_flags(),"pw_iron_mine_b","bo_pw_iron_mine_b", spr_hit_mine_triggers("itm_iron_ore", resource_hp=50, hardness=5)),
 
   ("pw_stockpile_wood_block",spr_use_time(1),"wood_heap_a","bo_wood_heap_a", spr_stockpile_resource_triggers("itm_wood_block")),
   ("pw_stockpile_wood_branch",spr_use_time(1),"wood_heap_b","bo_wood_heap_b", spr_stockpile_resource_triggers("itm_branch")),

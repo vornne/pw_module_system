@@ -475,7 +475,7 @@ Troop type, faction, gold, and outlaw rating are saved every few seconds, and if
 For a certain period after a player spawns they will be invulnerable to attack, and also unable to attack others; when this period is over the default weapons will be given.^^\
 To buy items from stockpiles, sheath your weapons and tap the use button (rather than hold it down); to sell, hold the item in your hand and tap use. When bought, items are spawned right on top of the stockpile, so you might have to aim around until the 'Equip' overlay shows. \
 Holding down the use key until the bar finishes is for crafting the item: you need to have the required engineering skill and resources equipped. If the item stockpile has no 'Stack count' line in the stats overlay, it is not craftable, and an unlimited amount of items can be bought there.^^\
-Trees can be cut down for wood and mines hit for iron with the required labouring skill and tools; trees regrow after a while, but once mines are gone they will not come back. \
+Trees can be cut down for wood and mines hit for iron with the required labouring skill and tools; trees regrow after a while, and mines respawn after a longer period. \
 These resources can be refined with engineering skill at stations in the castles - the carpenter's bench and the forge - and then used for crafting weapons or other items. \
 The forge can be used to combine or split iron bar types into the larger or smaller type: to split, stand on the left side and use the forge, to combine, stand on the right. \
 Certain destructable items like doors or bridges can be repaired with engineering skill, tools, and resources like wood (of which any wood item will do, though items can have different resource values).^^\
