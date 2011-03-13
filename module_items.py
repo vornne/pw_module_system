@@ -923,6 +923,8 @@ itm_castle_banner("fac_4", "b"),
  0, weight(1)|leg_armor(35)|difficulty(0), imodbits_none],
 ["invisible_hand", "Invisible Hand", [("invisible_L",0)], itp_type_hand_armor, 0,
  0, weight(1)|body_armor(10)|difficulty(0), imodbits_none],
+["invisible_sword", "Invisible Sword", [("invisible",0)], itp_type_two_handed_wpn|itp_two_handed|itp_primary, itc_greatsword|itcf_carry_sword_back,
+ 0, weight(1)|difficulty(30)|spd_rtng(120)|weapon_length(120)|swing_damage(50, cut)|thrust_damage(50, pierce), imodbits_sword_high],
 
 ["all_items_end", "all_items_end", [("shield_round_a", 0)], 0, 0, 1, 0, 0],
 ]
