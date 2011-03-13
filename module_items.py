@@ -921,7 +921,7 @@ itm_castle_banner("fac_4", "b"),
  0, weight(1)|body_armor(60)|leg_armor(30)|difficulty(0), imodbits_none],
 ["invisible_foot", "Invisible Foot", [("invisible",0)], itp_type_foot_armor|itp_attach_armature, 0,
  0, weight(1)|leg_armor(35)|difficulty(0), imodbits_none],
-["invisible_hand", "Invisible Hand", [("invisible",0)], itp_type_hand_armor, 0,
+["invisible_hand", "Invisible Hand", [("invisible_L",0)], itp_type_hand_armor, 0,
  0, weight(1)|body_armor(10)|difficulty(0), imodbits_none],
 
 ["all_items_end", "all_items_end", [("shield_round_a", 0)], 0, 0, 1, 0, 0],
