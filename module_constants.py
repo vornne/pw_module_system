@@ -348,7 +348,7 @@ game_type_names_begin = "str_game_type_1"
 game_type_names_end = "str_game_types_end"
 
 banner_meshes_begin = "mesh_banner_a01"
-banner_meshes_end = "mesh_arms_a01"
+banner_meshes_end = "mesh_banners_default_a"
 banner_meshes_end_minus_one = "mesh_banner_f21"
 
 banner_items_begin = "itm_pw_banner_pole_a01"
