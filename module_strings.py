@@ -517,7 +517,7 @@ pw walls, ladders:^value 2 = linking id with x_build^^\
 pw portcullises, drawbridges:^value 2 = linking id with x_winch^^\
 pw ships:^value 1 = initial ramp position (0 = center, 1 = left, 2 = right)^Only place the hull, the other parts are spawned at mission start.^^\
 pw_castle_capture_point:^value 1 = faction / castle id^^\
-pw_castle_sign:^value 1 = faction / castle id^value 2 = castle name string no (name must not be one used by another castle)^^\
+pw_castle_sign:^value 1 = faction / castle id^value 2 = number of the name, listed at the end of strings.txt (name can't be one used by another castle)^^\
 pw_castle_money_chest:^value 1 = faction / castle id^value 2 = initial gold^^\
 pw_scene_day_time:^value 1 = scene hour of day (0 - 23)^^\
 pw_scene_ambient_sound:^value 1 = sound id offset from snd_fire_loop^value 2 = probability the sound will be played (0 - 100) or 127 = looping^^\
