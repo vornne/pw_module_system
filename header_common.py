@@ -171,6 +171,9 @@ net_pack_3_value_upper_bound = (1 << 10)
 net_pack_3_multiplier_2 = (1 << 10)
 net_pack_3_multiplier_3 = (1 << 20)
 
+net_chat_event_mask = 0xFF
+net_chat_type_multiplier = 0x100
+
 admin_action_kick_player                        = 0
 admin_action_ban_player_temp                    = 1
 admin_action_ban_player_perm                    = 2

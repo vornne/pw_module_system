@@ -20,7 +20,6 @@ player_spawn_state_invulnerable       = 1
 player_spawn_state_at_marker          = 2
 player_spawn_state_alive              = 3
 
-slot_player_next_chat_event           = 5
 slot_player_next_chat_event_type      = 6
 slot_player_list_button_id            = 7
 slot_player_outlaw_rating             = 8
@@ -220,9 +219,8 @@ slot_mission_data_castle_money_chest_begin      = 30
 slot_mission_data_castle_money_chest_end        = 38
 slot_mission_data_faction_to_change_name_of     = 100
 
-slot_last_chat_message_event          = 0
-slot_last_chat_message_event_type     = 1
-slot_last_chat_message_not_recieved   = 2
+slot_last_chat_message_event_type     = 0
+slot_last_chat_message_not_recieved   = 1
 slot_last_chat_message_buffer_color_begin       = 10
 
 chat_event_type_local                 = 0

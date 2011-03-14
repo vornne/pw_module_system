@@ -469,13 +469,13 @@ mission_templates = [
 
     (0.3, 0.3, 0, [(troop_slot_eq, "trp_last_chat_message", slot_last_chat_message_not_recieved, 1)],
      [(troop_slot_eq, "trp_last_chat_message", slot_last_chat_message_not_recieved, 1),
-      (troop_get_slot, ":event", "trp_last_chat_message", slot_last_chat_message_event),
-      (troop_get_slot, ":type", "trp_last_chat_message", slot_last_chat_message_event_type),
-      (str_store_troop_name, s0, "trp_last_chat_message"),
+      (troop_get_slot, ":event", "trp_last_chat_message", slot_last_chat_message_event_type),
       (try_begin),
-        (gt, ":type", 0),
-        (multiplayer_send_int_to_server, client_event_chat_message_type, ":event", ":type"),
+        (ge, ":event", net_chat_type_multiplier),
+        (multiplayer_send_int_to_server, client_event_chat_message_type, ":event"),
       (try_end),
+      (val_and, ":event", net_chat_event_mask),
+      (str_store_troop_name, s0, "trp_last_chat_message"),
       (multiplayer_send_string_to_server, ":event", s0),
       ]),
 
