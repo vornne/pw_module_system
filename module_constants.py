@@ -228,6 +228,8 @@ chat_event_type_local_shout           = 1
 chat_event_type_set_faction_name      = 2
 chat_event_type_faction               = 4
 chat_event_type_faction_lord          = 5
+chat_event_type_admin                 = 6
+chat_event_type_admin_shout           = 7
 
 slot_ship_array_count                 = 0
 slot_ship_array_begin                 = 1
@@ -306,6 +308,7 @@ chat_overlay_max_lines                = 100
 chat_overlay_ring_buffer_begin        = 60
 chat_overlay_ring_buffer_size         = 10
 chat_overlay_ring_buffer_end          = chat_overlay_ring_buffer_begin + chat_overlay_ring_buffer_size
+admin_chat_color                      = 0xFFFF00FF
 
 outlaw_rating_for_kill                = 2
 outlaw_rating_for_team_kill           = 5

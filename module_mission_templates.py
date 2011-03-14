@@ -453,7 +453,7 @@ mission_templates = [
       (try_end),
       ]),
 
-    (0, 0, 0, [(game_key_clicked, gk_view_orders),(call_script, "script_cf_no_input_presentation_active")],
+    (0, 0, 0, [(key_clicked, key_f7),(call_script, "script_cf_no_input_presentation_active")],
      [(try_begin),
         (eq, "$g_display_chat_overlay", 0),
         (assign, "$g_display_chat_overlay", 1),
@@ -492,6 +492,19 @@ mission_templates = [
       (str_store_faction_name, s11, ":faction_id"),
       (assign, "$g_chat_box_string_id", "str_send_message_to_the_s11"),
       (assign, "$g_chat_box_event_type", chat_event_type_faction),
+      (start_presentation, "prsnt_chat_box"),
+      ]),
+
+    (0, 0.05, 0, [(game_key_clicked, gk_view_orders),(call_script, "script_cf_no_input_presentation_active")],
+     [(try_begin),
+        (multiplayer_get_my_player, ":player_id"),
+        (player_is_admin, ":player_id"),
+        (assign, "$g_chat_box_player_string_id", "str_send_admin_message_to_s1"),
+      (else_try),
+        (assign, "$g_chat_box_player_string_id", 0),
+      (try_end),
+      (assign, "$g_chat_box_string_id", "str_send_admin_message"),
+      (assign, "$g_chat_box_event_type", chat_event_type_admin),
       (start_presentation, "prsnt_chat_box"),
       ]),
 

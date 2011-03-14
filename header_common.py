@@ -27,6 +27,8 @@ server_event_show_poll                          = 19
 server_event_set_overflow_gold                  = 20
 server_event_faction_chat                       = 21
 server_event_faction_lord_chat                  = 22
+server_event_admin_chat                         = 23
+server_event_admin_chat_shout                   = 24
 
 client_event_poll_vote                          = 100
 client_event_request_poll                       = 101
@@ -173,6 +175,7 @@ net_pack_3_multiplier_3 = (1 << 20)
 
 net_chat_event_mask = 0xFF
 net_chat_type_multiplier = 0x100
+net_chat_param_1_multiplier = 0x10000
 
 admin_action_kick_player                        = 0
 admin_action_ban_player_temp                    = 1
