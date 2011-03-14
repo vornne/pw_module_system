@@ -254,6 +254,7 @@ spawn_invulnerable_time               = 10
 lord_wait_for_reconnect_interval      = 300
 loop_player_check_interval            = 5
 loop_player_check_outlaw_interval     = 60
+loop_agent_check_interval             = 2
 loop_horse_check_interval             = 30
 loop_health_check_interval            = 15
 stack_count_check_interval            = 5

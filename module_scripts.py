@@ -1360,6 +1360,7 @@ scripts = [
     (assign, "$g_loop_player_check_outlaw", 0),
     (assign, "$g_loop_player_check_outlaw_time", 0),
     (assign, "$g_loop_agent_last_checked", 0),
+    (assign, "$g_loop_agent_check_time", 0),
     (assign, "$g_loop_horse_check", 0),
     (assign, "$g_loop_horse_check_time", 0),
     (assign, "$g_loop_health_check", 0),
