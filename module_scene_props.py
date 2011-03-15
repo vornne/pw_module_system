@@ -2018,6 +2018,7 @@ scene_props = [
   ("pw_buy_nordic_warlord_helmet",spr_buy_item_flags(1),"Helmet_C","bo_armor_head", spr_buy_item_triggers("itm_nordic_warlord_helmet", resources=[], skill_required=1)),
   ("pw_buy_full_helm",spr_buy_item_flags(1),"great_helmet_new_b","bo_armor_head", spr_buy_item_triggers("itm_full_helm", resources=[], skill_required=1)),
   ("pw_buy_vaegir_mask",spr_buy_item_flags(1),"vaeg_helmet8","bo_armor_head", spr_buy_item_triggers("itm_vaegir_mask", resources=[], skill_required=1)),
+  ("pw_buy_vaegir_mask_b",spr_buy_item_flags(1),"vaeg_helmet9","bo_armor_head", spr_buy_item_triggers("itm_vaegir_mask_b", resources=[], skill_required=1)),
   ("pw_buy_great_helmet",spr_buy_item_flags(1),"great_helmet_new","bo_armor_head", spr_buy_item_triggers("itm_great_helmet", resources=[], skill_required=1)),
   ("pw_buy_winged_great_helmet",spr_buy_item_flags(1),"maciejowski_helmet_new","bo_armor_head", spr_buy_item_triggers("itm_winged_great_helmet", resources=[], skill_required=1)),
   ("pw_buy_black_helmet",spr_buy_item_flags(1),"black_helm","bo_armor_head", spr_buy_item_triggers("itm_black_helmet", resources=[], skill_required=1)),
