@@ -565,14 +565,14 @@ On scene load, the props are linked by searching for the nearest prop in the sce
 
   ("castle_name_0", "Laszloburg Castle"),
   ("castle_name_1", "Vornneston Castle"),
-  ("castle_name_2", "Horrible Dump"),
-  ("castle_name_3", "Far Away Fairyland"),
-  ("castle_name_4", "Hooligan's Hideout"),
-  ("castle_name_5", "The Fish Market"),
-  ("castle_name_6", "Generic Castle 6"),
-  ("castle_name_7", "Generic Castle 7"),
-  ("castle_name_8", "Generic Castle 8"),
-  ("castle_name_9", "Generic Castle 9"),
+  ("castle_name_2", "Hakrholm Castle"),
+  ("castle_name_3", "Pordisett Castle"),
+  ("castle_name_4", "Bernstead Castle"),
+  ("castle_name_5", "Osvirklif Castle"),
+  ("castle_name_6", "Montibeil Castle"),
+  ("castle_name_7", "Zavansk Castle"),
+  ("castle_name_8", "Valdemel Castle"),
+  ("castle_name_9", "Berwinwic Castle"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]
