@@ -263,6 +263,16 @@ meshes = [
   ("banner_g20", 0, "pw_banner_g20", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("banner_g21", 0, "pw_banner_g21", 0, 0, 0, -90, 0, 0, 1, 1, 1),
 
+  ("banner_h01", 0, "pw_banner_h01", 0, 0, 0, -90, 0, 0, 1, 1, 1),
+  ("banner_h02", 0, "pw_banner_h02", 0, 0, 0, -90, 0, 0, 1, 1, 1),
+  ("banner_h03", 0, "pw_banner_h03", 0, 0, 0, -90, 0, 0, 1, 1, 1),
+  ("banner_h04", 0, "pw_banner_h04", 0, 0, 0, -90, 0, 0, 1, 1, 1),
+  ("banner_h05", 0, "pw_banner_h05", 0, 0, 0, -90, 0, 0, 1, 1, 1),
+  ("banner_h06", 0, "pw_banner_h06", 0, 0, 0, -90, 0, 0, 1, 1, 1),
+  ("banner_h07", 0, "pw_banner_h07", 0, 0, 0, -90, 0, 0, 1, 1, 1),
+  ("banner_h08", 0, "pw_banner_h08", 0, 0, 0, -90, 0, 0, 1, 1, 1),
+  ("banner_h09", 0, "pw_banner_h09", 0, 0, 0, -90, 0, 0, 1, 1, 1),
+
   ("banner_kingdom_a", 0, "pw_banner_kingdom_a", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("banner_kingdom_b", 0, "pw_banner_kingdom_b", 0, 0, 0, -90, 0, 0, 1, 1, 1),
   ("banner_kingdom_c", 0, "pw_banner_kingdom_c", 0, 0, 0, -90, 0, 0, 1, 1, 1),
