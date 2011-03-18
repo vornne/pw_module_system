@@ -59,7 +59,7 @@ def init_heraldic_item(tableau):
 
 def itm_faction_banner(banner_id):
   return ["pw_banner_pole_" + banner_id, "Banner", [("pw_banner_pole",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_wooden_parry, itc_parry_polearm|itcf_carry_spear,
-   4300, weight(7.0)|difficulty(14)|spd_rtng(70)|weapon_length(250)|swing_damage(10, blunt)|thrust_damage(5, blunt), imodbits_none,
+   1200, weight(7.0)|difficulty(14)|spd_rtng(70)|weapon_length(250)|swing_damage(10, blunt)|thrust_damage(5, blunt), imodbits_none,
    [(ti_on_init_item, [(cur_item_set_tableau_material, "tableau_faction_banner_pole", "mesh_banner_" + banner_id)])]]
 
 def itm_castle_banner(faction, suffix):
