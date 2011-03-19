@@ -924,7 +924,7 @@ itm_castle_banner("fac_2", "b"),
 itm_castle_banner("fac_3", "b"),
 itm_castle_banner("fac_4", "b"),
 
-["test_horse", "Test Horse", [("giant_horse",0)], itp_type_horse, 0,
+["test_horse", "Test Horse", [("plated_charger",0)], itp_type_horse, 0,
  0, hit_points(500)|body_armor(100)|difficulty(0)|horse_speed(400)|horse_maneuver(100)|horse_charge(50)|horse_scale(130), imodbit_spirited],
 ["invisible_head", "Invisible Head", [("invisible",0)], itp_type_head_armor|itp_covers_head, 0,
  0, weight(1)|head_armor(60)|difficulty(0), imodbits_none],
