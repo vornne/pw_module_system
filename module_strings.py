@@ -479,6 +479,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("admin_announcement_format", "*ANNOUNCEMENT* [{s1}] {s0}"),
 
   ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12}"),
+  ("error_scene_prop_0_pw", "Error: scene prop instance id 0 is active (pw), so it may not work."),
   ("pw_welcome", "{s10}^^\
 General Information^^\
 When you first join the game, you start in the commoners faction as a peasant; to train as another troop type and join a faction at the same time, go to one of the castles and use a training station. \

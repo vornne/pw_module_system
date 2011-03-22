@@ -587,6 +587,12 @@ mission_templates = [
       (call_script, "script_initialize_item_slots"),
       (call_script, "script_setup_ship_collision_props"),
       (display_message, "str_pw_editor_welcome"),
+      (try_begin),
+        (prop_instance_is_valid, 0),
+        (prop_instance_get_scene_prop_kind, ":spr_id", 0),
+        (ge, ":spr_id", "spr_pw_tree_a1"),
+        (display_message, "str_error_scene_prop_0_pw"),
+      (try_end),
       ]),
 
     (ti_server_player_joined, 0, 0, [],
