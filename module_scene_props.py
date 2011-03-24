@@ -164,6 +164,8 @@ def spr_rotate_door_triggers(hit_points=1000, resource_class=item_class_wood, le
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, hit_points),
       ]),
     (ti_on_scene_prop_hit,
      [(store_trigger_param_1, ":instance_id"),
