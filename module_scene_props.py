@@ -1783,7 +1783,6 @@ scene_props = [
   ("interior_square_keep_b",0,"interior_square_keep_b","bo_interior_square_keep_b", []),
   ("interior_round_keep_a",0,"interior_round_keep_a","bo_interior_round_keep_a", []),
   ("interior_castle_g_square_keep",0,"interior_castle_g_square_keep","bo_interior_castle_g_square_keep", []),
-  ("interior_castle_g_square_keep_b",0,"interior_castle_g_square_keep_b","bo_interior_castle_g_square_keep_b", []),
   ("castle_h_interior_a",0,"castle_h_interior_a","bo_castle_h_interior_a", []),
   ("castle_h_interior_b",0,"castle_h_interior_b","bo_castle_h_interior_b", []),
   ("interior_house_a",0,"interior_house_a","bo_interior_house_a", []),
