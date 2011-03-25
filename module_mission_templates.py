@@ -591,6 +591,7 @@ mission_templates = [
         (prop_instance_is_valid, 0),
         (prop_instance_get_scene_prop_kind, ":spr_id", 0),
         (ge, ":spr_id", "spr_pw_tree_a1"),
+        (prop_instance_get_scene_prop_kind, reg0, 0),
         (display_message, "str_error_scene_prop_0_pw"),
       (try_end),
       ]),

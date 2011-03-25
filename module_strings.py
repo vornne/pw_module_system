@@ -479,7 +479,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("admin_announcement_format", "*ANNOUNCEMENT* [{s1}] {s0}"),
 
   ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12}"),
-  ("error_scene_prop_0_pw", "Error: scene prop instance id 0 is active (pw), so it may not work."),
+  ("error_scene_prop_0_pw", "Error: scene prop instance id 0 (kind {reg0}) is scripted (pw), so it might not work correctly."),
   ("pw_welcome", "{s10}^^\
 General Information^^\
 When you first join the game, you start in the commoners faction as a peasant; to train as another troop type and join a faction at the same time, go to one of the castles and use a training station. \
@@ -506,7 +506,7 @@ To shout with the local chat messages, hold down right shift while pressing ente
 A normal player can only send admin chat messages that are visible to other admins on the server; admins can also send messages to specific players after selecting from the list brought up with F11 (press escape to cancel the list and target everyone), and can also hold right shift when sending to send announcements to all players or warnings to a specific player."),
   ("pw_editor_welcome", "Press F1 for editing information."),
   ("pw_editor_info", "-- General editing information^^\
-* Active scene props (starting with pw) do not work in this mode, only on a dedicated server.^\
+* Scripted scene props (starting with pw) do not work in this mode, only on a dedicated server.^\
 * Make sure the first few scene props placed are not scripted (start with pw): instance id 0 can't be handled by some scripts.^\
 * Factions are numbered from 0 - 5, with commoners = 0, outlaws = 1, and the 4 castle factions starting from 2.^\
 * Castles are numbered from 0 - 7, and start the mission owned by the corresponding castle faction: for example, the default 'White Faction' starts with castles 1 and 5.^\
