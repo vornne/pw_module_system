@@ -503,7 +503,8 @@ Troops with the wound treatment skill can heal other badly wounded players by hi
 Players hit with a poisoned dagger will die slowly over time, unless a doctor treats them with a healing herb leaf.^^\
 Enemy castles can be captured for your faction by using the flag pole (probably on top of the castle keep) while holding a your faction's banner item. The banner and name of a faction can be changed by the lord; when the banner is changed, armor on players of that faction will be updated, but items will not.^^\
 To shout with the local chat messages, hold down right shift while pressing enter. With faction chat messages, the lord can send messages that are displayed in big letters in the same way, with right shift. \
-A normal player can only send admin chat messages that are visible to other admins on the server; admins can also send messages to specific players after selecting from the list brought up with F11 (press escape to cancel the list and target everyone), and can also hold right shift when sending to send announcements to all players or warnings to a specific player."),
+A normal player can only send admin chat messages that are visible to other admins on the server; admins can also send messages to specific players after selecting from the list brought up with F11 (press escape to cancel the list and target everyone), and can also hold right shift when sending to send announcements to all players or warnings to a specific player. \
+As admin, holding down right shift while voting overrides the poll."),
   ("pw_editor_welcome", "Press F1 for editing information."),
   ("pw_editor_info", "-- General editing information^^\
 * Scripted scene props (starting with pw) do not work in this mode, only on a dedicated server.^\
