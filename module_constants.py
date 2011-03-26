@@ -315,6 +315,10 @@ outlaw_rating_for_team_kill           = 5
 outlaw_rating_outlawed                = 15
 outlaw_rating_maximum                 = 30
 
+change_faction_type_respawn           = 0
+change_faction_type_no_respawn        = 1
+change_faction_type_outlawed          = 2
+
 inventory_slots_per_row               = 6
 inventory_slot_spacing                = 100
 
