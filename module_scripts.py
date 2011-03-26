@@ -4766,6 +4766,7 @@ scripts = [
       (assign, ":subtract_resource", 0),
       (try_begin),
         (ge, ":hit_points", ":full_hit_points"),
+        (neq, ":state", scene_prop_state_active),
         (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_active),
         (assign, ":result", repairable_repaired),
       (else_try),
