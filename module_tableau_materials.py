@@ -186,10 +186,10 @@ tableaus = [
   ("pavise_shield_1", 0, "sample_shield_matte", 512, 512, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_pavise_1", banner_xy=(-54,120), banner_scale=118, camera_width_height=(200,200))),
   ("pavise_shield_2", 0, "sample_shield_matte", 512, 512, 0, 0, 0, 0, tableau_shield_banner("mesh_tableau_mesh_shield_pavise_2", banner_xy=(-54,120), banner_scale=116, camera_width_height=(200,200))),
 
-  ("heraldic_armor_a", 0, "sample_heraldic_armor_a", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_a", banner_xyz=(-25,130,50), banner_scale=100)),
-  ("heraldic_armor_b", 0, "sample_heraldic_armor_b", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_b", banner_xyz=(-5,150,10), banner_scale=100)),
-  ("heraldic_armor_c", 0, "sample_heraldic_armor_c", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_c", banner_xyz=(0,150,10), banner_scale=100)),
-  ("heraldic_armor_d", 0, "sample_heraldic_armor_d", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_d", banner_xyz=(0,145,10), banner_scale=100)),
+  ("heraldic_armor_a", 0, "sample_heraldic_armor_a", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_a", banner_xyz=(-26,120,50), banner_scale=70)),
+  ("heraldic_armor_b", 0, "sample_heraldic_armor_b", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_b", banner_xyz=(-5,120,10), banner_scale=70)),
+  ("heraldic_armor_c", 0, "sample_heraldic_armor_c", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_c", banner_xyz=(0,120,10), banner_scale=70)),
+  ("heraldic_armor_d", 0, "sample_heraldic_armor_d", 512, 512, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_armor_d", banner_xyz=(0,120,10), banner_scale=70)),
 
   ("heraldic_leather_vest_a", 0, "leather_vest_a", 1024, 1024, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_leather_vest_a", banner_xyz=(-61,110,10), banner_scale=60)),
   ("heraldic_padded_cloth_a", 0, "padded_cloth_a", 1024, 1024, 0, 0, 0, 0, tableau_armor_banner("mesh_tableau_mesh_heraldic_padded_cloth_a", banner_xyz=(-61,120,10), banner_scale=60)),
