@@ -1362,6 +1362,7 @@ presentations = [
       (overlay_set_color, ":prompt_overlay_id", 0xFFFFFF),
       (overlay_set_size, ":prompt_overlay_id", pos2),
 
+      (assign, ":overlay_id", -1),
       (get_max_players, ":num_players"),
       (try_for_range, ":player_id", 1, ":num_players"),
         (player_is_active, ":player_id"),
