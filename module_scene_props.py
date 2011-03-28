@@ -151,10 +151,11 @@ def spr_change_troop_triggers(troop_id, cost=0, mercenary=False, after_respawn=F
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_is_mercenary, 1))
   if use_string is not None:
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string))
-  triggers = [init_trigger, spr_call_script_use_trigger("script_cf_change_troop")]
   if after_respawn is True:
-    triggers.append(spr_call_script_cancel_use_trigger("script_cf_change_faction_worse_respawn_troop"))
-  return triggers
+    cancel_trigger = spr_call_script_cancel_use_trigger("script_cf_change_faction_worse_respawn_troop")
+  else:
+    cancel_trigger = spr_call_script_cancel_use_trigger("script_cf_change_troop", 1)
+  return [init_trigger, cancel_trigger, spr_call_script_use_trigger("script_cf_change_troop", 0)]
 
 def spr_buy_banner_triggers(banner_item_begin, mercenary=False, use_string="str_buy_banner_faction"):
   init_trigger = spr_item_init_trigger(banner_item_begin, use_string=use_string)
