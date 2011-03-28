@@ -140,7 +140,7 @@ def spr_rest_triggers(heal_pct, min_health_pct=30, horse=0, use_string="str_rest
       ]),
     ]
 
-def spr_change_troop_triggers(troop_id, cost=0, mercenary=False, use_string=None):
+def spr_change_troop_triggers(troop_id, cost=0, mercenary=False, after_respawn=False, use_string=None):
   init_trigger = (ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_troop_id, troop_id),
@@ -151,7 +151,10 @@ def spr_change_troop_triggers(troop_id, cost=0, mercenary=False, use_string=None
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_is_mercenary, 1))
   if use_string is not None:
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string))
-  return [init_trigger, spr_call_script_use_trigger("script_cf_change_troop")]
+  triggers = [init_trigger, spr_call_script_use_trigger("script_cf_change_troop")]
+  if after_respawn is True:
+    triggers.append(spr_call_script_cancel_use_trigger("script_cf_change_faction_worse_respawn_troop"))
+  return triggers
 
 def spr_buy_banner_triggers(banner_item_begin, mercenary=False, use_string="str_buy_banner_faction"):
   init_trigger = spr_item_init_trigger(banner_item_begin, use_string=use_string)
@@ -2276,7 +2279,7 @@ scene_props = [
   ("pw_rest_horse_hay",spr_use_time(40),"pw_horse_hay","bo_pw_horse_hay", spr_rest_triggers(70, min_health_pct=30, horse=1)),
 
   ("spawn_marker",0,"0","0", []),
-  ("pw_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_weapon_big", spr_change_troop_triggers("trp_peasant", cost=50, use_string="str_troop_leave_faction")),
+  ("pw_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_weapon_big", spr_change_troop_triggers("trp_peasant", cost=50, after_respawn=True, use_string="str_troop_leave_faction")),
   ("pw_change_troop_serf",spr_use_time(30),"trident","bo_weapon_big", spr_change_troop_triggers("trp_serf", cost=150)),
   ("pw_change_troop_footman",spr_use_time(60),"heavy_practicesword","bo_weapon", spr_change_troop_triggers("trp_footman", cost=1000)),
   ("pw_change_troop_archer",spr_use_time(60),"hunting_bow","bo_weapon", spr_change_troop_triggers("trp_archer", cost=1100)),
@@ -2287,8 +2290,8 @@ scene_props = [
   ("pw_change_troop_doctor",spr_use_time(100),"package","bobaggage", spr_change_troop_triggers("trp_doctor", cost=3500)),
   ("pw_change_troop_sailor",spr_use_time(70),"scimeter","bo_weapon", spr_change_troop_triggers("trp_sailor", cost=2000)),
   ("pw_change_troop_lord",spr_use_time(70),"gothic_chair","bogothic_chair", spr_change_troop_triggers("trp_lord", cost=500, use_string="str_troop_assume_role")),
-  ("pw_change_troop_ruffian",spr_use_time(40),"sledgehammer","bo_weapon", spr_change_troop_triggers("trp_ruffian", cost=800, use_string="str_troop_become")),
-  ("pw_change_troop_brigand",spr_use_time(50),"spiked_club","bo_weapon", spr_change_troop_triggers("trp_brigand", cost=900, use_string="str_troop_become")),
+  ("pw_change_troop_ruffian",spr_use_time(40),"sledgehammer","bo_weapon", spr_change_troop_triggers("trp_ruffian", cost=800, after_respawn=True, use_string="str_troop_become")),
+  ("pw_change_troop_brigand",spr_use_time(50),"spiked_club","bo_weapon", spr_change_troop_triggers("trp_brigand", cost=900, after_respawn=True, use_string="str_troop_become")),
   ("pw_change_troop_mercenary",spr_use_time(50),"spiked_mace","bo_weapon", spr_change_troop_triggers("trp_mercenary", cost=700, mercenary=True, use_string="str_troop_become_for")),
 
   ("pw_door_teleport_small_arch_a",spr_use_time(1),"tutorial_door_a","bo_tutorial_door_a", spr_teleport_door_triggers(pos_offset=(-55,50,-98))),
