@@ -48,8 +48,8 @@ def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=Fals
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count, ":initial_stack_count")])
   return init_trigger
 
-def spr_call_script_use_trigger(script_name, *args):
-  use_trigger = (ti_on_scene_prop_use,
+def spr_call_script_trigger(script_name, trigger_type, *args):
+  use_trigger = (trigger_type,
      [(store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":instance_id"),
       ])
@@ -57,6 +57,12 @@ def spr_call_script_use_trigger(script_name, *args):
   call_script_list.extend(args)
   use_trigger[1].append(tuple(call_script_list))
   return use_trigger
+
+def spr_call_script_use_trigger(script_name, *args):
+  return spr_call_script_trigger(script_name, ti_on_scene_prop_use, *args)
+
+def spr_call_script_cancel_use_trigger(script_name, *args):
+  return spr_call_script_trigger(script_name, ti_on_scene_prop_cancel_use, *args)
 
 def spr_buy_item_flags(use_time=1):
   use_time = max(use_time, 1)
@@ -408,11 +414,7 @@ def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000)
       (call_script, "script_cf_hit_chest", ":instance_id", ":hit_damage", hit_points),
       ]),
     (ti_on_scene_prop_destroy, []),
-    (ti_on_scene_prop_cancel_use,
-     [(store_trigger_param_1, ":agent_id"),
-      (store_trigger_param_2, ":instance_id"),
-      (call_script, "script_cf_pick_lock", ":agent_id", ":instance_id", 1),
-      ]),
+    spr_call_script_cancel_use_trigger("script_cf_pick_lock", 1),
     spr_call_script_use_trigger("script_cf_pick_lock", 0)]
 
 scene_props = [
