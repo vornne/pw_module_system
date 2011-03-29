@@ -1765,7 +1765,7 @@ scripts = [
     (troop_set_slot, "trp_banner_background_color_array", "mesh_banner_e18", 0xFFdcdbd3),
     (troop_set_slot, "trp_banner_background_color_array", "mesh_banner_e19", 0xFFdbdcd3),
     (troop_set_slot, "trp_banner_background_color_array", "mesh_banner_e20", 0xFF843831),
-    (troop_set_slot, "trp_banner_background_color_array", "mesh_banner_e21", 0xFFcecfc6),
+    (troop_set_slot, "trp_banner_background_color_array", "mesh_banner_e21", 0xFF8c3421),
     (troop_set_slot, "trp_banner_background_color_array", "mesh_banner_f01", 0xFF8f4631),
     (troop_set_slot, "trp_banner_background_color_array", "mesh_banner_f02", 0xFF672a29),
     (troop_set_slot, "trp_banner_background_color_array", "mesh_banner_f03", 0xFF4f6d86),
