@@ -499,7 +499,7 @@ When the ramp is resting on the deck, using will move it away from the player, e
 Ships will be damaged when colliding with the ground, large objects in the water, or other ships, but they can be repaired with wood by engineers; otherwise, after enough damage they will sink. \
 If you stay under water for too long you will drown - more quickly the faster you move.^^\
 The money bag window (which is toggled with the native inventory key) can be used to drop money bag items, or access money chests. The value of the last money bag picked up is used when dropping one or pressing attack to get the money, rather than the particular bag you have wielded (due to game engine limitations). \
-To deposit gold in a chest you must be near it, and to withdraw you also either need to be the lord of the associated faction, break the chest open with a weapon, or use a lock pick to open it (looting skill makes success more likely). To tell if a money chest is unlocked, press and release the use button: if you hear a click sound it is locked, but if no sound it is unlocked. \
+To deposit gold in a chest you must be near it, and to withdraw you also either need to be the lord of the associated faction, break the chest open with a weapon, or use a lock pick to open it (looting skill makes success more likely). To tell if a money chest is unlocked, press and release the use button: if you hear a click sound it is locked, but if no sound it is unlocked; locked teleport doors work the same way, except that they are relocked by using the door as a member of the faction owning the castle. \
 When you die, a bag with a small percentage of your money and part of the value of your armor will be dropped, along with all your equipped items.^^\
 Troops with the wound treatment skill can heal other badly wounded players by hitting them with the surgeon's scalpel, up to a certain percentage of full health; while resting on beds can be used by less wounded troops to heal fully - each type of bed can have a different minimum health required. \
 Players hit with a poisoned dagger will die slowly over time, unless a doctor treats them with a healing herb leaf.^^\
@@ -526,7 +526,7 @@ F12 = measure distance to the first spr_pw_test_gold"),
 pw_buy_*, pw_stockpile_*:^value 1 = faction + multiplier^value 2 = initial stockpile count^^\
 pw_export_*:^value 1 = faction + multiplier^value 2 = faction tax multiplier^^\
 pw_change_troop_*:^value 1 = faction + multiplier^^\
-pw_door_rotate_*:^value 1 = faction + multiplier^value 2 = options bitfield (0x1 = start open, 0x2 = bolted)^^\
+pw_door_rotate_*:^value 1 = faction + multiplier^value 2 = options bitfield (0x1 = start open, 0x2 = bolted, 0x4 = not pickable)^^\
 pw_door_teleport_*:^value 1 = faction + multiplier^value 2 = linking id with x^^\
 pw iron mines:^value 1 = initial hit points / 1000^^\
 pw bridges:^value 2 = linking id with x_footing^^\

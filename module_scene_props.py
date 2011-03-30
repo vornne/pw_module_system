@@ -164,7 +164,8 @@ def spr_buy_banner_triggers(banner_item_begin, mercenary=False, use_string="str_
   return [init_trigger, spr_call_script_use_trigger("script_cf_buy_banner")]
 
 def spr_teleport_door_triggers(pos_offset=(0,0,0)):
-  return [spr_call_script_use_trigger("script_cf_use_teleport_door", pos_offset[0], pos_offset[1], pos_offset[2]),
+  return [spr_call_script_cancel_use_trigger("script_cf_lock_teleport_door"),
+    spr_call_script_use_trigger("script_cf_use_teleport_door", pos_offset[0], pos_offset[1], pos_offset[2]),
     [link_scene_prop, link_scene_prop_self]]
 
 def spr_rotate_door_flags(use_time=1):
@@ -418,8 +419,8 @@ def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000)
       (call_script, "script_cf_hit_chest", ":instance_id", ":hit_damage", hit_points),
       ]),
     (ti_on_scene_prop_destroy, []),
-    spr_call_script_cancel_use_trigger("script_cf_pick_lock", 1),
-    spr_call_script_use_trigger("script_cf_pick_lock", 0)]
+    spr_call_script_cancel_use_trigger("script_cf_pick_chest_lock", 1),
+    spr_call_script_use_trigger("script_cf_pick_chest_lock", 0)]
 
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
