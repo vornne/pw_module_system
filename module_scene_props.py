@@ -422,6 +422,15 @@ def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000)
     spr_call_script_cancel_use_trigger("script_cf_pick_chest_lock", 1),
     spr_call_script_use_trigger("script_cf_pick_chest_lock", 0)]
 
+def spr_item_chest_triggers(inventory_count=6, max_item_length=100, use_string=0):
+  return [(ti_on_scene_prop_init,
+    [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_inventory_count, inventory_count),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, max_item_length),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
+      ]),
+    spr_call_script_use_trigger("script_cf_use_inventory")]
+
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
   ("inventory",sokf_type_container|sokf_place_at_origin,"package","bobaggage", []),
@@ -2370,6 +2379,8 @@ scene_props = [
   ("pw_castle_sign",0,"tree_house_guard_a","bo_tree_house_guard_a", [(ti_on_scene_prop_use, [])]),
   ("pw_castle_capture_point",spr_use_time(60),"pw_castle_flag_post","bo_pw_castle_flag_post", spr_capture_castle_triggers()),
   ("pw_castle_money_chest",spr_chest_flags(30),"pw_chest_b","bo_pw_chest_b", spr_castle_money_chest_triggers(hit_points=6000)),
+  ("pw_item_chest_a",spr_use_time(1),"pw_chest_c","bo_pw_chest_c", spr_item_chest_triggers(inventory_count=48, max_item_length=180)),
+  ("pw_item_chest_b",spr_use_time(1),"pw_chest_b","bo_pw_chest_b", spr_item_chest_triggers(inventory_count=32, max_item_length=100)),
 
   ("pw_scene_day_time",sokf_invisible,"barrier_box","0", []),
   ("pw_scene_ambient_sound",sokf_invisible,"barrier_cone","0", []),
