@@ -577,6 +577,15 @@ On scene load, the props are linked by searching for the nearest prop in the sce
   ("castle_name_7", "Zavansk Castle"),
   ("castle_name_8", "Valdemel Castle"),
   ("castle_name_9", "Berwinwic Castle"),
+  ("castle_name_10", "Praven Castle"),
+  ("castle_name_11", "Jelkala Castle"),
+  ("castle_name_12", "Sargoth Castle"),
+  ("castle_name_13", "Shariz Castle"),
+  ("castle_name_14", "Volcain Mine"),
+  ("castle_name_15", "Bono Mine"),
+  ("castle_name_16", "Pilmir Mine"),
+  ("castle_name_17", "Mount Hellstone"),
+  ("castle_name_18", "Jerusalem"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]
