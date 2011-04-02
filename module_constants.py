@@ -217,6 +217,8 @@ slot_mission_data_castle_name_string_begin      = 20
 slot_mission_data_castle_name_string_end        = 28
 slot_mission_data_castle_money_chest_begin      = 30
 slot_mission_data_castle_money_chest_end        = 38
+slot_mission_data_castle_allows_training_begin  = 40
+slot_mission_data_castle_allows_training_end    = 48
 slot_mission_data_faction_to_change_name_of     = 100
 
 slot_last_chat_message_event_type     = 0
