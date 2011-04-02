@@ -2304,7 +2304,7 @@ scene_props = [
   ("pw_change_troop_lord",spr_use_time(70),"gothic_chair","bogothic_chair", spr_change_troop_triggers("trp_lord", cost=500, use_string="str_troop_assume_role")),
   ("pw_change_troop_ruffian",spr_use_time(40),"sledgehammer","bo_weapon", spr_change_troop_triggers("trp_ruffian", cost=800, after_respawn=True, use_string="str_troop_become")),
   ("pw_change_troop_brigand",spr_use_time(50),"spiked_club","bo_weapon", spr_change_troop_triggers("trp_brigand", cost=900, after_respawn=True, use_string="str_troop_become")),
-  ("pw_change_troop_mercenary",spr_use_time(50),"spiked_mace","bo_weapon", spr_change_troop_triggers("trp_mercenary", cost=700, mercenary=True, use_string="str_troop_become_for")),
+  ("pw_change_troop_mercenary",spr_use_time(50),"spiked_mace","bo_weapon", spr_change_troop_triggers("trp_mercenary", cost=700, mercenary=True, after_respawn=True, use_string="str_troop_become_for")),
 
   ("pw_door_teleport_small_arch_a",spr_use_time(1),"tutorial_door_a","bo_tutorial_door_a", spr_teleport_door_triggers(pos_offset=(-55,50,-98))),
   ("pw_door_teleport_square_a",spr_use_time(1),"tutorial_door_b","bo_tutorial_door_b", spr_teleport_door_triggers(pos_offset=(70,50,0))),
