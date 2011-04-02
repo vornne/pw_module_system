@@ -140,6 +140,9 @@ def spr_rest_triggers(heal_pct, min_health_pct=30, horse=0, use_string="str_rest
       ]),
     ]
 
+def spr_clean_blood_triggers():
+  return [spr_call_script_use_trigger("script_cf_clean_blood")]
+
 def spr_change_troop_triggers(troop_id, cost=0, mercenary=False, after_respawn=False, use_string=None):
   init_trigger = (ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -425,7 +428,7 @@ def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000)
 
 def spr_item_chest_triggers(inventory_count=6, max_item_length=100, use_string=0):
   return [(ti_on_scene_prop_init,
-    [(store_trigger_param_1, ":instance_id"),
+     [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_inventory_count, inventory_count),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, max_item_length),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
@@ -2289,6 +2292,7 @@ scene_props = [
   ("pw_rest_dungeon_bed_b",spr_use_time(20),"dungeon_bed_b","bo_dungeon_bed_b", spr_rest_triggers(8, min_health_pct=50)),
   ("pw_rest_horse_trough",spr_use_time(20),"feeding_trough_a","bo_feeding_trough_a", spr_rest_triggers(30, min_health_pct=30, horse=1)),
   ("pw_rest_horse_hay",spr_use_time(40),"pw_horse_hay","bo_pw_horse_hay", spr_rest_triggers(70, min_health_pct=30, horse=1)),
+  ("pw_clean_blood",spr_use_time(10),"cloth_a","bo_cloth_a", spr_clean_blood_triggers()),
 
   ("spawn_marker",0,"0","0", []),
   ("pw_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_weapon_big", spr_change_troop_triggers("trp_peasant", cost=50, after_respawn=True, use_string="str_troop_leave_faction")),
