@@ -1503,6 +1503,8 @@ scripts = [
       (store_mul, ":slot", ":player_id", player_array_entry_size),
       (troop_set_slot, "trp_active_players_array", ":slot", 0),
     (try_end),
+    (troop_set_slot, "trp_last_chat_message", slot_last_chat_message_event_type, 0),
+    (troop_set_slot, "trp_last_chat_message", slot_last_chat_message_not_recieved, 0),
     (call_script, "script_setup_castle_names"),
     ]),
 
