@@ -3070,6 +3070,8 @@ scripts = [
     (faction_get_slot, ":banner_item_id", ":player_faction_id", slot_faction_banner_mesh),
     (val_sub, ":banner_item_id", banner_meshes_begin),
     (val_add, ":banner_item_id", banner_items_begin),
+    (agent_get_wielded_item, ":wielded_item_id", ":agent_id", 0),
+    (eq, ":wielded_item_id", ":banner_item_id"),
     (call_script, "script_cf_agent_consume_item", ":agent_id", ":banner_item_id", 1),
     (call_script, "script_capture_castle", ":player_faction_id", ":castle_no"),
     ]),
