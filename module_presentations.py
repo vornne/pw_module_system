@@ -2322,7 +2322,13 @@ presentations = [
         (try_end),
       (try_end),
 
-      (assign, "$g_stats_chart_update_period", 1000),
+      (try_begin),
+        (this_or_next|gt, ":row_0_max_players", 10),
+        (gt, ":row_1_max_players", 10),
+        (assign, "$g_stats_chart_update_period", 5000),
+      (else_try),
+        (assign, "$g_stats_chart_update_period", 1000),
+      (try_end),
 
       (omit_key_once, key_mouse_scroll_up),
       (omit_key_once, key_mouse_scroll_down),
