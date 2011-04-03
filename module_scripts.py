@@ -1657,7 +1657,9 @@ scripts = [
     (neg|is_presentation_active, "prsnt_poll_menu"),
     (neg|is_presentation_active, "prsnt_list_players"),
     (neg|is_presentation_active, "prsnt_list_scenes"),
+    (neg|is_presentation_active, "prsnt_admin_menu"),
     (neg|is_presentation_active, "prsnt_faction_admin_menu"),
+    (neg|is_presentation_active, "prsnt_game_multiplayer_admin_panel"),
     ]),
 
   ("initialize_banner_info",
