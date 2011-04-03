@@ -2045,7 +2045,7 @@ presentations = [
       ]),
     ]),
 
-  ("stats_chart", prsntf_read_only|prsntf_manual_end_only, 0,
+  ("stats_chart", prsntf_manual_end_only, 0,
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
 
