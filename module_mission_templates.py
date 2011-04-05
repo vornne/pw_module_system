@@ -559,13 +559,13 @@ mission_templates = [
 
     (1, 0, 10,
      [(neg|multiplayer_is_server),
-      (val_add, "$g_ambient_sound_instance_no", 1),
       (scene_prop_get_num_instances, ":num_instances", "spr_pw_scene_ambient_sound"),
       (try_begin),
         (ge, "$g_ambient_sound_instance_no", ":num_instances"),
         (assign, "$g_ambient_sound_instance_no", 0),
       (try_end),
       (scene_prop_get_instance, ":instance_id", "spr_pw_scene_ambient_sound", "$g_ambient_sound_instance_no"),
+      (val_add, "$g_ambient_sound_instance_no", 1),
       (call_script, "script_cf_play_scene_ambient_sound", ":instance_id"),
       ], []),
 

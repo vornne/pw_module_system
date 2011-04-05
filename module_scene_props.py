@@ -2388,7 +2388,17 @@ scene_props = [
   ("pw_item_chest_b",spr_use_time(1),"pw_chest_b","bo_pw_chest_b", spr_item_chest_triggers(inventory_count=32, max_item_length=100)),
 
   ("pw_scene_day_time",sokf_invisible,"barrier_box","0", []),
-  ("pw_scene_ambient_sound",sokf_invisible,"barrier_cone","0", []),
+  ("pw_scene_ambient_sound",sokf_invisible,"barrier_cone","0",
+   [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (prop_instance_get_variation_id_2, ":probability", ":instance_id"),
+      (eq, ":probability", 127),
+      (prop_instance_get_variation_id, ":sound_id", ":instance_id"),
+      (val_add, ":sound_id", ambient_sounds_begin),
+      (is_between, ":sound_id", ambient_sounds_begin, ambient_sounds_end),
+      (play_sound, ":sound_id", sf_looping),
+      ]),
+    ]),
 
   ("pw_buy_test_horse",spr_use_time(1),"wood_a","bo_wood_a", spr_buy_item_triggers("itm_test_horse")),
 
