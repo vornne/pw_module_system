@@ -208,7 +208,7 @@ items = [
  3180, weight(2.25)|head_armor(48)|difficulty(15), imodbits_plate],
 ["full_helm", "Full Helm", [("great_helmet_new_b",0)], itp_type_head_armor|itp_covers_head, 0,
  5121, weight(2.5)|head_armor(51)|difficulty(15), imodbits_plate],
-["vaegir_mask", "War Mask", [("vaeg_helmet8",0)], itp_type_head_armor|itp_covers_beard, 0,
+["vaegir_mask", "War Mask", [("vaeg_helmet8",0)], itp_type_head_armor, 0,
  6950, weight(2.5)|head_armor(50)|difficulty(15), imodbits_plate],
 ["vaegir_mask_b", "War Mask", [("vaeg_helmet9",0)], itp_type_head_armor|itp_covers_beard, 0,
  7012, weight(2.75)|head_armor(52)|difficulty(15), imodbits_plate],
