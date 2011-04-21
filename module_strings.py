@@ -247,6 +247,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("show_info", "Show Game Information"),
   ("admin_panel", "Administrator Panel"),
   ("admin_tools", "Administrator Tools"),
+  ("admin_items", "Administrator Items"),
   ("kick_player", "Kick a player"),
   ("ban_player_temp", "Ban a player temporarily"),
   ("ban_player_perm", "Ban a player permanently"),
@@ -302,6 +303,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("log_admin_remove_horses", "removed admin horses"),
   ("log_admin_reset_ships", "reset sunken ships"),
   ("log_admin_cheat_money", "took {reg0} gold"),
+  ("log_admin_cheat_item", "took item '{s4}'"),
 
   ("poll_change_scene", "Change scene to {s1}"),
   ("poll_kick_player", "Kick player {s1}"),
@@ -426,6 +428,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("buy_banner_faction", "Buy a banner for the {s1}"),
   ("stack_count_reg1_s0", "Stack count: {reg1}^{s0}"),
   ("womens_clothes", "Women's clothes"),
+  ("item_id", "Item ID:"),
+  ("spawn_s1", "Spawn {s1}"),
 
   ("troop_not_available", "Not available to you^{s0}"),
   ("troop_train", "Train to be {s1} for the {s2}"),

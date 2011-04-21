@@ -30,6 +30,7 @@ server_event_faction_lord_chat                  = 22
 server_event_admin_chat                         = 23
 server_event_admin_chat_shout                   = 24
 
+client_event_admin_equip_item                   = 99
 client_event_poll_vote                          = 100
 client_event_request_poll                       = 101
 client_event_request_spawn_point                = 102
