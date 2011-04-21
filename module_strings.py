@@ -535,7 +535,7 @@ pw_door_teleport_*:^value 1 = faction + multiplier^value 2 = linking id with x^^
 pw iron mines:^value 1 = initial hit points / 1000^^\
 pw bridges:^value 2 = linking id with x_footing^^\
 pw walls, ladders:^value 2 = linking id with x_build^^\
-pw portcullises, drawbridges:^value 2 = linking id with x_winch^^\
+pw portcullises, drawbridges:^value 1 = options bitfield (0x1 = start closed)^value 2 = linking id with x_winch^^\
 pw ships:^value 1 = initial ramp position (0 = center, 1 = left, 2 = right)^Only place the hull, the other parts are spawned at mission start.^^\
 pw_castle_capture_point:^value 1 = faction / castle id^^\
 pw_castle_sign:^value 1 = faction / castle id^value 2 = number of the name, listed at the end of strings.txt (name can't be one used by another castle)^^\

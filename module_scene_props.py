@@ -203,7 +203,8 @@ def spr_drawbridge_winch_triggers(target_scene_prop, rotation_steps=10, step_siz
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_winch_lower"),
       ]),
     spr_call_script_use_trigger("script_cf_use_winch", rotation_steps+1, step_size, animation_time, winch_type_drawbridge),
-    [link_scene_prop, target_scene_prop]]
+    [link_scene_prop, target_scene_prop],
+    [init_scene_prop, "script_cf_init_winch", rotation_steps, step_size, winch_type_drawbridge]]
 
 def spr_portcullis_winch_triggers(target_scene_prop, move_steps=5, step_size=100, animation_time=100):
   return [(ti_on_scene_prop_init,
