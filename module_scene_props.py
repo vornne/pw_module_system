@@ -2351,6 +2351,10 @@ scene_props = [
 
   ("pw_wooden_palisade",spr_structure_flags(),"arena_palisade_a","bo_arena_palisade_a", spr_wall_triggers("pw_wooden_palisade_build", hit_points=15000, height=1600)),
   ("pw_wooden_palisade_build",spr_build_flags(),"wood_a","bo_wood_a", spr_build_wall_triggers()),
+  ("pw_siege_wall_a",spr_structure_flags(),"siege_wall_a","bo_siege_wall_a", spr_wall_triggers("pw_siege_wall_a_build", hit_points=5000, height=320)),
+  ("pw_siege_wall_a_build",spr_build_flags(),"wood_b","bo_wood_b", spr_build_wall_triggers()),
+  ("pw_siege_shield_a",spr_structure_flags(),"siege_large_shield_a","bo_siege_large_shield_a", spr_wall_triggers("pw_siege_shield_a_build", hit_points=2000, height=280)),
+  ("pw_siege_shield_a_build",spr_build_flags(),"wood_b","bo_wood_b", spr_build_wall_triggers()),
   ("pw_ladder_6m",spr_ladder_flags(),"siege_ladder_move_6m","bo_siege_ladder_move_6m", spr_wall_triggers("pw_ladder_build", hit_points=400, height=600)),
   ("pw_ladder_8m",spr_ladder_flags(),"siege_ladder_move_8m","bo_siege_ladder_move_8m", spr_wall_triggers("pw_ladder_build", hit_points=440, height=800)),
   ("pw_ladder_10m",spr_ladder_flags(),"siege_ladder_move_10m","bo_siege_ladder_move_10m", spr_wall_triggers("pw_ladder_build", hit_points=480, height=1000)),
