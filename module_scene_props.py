@@ -2347,6 +2347,8 @@ scene_props = [
 
   ("pw_wooden_bridge_a",spr_structure_flags(),"bridge_wooden","bo_bridge_wooden", spr_bridge_triggers("pw_wooden_bridge_a_footing", hit_points=15000)),
   ("pw_wooden_bridge_a_footing",spr_build_flags(),"box_a","bo_box_a", spr_bridge_footing_triggers()),
+  ("pw_snowy_bridge_a",spr_structure_flags(),"bridge_wooden_snowy","bo_bridge_wooden", spr_bridge_triggers("pw_snowy_bridge_a_footing", hit_points=15000)),
+  ("pw_snowy_bridge_a_footing",spr_build_flags(),"box_a","bo_box_a", spr_bridge_footing_triggers()),
   ("pw_rope_bridge",spr_structure_flags(),"rope_bridge_15m","bo_rope_bridge_15m", spr_bridge_triggers("pw_rope_bridge_footing", hit_points=2000)),
   ("pw_rope_bridge_footing",spr_build_flags(),"castle_f_wall_way_a","bo_castle_f_wall_way_a", spr_bridge_footing_triggers()),
 
