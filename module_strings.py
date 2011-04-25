@@ -593,6 +593,13 @@ On scene load, the props are linked by searching for the nearest prop in the sce
   ("castle_name_16", "Pilmir Mine"),
   ("castle_name_17", "Mount Hellstone"),
   ("castle_name_18", "Jerusalem"),
+  ("castle_name_19", "Milturn Village"),
+  ("castle_name_20", "Pinecrest Village"),
+  ("castle_name_21", "Burglen Village"),
+  ("castle_name_22", "Serindiar Village"),
+  ("castle_name_23", "Richfield Village"),
+  ("castle_name_24", "Dusturil Village"),
+  ("castle_name_25", "Retden Village"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]
