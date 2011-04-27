@@ -571,7 +571,7 @@ items = [
  1085, weight(2.5)|difficulty(15)|spd_rtng(89)|weapon_length(185)|swing_damage(20, blunt)|thrust_damage(32, pierce), imodbits_polearm],
 ["pike", "Pike", [("spear_a_3m",0)], itp_type_polearm|itp_cant_use_on_horseback|itp_primary|itp_penalty_with_shield|itp_wooden_parry|itp_two_handed, itc_spear|itcf_carry_spear,
  1250, weight(3.0)|difficulty(15)|spd_rtng(81)|weapon_length(245)|swing_damage(16, blunt)|thrust_damage(26, pierce), imodbits_polearm],
-["bec_de_corbin_a",  "War Hammer", [("bec_de_corbin_a",0)], itp_type_polearm|itp_cant_use_on_horseback|itp_primary|itp_penalty_with_shield|itp_wooden_parry|itp_two_handed, itc_cutting_spear|itcf_carry_spear,
+["bec_de_corbin_a",  "War Hammer", [("bec_de_corbin_a",0)], itp_type_polearm|itp_cant_use_on_horseback|itp_primary|itp_penalty_with_shield|itp_wooden_parry|itp_two_handed, itc_staff|itcf_carry_spear,
  1350, weight(3.0)|difficulty(15)|spd_rtng(87)|weapon_length(120)|swing_damage(28, blunt)|thrust_damage(30, pierce), imodbits_polearm],
 
 ["crude_bow", "Crude Bow", [("hunting_bow",0),("hunting_bow_carry",ixmesh_carry)], itp_type_bow|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_shoot_bow|itcf_carry_bow_back,
