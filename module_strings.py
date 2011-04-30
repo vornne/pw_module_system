@@ -523,6 +523,7 @@ As admin, holding down right shift while voting overrides the poll."),
 * Castles are numbered from 0 - 7, and start the mission owned by the corresponding castle faction: for example, the default 'White Faction' starts with castles 1 and 5.^\
 * Factions are enabled for the scene if at least one capture point is placed for one of their starting castles.^\
 * Spawn points are 0 - 4 for commoners, 10 - 14 for outlaws, 20 - 24 for castle 1, and so on, up to 90 - 94 for castle 8.^\
+* For rotating scene props like trees or destroyable doors, place the origin at or slightly above ground level.^\
 ^-- Edit scene mode keys^\
 F1 = this information^\
 F2 = scene prop editor value information^\
