@@ -387,6 +387,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("remaining_time_reg0_s0reg1_s1reg2", "Remaining time: {reg0}:{s0}{reg1}:{s1}{reg2}"),
   ("respawning_in_reg0_seconds", "Respawning in {reg0} seconds"),
   ("press_select_spawn_point", "Press 1-5 to select spawn point"),
+  ("press_select_spawn_area", "Press ~ to change area: {s1}"),
   ("number_of_factions_reg0", "Number of factions: {reg0}"),
   ("victory_condition_none", "No victory condition"),
   ("victory_condition_castles", "Victory: hold all castles for {reg0} minutes"),
