@@ -436,6 +436,20 @@ def spr_item_chest_triggers(inventory_count=6, max_item_length=100, use_string=0
       ]),
     spr_call_script_use_trigger("script_cf_use_inventory")]
 
+def spr_fire_place_triggers():
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_hit_points, ":instance_id", 1000),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_burn"),
+      (call_script, "script_cf_init_fire_place", ":instance_id"),
+      ]),
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (call_script, "script_cf_hit_fire_place", ":instance_id"),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_use, [])]
+
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
   ("inventory",sokf_type_container|sokf_place_at_origin,"package","bobaggage", []),
@@ -1517,7 +1531,7 @@ scene_props = [
   ("fire_small",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_fireplace_fire_small")])]),
   ("fire_big",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_fireplace_fire_big")])]),
   ("battle_field_smoke",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_war_smoke_tall")])]),
-  ("Village_fire_big",0,"0","0",
+  ("village_fire_big",0,"0","0",
    [(ti_on_scene_prop_init,
      [(particle_system_add_new, "psys_village_fire_big"),
       (set_position_delta,0,0,100),
@@ -2409,6 +2423,17 @@ scene_props = [
       (val_add, ":sound_id", ambient_sounds_begin),
       (is_between, ":sound_id", ambient_sounds_begin, ambient_sounds_end),
       (play_sound, ":sound_id", sf_looping),
+      ]),
+    ]),
+
+  ("pw_fire_wood_heap",sokf_destructible|sokf_missiles_not_attached,"pw_wood_heap_c","bo_pw_wood_heap_c", spr_fire_place_triggers()),
+  ("wood_heap_fire",0,"0","0",
+   [(ti_on_scene_prop_init,
+     [(particle_system_add_new, "psys_wood_heap_fire"),
+      (particle_system_add_new, "psys_wood_heap_fire_sparks"),
+      (set_position_delta,0,0,100),
+      (particle_system_add_new, "psys_wood_heap_fire_smoke"),
+      (play_sound, "snd_fire_loop", 0),
       ]),
     ]),
 

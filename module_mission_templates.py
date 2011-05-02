@@ -571,6 +571,19 @@ mission_templates = [
       (call_script, "script_cf_play_scene_ambient_sound", ":instance_id"),
       ], []),
 
+    (1, 0, 60,
+     [(multiplayer_is_server),
+      (scene_prop_get_instance, ":instance_id", "spr_pw_fire_wood_heap", "$g_fire_place_instance_no"),
+      (call_script, "script_fire_place_burn", ":instance_id"),
+      (val_add, "$g_fire_place_instance_no", 1),
+      (scene_prop_get_num_instances, ":num_instances", "spr_pw_fire_wood_heap"),
+      (try_begin),
+        (ge, "$g_fire_place_instance_no", ":num_instances"),
+        (assign, "$g_fire_place_instance_no", 0),
+      (try_end),
+      (eq, "$g_fire_place_instance_no", 0),
+      ], []),
+
     ]),
 
   ("edit_scene", 0, -1, "edit_scene", [(0,mtef_visitor_source,0,aif_start_alarmed,1,[])],

@@ -415,6 +415,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("cut_down", "Cut down"),
   ("mine", "Mine"),
   ("harvest", "Harvest"),
+  ("burn", "Burn"),
   ("process_wood", "Process wood"),
   ("process_iron", "Process iron"),
   ("stockpile", "Stockpile"),

@@ -859,4 +859,43 @@ particle_systems = [
       15,                       #rotation speed
       0,                        #rotation damping
     ),
+    ("wood_heap_fire", psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size|psf_randomize_rotation, "prt_mesh_fire_1",
+     50, 0.7, 0, -0.8, 25, 10,  #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.2, 0.7), (1, 0),        #alpha keys
+     (0.2, 1.0), (1, 0.9),      #red keys
+     (0.2, 0.7), (1, 0.3),      #green keys
+     (0.2, 0.2), (1, 0.0),      #blue keys
+     (0, 1), (1, 3),            #scale keys
+     (1.0, 1.0, 0.3),           #emit box size
+     (0, 0, 0.0),               #emit velocity
+     0.0,                       #emit dir randomness
+     250,                       #rotation speed
+     0.3                        #rotation damping
+    ),
+    ("wood_heap_fire_smoke", psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size|psf_randomize_rotation, "prt_mesh_smoke_1",
+     30, 3, 0.3, -0.2, 50, 10,  #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.5, 0.15), (1, 0),       #alpha keys
+     (0.2, 0.4), (1, 0.2),      #red keys
+     (0.2, 0.4), (1, 0.2),      #green keys
+     (0.2, 0.4), (1, 0.2),      #blue keys
+     (0, 3), (1, 3),            #scale keys
+     (1, 1, 1),                 #emit box size
+     (0, 0, 3),                 #emit velocity
+     0.0,                       #emit dir randomness
+     0,                         #rotation speed
+     0.1                        #rotation damping
+    ),
+    ("wood_heap_fire_sparks", psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size,  "prt_sparks_mesh_1",
+     10, 1.5, 0.2, 0.1, 3, 10,  #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.6, 1), (1, 1),          #alpha keys
+     (0.1, 0.7), (1, 0.7),      #red keys
+     (0.1, 0.5), (1, 0.5),      #green keys
+     (0.1, 0.1), (1, 0.1),      #blue keys
+     (0.1, 0.1), (1, 0.03),     #scale keys
+     (0.7, 0.7, 0.3),           #emit box size
+     (0, 0, 3),                 #emit velocity
+     0.0,                       #emit dir randomness
+     0,
+     0,
+    ),
 ]
