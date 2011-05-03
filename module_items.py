@@ -727,6 +727,10 @@ items = [
  634, weight(3)|spd_rtng(92)|weapon_length(120)|swing_damage(5,blunt)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_repair)]],
 ["lock_pick", "Lock Pick", [("pw_lock_pick",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_quiver_front_right,
  1260, weight(0.25)|spd_rtng(100)|weapon_length(23)|swing_damage(1,blunt)|thrust_damage(5,pierce), imodbits_none, [(item_class, item_class_lock_pick)]],
+["bucket", "Bucket", [("pw_bucket",0),("pw_bucket_ground",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_slashright_onehanded,
+ 240, weight(5)|spd_rtng(70)|weapon_length(45)|swing_damage(5,blunt), imodbits_none, [(ti_on_weapon_attack, [(store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_bucket", ":agent_id")])]],
+["water_bucket", "Water Bucket", [("pw_bucket_water",0),("pw_bucket_water_ground",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_slashright_onehanded,
+ 250, weight(40)|spd_rtng(50)|weapon_length(45)|swing_damage(10,blunt), imodbits_none],
 
 ["surgeon_scalpel", "Surgeon's Scalpel", [("dagger_b",0),("dagger_b_scabbard",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_thrust_onehanded|itcf_carry_dagger_front_left|itcf_show_holster_when_drawn,
  3560, weight(0.75)|difficulty(0)|spd_rtng(50)|weapon_length(36)|thrust_damage(15, pierce), imodbits_sword],

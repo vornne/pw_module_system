@@ -2288,6 +2288,7 @@ scene_props = [
   ("pw_buy_mining_pick",spr_buy_item_flags(10),"pw_mining_pick","bo_weapon", spr_buy_item_triggers("itm_mining_pick", resources=["itm_iron_bar", "itm_wood_pole_short"], skill_required=3)),
   ("pw_buy_repair_hammer",spr_buy_item_flags(7),"pw_repair_hammer","bo_weapon_small", spr_buy_item_triggers("itm_repair_hammer", resources=["itm_iron_piece", "itm_stick"], skill_required=2)),
   ("pw_buy_lock_pick",spr_buy_item_flags(24),"pw_lock_pick","bo_weapon_small", spr_buy_item_triggers("itm_lock_pick", resources=["itm_iron_piece"], skill_required=3)),
+  ("pw_buy_bucket",spr_buy_item_flags(10),"pw_bucket_ground","bo_pw_bucket", spr_buy_item_triggers("itm_bucket", pos_offset=(0,0,20), resources=[("itm_board", 2), "itm_iron_piece"], skill_required=2)),
   ("pw_buy_surgeon_scalpel",spr_buy_item_flags(30),"dagger_b_scabbard","bo_weapon_small", spr_buy_item_triggers("itm_surgeon_scalpel", resources=["itm_iron_piece"], skill_required=4)),
   ("pw_buy_poisoned_dagger",spr_buy_item_flags(15),"scab_dagger","bo_weapon_small", spr_buy_item_triggers("itm_poisoned_dagger")),
   ("pw_buy_torch",spr_use_time(1),"pw_torch","bo_weapon_small", spr_buy_item_triggers("itm_torch", resources=["itm_stick"], skill_required=1)),
