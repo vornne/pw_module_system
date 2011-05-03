@@ -666,7 +666,7 @@ items = [
 ["sumpter_horse", "Sumpter Horse", [("sumpter_horse",0)], itp_type_horse, 0,
  504, hit_points(100)|body_armor(14)|difficulty(1)|horse_speed(37)|horse_maneuver(39)|horse_charge(9)|horse_scale(100), imodbits_none],
 ["cart_horse", "Cart Horse", [("sumpter_horse",0)], itp_type_horse, 0,
- 1520, hit_points(150)|body_armor(10)|difficulty(1)|horse_speed(30)|horse_maneuver(15)|horse_charge(20)|horse_scale(115), imodbits_none],
+ 1520, hit_points(150)|body_armor(10)|difficulty(1)|horse_speed(35)|horse_maneuver(20)|horse_charge(20)|horse_scale(115), imodbits_none],
 ["saddle_horse", "Saddle Horse", [("saddle_horse",0)], itp_type_horse, 0,
  1208, hit_points(100)|body_armor(8)|difficulty(1)|horse_speed(43)|horse_maneuver(44)|horse_charge(10)|horse_scale(104),imodbits_none],
 ["steppe_horse", "Steppe Horse", [("steppe_horse",0)], itp_type_horse, 0,
