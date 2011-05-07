@@ -603,6 +603,10 @@ On scene load, the props are linked by searching for the nearest prop in the sce
   ("castle_name_23", "Richfield Village"),
   ("castle_name_24", "Dusturil Village"),
   ("castle_name_25", "Retden Village"),
+  ("castle_name_26", "Crusader Castle"),
+  ("castle_name_27", "Oasis"),
+  ("castle_name_28", "Sarranid Castle"),
+  ("castle_name_29", "Old Port"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]
