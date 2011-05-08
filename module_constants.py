@@ -27,6 +27,8 @@ slot_player_is_lord                   = 9
 slot_player_non_lord_troop_id         = 10
 slot_player_poll_faction_id           = 11
 slot_player_requested_spawn_point     = 12
+slot_player_has_faction_door_key      = 13
+slot_player_has_faction_chest_key     = 14
 
 slot_player_equip_item_0              = 20
 slot_player_equip_item_1              = 21

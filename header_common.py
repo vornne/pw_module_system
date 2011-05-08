@@ -196,6 +196,8 @@ admin_action_reset_ships                        = 14
 
 faction_admin_action_change_banner              = 0
 faction_admin_action_kick_player                = 1
+faction_admin_action_toggle_player_door_key     = 2
+faction_admin_action_toggle_player_chest_key    = 3
 
 max_possible_gold                               = 1000000000
 max_correctly_displayed_gold                    = 131071

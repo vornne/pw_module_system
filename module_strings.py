@@ -275,6 +275,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("teleport_to", "teleport to"),
   ("propose_as_lord", "propose as lord"),
   ("send_message_to", "send the message to"),
+  ("give_take_door_key", "give / take away door key"),
+  ("give_take_chest_key", "give / take away chest key"),
   ("request_poll", "Request Poll"),
   ("choose_a_poll_type", "Choose a poll type:"),
   ("s0__reg0_", "{!}{s0} ({reg0})"),
@@ -287,6 +289,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("change_faction_banner", "Change faction banner"),
   ("change_faction_name", "Change faction name"),
   ("kick_player_from_faction", "Kick player from faction"),
+  ("manage_door_keys", "Manage door keys"),
+  ("manage_chest_keys", "Manage chest keys"),
 
   ("log_admin_target_player", "Admin {s0} ({reg0}) {s3} player {s1} ({reg1})."),
   ("log_admin_target_self", "Admin {s0} ({reg0}) {s3}."),
