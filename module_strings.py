@@ -293,6 +293,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("kick_player_from_faction", "Kick player from faction"),
   ("manage_door_keys", "Manage door keys"),
   ("manage_chest_keys", "Manage chest keys"),
+  ("choose_a_faction", "Choose a faction:"),
+  ("declare_faction_hostile", "Declare a faction hostile"),
+  ("offer_faction_peace", "Offer a faction peace"),
 
   ("log_admin_target_player", "Admin {s0} ({reg0}) {s3} player {s1} ({reg1})."),
   ("log_admin_target_self", "Admin {s0} ({reg0}) {s3}."),
@@ -465,6 +468,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("door_locked_by_s1", "The door is locked by the {s1}."),
   ("door_bolted", "The door is bolted on the other side."),
   ("s0_killed_faction_member", "{s0} killed a member of the same faction!"),
+  ("s0_killed_friendly_faction_member", "{s0} killed a member of a friendly faction!"),
   ("s0_has_been_outlawed", "{s0} has been outlawed!"),
   ("you_have_been_outlawed", "You have been outlawed!"),
   ("your_outlaw_rating_now_reg1", "Your outlaw rating is now {reg1}."),
@@ -476,6 +480,10 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("banner_used_by_s1", "That banner is used by the {s1}."),
   ("s1_doesnt_need_merc", "The {s1} doesn't need mercenaries."),
   ("s1_reign_supreme", "The {s1} reign supreme!"),
+  ("s1_now_hostile_towards_s10", "The {s1} are now hostile towards the {s10}."),
+  ("s1_and_s10_made_peace", "The {s1} and the {s10} have made peace."),
+  ("lord_of_s1_withdraws_offer_of_peace", "The lord of the {s1} withdraws the offer of peace."),
+  ("lord_of_s1_offers_peace", "The lord of the {s1} offers peace."),
 
   ("not_riding_cart_horse", "You are not riding a cart horse."),
   ("already_towing_cart", "Already towing another cart."),

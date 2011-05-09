@@ -165,6 +165,7 @@ slot_faction_is_active                = 2
 slot_faction_lord_player_uid          = 3
 slot_faction_lord_last_seen_time      = 4
 slot_faction_castle_banner_item_begin = 5
+slot_faction_list_button_id           = 6
 
 slot_faction_poll_end_time            = 20
 slot_faction_poll_voter_count         = 21
@@ -197,6 +198,8 @@ poll_result_admin_yes                 = -4
 poll_result_existing                  = -5
 poll_result_invalid                   = -6
 poll_result_color                     = 0xFF0000
+
+slot_faction_relations_begin          = 30
 
 faction_cost_change_banner            = 500
 faction_cost_change_name              = 500
@@ -329,6 +332,7 @@ ship_rotation_multiplier              = 3
 
 escape_menu_item_height               = 35
 admin_panel_item_height               = 40
+faction_menu_item_height              = 120
 chat_overlay_item_height              = 20
 chat_overlay_max_lines                = 100
 chat_overlay_ring_buffer_begin        = 60
