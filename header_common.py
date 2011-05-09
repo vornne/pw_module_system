@@ -192,7 +192,8 @@ admin_action_refill_health                      = 10
 admin_action_become_godlike                     = 11
 admin_action_get_horse                          = 12
 admin_action_remove_horses                      = 13
-admin_action_reset_ships                        = 14
+admin_action_teleport_to_ships                  = 14
+admin_action_reset_ships                        = 15
 
 faction_admin_action_change_banner              = 0
 faction_admin_action_kick_player                = 1
