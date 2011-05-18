@@ -47,6 +47,24 @@ slot_player_equip_item_1_ammo         = 31
 slot_player_equip_item_2_ammo         = 32
 slot_player_equip_item_3_ammo         = 33
 
+slot_player_admin_no_panel            = 40
+slot_player_admin_no_gold             = 41
+slot_player_admin_no_kick             = 42
+slot_player_admin_no_temporary_ban    = 43
+slot_player_admin_no_permanent_ban    = 44
+slot_player_admin_no_kill_fade        = 45
+slot_player_admin_no_freeze           = 46
+slot_player_admin_no_teleport_self    = 47
+slot_player_admin_no_admin_items      = 48
+slot_player_admin_no_heal_self        = 49
+slot_player_admin_no_godlike_troop    = 50
+slot_player_admin_no_ships            = 51
+slot_player_admin_no_announce         = 52
+slot_player_admin_no_override_poll    = 53
+slot_player_admin_no_all_items        = 54
+slot_player_admin_no_mute             = 55
+slot_player_admin_end                 = 56
+
 ########################################################
 ##  AGENT SLOTS            #############################
 ########################################################

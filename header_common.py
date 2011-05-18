@@ -29,6 +29,7 @@ server_event_faction_chat                       = 21
 server_event_faction_lord_chat                  = 22
 server_event_admin_chat                         = 23
 server_event_admin_chat_shout                   = 24
+server_event_admin_set_permissions              = 25
 
 client_event_admin_equip_item                   = 99
 client_event_poll_vote                          = 100

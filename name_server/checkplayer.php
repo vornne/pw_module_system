@@ -106,6 +106,27 @@
     return NULL;
   }
 
+  function player_get_admin_permissions($player_uid, $warband_server_id)
+  {
+    $result = mysql_query("SELECT * FROM admin_permissions WHERE unique_id = '$player_uid' AND server_id = '$warband_server_id';");
+    if (!$result) pw_database_error();
+    $permissions = 0;
+    while ($row = mysql_fetch_row($result))
+    {
+      $bit = 0;
+      $count = count($row);
+      for ($i = 3; $i < $count; ++$i) # loop must start with the first admin permission field
+      {
+        if ($row[$i] != 0)
+        {
+          $permissions += 1 << $bit;
+        }
+        ++$bit;
+      }
+    }
+    return $permissions;
+  }
+
   $server_password = filter_input(INPUT_GET, "password", FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
   if (!$server_password) die((string)pw_name_server_config::input_error);
 
@@ -130,7 +151,9 @@
   $escaped_name = mysql_real_escape_string($player_name);
   $return_code = player_register_name($player_uid, $escaped_name, $warband_server_id);
 
-  echo "$return_code|$player_id|$player_uid|$player_name";
+  $permissions = player_get_admin_permissions($player_uid, $warband_server_id);
+
+  echo "$return_code|$player_id|$player_uid|$player_name|$permissions";
 
   mysql_close($db_connection);
 ?>
