@@ -248,6 +248,7 @@ scripts = [
    [(store_script_param, ":integer_count", 1),
     (store_script_param, ":string_count", 2),
 
+    (assign, "$g_name_server_enabled", 1),
     (try_begin),
       (ge, ":integer_count", 1),
       (assign, ":return_code", reg0),
@@ -1491,6 +1492,7 @@ scripts = [
     (assign, "$g_combat_gold_multiplier", 100),
     (assign, "$g_map_time_limit", 1440),
     (assign, "$g_victory_condition", 0),
+    (assign, "$g_name_server_enabled", 0),
     ]),
 
   ("initialize_scene_globals",
@@ -2806,14 +2808,28 @@ scripts = [
     (try_end),
     ]),
 
-  ("player_check_name",
-   [(store_script_param, ":player_id", 1),
-
+  ("check_name_server",
+   [
     (try_begin),
+      (eq, "$g_name_server_enabled", 0),
       (str_store_string, s1, "str_name_server"),
       (neg|str_is_empty, s1),
       (str_store_string, s2, "str_name_server_password"),
       (neg|str_is_empty, s2),
+      (assign, reg1, 0),
+      (assign, reg2, 0),
+      (str_clear, s0),
+      (send_message_to_url, "str_http_s1_password_s2_id_reg1_uid_reg2_name_s0"),
+    (try_end),
+    ]),
+
+  ("player_check_name",
+   [(store_script_param, ":player_id", 1),
+
+    (try_begin),
+      (eq, "$g_name_server_enabled", 1),
+      (str_store_string, s1, "str_name_server"),
+      (str_store_string, s2, "str_name_server_password"),
       (assign, reg1, ":player_id"),
       (player_get_unique_id, reg2, ":player_id"),
       (str_store_player_username, s0, ":player_id"),

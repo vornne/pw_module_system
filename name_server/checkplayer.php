@@ -119,8 +119,9 @@
   $warband_server_id = warband_server_id($server_password);
   if ($warband_server_id === NULL) die((string)pw_name_server_config::password_error);
 
-  $id_restrictions = array("options"=>array("min_range"=>1, "max_range"=>250));
+  $id_restrictions = array("options"=>array("min_range"=>0, "max_range"=>250));
   $player_id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT, $id_restrictions);
+  if ($player_id == 0) die((string)pw_name_server_config::success);
   $id_restrictions = array("options"=>array("min_range"=>1, "max_range"=>10000000));
   $player_uid = filter_input(INPUT_GET, "uid", FILTER_VALIDATE_INT, $id_restrictions);
   $player_name = filter_input(INPUT_GET, "name", FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);

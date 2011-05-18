@@ -171,6 +171,7 @@ mission_templates = [
         (spawn_scene_prop, "spr_spawn_marker"),
       (try_end),
       (assign, "$g_spawned_bot_count", 0),
+      (call_script, "script_check_name_server"),
       ]),
 
     (ti_server_player_joined, 0, 0, [],
