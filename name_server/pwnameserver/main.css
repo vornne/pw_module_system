@@ -1,0 +1,39 @@
+#header { text-align: center; }
+#menu { line-height: 2em; text-align: center; background-color: #eeeeee; }
+
+#log_in_box
+{
+  border: 1px solid #606060;
+  border-collapse: collapse;
+  width: 30em;
+  margin-top: 10em;
+  margin-left: auto;
+  margin-right: auto;
+}
+#log_in_box td { border: none; }
+#log_in_box [type=text], [type=password] { width: 100%; float: right; }
+#log_in_box [type=submit] { float: right; margin-right: 2px; }
+
+.database_view
+{
+  border: 1px solid #606060;
+  border-collapse: collapse;
+  overflow: scroll;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.database_view th, td
+{
+  font-size: xx-small;
+  border: 1px solid #606060;
+  padding: 5px;
+}
+.database_view th
+{
+  font-weight: normal;
+  background-color: #eeeeee;
+}
+.database_view td.set { background-color: #778899; }
+div.database_actions { text-align: center; }
+div.database_error { text-align: center; color: red; }
