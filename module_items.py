@@ -454,6 +454,8 @@ items = [
 
 ["club", "Club", [("club",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_parry|itp_wooden_attack, itc_scimitar|itcf_carry_mace_left_hip,
  35, weight(2.5)|difficulty(0)|spd_rtng(92)|weapon_length(70)|swing_damage(10, blunt)|thrust_damage(0, pierce), imodbits_none],
+["spiked_club", "Spiked Club", [("spiked_club",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_parry, itc_longsword|itcf_carry_mace_left_hip,
+ 383, weight(3.0)|difficulty(10)|spd_rtng(90)|weapon_length(80)|swing_damage(15, pierce)|thrust_damage(17, pierce), imodbits_mace],
 ["old_knife", "Old Knife", [("peasant_knife",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_left,
  78, weight(0.5)|difficulty(0)|spd_rtng(100)|weapon_length(43)|swing_damage(12, cut)|thrust_damage(7, pierce), imodbits_sword],
 ["crude_spear", "Crude Spear", [("spear_g_1-9m",0)], itp_type_polearm|itp_primary|itp_wooden_parry, itc_staff|itcf_carry_spear,
