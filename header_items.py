@@ -115,27 +115,28 @@ blunt  = 2
 ibf_armor_mask           = 0x00000000000000000000000ff
 ibf_damage_mask          = 0x00000000000000000000003ff
 ibf_10bit_mask           = 0x00000000000000000000003ff
+ibf_weight_mask          = 0x000000000000000000000ffff
 
 ibf_head_armor_bits      = 0
 ibf_body_armor_bits      = 8
 ibf_leg_armor_bits       = 16
 ibf_weight_bits          = 24
-ibf_difficulty_bits      = 32
+ibf_difficulty_bits      = 40
 
 ibf_hitpoints_mask       = 0x0000ffff
-ibf_hitpoints_bits       = 40
+ibf_hitpoints_bits       = 50
 
 #iwf_damage_mask             = 0x10000000000000ff #make sure value is 64 bits so that << will work
-iwf_swing_damage_bits       = 50
-iwf_swing_damage_type_bits  = 58
-iwf_thrust_damage_bits      = 60
-iwf_thrust_damage_type_bits = 68
-iwf_weapon_length_bits      = 70
-iwf_speed_rating_bits       = 80
-iwf_shoot_speed_bits        = 90
+iwf_swing_damage_bits       = 60
+iwf_swing_damage_type_bits  = 68
+iwf_thrust_damage_bits      = 70
+iwf_thrust_damage_type_bits = 78
+iwf_weapon_length_bits      = 80
+iwf_speed_rating_bits       = 90
+iwf_shoot_speed_bits        = 100
 
-iwf_max_ammo_bits           = 100 # use this for shield endurance too?
-iwf_abundance_bits          = 110
+iwf_max_ammo_bits           = 110 # use this for shield endurance too?
+iwf_abundance_bits          = 120
 iwf_accuracy_bits           = 16  #reuse leg_armor for accuracy  
 #iwf_horse_speed_bits        = 8
 #iwf_horse_maneuver_bits     = 16
@@ -146,12 +147,12 @@ iwf_damage_type_bits = 8
 
 def weight(x):
   a = int(4.0 * x)
-  a = ibf_armor_mask & a
-  return (((bignum | a) & ibf_armor_mask) << ibf_weight_bits)
-  
+  a = ibf_weight_mask & a
+  return (((bignum | a) & ibf_weight_mask) << ibf_weight_bits)
+
 def get_weight(y):
-  a = (y >> ibf_weight_bits) & ibf_armor_mask
-  return 0.25 * a 
+  a = (y >> ibf_weight_bits) & ibf_weight_mask
+  return 0.25 * a
 
 def head_armor(x):
   return (((bignum | x) & ibf_armor_mask) << ibf_head_armor_bits)
