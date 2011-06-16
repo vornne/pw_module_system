@@ -11,7 +11,7 @@ from header_triggers import *
 from header_terrain_types import *
 from header_music import *
 from header_sounds import *
-
+import math
 
 ####################################################################################################################
 # scripts is a list of script records.
@@ -7084,6 +7084,58 @@ scripts = [
       (eq, ":check_unique_id", ":target_unique_id"),
       (call_script, "script_cf_faction_set_lord", ":value_1", ":target_unique_id", ":poll_faction_id"),
     (try_end),
+    ]),
+
+  ("select_target_agent",
+   [
+    (set_fixed_point_multiplier, 1000),
+    (multiplayer_get_my_player, ":my_player_id"),
+    (assign, ":closest_score", int(math.sqrt(select_agent_max_x * select_agent_max_x + select_agent_max_y * select_agent_max_y))),
+    (convert_to_fixed_point, ":closest_score"),
+    (assign, "$g_target_agent_id", -1),
+    (mission_cam_get_position, pos1),
+    (try_for_agents, ":agent_id"),
+      (agent_is_human, ":agent_id"),
+      (agent_set_slot, ":agent_id", slot_agent_is_targeted, 0),
+      (agent_get_player_id, ":player_id", ":agent_id"),
+      (neq, ":player_id", ":my_player_id"),
+      (agent_get_position, pos2, ":agent_id"),
+      (position_move_z, pos2, 160),
+      (agent_get_horse, ":horse", ":agent_id"),
+      (try_begin),
+        (ge, ":horse", 0),
+        (position_move_z, pos2, 80),
+      (try_end),
+      (get_distance_between_positions, ":distance", pos1, pos2),
+      (le, ":distance", max_distance_to_see_labels),
+      (position_has_line_of_sight_to_position, pos1, pos2),
+      (position_get_screen_projection, pos3, pos2),
+      (position_get_x, ":x_pos", pos3),
+      (val_sub, ":x_pos", presentation_max_x / 2),
+      (val_abs, ":x_pos"),
+      (lt, ":x_pos", select_agent_max_x),
+      (position_get_y, ":y_pos", pos3),
+      (val_sub, ":y_pos", presentation_max_y / 2),
+      (val_abs, ":y_pos"),
+      (lt, ":y_pos", select_agent_max_x),
+      (val_mul, ":x_pos", ":x_pos"),
+      (val_mul, ":y_pos", ":y_pos"),
+      (store_add, ":score", ":x_pos", ":y_pos"),
+      (convert_to_fixed_point, ":score"),
+      (store_sqrt, ":score", ":score"),
+      (lt, ":score", ":closest_score"),
+      (assign, ":closest_score", ":score"),
+      (assign, "$g_target_agent_id", ":agent_id"),
+    (try_end),
+    (try_begin),
+      (gt, "$g_target_agent_id", -1),
+      (agent_get_position, pos2, "$g_target_agent_id"),
+      (particle_system_burst, "psys_target_agent", pos2, 1),
+      (agent_set_slot, "$g_target_agent_id", slot_agent_is_targeted, 1),
+      (neg|is_presentation_active, "prsnt_target_agent_name"),
+      (start_presentation, "prsnt_target_agent_name"),
+    (try_end),
+    (set_fixed_point_multiplier, 100),
     ]),
 
   ("cf_admin_action",

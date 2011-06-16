@@ -75,6 +75,7 @@ slot_agent_poison_amount              = 2
 slot_agent_poisoner_agent_id          = 3
 slot_agent_poisoner_player_uid        = 4
 slot_agent_freeze_instance_id         = 5
+slot_agent_is_targeted                = 6
 
 slot_agent_money_bag_1_value          = 10
 slot_agent_money_bag_2_value          = 11
@@ -334,6 +335,7 @@ chat_overlay_ring_buffer_begin        = 60
 chat_overlay_ring_buffer_size         = 10
 chat_overlay_ring_buffer_end          = chat_overlay_ring_buffer_begin + chat_overlay_ring_buffer_size
 admin_chat_color                      = 0xFFFF00FF
+invalid_faction_color                 = 0xFF888888
 
 outlaw_rating_for_kill                = 2
 outlaw_rating_for_team_kill           = 5
@@ -346,6 +348,11 @@ change_faction_type_outlawed          = 2
 
 inventory_slots_per_row               = 6
 inventory_slot_spacing                = 100
+
+select_agent_max_x                    = 300
+select_agent_max_y                    = 200
+presentation_max_x                    = 1000
+presentation_max_y                    = 750
 
 all_items_begin = "itm_straw_hat"
 all_items_end = "itm_all_items_end"

@@ -294,6 +294,7 @@ gk_local_chat = gk_quests_window
 gk_faction_chat = gk_inventory_window
 gk_admin_chat = gk_view_orders
 gk_money_bag = gk_party_window
+gk_target_agent = gk_quick_save
 
 #trigger positions
 #------------------------------------------------------

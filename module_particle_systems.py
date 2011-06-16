@@ -898,4 +898,17 @@ particle_systems = [
      0,
      0,
     ),
+    ("target_agent", psf_global_emit_dir, "target_agent",
+     5, 0.5, 0.5, -0.1, 0, 0,   #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.8, 1), (1, 0),          #alpha keys
+     (0.2, 1.0), (1, 0.5),      #red keys
+     (0.2, 0.1), (1, 0.1),      #green keys
+     (0.2, 0.1), (1, 0.1),      #blue keys
+     (0, 2), (1, 1),            #scale keys
+     (0, 0, 0),                 #emit box size
+     (0, 0, 0),                 #emit velocity
+      0,                        #emit dir randomness
+      0,                        #rotation speed
+      0,                        #rotation damping
+    ),
 ]

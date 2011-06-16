@@ -241,6 +241,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("spectate", "Spectate"),
   ("join_game", "Join Game"),
   ("choose_an_option", "Choose an option:"),
+  ("choose_an_option_targeting_s1", "Choose an option, targeting: {s1}"),
   ("change_options", "Change Options"),
   ("change_controls", "Change Controls"),
   ("show_rules", "Show Game Rules"),
@@ -406,6 +407,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("reg0_players", "({reg0} players)"),
   ("reg0_player", "({reg0} player)"),
   ("reg0", "{!}{reg0}"),
+  ("s0", "{!}{s0}"),
 
   ("done", "Done"),
   ("use", "Use"),
