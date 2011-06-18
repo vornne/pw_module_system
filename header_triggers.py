@@ -289,6 +289,11 @@ gk_quests_window = 46
 gk_game_log_window = 47
 gk_quick_save = 48
 
+gk_stats_chart = gk_leave
+gk_local_chat = gk_quests_window
+gk_faction_chat = gk_inventory_window
+gk_admin_chat = gk_view_orders
+gk_money_bag = gk_party_window
 
 #trigger positions
 #------------------------------------------------------

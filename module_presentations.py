@@ -2544,7 +2544,7 @@ presentations = [
       (try_end),
       (try_begin),
         (eq, "$g_stats_chart_opened_manually", 1),
-        (neg|game_key_is_down, gk_leave),
+        (neg|game_key_is_down, gk_stats_chart),
         (assign, "$g_stats_chart_opened_manually", 0),
         (clear_omitted_keys),
         (presentation_set_duration, 0),

@@ -505,13 +505,13 @@ mission_templates = [
       (multiplayer_send_string_to_server, ":event", s0),
       ]),
 
-    (0, 0.05, 0, [(game_key_clicked, gk_quests_window),(call_script, "script_cf_no_input_presentation_active")],
+    (0, 0.05, 0, [(game_key_clicked, gk_local_chat),(call_script, "script_cf_no_input_presentation_active")],
      [(assign, "$g_chat_box_string_id", "str_send_message_to_players_nearby"),
       (assign, "$g_chat_box_event_type", chat_event_type_local),
       (start_presentation, "prsnt_chat_box"),
       ]),
 
-    (0, 0.05, 0, [(game_key_clicked, gk_inventory_window),(call_script, "script_cf_no_input_presentation_active")],
+    (0, 0.05, 0, [(game_key_clicked, gk_faction_chat),(call_script, "script_cf_no_input_presentation_active")],
      [(multiplayer_get_my_player, ":player_id"),
       (player_get_slot, ":faction_id", ":player_id", slot_player_faction_id),
       (is_between, ":faction_id", castle_factions_begin, factions_end),
@@ -521,7 +521,7 @@ mission_templates = [
       (start_presentation, "prsnt_chat_box"),
       ]),
 
-    (0, 0.05, 0, [(game_key_clicked, gk_view_orders),(call_script, "script_cf_no_input_presentation_active")],
+    (0, 0.05, 0, [(game_key_clicked, gk_admin_chat),(call_script, "script_cf_no_input_presentation_active")],
      [(try_begin),
         (multiplayer_get_my_player, ":player_id"),
         (player_is_admin, ":player_id"),
@@ -543,7 +543,7 @@ mission_templates = [
      [(call_script, "script_cf_client_check_control_ship"),
       ]),
 
-    (0, 0, 0, [(game_key_clicked, gk_party_window),(call_script, "script_cf_no_input_presentation_active")],
+    (0, 0, 0, [(game_key_clicked, gk_money_bag),(call_script, "script_cf_no_input_presentation_active")],
      [(start_presentation, "prsnt_money_bag"),
       ]),
 
