@@ -401,8 +401,8 @@ presentations = [
           (str_store_string, s0, ":name_string_id"),
           (overlay_add_item, "$g_presentation_obj_edit_mode_choose_scene", s0),
         (try_end),
-        (assign, "$g_selected_scene", scenes_begin),
-        (overlay_set_val, "$g_presentation_obj_edit_mode_choose_scene", 0),
+        (val_clamp, "$g_selected_scene", scenes_begin, scenes_end),
+        (overlay_set_val, "$g_presentation_obj_edit_mode_choose_scene", "$g_selected_scene"),
 
         (create_button_overlay, "$g_presentation_obj_edit_mode_start_scene", "str_edit_scene", tf_center_justify),
         (position_set_x, pos1, 480),
