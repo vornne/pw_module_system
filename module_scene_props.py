@@ -2430,6 +2430,7 @@ scene_props = [
   ("pw_item_chest_b",spr_use_time(1),"pw_chest_b","bo_pw_chest_b", spr_item_chest_triggers(inventory_count=32, max_item_length=100)),
 
   ("pw_scene_day_time",sokf_invisible,"barrier_box","0", []),
+  ("pw_scene_cloud_haze",sokf_invisible,"barrier_box","0", []),
   ("pw_scene_ambient_sound",sokf_invisible,"barrier_cone","0",
    [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
