@@ -362,4 +362,11 @@ meshes = [
   ("tableau_mesh_colored_helmets_new_d", 0, "tableau_mesh_colored_helmets_new_d",  0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("tableau_mesh_colored_helmets_new_e", 0, "tableau_mesh_colored_helmets_new_e",  0, 0, 0, 0, 0, 0, 1, 1, 1),
 
+  ("pw_stats_chart_commoners", 0, "pw_stats_chart_commoners", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("pw_stats_chart_outlaws", 0, "pw_stats_chart_outlaws", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("pw_stats_chart_banner", 0, "pw_stats_chart_banner", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("pw_stats_chart_war", 0, "pw_stats_chart_war", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("pw_stats_chart_all", 0, "pw_stats_chart_all", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("pw_stats_chart_selected", 0, "pw_stats_chart_selected", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+
 ]

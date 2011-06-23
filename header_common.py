@@ -179,6 +179,11 @@ net_chat_event_mask = 0xFF
 net_chat_type_multiplier = 0x100
 net_chat_param_1_multiplier = 0x10000
 
+stats_chart_score_shift = 8
+stats_chart_ranking_shift = 24
+stats_chart_score_max = 1 << (stats_chart_ranking_shift - stats_chart_score_shift)
+stats_chart_player_mask = (1 << stats_chart_score_shift) - 1
+
 admin_action_kick_player                        = 0
 admin_action_ban_player_temp                    = 1
 admin_action_ban_player_perm                    = 2

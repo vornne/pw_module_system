@@ -448,9 +448,9 @@ mission_templates = [
       ]),
 
     (ti_tab_pressed, 0, 0, [(call_script, "script_cf_no_input_presentation_active")],
-     [(neg|is_presentation_active, "prsnt_stats_chart"),
+     [(neg|is_presentation_active, "prsnt_tabbed_stats_chart"),
       (assign, "$g_stats_chart_opened_manually", 1),
-      (start_presentation, "prsnt_stats_chart"),
+      (start_presentation, "prsnt_tabbed_stats_chart"),
       ]),
 
     (ti_battle_window_opened, 0, 0, [],
