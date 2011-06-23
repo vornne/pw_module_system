@@ -2429,6 +2429,12 @@ scene_props = [
   ("pw_item_chest_a",spr_use_time(1),"pw_chest_c","bo_pw_chest_c", spr_item_chest_triggers(inventory_count=48, max_item_length=180)),
   ("pw_item_chest_b",spr_use_time(1),"pw_chest_b","bo_pw_chest_b", spr_item_chest_triggers(inventory_count=32, max_item_length=100)),
 
+  ("pw_signpost_castle",0,"pw_signpost_castle","bo_pw_signpost", []),
+  ("pw_signpost_docks",0,"pw_signpost_docks","bo_pw_signpost", []),
+  ("pw_signpost_market",0,"pw_signpost_market","bo_pw_signpost", []),
+  ("pw_signpost_tavern",0,"pw_signpost_tavern","bo_pw_signpost", []),
+  ("pw_signpost_town",0,"pw_signpost_town","bo_pw_signpost", []),
+
   ("pw_scene_day_time",sokf_invisible,"barrier_box","0", []),
   ("pw_scene_cloud_haze",sokf_invisible,"barrier_box","0", []),
   ("pw_scene_ambient_sound",sokf_invisible,"barrier_cone","0",
