@@ -27,8 +27,6 @@ def tableau_armor_banner(mesh_tableau, banner_xyz=(0,0,0), banner_scale=100, mes
     (set_fixed_point_multiplier, 100),
     (troop_get_slot, ":background_color", "trp_banner_background_color_array", ":banner_mesh"),
     (cur_tableau_set_background_color, ":background_color"),
-    (init_position, pos1),
-    (cur_tableau_add_mesh_with_vertex_color, "mesh_heraldic_armor_bg", pos1, 200, 100, ":background_color"),
     (try_begin),
       (is_between, ":banner_mesh", banner_meshes_begin, banner_meshes_end),
       (init_position, pos1)]
