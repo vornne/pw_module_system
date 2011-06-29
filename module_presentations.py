@@ -3461,8 +3461,8 @@ presentations = [
      [(set_fixed_point_multiplier, 1000),
 
       (create_text_overlay, reg1, "str_empty_string", tf_right_align|tf_with_outline),
-      (overlay_set_color, reg1, 0xFFDDDD66),
-      (position_set_x, pos1, 895),
+      (overlay_set_color, reg1, 0xFFDDD855),
+      (position_set_x, pos1, 965),
       (position_set_y, pos1, 651),
       (overlay_set_position, reg1, pos1),
       (position_set_x, pos1, 1200),
