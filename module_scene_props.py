@@ -1591,7 +1591,7 @@ scene_props = [
   ("arabian_passage_house_a",0,"arabian_passage_house_a","bo_arabian_passage_house_a", []),
   ("arabian_wall_a",0,"arabian_wall_a","bo_arabian_wall_a", []),
   ("arabian_wall_b",0,"arabian_wall_b","bo_arabian_wall_b", []),
-  ("arabian_ground_a",0,"arabian_ground_a","bo_arabian_ground_a", []),
+  ("arabian_ground_a",0,"arabian_ground_a","bo_arabian_ground_a_fixed", []),
   ("arabian_parterre_a",0,"arabian_parterre_a","bo_arabian_parterre_a", []),
   ("well_shaft",0,"well_shaft","bo_well_shaft", []),
   ("horse_mill",0,"horse_mill","bo_horse_mill", []),
