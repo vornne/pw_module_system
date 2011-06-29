@@ -23,5 +23,9 @@ factions = [
   ("2","White Faction", 0, 0, [], [], 0xFFFFFF),
   ("3","Blue Faction", 0, 0, [], [], 0x3333FF),
   ("4","Green Faction", 0, 0, [], [], 0x00DD00),
+  ("5","Yellow Faction", 0, 0, [], [], 0xCCAA44),
+  ("6","Purple Faction", 0, 0, [], [], 0x663333),
+  ("7","Orange Faction", 0, 0, [], [], 0x884411),
+  ("8","Black Faction", 0, 0, [], [], 0x000000),
   ("factions_end","factions_end", 0, 0, [], []),
 ]

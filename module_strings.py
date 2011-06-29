@@ -230,6 +230,10 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("fac_2_default_name", "White Faction"),
   ("fac_3_default_name", "Blue Faction"),
   ("fac_4_default_name", "Green Faction"),
+  ("fac_5_default_name", "Yellow Faction"),
+  ("fac_6_default_name", "Purple Faction"),
+  ("fac_7_default_name", "Orange Faction"),
+  ("fac_8_default_name", "Black Faction"),
 
   ("leave_edit_mode", "Leave scene editing mode?"),
   ("distance_reg1_sq_distance_reg2", "Distance: {reg1}, sq distance: {reg2}."),
@@ -541,9 +545,9 @@ As admin, holding down right shift while voting overrides the poll."),
   ("pw_editor_info", "-- General editing information^^\
 * Scripted scene props (starting with pw) do not work in this mode, only on a dedicated server.^\
 * Make sure the first few scene props placed are not scripted (start with pw): instance id 0 can't be handled by some scripts.^\
-* Factions are numbered from 0 - 5, with commoners = 0, outlaws = 1, and the 4 castle factions starting from 2.^\
-* Castles are numbered from 0 - 7, and start the mission owned by the corresponding castle faction: for example, the default 'White Faction' starts with castles 1 and 5.^\
-* Factions are enabled for the scene if at least one capture point is placed for one of their starting castles.^\
+* Factions are numbered from 0 - 9, with commoners = 0, outlaws = 1, and the 4 castle factions starting from 2.^\
+* Castles are numbered from 2 - 9, and start the mission owned by the corresponding castle faction: for example, the default 'White Faction' starts with castle 3.^\
+* Factions are enabled for the scene if at least one capture point is placed for their starting castle.^\
 * Spawn points are 0 - 4 for commoners, 10 - 14 for outlaws, 20 - 24 for castle 1, and so on, up to 90 - 94 for castle 8.^\
 * For rotating scene props like trees or destroyable doors, place the origin at or slightly above ground level.^\
 ^-- Edit scene mode keys^\
