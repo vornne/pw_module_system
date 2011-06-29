@@ -7415,6 +7415,7 @@ scripts = [
       (assign, ":loop_end", factions_end),
       (try_for_range, ":other_faction_id", factions_begin, ":loop_end"),
         (faction_slot_eq, ":other_faction_id", slot_faction_banner_mesh, ":value_1"),
+        (faction_slot_eq, ":other_faction_id", slot_faction_is_active, 1),
         (assign, ":loop_end", -1),
         (multiplayer_send_3_int_to_player, ":sender_player_id", server_event_preset_message, "str_banner_used_by_s1", preset_message_faction|preset_message_fail_sound, ":other_faction_id"),
       (try_end),
