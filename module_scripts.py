@@ -1624,6 +1624,7 @@ scripts = [
         (faction_set_slot, ":faction_id", ":relations_slot", 0),
       (try_end),
     (try_end),
+    (faction_set_slot, factions_end, slot_faction_poll_end_time, 0),
     (troop_set_slot, "trp_inactive_players_array", slot_player_array_size, 0),
     (get_max_players, ":max_players"),
     (try_for_range, ":player_id", 0, ":max_players"),
