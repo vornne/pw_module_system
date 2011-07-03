@@ -6084,9 +6084,12 @@ scripts = [
 
     (try_begin),
       (agent_is_alive, ":agent_id"),
+      (agent_get_troop_id, ":troop_id", ":agent_id"),
+      (neq, ":troop_id", "trp_godlike_hero"),
+      (agent_get_item_id, ":horse_item_id", ":agent_id"),
+      (neq, ":horse_item_id", "itm_test_horse"),
       (agent_get_position, pos1, ":agent_id"),
       (agent_get_slot, ":drowning_count", ":agent_id", slot_agent_drowning_count),
-      (agent_get_item_id, ":horse_item_id", ":agent_id"),
       (agent_get_horse, ":horse_agent_id", ":agent_id"),
       (assign, ":drown_height", -190),
       (position_get_z, ":height", pos1),
