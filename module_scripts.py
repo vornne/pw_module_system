@@ -1632,7 +1632,6 @@ scripts = [
     (try_end),
     (troop_set_slot, "trp_last_chat_message", slot_last_chat_message_event_type, 0),
     (troop_set_slot, "trp_last_chat_message", slot_last_chat_message_not_recieved, 0),
-    (call_script, "script_setup_castle_names"),
     ]),
 
   ("preset_message",
@@ -3195,6 +3194,7 @@ scripts = [
         (troop_set_slot, "trp_mission_data", reg1, 1),
       (try_end),
     (try_end),
+    (call_script, "script_setup_castle_names"),
     ]),
 
   ("cf_castle_is_active",
