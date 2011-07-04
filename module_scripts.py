@@ -3725,6 +3725,7 @@ scripts = [
     (else_try),
       (eq, ":current_troop_id", ":troop_id"),
       (call_script, "script_cf_change_faction", ":agent_id", ":instance_id", change_faction_type_no_respawn),
+      (player_set_troop_id, ":player_id", ":troop_id"),
     (else_try),
       (assign, ":fail", 1),
     (try_end),
