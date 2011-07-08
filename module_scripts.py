@@ -10,6 +10,7 @@ from header_items import *
 from header_triggers import *
 from header_terrain_types import *
 from header_music import *
+from header_map_icons import *
 from header_sounds import *
 import math
 

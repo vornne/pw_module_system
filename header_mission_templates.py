@@ -126,6 +126,7 @@ mtf_team_fight          = 0x00000001 #identify enemies through team_no
 mtf_battle_mode         = 0x00000002 #No inventory access
 mtf_commit_casualties   = 0x00000010
 mtf_no_blood            = 0x00000100
+mtf_synch_inventory     = 0x00010000 #Make a backup of player inventory and restore it at mission end.
 
 
 
