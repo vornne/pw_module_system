@@ -951,17 +951,17 @@ simple_triggers = [
         (try_begin),
           (neg|is_between, "$g_lord_long_term_count", "trp_kingdom_heroes_including_player_begin", active_npcs_end),
           (assign, "$g_lord_long_term_count", "trp_kingdom_heroes_including_player_begin"),
-		(try_end),
+        (try_end),
 
         (assign, ":troop_no", "$g_lord_long_term_count"),
 	
         (try_begin),
           (eq, ":troop_no", "trp_kingdom_heroes_including_player_begin"),	
           (assign, ":troop_no", "trp_player"),
-		(try_end),
-		
-	    (try_begin),
-	      (eq, "$cheat_mode", 1),
+        (try_end),
+
+        (try_begin),
+          (eq, "$cheat_mode", 1),
           (str_store_troop_name, s9, ":troop_no"),
           (display_message, "@{!}DEBUG -- Doing political calculations for {s9}"),
         (try_end),
@@ -984,7 +984,7 @@ simple_triggers = [
             (faction_get_slot, ":faction_leader", ":original_faction", slot_faction_leader),
             (troop_get_slot, ":troop_reputation", ":troop_no", slot_lord_reputation_type),
 			
-			(try_begin),
+            (try_begin),
               (neq, ":faction_leader", ":troop_no"),
               (try_begin),
                 (this_or_next|eq, ":troop_reputation", lrep_quarrelsome),
@@ -992,11 +992,11 @@ simple_triggers = [
                 (this_or_next|eq, ":troop_reputation", lrep_cunning),
                 (eq, ":troop_reputation", lrep_debauched),
                 (call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", -4),
-				(val_add, "$total_no_fief_changes", -4),
+                (val_add, "$total_no_fief_changes", -4),
               (else_try),
                 (eq, ":troop_reputation", lrep_martial),
                 (call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", -2),
-				(val_add, "$total_no_fief_changes", -2),
+                (val_add, "$total_no_fief_changes", -2),
               (try_end),
             (try_end),
           (try_end),
@@ -1004,96 +1004,90 @@ simple_triggers = [
 		
         #Auto-indictment or defection
         (try_begin),
-			(this_or_next|troop_slot_eq, ":troop_no", slot_troop_occupation, slto_kingdom_hero),
-				(eq, ":troop_no", "trp_player"),		
-		
+          (this_or_next|troop_slot_eq, ":troop_no", slot_troop_occupation, slto_kingdom_hero),
+          (eq, ":troop_no", "trp_player"),		
+          (try_begin),
+            (eq, ":troop_no", "trp_player"),
+            (assign, ":faction", "$players_kingdom"),
+          (else_try),
+            (store_faction_of_troop, ":faction", ":troop_no"),
+          (try_end),
+
+          (faction_get_slot, ":faction_leader", ":faction", slot_faction_leader),
+          (neq, ":troop_no", ":faction_leader"),
+			
+          #I don't know why these are necessary, but they appear to be
+          (neg|is_between, ":troop_no", "trp_kingdom_1_lord", "trp_knight_1_1"),
+          (neg|is_between, ":troop_no", pretenders_begin, pretenders_end),
+			
+          (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":faction_leader"),
+          (le, reg0, -50), #was -75
+
+          (call_script, "script_cf_troop_can_intrigue", ":troop_no", 0), #Should include battle, prisoner, in a castle with others 
+          (store_random_in_range, ":who_moves_first", 0, 2),
+			
+          (try_begin),
+            (neq, ":who_moves_first", 0),
+            (neq, ":troop_no", "trp_player"),
+				
+            #do a defection
+			(assign, "$g_give_advantage_to_original_faction", 1),            
+			(store_faction_of_troop, ":orig_faction", ":troop_no"),
+			(call_script, "script_lord_find_alternative_faction", ":troop_no"),
+			(assign, ":new_faction", reg0),			
+			(assign, "$g_give_advantage_to_original_faction", 0),
 			(try_begin),
-				(eq, ":troop_no", "trp_player"),
-				(assign, ":faction", "$players_kingdom"),
-			(else_try),
-				(store_faction_of_troop, ":faction", ":troop_no"),
+			  (neq, ":new_faction", ":orig_faction"),			  
+            
+              (is_between, ":new_faction", kingdoms_begin, kingdoms_end),
+              (str_store_troop_name_link, s1, ":troop_no"),
+              (str_store_faction_name_link, s2, ":new_faction"),	
+              (str_store_faction_name_link, s3, ":faction"),
+              (call_script, "script_change_troop_faction", ":troop_no", ":new_faction"),
+              (try_begin),
+                (ge, "$cheat_mode", 1),
+                (str_store_troop_name, s4, ":troop_no"),
+                (display_message, "@{!}DEBUG - {s4} faction changed in defection"), 
+              (try_end),	
+              (troop_get_type, reg4, ":troop_no"),
+              (str_store_string, s4, "str_lord_defects_ordinary"),
+              (display_log_message, "@{!}{s4}"),
+              (try_begin),
+                (eq, "$cheat_mode", 1),
+                (this_or_next|eq, ":new_faction", "$players_kingdom"),
+                (eq, ":faction", "$players_kingdom"),
+                (call_script, "script_add_notification_menu", "mnu_notification_lord_defects", ":troop_no", ":faction"),
+              (try_end),				
 			(try_end),
-		
-			(faction_get_slot, ":faction_leader", ":faction", slot_faction_leader),
-			(neq, ":troop_no", ":faction_leader"),
-			
-			#I don't know why these are necessary, but they appear to be
-			(neg|is_between, ":troop_no", "trp_kingdom_1_lord", "trp_knight_1_1"),
-			(neg|is_between, ":troop_no", pretenders_begin, pretenders_end),
-			
+          (else_try),	
+            (neq, ":faction_leader", "trp_player"),
 			(call_script, "script_troop_get_relation_with_troop", ":troop_no", ":faction_leader"),
 			(le, reg0, -75),
-
-			
-			
-			(call_script, "script_cf_troop_can_intrigue", ":troop_no", 0), #Should include battle, prisoner, in a castle with others 
-		
-			(store_random_in_range, ":who_moves_first", 0, 2),
-			
-			(try_begin),
-				(neq, ":who_moves_first", 0),
-				(neq, ":troop_no", "trp_player"),
-				
-				#do a defection
-				(call_script, "script_lord_find_alternative_faction", ":troop_no"),
-				(assign, ":new_faction", reg0),
-			
-				(is_between, ":new_faction", kingdoms_begin, kingdoms_end),
-
-				(str_store_troop_name_link, s1, ":troop_no"),
-				(str_store_faction_name_link, s2, ":new_faction"),	
-				(str_store_faction_name_link, s3, ":faction"),
-				
-				(call_script, "script_change_troop_faction", ":troop_no", ":new_faction"),
-				
-				(try_begin),
-					(ge, "$cheat_mode", 1),
-					(str_store_troop_name, s4, ":troop_no"),
-					(display_message, "@{!}DEBUG - {s4} faction changed in defection"), 
-				(try_end),	
-				
-				(troop_get_type, reg4, ":troop_no"),
-				(str_store_string, s4, "str_lord_defects_ordinary"),
-				(display_log_message, "@{!}{s4}"),
-				
-				(try_begin),
-					(eq, "$cheat_mode", 1),
-					(this_or_next|eq, ":new_faction", "$players_kingdom"),
-						(eq, ":faction", "$players_kingdom"),
-					(call_script, "script_add_notification_menu", "mnu_notification_lord_defects", ":troop_no", ":faction"),
-				(try_end),				
-			(else_try),	
-				(neq, ":faction_leader", "trp_player"),
-				(call_script, "script_indict_lord_for_treason", ":troop_no", ":faction"),
-			(try_end),		  
-		(else_try),  #Take a stand on an issue
-			(neq, ":troop_no", "trp_player"),
-			(store_faction_of_troop, ":faction", ":troop_no"),
-			
-			(faction_slot_ge, ":faction", slot_faction_political_issue, 1),
-
-			#This bit of complication is needed for savegame compatibility -- if zero is in the slot, they'll choose anyway			
-			(neg|troop_slot_ge, ":troop_no", slot_troop_stance_on_faction_issue, 1), 
-			
-			(this_or_next|troop_slot_eq, ":troop_no", slot_troop_stance_on_faction_issue, -1),
-				(neq, "$players_kingdom", ":faction"),
-				
-			(troop_slot_eq, ":troop_no", slot_troop_occupation, slto_kingdom_hero),
-			
-			(call_script, "script_npc_decision_checklist_take_stand_on_issue", ":troop_no"),
-			(troop_set_slot, ":troop_no", slot_troop_stance_on_faction_issue, reg0),
+            (call_script, "script_indict_lord_for_treason", ":troop_no", ":faction"),
+          (try_end),		  
+        (else_try),  #Take a stand on an issue
+          (neq, ":troop_no", "trp_player"),
+          (store_faction_of_troop, ":faction", ":troop_no"),
+          (faction_slot_ge, ":faction", slot_faction_political_issue, 1),
+          #This bit of complication is needed for savegame compatibility -- if zero is in the slot, they'll choose anyway			
+          (neg|troop_slot_ge, ":troop_no", slot_troop_stance_on_faction_issue, 1), 
+          (this_or_next|troop_slot_eq, ":troop_no", slot_troop_stance_on_faction_issue, -1),
+          (neq, "$players_kingdom", ":faction"),
+          (troop_slot_eq, ":troop_no", slot_troop_occupation, slto_kingdom_hero),
+          (call_script, "script_npc_decision_checklist_take_stand_on_issue", ":troop_no"),
+          (troop_set_slot, ":troop_no", slot_troop_stance_on_faction_issue, reg0),
         (try_end),
 
-		(try_for_range, ":active_npc", active_npcs_begin, active_npcs_end),
-			(call_script, "script_troop_get_relation_with_troop", ":troop_no", ":active_npc"),
-			(lt, reg0, 0),
-			(assign, ":relation", reg0),
-			(store_sub, ":chance_of_convergence", 0, ":relation"),
-			(store_random_in_range, ":random", 0, 300),
-			(lt, ":random", ":chance_of_convergence"),
-			(call_script, "script_troop_change_relation_with_troop", ":troop_no", ":active_npc", 1),
-			(val_add, "$total_relation_changes_through_convergence", 1),
-		(try_end),				
+        (try_for_range, ":active_npc", active_npcs_begin, active_npcs_end),
+          (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":active_npc"),
+          (lt, reg0, 0),
+          (assign, ":relation", reg0),
+          (store_sub, ":chance_of_convergence", 0, ":relation"),
+          (store_random_in_range, ":random", 0, 300),
+          (lt, ":random", ":chance_of_convergence"),
+          (call_script, "script_troop_change_relation_with_troop", ":troop_no", ":active_npc", 1),
+          (val_add, "$total_relation_changes_through_convergence", 1),
+        (try_end),				
         ]),
 	
 #TEMPORARILY DISABLED, AS READINESS IS NOW A PRODUCT OF NPC_DECISION_CHECKLIST	
@@ -1308,12 +1302,10 @@ simple_triggers = [
     (try_begin),
 		(ge, "$cheat_mode", 1),
 	
-		(try_for_range, ":king", "trp_kingdom_1_lord", "trp_knight_1_1"),
-		
+		(try_for_range, ":king", "trp_kingdom_1_lord", "trp_knight_1_1"),		
 			(store_add, ":proper_faction", ":king", "fac_kingdom_1"),
 			(val_sub, ":proper_faction", "trp_kingdom_1_lord"),
 			(store_faction_of_troop, ":actual_faction", ":king"),
-
 			
 			(neq, ":proper_faction", ":actual_faction"),
 			(neq, ":actual_faction", "fac_commoners"),
@@ -1327,7 +1319,7 @@ simple_triggers = [
 #			(display_message, "@{s65}"),
 			(rest_for_hours, 0, 0, 0),
 			
-			(assign, "$cheat_mode", 1),
+			#(assign, "$cheat_mode", 1),
 			(jump_to_menu, "mnu_debug_alert_from_s65"),
 		(try_end),
 	
@@ -1379,7 +1371,7 @@ simple_triggers = [
     ]),
 
   # Refresh merchant inventories
-   (24,
+   (72,
    [
       (try_for_range, ":village_no", villages_begin, villages_end),
         (call_script, "script_refresh_village_merchant_inventory", ":village_no"),
@@ -1835,6 +1827,9 @@ simple_triggers = [
    [
        (try_for_range, ":troop_no", active_npcs_begin, active_npcs_end),
          (troop_slot_eq, ":troop_no", slot_troop_occupation, slto_kingdom_hero),
+
+         (str_store_troop_name, s1, ":troop_no"),
+       
          (neg|troop_slot_ge, ":troop_no", slot_troop_prisoner_of_party, 0),
          (neg|troop_slot_ge, ":troop_no", slot_troop_leaded_party, 1),
 
@@ -1852,14 +1847,18 @@ simple_triggers = [
            (assign, ":center_no", reg0),
 
            (try_begin),
-             (eq, "$cheat_mode", 2),
-             (assign, reg7, ":center_no"),
+             (eq, "$cheat_mode", 2),             
              (str_store_party_name, s7, ":center_no"),
+			 (str_store_troop_name, s0, ":troop_no"),
              (display_message, "str_debug__s0_is_spawning_around_party__s7"),
            (try_end),
        
            (call_script, "script_create_kingdom_hero_party", ":troop_no", ":center_no"),
-           (party_attach_to_party, "$pout_party", ":center_no"),
+
+		   (try_begin),
+		     (eq, "$g_there_is_no_avaliable_centers", 0),
+             (party_attach_to_party, "$pout_party", ":center_no"),
+           (try_end),
            
            #new
            #(troop_get_slot, ":party_no", ":troop_no", slot_troop_leaded_party),
@@ -2040,7 +2039,7 @@ simple_triggers = [
            (eq, ":cur_center", ":home_center"),
 		   
 		   #Peasants trade in their home center
-		   (call_script, "script_do_party_center_trade", ":party_no", ":home_center", price_adjustment), #this needs to be the same as the center		   
+		   (call_script, "script_do_party_center_trade", ":party_no", ":home_center", 4), #this needs to be the same as the center		   
 		   (store_faction_of_party, ":center_faction", ":cur_center"),
            (party_set_faction, ":party_no", ":center_faction"),           		   
            (party_get_slot, ":market_town", ":home_center", slot_village_market_town),
@@ -2053,7 +2052,7 @@ simple_triggers = [
              (party_get_slot, ":cur_ai_object", ":party_no", slot_party_ai_object),
              (eq, ":cur_center", ":cur_ai_object"),
 
-             (call_script, "script_do_party_center_trade", ":party_no", ":cur_ai_object", price_adjustment), #raised from 10
+             (call_script, "script_do_party_center_trade", ":party_no", ":cur_ai_object", 4), #raised from 10
              (assign, ":total_change", reg0),
 		     #This is roughly 50% of what a caravan would pay
 			 
@@ -2088,7 +2087,7 @@ simple_triggers = [
              #Adding 1 to village prosperity
              (try_begin),
                (store_random_in_range, ":rand", 0, 100),
-               (lt, ":rand", 35),
+               (lt, ":rand", 5), #was 35
                (call_script, "script_change_center_prosperity", ":home_center", 1),
 			   (val_add, "$newglob_total_prosperity_from_village_trade", 1),
              (try_end),

@@ -66,6 +66,7 @@ def compile_sentence_tokens(sentences):
   input_tokens = []
   output_tokens = []
   dialog_states = ["start","party_encounter","prisoner_liberated","enemy_defeated","party_relieved","event_triggered","close_window","trade","exchange_members", "trade_prisoners","buy_mercenaries","view_char","training","member_chat","prisoner_chat"]
+  dialog_state_usages = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
   for sentence in sentences:
     output_token_id = -1
     output_token = sentence[opt_token_pos]
@@ -77,6 +78,7 @@ def compile_sentence_tokens(sentences):
         break
     if not found:
       dialog_states.append(output_token)
+      dialog_state_usages.append(0)
       output_token_id = len(dialog_states) - 1
     output_tokens.append(output_token_id)
   for sentence in sentences:
@@ -86,6 +88,7 @@ def compile_sentence_tokens(sentences):
     for i_t in xrange(len(dialog_states)):
       if input_token == dialog_states[i_t]:
         input_token_id = i_t
+        dialog_state_usages[i_t] = dialog_state_usages[i_t] + 1
         found = 1
         break
     if not found:
@@ -98,6 +101,9 @@ def compile_sentence_tokens(sentences):
       print "**********************************************************************************"
     input_tokens.append(input_token_id)
   save_dialog_states(dialog_states)
+  for i_t in xrange(len(dialog_states)):
+    if dialog_state_usages[i_t] == 0:
+      print "ERROR: Output token not found: " + dialog_states[i_t]
   return (input_tokens, output_tokens)
 
 def create_auto_id(sentence,auto_ids):

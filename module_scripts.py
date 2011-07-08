@@ -10,6 +10,7 @@ from header_items import *
 from header_triggers import *
 from header_terrain_types import *
 from header_music import *
+from header_map_icons import *
 from ID_animations import *
 
 
@@ -224,9 +225,6 @@ scripts = [
         (try_for_range, ":center_no", centers_begin, centers_end),
           (party_set_slot, ":center_no", ":offset", average_price_factor), #1000
         (try_end),
-##        (party_set_slot, "p_zendar", ":offset", average_price_factor),
-##        (party_set_slot, "p_salt_mine", ":offset", average_price_factor),
-##        (party_set_slot, "p_four_ways_inn", ":offset", average_price_factor),
       (try_end),
 
 	  (call_script, "script_initialize_trade_routes"),
@@ -644,8 +642,7 @@ scripts = [
 	  #This needs to be after market towns
 	  (call_script, "script_initialize_economic_information"),
 
-	  (try_for_range, ":village_no", villages_begin, villages_end),	
-        (call_script, "script_refresh_village_merchant_inventory", ":village_no"),
+	  (try_for_range, ":village_no", villages_begin, villages_end),	        
         (call_script, "script_refresh_village_merchant_inventory", ":village_no"),
       (try_end),	  
 	  	  	  	 
@@ -716,6 +713,7 @@ scripts = [
         (party_get_slot, ":center_lord", ":center_no", slot_town_lord),
         (ge, ":center_lord", 1),
         (troop_slot_eq, ":center_lord", slot_troop_leaded_party, 0),
+		(assign, "$g_there_is_no_avaliable_centers", 0),
         (call_script, "script_create_kingdom_hero_party", ":center_lord", ":center_no"),
         (assign, ":lords_party", "$pout_party"),
         (party_attach_to_party, ":lords_party", ":center_no"),
@@ -2953,8 +2951,8 @@ scripts = [
         (party_is_active, ":root_attacker_party"),
         (store_faction_of_party, ":defender_faction", ":root_defender_party"),
         (store_faction_of_party, ":attacker_faction", ":root_attacker_party"),
-        (neq, ":defender_faction", "fac_player_faction"),
-        (neq, ":attacker_faction", "fac_player_faction"),
+        #(neq, ":defender_faction", "fac_player_faction"),
+        #(neq, ":attacker_faction", "fac_player_faction"),		
         (store_relation, ":reln", ":defender_faction", ":attacker_faction"),
         (lt, ":reln", 0),
         (assign, ":trigger_result", 0),
@@ -2963,7 +2961,7 @@ scripts = [
           (this_or_next|eq, "$g_battle_simulation_cancel_for_party", ":root_defender_party"),
           (eq, "$g_battle_simulation_cancel_for_party", ":root_attacker_party"),
           (assign, "$g_battle_simulation_cancel_for_party", -1),
-          (assign, "$auto_enter_town", "$g_battle_simulation_auto_enter_town_after_battle"),
+          (assign, "$auto_enter_town", "$g_battle_simulation_auto_enter_town_after_battle"),		  
           (assign, ":trigger_result", 1),
         (else_try),
           (try_begin),
@@ -2971,7 +2969,7 @@ scripts = [
             (party_slot_eq, ":root_attacker_party", slot_party_retreat_flag, 1),
             (assign, ":trigger_result", 1), #End battle!
           (try_end),
-          (party_set_slot, ":root_attacker_party", slot_party_retreat_flag, 0),
+          (party_set_slot, ":root_attacker_party", slot_party_retreat_flag, 0),		  
 
           #(assign, ":cancel_attack", 0),
 
@@ -3000,7 +2998,7 @@ scripts = [
       
             (val_mul, ":attacker_strength", 100), #it was 0.5 in old version, now it is only 1 / 1.23
             (val_div, ":attacker_strength", 123),
-          (try_end),
+          (try_end),		  
 
           (call_script, "script_party_count_fit_for_battle", "p_collective_ally", 0),
           (assign, ":old_defender_strength", reg0),
@@ -3020,12 +3018,12 @@ scripts = [
             (party_collect_attachments_to_party, ":root_defender_party", "p_collective_ally"),
           (try_end),
           (call_script, "script_party_count_fit_for_battle", "p_collective_ally", 0),
-          (assign, ":new_defender_strength", reg0),
+          (assign, ":new_defender_strength", reg0),		  
 
           (try_begin),
             (this_or_next|eq, ":new_attacker_strength", 0),
             (eq, ":new_defender_strength", 0),
-            # Battle concluded! determine winner
+            # Battle concluded! determine winner			
             
             (assign, ":do_not_end_battle", 0),
             (try_begin),
@@ -3596,17 +3594,17 @@ scripts = [
         (val_add, ":item_slot_no", slot_town_trade_good_prices_begin),
         (party_get_slot, ":price_factor", "$g_encountered_party", ":item_slot_no"),
 		
-		(try_begin),
-			(is_between, "$g_encountered_party", villages_begin, villages_end),
-			(party_get_slot, ":market_town", "$g_encountered_party", slot_village_market_town),
-			(party_get_slot, ":price_in_market_town", ":market_town", ":item_slot_no"),
-			(val_max, ":price_factor", ":price_in_market_town"),
-		(try_end),
+		#new
+		#(try_begin),
+		#	(is_between, "$g_encountered_party", villages_begin, villages_end),
+		#	(party_get_slot, ":market_town", "$g_encountered_party", slot_village_market_town),
+		#	(party_get_slot, ":price_in_market_town", ":market_town", ":item_slot_no"),
+		#	(val_max, ":price_factor", ":price_in_market_town"),
+		#(try_end),
 		
 		#For villages, the good will be sold no cheaper than in the market town
 		#This represents the absence of a permanent market -- ie, the peasants retain goods to sell on their journeys to town, and are not about to do giveaway deals with passing adventurers
-		
-		
+				
         (val_mul, ":price_factor", 100), #normalize price factor to range 0..100
         (val_div, ":price_factor", average_price_factor),
       (try_end),
@@ -3646,8 +3644,7 @@ scripts = [
         #increase trade penalty while selling weapons, armor, and horses
         (val_mul, ":trade_penalty", 4),
       (try_end),
-      
-      
+            
       (store_add, ":penalty_divisor", 100, ":trade_penalty"),
       
       (val_mul, ":price_factor", 100),
@@ -3671,9 +3668,10 @@ scripts = [
       (party_get_skill_level, ":trade_skill", "p_main_party", skl_trade),
       (try_begin),
         (is_between, ":item_kind_id", trade_goods_begin, trade_goods_end),
-        (assign, ":penalty",15), #reduced slightly
+        (assign, ":penalty", 12), #reduced slightly 20-15-12
         (store_mul, ":skill_bonus", ":trade_skill", 1),
         (val_sub, ":penalty", ":skill_bonus"),
+		(val_max, ":penalty", 3),		
       (else_try),
         (assign, ":penalty",100),
         (store_mul, ":skill_bonus", ":trade_skill", 5),
@@ -3718,19 +3716,20 @@ scripts = [
 	  
 	  (try_begin),
 		(is_between, "$g_encountered_party", villages_begin, villages_end),
-	    (val_mul, ":penalty", 2),
+	    (val_mul, ":penalty", 5), #1.25x trade penalty in villages.
+		(val_div, ":penalty", 4),
 	  (try_end),
 	  
-	  (try_begin),
-            (is_between, "$g_encountered_party", centers_begin, centers_end),
-	    #Double trade penalty if no local production or consumption
-	    (is_between, ":item_kind_id", trade_goods_begin, trade_goods_end),
-	    (call_script, "script_center_get_production", "$g_encountered_party", ":item_kind_id"),
-	    (eq, reg0, 0),
-	    (call_script, "script_center_get_consumption", "$g_encountered_party", ":item_kind_id"),
-	    (eq, reg0, 0),
-	    (val_mul, ":penalty", 2),
-	  (try_end),
+	  #(try_begin),
+            #(is_between, "$g_encountered_party", centers_begin, centers_end),
+	    ##Double trade penalty if no local production or consumption
+	    #(is_between, ":item_kind_id", trade_goods_begin, trade_goods_end),
+	    #(call_script, "script_center_get_production", "$g_encountered_party", ":item_kind_id"),
+	    #(eq, reg0, 0),
+	    #(call_script, "script_center_get_consumption", "$g_encountered_party", ":item_kind_id"),
+	    #(eq, reg0, 0),
+	    #(val_mul, ":penalty", 2),
+	  #(try_end),
 	  
       (val_mul, ":penalty",  ":penalty_multiplier"),
       (val_div, ":penalty", 1000),
@@ -3753,12 +3752,22 @@ scripts = [
         (party_get_slot, ":multiplier", "$g_encountered_party", ":item_slot_no"),
         (try_begin),
           (eq, ":reclaim_mode", 0),
-          (val_add, ":multiplier", 10),
+          (val_add, ":multiplier", 20),
         (else_try),
-          (val_add, ":multiplier", 15),
+          (val_add, ":multiplier", 30),
         (try_end),
+
+		(store_item_value, ":item_value", ":item_kind_id"),
+		(try_begin),
+		  (ge, ":item_value", 100),
+		  (store_sub, ":item_value_sub_100", ":item_value", 100),
+		  (store_div, ":item_value_sub_100_div_8", ":item_value_sub_100", 8),
+		  (val_add, ":multiplier", ":item_value_sub_100_div_8"),
+		(try_end),
+
         (val_min, ":multiplier", maximum_price_factor),
-        (party_set_slot, "$g_encountered_party", ":item_slot_no", ":multiplier"),
+        
+		(party_set_slot, "$g_encountered_party", ":item_slot_no", ":multiplier"),
       (try_end),
   ]),
   
@@ -3777,12 +3786,22 @@ scripts = [
         (party_get_slot, ":multiplier", "$g_encountered_party", ":item_slot_no"),
         (try_begin),
           (eq, ":return_mode", 0),
-          (val_sub, ":multiplier", 15),
+          (val_sub, ":multiplier", 30),
         (else_try),
-          (val_sub, ":multiplier", 10),
+          (val_sub, ":multiplier", 20),
         (try_end),
+
+		(store_item_value, ":item_value", ":item_kind_id"),
+		(try_begin),
+		  (ge, ":item_value", 100),
+		  (store_sub, ":item_value_sub_100", ":item_value", 100),
+		  (store_div, ":item_value_sub_100_div_8", ":item_value_sub_100", 8),
+		  (val_sub, ":multiplier", ":item_value_sub_100_div_8"),
+		(try_end),
+
         (val_max, ":multiplier", minimum_price_factor),
-        (party_set_slot, "$g_encountered_party", ":item_slot_no", ":multiplier"),
+        
+		(party_set_slot, "$g_encountered_party", ":item_slot_no", ":multiplier"),
       (try_end),
   ]),
   
@@ -6557,33 +6576,51 @@ scripts = [
 		
     ("initialize_economic_information",
     [   	     
-	    #All towns produce tools, pottery, and wool cloth for sale in countryside
+	#All towns produce tools, pottery, and wool cloth for sale in countryside
 	(try_for_range, ":town_no", towns_begin, towns_end),	
-		(party_set_slot, ":town_no", slot_center_wool_looms, 20),
-		(party_set_slot, ":town_no", slot_center_breweries, 2),
-		(party_set_slot, ":town_no", slot_center_pottery_kilns, 10),
-		(party_set_slot, ":town_no", slot_center_smithies, 15),
-		(party_set_slot, ":town_no", slot_center_mills, 5),
-		(party_set_slot, ":town_no", slot_center_tanneries, 2),
-		(party_set_slot, ":town_no", slot_center_wine_presses, 1),
-		(party_set_slot, ":town_no", slot_center_olive_presses, 2),
+		(store_random_in_range, ":random_average_20_variation_10", 10, 31), #10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29 or 30
+		(party_set_slot, ":town_no", slot_center_wool_looms, ":random_average_20_variation_10"),
+
+		(store_random_in_range, ":random_average_2_variation_1", 1, 4), #1,2 or 3
+		(party_set_slot, ":town_no", slot_center_breweries, ":random_average_2_variation_1"),
+
+		(store_random_in_range, ":random_average_10_variation_7", 3, 18), #3,4,5,6,7,8,9,10,11,12,13,14,15,16 or 17
+		(party_set_slot, ":town_no", slot_center_pottery_kilns, ":random_average_10_variation_7"),
+
+		(store_random_in_range, ":random_average_15_variation_9", 6, 25), #6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23 or 24
+		(party_set_slot, ":town_no", slot_center_smithies, ":random_average_15_variation_9"),
+
+		(store_random_in_range, ":random_average_5_variation_3", 3, 9), #2,3,4,5,6,7 or 8
+		(party_set_slot, ":town_no", slot_center_mills, ":random_average_5_variation_3"),
+
+		(store_random_in_range, ":random_average_2_variation_1", 1, 4), #1,2 or 3
+		(party_set_slot, ":town_no", slot_center_tanneries, ":random_average_2_variation_1"),
+
+		(store_random_in_range, ":random_average_1_variation_1", 0, 3), #0,1 or 2
+		(party_set_slot, ":town_no", slot_center_wine_presses, ":random_average_1_variation_1"),
+
+		(store_random_in_range, ":random_average_2_variation_1", 1, 4), #1,2 or 3
+		(party_set_slot, ":town_no", slot_center_olive_presses, ":random_average_2_variation_1"),
 		
-		(party_set_slot, ":town_no", slot_center_acres_grain, 1000), #Surrounding fields
-		(party_set_slot, ":town_no", slot_center_acres_vineyard, 1000), #Surrounding fields
-		
+		(store_random_in_range, ":random_average_1000_variation_500", 500, 1501), #1,2 or 3
+		(party_set_slot, ":town_no", slot_center_acres_grain, ":random_average_1000_variation_500"), #500..1500
+
+		(store_random_in_range, ":random_average_1000_variation_500", 500, 1501), #1,2 or 3
+		(party_set_slot, ":town_no", slot_center_acres_vineyard, ":random_average_1000_variation_500"), #500..1500
     (try_end),
 	  
 	(party_set_slot, "p_town_1", slot_center_linen_looms, 15), 		#Sargoth
+	(party_set_slot, "p_town_1", slot_center_wine_presses, 4), 	    #Shariz
 	
 	(party_set_slot, "p_town_2", slot_center_salt_pans, 5), 		#Tihr
 	(party_set_slot, "p_town_2", slot_center_fishing_fleet, 25), 	#Tihr
 	
-	(party_set_slot, "p_town_3", slot_center_wine_presses, 10), 	#Veluca
+	(party_set_slot, "p_town_3", slot_center_wine_presses, 10), 	#Veluca	
 	
 	(party_set_slot, "p_town_4", slot_center_olive_presses, 15), 	#Suno
 	
 	(party_set_slot, "p_town_5", slot_center_silk_looms, 20), 		#Jelkaka
-	(party_set_slot, "p_town_5", slot_center_fishing_fleet, 30), 	#Jelkala
+	(party_set_slot, "p_town_5", slot_center_fishing_fleet, 30), 	#Jelkala	
 
 	(party_set_slot, "p_town_6", slot_center_breweries, 10), 		#Praven
 	(party_set_slot, "p_town_6", slot_center_tanneries, 4), 	    #Praven
@@ -6595,6 +6632,7 @@ scripts = [
 	(party_set_slot, "p_town_8", slot_center_smithies, 25), 	    #Reyvadin
 	(party_set_slot, "p_town_8", slot_center_wool_looms, 35), 	    #Reyvadin
 	(party_set_slot, "p_town_8", slot_center_tanneries, 4), 	    #Reyvadin
+	(party_set_slot, "p_town_8", slot_center_wine_presses, 4), 	    #Reyvadin
 
 	(party_set_slot, "p_town_9", slot_center_smithies, 18), 	    #Khudan
 	(party_set_slot, "p_town_9", slot_center_tanneries, 3), 	    #Khudan
@@ -6616,7 +6654,7 @@ scripts = [
 	(party_set_slot, "p_town_14", slot_center_tanneries, 3), 	    #Halmar
 	
 	(party_set_slot, "p_town_15", slot_center_smithies, 20), 		#Yalen
-	(party_set_slot, "p_town_15", slot_center_wine_presses, 5), 	#Yalen
+	(party_set_slot, "p_town_15", slot_center_wine_presses, 6), 	#Yalen
 	(party_set_slot, "p_town_15", slot_center_olive_presses, 5), 	#Yalen
 	(party_set_slot, "p_town_15", slot_center_fishing_fleet, 25), 	#Yalen
 	
@@ -6629,28 +6667,29 @@ scripts = [
 	(party_set_slot, "p_town_18", slot_center_wine_presses, 4), 	#narra
 	  
 	(party_set_slot, "p_town_19", slot_center_tanneries, 5), 	    #Shariz
-	(party_set_slot, "p_town_19", slot_center_breweries, 0), 	    #Shariz
-	(party_set_slot, "p_town_19", slot_center_wine_presses, 3), 	#Shariz
+	(party_set_slot, "p_town_19", slot_center_breweries, 0), 	    #Shariz #no alcohol in arabic region
+	(party_set_slot, "p_town_19", slot_center_wine_presses, 0), 	#Shariz #no alcohol in arabic region
 	(party_set_slot, "p_town_19", slot_center_fishing_fleet, 5), 	#Shariz
 
 	(party_set_slot, "p_town_20", slot_center_tanneries, 5), 	    #Darquba
-	(party_set_slot, "p_town_20", slot_center_breweries, 0), 	    #Darquba
-	(party_set_slot, "p_town_20", slot_center_wine_presses, 2), 	#Darquba
+	(party_set_slot, "p_town_20", slot_center_breweries, 0), 	    #Darquba #no alcohol in arabic region
+	(party_set_slot, "p_town_20", slot_center_wine_presses, 0), 	#Darquba #no alcohol in arabic region
 
 	(party_set_slot, "p_town_21", slot_center_tanneries, 5), 	    #Ahmerrad
-	(party_set_slot, "p_town_21", slot_center_breweries, 0), 	    #Ahmerrad
-	(party_set_slot, "p_town_21", slot_center_wine_presses, 2), 	#Ahmerrad
+	(party_set_slot, "p_town_21", slot_center_breweries, 0), 	    #Ahmerrad #no alcohol in arabic region
+	(party_set_slot, "p_town_21", slot_center_wine_presses, 0), 	#Ahmerrad #no alcohol in arabic region
 	  
 	(party_set_slot, "p_town_22", slot_center_tanneries, 5), 	    #Bariyye
-	(party_set_slot, "p_town_22", slot_center_breweries, 0), 	    #Bariyye
+	(party_set_slot, "p_town_22", slot_center_breweries, 0), 	    #Bariyye #no alcohol in arabic region
+	(party_set_slot, "p_town_22", slot_center_wine_presses, 0), 	#Bariyye #no alcohol in arabic region
 
 
 	
     (try_for_range, ":village_no", villages_begin, villages_end),
-        (store_random_in_range, ":random_cattle", 35, 65),
+        (store_random_in_range, ":random_cattle", 30, 75),
         (party_set_slot, ":village_no", slot_center_head_cattle, ":random_cattle"),
 
-        (store_random_in_range, ":random_sheep", 90, 120),
+        (store_random_in_range, ":random_sheep", 60, 150),
         (party_set_slot, ":village_no", slot_center_head_sheep, ":random_sheep"),
 
 		(party_set_slot, ":village_no", slot_center_acres_grain, 10000), #10 acres for each of 1000 households
@@ -6853,14 +6892,12 @@ scripts = [
 	(try_end),
 	  
 	#Initialize prices based on production, etc
-    (try_for_range, ":unused", 0, 15), #15 cycles = 45 days. For a village with -20 production, this should lead to approximate +1000, modified
+    (try_for_range, ":unused", 0, 3), #15 cycles = 45 days. For a village with -20 production, this should lead to approximate +1000, modified	    
         (call_script, "script_update_trade_good_prices"), #changes prices based on production
-        (call_script, "script_update_trade_good_prices"), 
-        (call_script, "script_update_trade_good_prices"), 
+        #(call_script, "script_update_trade_good_prices"), 
+        #(call_script, "script_update_trade_good_prices"), 
 		
-		(call_script, "script_average_trade_good_prices"), #Conduct virtual trade  twice    
-		(call_script, "script_average_trade_good_prices"), 
-		
+		#(call_script, "script_average_trade_good_prices"), #Conduct virtual trade   		
     (try_end),
 	  
 	#Initialize prosperity based on final prices
@@ -9509,7 +9546,7 @@ scripts = [
           #validity check
           (player_is_admin, ":player_no"),
           (is_between, ":value", 0, 51),
-          (is_between, ":value", "$g_multiplayer_max_num_bots"),
+          (is_between, ":value", 0, "$g_multiplayer_max_num_bots"),
           #condition checks are done
           (assign, "$g_multiplayer_num_bots_voteable", ":value"),
           (get_max_players, ":num_players"),
@@ -13122,38 +13159,77 @@ scripts = [
   # param2: item_id
   # param3: production_rate (should be between -100 (for net consumption) and 100 (for net production)
   # param4: randomness (between 0-100)
-  ("center_change_trade_good_production",
-    [
-      (store_script_param, ":center_no", 1),
-      (store_script_param, ":item_no", 2),
-      (store_script_param, ":production_rate", 3),
-#      (val_mul, ":production_rate", 5),
-      (store_script_param, ":randomness", 4),
-      (store_random_in_range, ":random_num", 0, ":randomness"),
-      (store_random_in_range, ":random_sign", 0, 2),
-      (try_begin),
-        (eq, ":random_sign", 0),
-        (val_add, ":production_rate", ":random_num"),
-      (else_try),
-        (val_sub, ":production_rate", ":random_num"),
-      (try_end),
-      (val_sub, ":item_no", trade_goods_begin),
-      (val_add, ":item_no", slot_town_trade_good_productions_begin),
+  #("center_change_trade_good_production",
+  #  [
+#	  (display_message, "@CHANGING"),
+#      (store_script_param, ":center_no", 1),
+#      (store_script_param, ":item_no", 2),
+#      (store_script_param, ":production_rate", 3),
+#      (store_script_param, ":randomness", 4),
+#      (store_random_in_range, ":random_num", 0, ":randomness"),
+#      (store_random_in_range, ":random_sign", 0, 2),
+#      (try_begin),
+#        (eq, ":random_sign", 0),
+#        (val_add, ":production_rate", ":random_num"),
+#      (else_try),
+#        (val_sub, ":production_rate", ":random_num"),
+#      (try_end),
+#      (val_sub, ":item_no", trade_goods_begin),
+#      (val_add, ":item_no", slot_town_trade_good_productions_begin),
+#
+#      (party_get_slot, ":old_production_rate", ":center_no", ":item_no"),
+#      (val_add, ":production_rate", ":old_production_rate"),
+#      (party_set_slot, ":center_no", ":item_no", ":production_rate"),
+#  ]),
 
-      (party_get_slot, ":old_production_rate", ":center_no", ":item_no"),
-      (val_add, ":production_rate", ":old_production_rate"),
-      (party_set_slot, ":center_no", ":item_no", ":production_rate"),
-  ]),
+
+
 
   ("average_trade_good_prices", #Called from start
+    [	
+	#This should be done by route rather than distance
+      (store_sub, ":item_to_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
+
+      (try_for_range, ":center_no", towns_begin, towns_end),
+        (this_or_next|is_between, ":center_no", towns_begin, towns_end),
+		(is_between, ":center_no", villages_begin, villages_end),
+		
+        (try_for_range, ":other_center", centers_begin, centers_end),
+          (this_or_next|is_between, ":center_no", towns_begin, towns_end),
+		  (is_between, ":center_no", villages_begin, villages_end),
+ 			
+          (neq, ":other_center", ":center_no"),
+          (store_distance_to_party_from_party, ":cur_distance", ":center_no", ":other_center"),
+          (lt, ":cur_distance", 50), #Reduced from 110
+          (store_sub, ":dist_factor", 50, ":cur_distance"),
+		  
+          (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+            (store_add, ":cur_good_slot", ":cur_good", ":item_to_slot"),
+            (party_get_slot, ":center_price", ":center_no", ":cur_good_slot"),
+            (party_get_slot, ":other_center_price", ":other_center", ":cur_good_slot"),
+            (store_sub, ":price_dif", ":center_price", ":other_center_price"),
+			
+            (assign, ":price_dif_change", ":price_dif"),
+
+            (val_mul ,":price_dif_change", ":dist_factor"),
+            (val_div ,":price_dif_change", 1000), #Maximum of 1/20 per center
+            (val_add, ":other_center_price", ":price_dif_change"),
+            (party_set_slot, ":other_center", ":cur_good_slot", ":other_center_price"),
+			
+            (val_sub, ":center_price", ":price_dif_change"),
+            (party_set_slot, ":center_no", ":cur_good_slot", ":center_price"),			
+          (try_end),
+        (try_end),
+      (try_end),
+  ]),
+
+  ("average_trade_good_prices_2", #Called from start
     [
 	
 	#This should be done by route rather than distance
       (store_sub, ":item_to_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
 
-      (try_for_range, ":center_no", towns_begin, towns_end),
-        
-		
+      (try_for_range, ":center_no", towns_begin, towns_end),       		
         (try_for_range, ":other_center", centers_begin, centers_end),
           (this_or_next|is_between, ":other_center", towns_begin, towns_end),
 			(is_between, ":other_center", villages_begin, villages_end),
@@ -13208,9 +13284,8 @@ scripts = [
   # INPUT: none (called only from game start?)
   #This is currently deprecated, as I was going to try to fine-tune production
   ("average_trade_good_productions",
-    [
+    [	  
       (store_sub, ":item_to_slot", slot_town_trade_good_productions_begin, trade_goods_begin),
-#      (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
       (try_for_range, ":center_no", towns_begin, towns_end),
         (this_or_next|is_between, ":center_no", towns_begin, towns_end),
         (is_between, ":center_no", villages_begin, villages_end),
@@ -13247,7 +13322,7 @@ scripts = [
   # INPUT: none
   # This currently deprecated, as I was going to try to fine-tune productions
   ("normalize_trade_good_productions",
-    [
+    [	  
       (store_sub, ":item_to_slot", slot_town_trade_good_productions_begin, trade_goods_begin),
       (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
         (assign, ":total_production", 0),
@@ -13283,9 +13358,48 @@ scripts = [
         (is_between, ":center_no", villages_begin, villages_end),
         (call_script, "script_update_trade_good_price_for_party", ":center_no"),
       (try_end),
-#      (call_script, "script_update_trade_good_price_for_party", "p_zendar"),
-#      (call_script, "script_update_trade_good_price_for_party", "p_salt_mine"),
-#      (call_script, "script_update_trade_good_price_for_party", "p_four_ways_inn"),
+
+      (try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
+	    (assign, ":total_price", 0),
+		(assign, ":total_constants", 0),
+
+	    (try_for_range, ":center_no", centers_begin, centers_end),
+          (this_or_next|is_between, ":center_no", towns_begin, towns_end),
+          (is_between, ":center_no", villages_begin, villages_end),
+
+          (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
+          (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
+          (party_get_slot, ":cur_price", ":center_no", ":cur_good_price_slot"),
+
+		  (try_begin),
+		    (is_between, ":center_no", towns_begin, towns_end),
+			(assign, ":constant", 5),
+          (else_try),
+		    (assign, ":constant", 1),
+		  (try_end),
+
+		  (val_mul, ":cur_price", ":constant"),
+
+		  (val_add, ":total_price", ":cur_price"),
+		  (val_add, ":total_constants", ":constant"),
+		(try_end),
+
+		(try_for_range, ":center_no", centers_begin, centers_end),
+          (this_or_next|is_between, ":center_no", towns_begin, towns_end),
+          (is_between, ":center_no", villages_begin, villages_end),
+
+          (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
+          (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
+          (party_get_slot, ":cur_price", ":center_no", ":cur_good_price_slot"),
+
+		  (val_mul, ":cur_price", 1000),
+		  (val_mul, ":cur_price", ":total_constants"),
+		  (val_div, ":cur_price", ":total_price"),		  
+
+		  (val_clamp, ":cur_price", minimum_price_factor, maximum_price_factor),
+		  (party_set_slot, ":center_no", ":cur_good_price_slot", ":cur_price"),
+		(try_end),
+      (try_end),
   ]),
 
   #script_update_trade_good_price_for_party
@@ -13306,35 +13420,52 @@ scripts = [
 		(assign, ":consumption", reg0),
 		(val_sub, ":production", ":consumption"),
 		
-		#Change averages production x 4 for excess demand
+		#Change averages production x 2(1+random(2)) (was 4, random(8)) for excess demand
         (try_begin),
 		  #supply is greater than demand
           (gt, ":production", 0), 
-		  (store_mul, ":change_factor", ":production", 8), #price will be decreased by his factor
+		  (store_mul, ":change_factor", ":production", 1), #price will be decreased by his factor
 		  (store_random_in_range, ":random_change", 0, ":change_factor"),
+		  (val_add, ":random_change", ":change_factor"),
+		  (val_add, ":random_change", ":change_factor"),		  
+
+		  #simulation starts
+          (store_sub, ":final_price", ":cur_price", ":random_change"),
+		  (val_clamp, ":final_price", minimum_price_factor, maximum_price_factor),		  		  		  
 		  (try_begin), #Excess of supply decelerates over time, as low price reduces output
-			(lt, ":cur_price", 900),
-			(val_mul, ":random_change", ":cur_price"),
-			(val_div, ":random_change", 900),
-		  (try_end),
+		    #if expected final price is 100 then it will multiply random_change by 0.308x ((100+300)/(1300) = 400/1300).
+			(lt, ":final_price", 1000),
+			(store_add, ":final_price_plus_300", ":final_price", 300),
+			(val_mul, ":random_change", ":final_price_plus_300"),
+			(val_div, ":random_change", 1300),
+          (try_end),
           (val_sub, ":cur_price", ":random_change"),
         (else_try),
           (lt, ":production", 0), 
 		  (store_sub, ":change_factor", 0, ":production"), #price will be increased by his factor
-		  (val_mul, ":change_factor", 8),
+		  (val_mul, ":change_factor", 1), 
 		  (store_random_in_range, ":random_change", 0, ":change_factor"),
+		  (val_add, ":random_change", ":change_factor"),
+		  (val_add, ":random_change", ":change_factor"),
           (val_add, ":cur_price", ":random_change"),
         (try_end),
-	
-		
+			
         #Move price towards average by 3%...
 		#Equilibrium is 33 cycles, or 100 days
 		#Change per cycle is Production x 4
 		#Thus, max differential = -5 x 4 x 33 = -660 for -5
-        (store_sub, ":price_difference", ":cur_price", average_price_factor),
-        (val_mul, ":price_difference", 97),
-        (val_div, ":price_difference", 100),
-        (store_add, ":new_price", average_price_factor, ":price_difference"),
+		(try_begin),
+		  (is_between, ":center_no", villages_begin, villages_end),
+          (store_sub, ":price_difference", ":cur_price", average_price_factor),
+          (val_mul, ":price_difference", 97),
+          (val_div, ":price_difference", 100),
+          (store_add, ":new_price", average_price_factor, ":price_difference"),
+        (else_try),
+          (store_sub, ":price_difference", ":cur_price", average_price_factor),
+          (val_mul, ":price_difference", 97),
+          (val_div, ":price_difference", 100),
+          (store_add, ":new_price", average_price_factor, ":price_difference"),
+        (try_end),
 		
 		#Price of manufactured goods drift towards primary raw material 
 		(try_begin),
@@ -13342,10 +13473,23 @@ scripts = [
             (neq, ":raw_material", 0),
 	        (store_sub, ":raw_material_price_slot", ":raw_material", trade_goods_begin),
 	        (val_add, ":raw_material_price_slot", slot_town_trade_good_prices_begin),
-			(party_get_slot, ":raw_material_price", ":center_no", ":raw_material_price_slot"),
-			(gt, ":raw_material_price", ":new_price"),
-			(store_sub, ":raw_material_boost", ":raw_material_price", ":new_price"),
-			(val_div, ":raw_material_boost", 10),
+
+			(party_get_slot, ":total_raw_material_price", ":center_no", ":raw_material_price_slot"),
+			(val_mul, ":total_raw_material_price", 3),
+            (assign, ":number_of_centers", 3),
+
+			(try_for_range, ":village_no", villages_begin, villages_end),
+			  (party_slot_eq, ":village_no", slot_village_bound_center, ":center_no"),
+			  (party_get_slot, ":raw_material_price", ":village_no", ":raw_material_price_slot"),
+			  (val_add, ":total_raw_material_price", ":raw_material_price"),
+			  (val_add, ":number_of_centers", 1),
+            (try_end),
+
+			(store_div, ":average_raw_material_price", ":total_raw_material_price", ":number_of_centers"),					
+
+			(gt, ":average_raw_material_price", ":new_price"),
+			(store_sub, ":raw_material_boost", ":average_raw_material_price", ":new_price"),
+			(val_div, ":raw_material_boost", 10), 
 			(val_add, ":new_price", ":raw_material_boost"),
 		(try_end),
 		
@@ -13419,7 +13563,6 @@ scripts = [
 			(party_get_slot, ":base_production", ":center_no", slot_center_tanneries),
 			(val_mul, ":base_production", 20),
 			
-
 		(else_try),
 			(eq, ":cur_good", "itm_honey"), 	 #Demand = 5
 			(party_get_slot, ":base_production", ":center_no", slot_center_apiaries),
@@ -13469,9 +13612,7 @@ scripts = [
 		(else_try),
 			(eq, ":cur_good", "itm_wine"), 	 
 			(party_get_slot, ":base_production", ":center_no", slot_center_wine_presses),
-			(val_mul, ":base_production", 30),
-			
-			
+			(val_mul, ":base_production", 30),						
 		(else_try),
 			(eq, ":cur_good", "itm_raw_olives"), 	 
 			(party_get_slot, ":base_production", ":center_no", slot_center_acres_olives),
@@ -13489,9 +13630,7 @@ scripts = [
 		(else_try),
 			(eq, ":cur_good", "itm_raw_flax"), 	 
 			(party_get_slot, ":base_production", ":center_no", slot_center_acres_flax),
-			(val_div, ":base_production", 65),
-			
-
+			(val_div, ":base_production", 65),			
 		(else_try),
 			(eq, ":cur_good", "itm_velvet"), 	 
 			(party_get_slot, ":base_production", ":center_no", slot_center_silk_looms),
@@ -13504,9 +13643,7 @@ scripts = [
 			(eq, ":cur_good", "itm_raw_dyes"), 	 
 			(this_or_next|eq, ":center_no", "p_town_5"),
 				(eq, ":center_no", "p_town_22"),
-			(assign, ":base_production", 50),
-
-			
+			(assign, ":base_production", 50),			
 		(else_try),
 			(eq, ":cur_good", "itm_raw_date_fruit"), 	 
 			(party_get_slot, ":base_production", ":center_no", slot_center_acres_dates),
@@ -13531,11 +13668,7 @@ scripts = [
 				(assign, ":base_production", 30),
 			(try_end),	
 		(try_end),
-		
-		
-		
-		
-		
+							
 		#Modify production by other goods
 		(assign, ":modified_production", ":base_production"),
 		(try_begin),
@@ -13573,8 +13706,7 @@ scripts = [
 		(else_try),	
 			(eq, ":cur_good", "itm_velvet"),
 			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_raw_silk", ":base_production", 1),
-			(assign, ":initially_modified_production", reg0),
-			
+			(assign, ":initially_modified_production", reg0),			
 			(call_script, "script_good_price_affects_good_production", ":center_no", "itm_raw_dyes", ":initially_modified_production", 2),
 			(assign, ":modified_production", reg0),
 		(else_try),	
@@ -13587,7 +13719,6 @@ scripts = [
 			(assign, ":modified_production", reg0),
 		(try_end),
 		
-
 		(assign, ":base_production_modded_by_raw_materials", ":modified_production"), #this is just logged for the report screen
 
 	    #Increase both positive and negative production by the center's prosperity
@@ -13776,7 +13907,7 @@ scripts = [
 	  
 	  (call_script, "script_add_log_entry", logent_party_traded, ":party_no", ":origin", ":center_no", -1),
 
-      (call_script, "script_do_party_center_trade", ":party_no", ":center_no", price_adjustment), #change prices by 20%, also, sets party_last_traded to new
+      (call_script, "script_do_party_center_trade", ":party_no", ":center_no", 4), #it was first 10 then increased 20 then increased 30, now I decrease it to back 6. Because otherwise prices do not differiate much. Trade become useless in game.
       
       (assign, ":total_change", reg0),
       #Adding the earnings to the wealth (maximum changed price is the earning)
@@ -13835,7 +13966,7 @@ scripts = [
     [
       (store_script_param_1, ":party"), #Party_id
       
-      (assign, reg(0),0),
+      (assign, reg0,0),
       (party_get_num_companion_stacks, ":num_stacks",":party"),
       (try_for_range, ":i_stack", 0, ":num_stacks"),
         (party_stack_get_troop_id, ":stack_troop", ":party", ":i_stack"),
@@ -13848,7 +13979,7 @@ scripts = [
         (party_stack_get_num_wounded, ":num_wounded",":party",":i_stack"),
         (val_sub, ":stack_size", ":num_wounded"),
         (val_mul, ":stack_strength", ":stack_size"),
-        (val_add,reg(0), ":stack_strength"),
+        (val_add,reg0, ":stack_strength"),
       (try_end),
   ]),
   
@@ -13954,21 +14085,14 @@ scripts = [
   #script_party_calculate_loot:
   # INPUT:
   # param1: Party-id
-  # Returns num looted items in reg(0)  
+  # Returns num looted items in reg0
   ("party_calculate_loot",
     [
       (store_script_param_1, ":enemy_party"), #Enemy Party_id
             
       (call_script, "script_calculate_main_party_shares"),
       (assign, ":num_player_party_shares", reg0),
-      #(assign, ":num_ally_shares", reg1),
-      #(store_add, ":num_shares",  ":num_player_party_shares", ":num_ally_shares"),
-      
-      #Calculate player loot probability
-      #(assign, ":loot_probability", 100),
-      #(val_mul, ":loot_probability", 10),
-      #(val_div, ":loot_probability", ":num_shares"),
-      
+            
       (try_for_range, ":i_loot", 0, num_party_loot_slots),
         (store_add, ":cur_loot_slot", ":i_loot", slot_party_looted_item_1),
         (party_get_slot, ":item_no", "$g_enemy_party", ":cur_loot_slot"),
@@ -14020,10 +14144,6 @@ scripts = [
           (try_end),  
                     
           (assign, ":cur_probability", 100),
-          (val_mul, ":cur_probability", average_price_factor),
-          (val_div, ":cur_probability", ":cur_price"),
-          (val_mul, ":cur_probability", average_price_factor),
-          (val_div, ":cur_probability", ":cur_price"),
           (val_mul, ":cur_probability", average_price_factor),
           (val_div, ":cur_probability", ":cur_price"),
           (assign, reg0, ":cur_probability"),
@@ -15748,10 +15868,10 @@ scripts = [
       (assign, reg0, 0),
       (try_for_range, ":i_stack", 0, ":num_stacks"),
         (party_stack_get_troop_id, ":stack_troop",":party",":i_stack"),
+        (neq, ":stack_troop", "trp_player"),
         (assign, ":num_fit",0),
         (try_begin),
           (troop_is_hero, ":stack_troop"),
-          (neq, ":stack_troop", "trp_player"),
           (store_troop_health, ":troop_hp", ":stack_troop"),
           (try_begin),
             (ge, ":troop_hp", 80),
@@ -16153,21 +16273,37 @@ scripts = [
         (val_add, ":no_centers", 1),
         
         #(party_slot_eq, ":cur_center", slot_town_lord, ":troop_no"),
-        (eq, ":home_center", ":cur_center"), #I changed it with above line, now if slot_town_lord is a village its home center is bordered walled center. Better this way. ozan-18.01.09
+        (eq, ":home_center", ":cur_center"), #I changed it with above line, now if lord is owner of any village its bound walled center is counted as 1000. Better this way. ozan-18.01.09
         
         (val_add, ":no_centers", 1000),
       (try_end),
-      (gt, ":no_centers", 0), #Fail if there are no centers
+
+	  #if no center is available count all centers not besieged do not care its faction.
+	  (try_begin),
+        (le, ":no_centers", 0), 
+
+		(assign, "$g_there_is_no_avaliable_centers", 1),
+
+        (try_for_range,":cur_center", walled_centers_begin, walled_centers_end),
+	      (party_slot_eq, ":cur_center", slot_center_is_besieged_by, -1),
+          (val_add, ":no_centers", 1),                                   
+        (try_end),
+	  (else_try),
+	    (assign, "$g_there_is_no_avaliable_centers", 0),
+	  (try_end),
+
       (store_random_in_range, ":random_center", 0, ":no_centers"),
       (try_for_range,":cur_center", walled_centers_begin, walled_centers_end),
         (eq, ":result", -1),
         (store_faction_of_party, ":cur_faction", ":cur_center"),
+		(this_or_next|eq, "$g_there_is_no_avaliable_centers", 1),
         (eq, ":cur_faction", ":faction_no"),
         (party_slot_eq, ":cur_center", slot_center_is_besieged_by, -1),
         (val_sub, ":random_center", 1),
         (try_begin),
           #(party_slot_eq, ":cur_center", slot_town_lord, ":troop_no"),
-          (eq, ":home_center", ":cur_center"), #I changed it with above line, now if slot_town_lord is a village its home center is bordered walled center. Better this way. ozan-18.01.09
+          (eq, ":home_center", ":cur_center"), #I changed it with above line, now if lord is owner of any village its bound walled center is counted as 1000. Better this way. ozan-18.01.09
+		  (eq, "$g_there_is_no_avaliable_centers", 0),
 
           (val_sub, ":random_center", 1000),
         (try_end),
@@ -16693,9 +16829,6 @@ scripts = [
               (store_random_in_range, ":quest_no", ":quests_begin_2", ":quests_end_2"),
             (try_end),
 	        
-#TODO: Remove this when test is done
-#       (assign, ":quest_no", "qst_meet_spy_in_enemy_town"),
-#TODO: Remove this when test is done end
 	        (neg|check_quest_active,":quest_no"),
 	        (neg|quest_slot_ge, ":quest_no", slot_quest_dont_give_again_remaining_days, 1),
 	        (try_begin),
@@ -17927,11 +18060,10 @@ scripts = [
 		(try_end),
 		(eq, ":giver_troop", ":junior_debauched_lord_in_faction"),
 		
-		(assign, ":faction_to_attack", 0),
-		(assign, ":faction_to_attack_score", 0),
+		(assign, ":faction_to_attack", -1),
+		(assign, ":faction_to_attack_score", -1),
 		
 	    (try_for_range, ":faction_candidate", kingdoms_begin, kingdoms_end),
-			(neq, ":faction_to_attack", -1),
 			(neq, ":faction_candidate", ":giver_troop_faction"),
 			(faction_slot_eq, ":faction_candidate", slot_faction_state, sfs_active),
 			(neq, ":faction_candidate", "$players_kingdom"),
@@ -17939,20 +18071,14 @@ scripts = [
 			(store_relation, ":relation", ":faction_candidate", ":giver_troop_faction"),
 			
 			(store_add, ":provocation_slot", ":giver_troop_faction", slot_faction_provocation_days_with_factions_begin),
-			(val_sub, ":provocation_slot", kingdoms_begin),				
+			(val_sub, ":provocation_slot", kingdoms_begin),
 			(faction_get_slot, ":provocation_days", ":faction_candidate", ":provocation_slot"),
 			
-			(try_begin),
-				(lt, ":relation", 0),
-				(assign, ":faction_to_attack", -1), #disqualifies if thefaction is already at war
-			(else_try),
-				(ge, ":provocation_days", 1),
-				(assign, ":faction_to_attack", -1), #disqualifies if the faction has already provoked someone
-			(else_try),
-				(ge, ":relation", 0),
-				(assign, ":faction_to_attack_temp_score", 2),
-				#add in scores - no truce?
-				
+			(ge, ":relation", 0), #disqualifies if the faction is already at war
+			(le, ":provocation_days", 0), #disqualifies if the faction has already provoked someone
+			
+			(store_random_in_range, ":faction_candidate_score", 0, 100),
+			#add in scores - no truce?
 #				(store_add, ":truce_slot", ":giver_troop_faction", slot_faction_truce_days_with_factions_begin),
 #				(store_add, ":provocation_slot", ":giver_troop_faction", slot_faction_provocation_days_with_factions_begin),
 #				(val_sub, ":truce_slot", kingdoms_begin),
@@ -17963,11 +18089,9 @@ scripts = [
 #					(val_sub, ":faction_to_attack_temp_score", 1),
 #				(try_end),
 				
-				(gt, ":faction_to_attack_temp_score", ":faction_to_attack_score"),
-				
-				(assign, ":faction_to_attack", ":faction_candidate"),
-				(assign, ":faction_to_attack_temp_score", ":faction_to_attack_score"),
-			(try_end),	
+			(gt, ":faction_candidate_score", ":faction_to_attack_score"),
+			(assign, ":faction_to_attack", ":faction_candidate"),
+			(assign, ":faction_to_attack_score", ":faction_candidate_score"),
 	    (try_end),
 		
 		(is_between, ":faction_to_attack", kingdoms_begin, kingdoms_end),
@@ -19674,6 +19798,16 @@ scripts = [
 		(store_troop_faction, ":lord_troop_faction", ":lord_troop_id"),
 	  (try_end),	
 	  (faction_get_slot, ":faction_leader", ":lord_troop_faction", slot_faction_leader),
+
+	  (try_begin),
+	    (eq, ":faction_leader", "trp_player"),
+
+        (try_begin),
+            (troop_get_type, ":is_female", "trp_player"),
+            (eq, ":is_female", 1),
+            (unlock_achievement, ACHIEVEMENT_QUEEN),
+        (try_end),
+	  (try_end),
 	  
 	  (try_begin),
 		(eq, ":faction_leader", ":old_lord_troop_id"),
@@ -20588,7 +20722,12 @@ scripts = [
       (store_troop_faction, ":troop_faction_no", ":troop_no"),
       
       (assign, "$pout_party", -1),
-      (set_spawn_radius, 0),
+      (try_begin),
+        (eq, "$g_there_is_no_avaliable_centers", 0),
+        (set_spawn_radius, 0),
+	  (else_try),
+        (set_spawn_radius, 15),
+      (try_end),
       (spawn_around_party, ":center_no", "pt_kingdom_hero_party"),
       
       (assign, "$pout_party", reg0),
@@ -20911,12 +21050,17 @@ scripts = [
       (store_script_param_1, ":village_no"),
       (party_get_slot, ":merchant_troop", ":village_no", slot_town_elder),
       (reset_item_probabilities,0),
-      (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
+
+	  (assign, ":total_probability", 0),
       (try_for_range, ":cur_goods", trade_goods_begin, trade_goods_end),
+		
 	    (call_script, "script_center_get_production", ":village_no", ":cur_goods"),
 		(assign, ":cur_probability", reg0),
 	    (call_script, "script_center_get_consumption", ":village_no", ":cur_goods"),
+		(val_div, reg0, 3),
 		(val_add, ":cur_probability", reg0),
+
+		(val_max, ":cur_probability", 1),
 	  
 	    (try_begin),
 			(this_or_next|eq, ":cur_goods", "itm_chicken"),
@@ -20924,30 +21068,33 @@ scripts = [
 			(assign, ":cur_probability", 5),
 	    (try_end),
 	  
-	    (val_mul, ":cur_probability", 3),
-	  
-        (store_add, ":cur_price_slot", ":cur_goods", ":item_to_price_slot"),
-        (party_get_slot, ":cur_price", ":village_no", ":cur_price_slot"),
-        (val_mul, ":cur_probability", average_price_factor),
-        (val_div, ":cur_probability", ":cur_price"),
-        (val_mul, ":cur_probability", average_price_factor),
-        (val_div, ":cur_probability", ":cur_price"),
-        (val_mul, ":cur_probability", average_price_factor),
-        (val_div, ":cur_probability", ":cur_price"),
-#        (val_mul, ":cur_probability", average_price_factor),
-#        (val_div, ":cur_probability", ":cur_price"),
-        (set_item_probability_in_merchandise, ":cur_goods", ":cur_probability"),
+		(val_add, ":total_probability", ":cur_probability"),
       (try_end),
-#      (set_item_probability_in_merchandise, "itm_spice", 0),
-#      (set_item_probability_in_merchandise, "itm_velvet", 0),
-
+	  
 	  (try_begin),
 		(party_get_slot, ":prosperity", ":village_no", slot_town_prosperity),
-		(val_div, ":prosperity", 17), #up to 5
-		(store_add, ":number_of_goods", ":prosperity", 1),
+		(val_div, ":prosperity", 15), #up to 6
+		(store_add, ":number_of_items_in_village", ":prosperity", 1),
 	  (try_end),
 
-      (troop_add_merchandise, ":merchant_troop", itp_type_goods, ":number_of_goods"),
+      (try_for_range, ":cur_goods", trade_goods_begin, trade_goods_end),
+	    (call_script, "script_center_get_production", ":village_no", ":cur_goods"),
+		(assign, ":cur_probability", reg0),
+	    (call_script, "script_center_get_consumption", ":village_no", ":cur_goods"),
+		(val_div, reg0, 3),
+		(val_add, ":cur_probability", reg0),
+
+		(val_max, ":cur_probability", 1),
+
+        (val_mul, ":cur_probability", ":number_of_items_in_village"),
+		(val_mul, ":cur_probability", 100),
+		(val_div, ":cur_probability", ":total_probability"),
+
+        (set_item_probability_in_merchandise, ":cur_goods", ":cur_probability"),
+      (try_end),
+
+      (troop_clear_inventory, ":merchant_troop"),
+      (troop_add_merchandise, ":merchant_troop", itp_type_goods, ":number_of_items_in_village"),
       (troop_ensure_inventory_space, ":merchant_troop", 80),
 
       #Adding 1 prosperity to the village while reducing each 3000 gold from the elder
@@ -21044,6 +21191,26 @@ scripts = [
   ("process_village_raids",
     [
        (try_for_range, ":village_no", villages_begin, villages_end),
+        ##CABA Fix 
+        (try_begin), 
+          (this_or_next|is_between, ":village_no", "p_village_16", "p_village_23"), #Shapeshte through Shulus (up to Ilvia) 
+          (this_or_next|is_between, ":village_no", "p_village_49", "p_village_51"), #Tismirr and Karindi 
+          (this_or_next|eq, ":village_no", "p_village_75"), #Bhulaban 
+          (is_between, ":village_no", "p_village_85", "p_village_87"), #Ismirala and Slezkh 
+          (assign, ":normal_village_icon", "icon_village_snow_a"),  
+          (assign, ":burnt_village_icon", "icon_village_snow_burnt_a"), 
+          (assign, ":deserted_village_icon", "icon_village_snow_deserted_a"), 
+        (else_try), 
+          (is_between, ":village_no", "p_village_91", "p_salt_mine"), #Ayn Assuadi through Rushdigh 
+          (assign, ":normal_village_icon", "icon_village_c"),  
+          (assign, ":burnt_village_icon", "icon_village_burnt_c"), 
+          (assign, ":deserted_village_icon", "icon_village_deserted_c"), 
+        (else_try), 
+          (assign, ":normal_village_icon", "icon_village_a"), 
+          (assign, ":burnt_village_icon", "icon_village_burnt_a"), 
+          (assign, ":deserted_village_icon", "icon_village_deserted_a"), 
+        (try_end), 
+        ##CABA Fix        
          (party_get_slot, ":village_raid_progress", ":village_no", slot_village_raid_progress),
          (try_begin),                
            (party_slot_eq, ":village_no", slot_village_state, 0), #village is normal
@@ -21055,8 +21222,8 @@ scripts = [
              
              (try_begin),
                (party_get_icon, ":village_icon", ":village_no"),
-               (neq, ":village_icon", "icon_village_a"),
-               (party_set_icon, ":village_no", "icon_village_a"),
+              (neq, ":village_icon", ":normal_village_icon"), ##CABA FIX 
+              (party_set_icon, ":village_no", ":normal_village_icon"), ##CABA FIX 
              (try_end),
              
              (party_slot_ge, ":village_no", slot_village_smoke_added, 1),
@@ -21103,7 +21270,7 @@ scripts = [
                (party_slot_eq, ":village_no", slot_village_smoke_added, 0),
                (party_add_particle_system, ":village_no", "psys_map_village_fire"),
                (party_add_particle_system, ":village_no", "psys_map_village_fire_smoke"),
-               (party_set_icon, ":village_no", "icon_village_burnt_a"),
+              (party_set_icon, ":village_no", ":burnt_village_icon"), ##CABA FIX 
                (party_set_slot, ":village_no", slot_village_smoke_added, 1),
              (try_end),
              (try_begin),
@@ -21171,7 +21338,7 @@ scripts = [
              (party_slot_eq, ":village_no", slot_village_smoke_added, 2),
              (party_clear_particle_systems, ":village_no"),
              (party_set_slot, ":village_no", slot_village_smoke_added, 3),
-             (party_set_icon, ":village_no", "icon_village_deserted_a"),
+            (party_set_icon, ":village_no", ":deserted_village_icon"), ##CABA FIX 
            (try_end),
            (try_begin),
              (gt, ":recover_progress", 100),
@@ -21179,7 +21346,7 @@ scripts = [
              (party_set_slot, ":village_no", slot_village_recover_progress, 0),
              (party_clear_particle_systems, ":village_no"),
              (party_set_slot, ":village_no", slot_village_smoke_added, 0),
-             (party_set_icon, ":village_no", "icon_village_a"),
+            (party_set_icon, ":village_no", ":normal_village_icon"), ##CABA FIX 
            (try_end),
          (try_end),
        (try_end),
@@ -22633,7 +22800,7 @@ scripts = [
 		(eq, ":faction_marshal", "trp_player"),
 		(neq, "$players_kingdom", ":faction_no"),
 
-		(faction_set_slot, ":faction_no", slot_faction_political_issue, 1), #Appointment of marshal
+                (faction_set_slot, ":faction_no", slot_faction_political_issue, 1), #Appointment of marshal
 		(store_current_hours, ":hours"),
 		(val_max, ":hours", 0),
 		(faction_set_slot, ":faction_no", slot_faction_political_issue_time, ":hours"), #Appointment of marshal
@@ -22768,7 +22935,7 @@ scripts = [
 		#Resolve faction political issue
 		(assign, ":winning_candidate", -1),
 		(try_begin),
-			(call_script, "script_troop_get_relation_with_troop", ":faction_leader", ":popular_favorite"),
+                        (call_script, "script_troop_get_relation_with_troop", ":faction_leader", ":popular_favorite"),
 			
 			(this_or_next|ge, reg0, 10),
 			(this_or_next|troop_slot_eq, ":faction_leader", slot_troop_stance_on_faction_issue, ":popular_favorite"),
@@ -22829,7 +22996,7 @@ scripts = [
 				(troop_set_slot, ":active_npc", slot_troop_stance_on_faction_issue, -1),
 			(try_end),		
 			(try_begin),
-				(eq, "$players_kingdom", ":faction_no"),
+                                (eq, "$players_kingdom", ":faction_no"),
 				(troop_set_slot, "trp_player", slot_troop_stance_on_faction_issue, -1),
 			(try_end),
 			
@@ -22892,8 +23059,8 @@ scripts = [
 	(try_begin),
 		(faction_get_slot, ":faction_issue", ":faction_no", slot_faction_political_issue),
 		(le, ":faction_issue", 0),
-		
-		(assign, ":landless_lords", 0),
+
+                (assign, ":landless_lords", 0),
 		(assign, ":unassigned_centers", 0),
 		(assign, ":first_unassigned_center_found", 0),
 		
@@ -22956,7 +23123,7 @@ scripts = [
     (try_end),	 
 		 
 	#DO FACTION AI HERE
-	(try_begin),
+        (try_begin),
 		(eq, ":faction_no", "$players_kingdom"),
 		(eq, ":faction_marshal", "trp_player"),
 	    (assign, ":faction_ai_decider", "trp_player"),
@@ -22976,6 +23143,7 @@ scripts = [
        (neq, ":new_strategy", ":old_faction_ai_state"),
        (eq, ":new_strategy", sfai_gathering_army),
        (faction_get_slot, ":faction_marshal", ":faction_no", slot_faction_marshall),
+       (ge, ":faction_marshal", 0),
        (troop_get_slot, ":marshal_party", ":faction_marshal", slot_troop_leaded_party),
        (party_set_slot, ":marshal_party", slot_party_ai_object, -1),
        (assign, "$g_gathering_new_started", 1),
@@ -22991,11 +23159,17 @@ scripts = [
        (eq, ":new_strategy", ":old_faction_ai_state"),
        (eq, ":new_strategy", sfai_gathering_army),
        (faction_get_slot, ":faction_marshal", ":faction_no", slot_faction_marshall),
+       (ge, ":faction_marshal", 0),
        (troop_get_slot, ":marshal_party", ":faction_marshal", slot_troop_leaded_party),
        (party_get_slot, ":party_ai_object", ":marshal_party", slot_party_ai_object),
+
        (ge, ":party_ai_object", 0),
+       (ge, ":marshal_party", 0),
+       (party_is_active, ":marshal_party"),
+       (party_is_active, ":party_ai_object"),    
        (store_distance_to_party_from_party, ":dist", ":marshal_party", ":party_ai_object"),
        (le, ":dist", 5),
+
        (party_set_slot, ":marshal_party", slot_party_ai_object, -1),
     (try_end),
      #end ozan
@@ -23280,6 +23454,7 @@ scripts = [
 	    (val_max, ":renown_change", 0),
 		
 	    (eq, ":troop_no", "trp_player"), 
+
 	    (assign, reg5, ":renown_change"),
 		
 		(eq, "$cheat_mode", 1),
@@ -23292,6 +23467,17 @@ scripts = [
 	  
       (try_begin),
         (eq, ":troop_no", "trp_player"),
+
+		(try_begin),
+		  (ge, ":new_renown", 50),
+
+          (try_begin),
+            (troop_get_type, ":is_female", "trp_player"),
+            (eq, ":is_female", 1),
+            (unlock_achievement, ACHIEVEMENT_TALK_OF_THE_TOWN),
+          (try_end),
+		(try_end),
+
         (str_store_troop_name, s1, ":troop_no"),
         (assign, reg12, ":renown_change"),
         (val_abs, reg12),
@@ -24633,7 +24819,7 @@ scripts = [
         (val_mul, ":quest_importance", ":importance_multiplier"),
         (val_div, ":quest_importance", 100),
       (else_try),
-        (val_div, ":quest_importance", 4),
+        (val_mul, ":quest_importance", 4), #was div 4. Relation was increasing very less. I changed it to mul 4.
         (val_add, ":quest_importance", 1),
         (call_script, "script_change_player_relation_with_troop", ":quest_giver", ":quest_importance"),
       (try_end),
@@ -25412,11 +25598,11 @@ scripts = [
               (else_try),
                 (ge, ":agent_hit_points", 25),
                 (assign, ":agent_delta_courage_score", 1),
-              (end_try),
+              (try_end),
               (try_begin), # to make our warrior run away easier we decrease one, because they have player_agent (+6) advantage.
                 (agent_is_ally, ":agent_no"),
                 (val_sub, ":agent_delta_courage_score", 1),
-              (end_try),
+              (try_end),
             (else_try),
               (assign, ":agent_delta_courage_score", 2),
             (end_try),
@@ -25453,13 +25639,13 @@ scripts = [
               (val_mul, ":agent_delta_courage_score", 50),
               (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
               (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (try_begin),
+            (else_try),
               (lt, ":dist", 4000), #21-40 meter
               (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
               (val_mul, ":agent_delta_courage_score", 40),
               (val_add, ":agent_courage_score", ":agent_delta_courage_score"),
               (agent_set_slot, ":centered_agent_no", slot_agent_courage_score, ":agent_courage_score"),           
-            (try_begin),
+            (else_try),
               (lt, ":dist", 7000), #41-70 meter
               (agent_get_slot, ":agent_courage_score", ":centered_agent_no", slot_agent_courage_score),
               (val_mul, ":agent_delta_courage_score", 30),
@@ -30103,11 +30289,17 @@ scripts = [
   # INPUT: arg1 = party_no, arg2 = center_no, arg3 = percentage_change_in_center
   # OUTPUT: reg0 = total_change
   ("do_party_center_trade",
-    [
+    [	  
       (store_script_param, ":party_no", 1),
       (store_script_param, ":center_no", 2),
-      (store_script_param, ":percentage_change", 3), #this should probably always be a constant. Currently it is 25
-	  (assign, ":percentage_change", 30),
+
+      (try_begin),
+	    (eq, "$cheat_mode", 3),
+	    (str_store_party_name, s1, ":center_no"),
+	    (display_message, "@{!}DEBUG : {s1} is trading with villagers"),
+      (try_end),
+
+      (store_script_param, ":percentage_change", 3), #this should probably always be a constant. Currently it is 25	  
 
 	  (party_get_slot, ":origin", ":party_no", slot_party_last_traded_center),
 	  (party_set_slot, ":party_no", slot_party_last_traded_center, ":center_no"),
@@ -30131,20 +30323,22 @@ scripts = [
           (val_mul, ":cur_change", -1),
         (try_end),
 
-		#The new price for the caravan or peasant is set before the change, so the prices in the trading town have full effect on the next center 
-        (party_set_slot, ":party_no", ":cur_good_price_slot", ":cur_center_price"),
+		(assign, ":initial_price", ":cur_center_price"),
+
+		#The new price for the caravan or peasant is set before the change, so the prices in the trading town have full effect on the next center         
+		(party_set_slot, ":party_no", ":cur_good_price_slot", ":cur_center_price"),
 		
-        (val_add, ":cur_center_price", ":cur_change"),
-        (party_set_slot, ":center_no", ":cur_good_price_slot", ":cur_center_price"),
+        (val_add, ":cur_center_price", ":cur_change"),       
+		(party_set_slot, ":center_no", ":cur_good_price_slot", ":cur_center_price"),
 				
 		(try_begin),
 			(eq, "$cheat_mode", 3),
 			(str_store_party_name, s3, ":origin"),
 			(str_store_party_name, s4, ":center_no"),
 			(str_store_item_name, s5, ":cur_good"),
-			(assign, reg4, ":cur_change"),
+			(assign, reg4, ":initial_price"),
 			(assign, reg5, ":cur_center_price"),
-			(display_message, "@{!}DEBUG -- Trade of {s5} from {s3} to {s4} brings price from {reg4} to  {reg5}"),
+			(display_log_message, "@{!}DEBUG -- Trade of {s5} from {s3} to {s4} brings price from {reg4} to {reg5}"),
 		(try_end),
 		
       (try_end),
@@ -30776,12 +30970,12 @@ scripts = [
          (assign, ":volunteer_troop", ":upgrade_troop_no"),
        (try_end),
        
-       (assign, ":upper_limit", 7),
+       (assign, ":upper_limit", 8),
        (try_begin),
-         (ge, ":player_relation", 5),
+         (ge, ":player_relation", 4),
          (assign, ":upper_limit", ":player_relation"),
          (val_div, ":upper_limit", 2),
-         (val_add, ":upper_limit", 10),
+         (val_add, ":upper_limit", 6),
        (else_try),
          (lt, ":player_relation", 0),
          (assign, ":upper_limit", 0),
@@ -30934,6 +31128,17 @@ scripts = [
        (else_try),
          (party_set_slot, ":village_no", slot_village_infested_by_bandits, 0),
          (store_random_in_range, ":random_no", 0, 100),
+         (assign, ":continue", 1),
+         (try_begin),
+           (check_quest_active, "qst_collect_taxes"),
+           (quest_slot_eq, "qst_collect_taxes", slot_quest_target_center, ":village_no"),
+           (assign, ":continue", 0),
+         (else_try),
+           (check_quest_active, "qst_train_peasants_against_bandits"),
+           (quest_slot_eq, "qst_train_peasants_against_bandits", slot_quest_target_center, ":village_no"),
+           (assign, ":continue", 0),
+         (try_end),
+         (eq, ":continue", 1),
          (lt, ":random_no", 3),
          (store_random_in_range, ":random_no", 0, 3),
          (try_begin),
@@ -32956,8 +33161,6 @@ scripts = [
 	(store_script_param, ":impact_divisor", 4),	 
 
 	(assign, reg4, ":production"),
-
-	
 	
 	(try_begin),
 		(gt, ":production", 0), #let's take -20 as the zero production rate, although in actuality production can go lower, representing increased demand
@@ -32965,9 +33168,22 @@ scripts = [
 		(store_sub, ":input_good_price_slot", ":input_item_no", trade_goods_begin),
 		(val_add, ":input_good_price_slot", slot_town_trade_good_prices_begin),
 		(party_get_slot, ":input_price", ":center", ":input_good_price_slot"),
-	
-		
 
+		(try_begin),
+		  (is_between, ":center", towns_begin, towns_end),
+
+		  (val_mul, ":input_price", 4),
+		  (assign, ":number_of_villages", 4),
+		  (try_for_range, ":village_no", villages_begin, villages_end),
+		    (party_slot_eq, ":village_no", slot_village_bound_center, ":center"),
+		    (party_get_slot, ":input_price_at_village", ":village_no", ":input_good_price_slot"),
+			(val_add, ":input_price", ":input_price_at_village"),
+			(val_add, ":number_of_villages", 1),
+		  (try_end),		  
+
+		  (val_div, ":input_price", ":number_of_villages"),
+		(try_end),
+		
 		(try_begin), #1/2 impact for low prices
 			(lt, ":input_price", 1000),
 			(val_mul, ":impact_divisor", 2),
@@ -32980,19 +33196,16 @@ scripts = [
 			(val_add, ":input_price", 1000),
 		(try_end),
 		
-
 		(val_mul, ":production", 1000),
 		(val_div, ":production", ":input_price"),
 	
-#		(assign, reg5, ":production"),
-#		(str_store_item_name, s4, ":input_item_no"),
-#		(display_message, "@{s4} price of {reg3} reduces production from {reg4} to {reg5}"),
-		
+		#(assign, reg5, ":production"),
+		#(assign, reg3, ":input_price"),
+		#(str_store_item_name, s4, ":input_item_no"),
+		#(display_message, "@{s4} price of {reg3} reduces production from {reg4} to {reg5}"),		
 	(try_end),
-	
-		
-	(assign, reg0, ":production"),
-	
+				
+	(assign, reg0, ":production"),	
 	]),
 	
 
@@ -42608,9 +42821,10 @@ scripts = [
           (try_end),
                       
           (try_begin),  
-            #if currently our target is attacking to an enemy center and that center is besieged/raided by one of our parties then 
-            #divide marshal_distance for other center's to "2" instead of "3" and add some small more distance to avoid easily 
-            #changing mind during siege because of small score differences.
+            #if currently main aim of our faction is attacking to an enemy center and that center is already besieged/raided by one of 
+            #our parties then divide marshal_dist_to_potential_target_div_x score for current center to "3/2" instead of "3" and this
+            #result in decrease at distance_score, and also decrease some scores from power_ratio_score in order to avoid frequently 
+            #changes at main aimed target city of our faction during sieges.
               
             (faction_get_slot, ":current_ai_state", ":faction_no", slot_faction_ai_state),
             (eq, ":current_ai_state", sfai_attacking_center),
@@ -42641,8 +42855,8 @@ scripts = [
 
             (eq, ":all_vassals_included", 0),
 
-            (store_div, ":marshal_dist_to_potential_target_div_x", ":marshal_dist_to_potential_target", 2),
-            (assign, ":marshal_dist_to_potential_target_div_x", ":marshal_dist_to_potential_target"),
+            (store_mul, ":marshal_dist_to_potential_target_div_x", ":marshal_dist_to_potential_target", 2),
+            (val_div, ":marshal_dist_to_potential_target_div_x", 3),
           (else_try),
             (store_div, ":marshal_dist_to_potential_target_div_x", ":marshal_dist_to_potential_target", 3),
           (try_end),
@@ -44257,7 +44471,7 @@ scripts = [
 				(val_sub, ":num_of_servings_to_serve", 1),
 				(item_set_slot, ":item", slot_item_is_checked, 1),
 			(try_end),
-		(try_begin),
+		(try_end),
 	(try_end),
 	]),
 
@@ -44606,8 +44820,7 @@ scripts = [
 	(str_store_party_name, s4, ":center_no"),
 	
 	(assign, ":hardship_index", 0),
-	(try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),
-		
+	(try_for_range, ":cur_good", trade_goods_begin, trade_goods_end),		
 		#Must have consumption of at least 4 to be relevant
 		#This prevents perishables and raw materials from having a major impact
 		(try_begin),
@@ -44617,8 +44830,7 @@ scripts = [
 			(item_get_slot, ":consumer_consumption", ":cur_good", slot_item_urban_demand),
 		(try_end),
 		(gt, ":consumer_consumption", 2),
-		
-		
+				
 		(store_div, ":max_impact", ":consumer_consumption", 3), #was 4
 		
 		#High-demand items like grain tend to have much more dramatic price differentiation, so they yield substantially higher results than low-demand items
@@ -44638,10 +44850,10 @@ scripts = [
 	
 	(assign, reg0, ":hardship_index"),
 
-	#(try_begin),
-		#(eq, "$cheat_mode", 1),
-		#(display_message, "@{!}DEBUG -- hardship index for {s4} = {reg0}"),
-	#(try_end),	
+	(try_begin),
+		(eq, "$cheat_mode", 1),
+		(display_message, "@{!}DEBUG -- hardship index for {s4} = {reg0}"),
+	(try_end),	
 	]),
 	
 	("lord_find_alternative_faction", #Also, make it so that lords will try to keep at least one center unassigned
@@ -44651,40 +44863,81 @@ scripts = [
 	  
 	  (assign, ":new_faction", -1),
 	  (assign, ":score_to_beat", -5),
-	  
-	  #Factions with an available center
-	  (try_for_range, ":center_no", centers_begin, centers_end),
-	    (this_or_next|party_slot_eq, ":center_no", slot_town_lord, stl_unassigned),
-	    (party_slot_eq, ":center_no", slot_town_lord, stl_rejected_by_player),
-	    (store_faction_of_party, ":center_faction", ":center_no"),
-	    (neq, ":center_faction", ":orig_faction"),
-	    (faction_get_slot, ":liege", ":center_faction", slot_faction_leader),
-	    (this_or_next|neq, ":liege", "trp_player"),
-	    (ge, "$player_right_to_rule", 25),	    
-	    (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":liege"),
-	    (assign, ":liege_relation", reg0),
-	    (gt, ":liege_relation", ":score_to_beat"),
-	    (assign, ":new_faction", ":center_faction"),
-	    (assign, ":score_to_beat", ":liege_relation"),
-	  (try_end),
-	  
-	  #Factions without an available center
+
 	  (try_begin),
-	    (eq, ":new_faction", -1),
-	    (assign, ":score_to_beat", 0),
-	    
-	    (try_for_range, ":kingdom", kingdoms_begin, kingdoms_end),
-	      (faction_slot_eq, ":kingdom", slot_faction_state, sfs_active),
-	      (faction_get_slot, ":liege", ":kingdom", slot_faction_leader),
-	      (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":liege"),
-	      (assign, ":liege_relation", reg0),		
-	      (gt, ":liege_relation", ":score_to_beat"),
-	      
-	      (assign, ":new_faction", ":kingdom"),
-	      (assign, ":score_to_beat", ":liege_relation"),		
-	    (try_end),
+	    (store_random_in_range, ":advantegous_faction_change_time", 0, 10000), 
+
+	    (this_or_next|le, "$g_advantegous_faction", 0),
+		(eq, ":advantegous_faction_change_time", 0),
+		(store_random_in_range, "$g_advantegous_faction", kingdoms_begin, kingdoms_end), 
+
+		#(str_store_faction_name, s7, "$g_advantegous_faction"),
+		#(display_message, "@OZANDEBUG : new advantegous faction is {s7}"),
 	  (try_end),
-	  
+
+	  (try_for_range, ":faction_no", kingdoms_begin, kingdoms_end),	  
+	    (this_or_next|eq, "$g_give_advantage_to_original_faction", 1),
+		(neq, ":faction_no", ":orig_faction"),
+	   
+	    (faction_slot_eq, ":faction_no", slot_faction_state, sfs_active),
+	    (assign, ":number_of_walled_centers", 0),
+	    (try_for_range, ":center_no", walled_centers_begin, walled_centers_end),
+		  (store_faction_of_party, ":center_faction", ":center_no"),
+		  (eq, ":center_faction", ":faction_no"),
+
+		  (try_begin),
+		    (party_slot_eq, ":center_no", slot_party_type, spt_town),
+			(val_add, ":number_of_walled_centers", 2),
+		  (else_try),
+		    (val_add, ":number_of_walled_centers", 1),
+		  (try_end),
+		(try_end),
+
+	    (assign, ":number_of_lords", 0),
+        (try_for_range, ":troop_id", original_kingdom_heroes_begin, active_npcs_end),
+          (store_troop_faction, ":faction_of_troop", ":troop_id"),
+          (eq, ":faction_of_troop", ":faction_no"),
+		  (val_add, ":number_of_lords", 1),
+        (try_end),
+
+        (faction_get_slot, ":liege", ":faction_no", slot_faction_leader),
+	    (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":liege"),
+		(assign, ":relation_with_leader", reg0),
+
+		(store_mul, ":faction_score", ":number_of_walled_centers", 100),
+		(val_div, ":faction_score", ":number_of_lords"),
+		(val_add, ":faction_score", ":relation_with_leader"),
+
+		(try_begin),
+		  (eq, ":faction_no", ":orig_faction"),
+		  (eq, "$g_give_advantage_to_original_faction", 1),
+		  (val_add, ":faction_score", 100),
+		(try_end),
+
+		(try_begin),
+		  (eq, "$g_advantegous_faction", ":faction_no"),
+		  (val_add, ":faction_score", 50),
+		(try_end),
+
+		(try_begin),
+		  (eq, ":faction_no", "$players_kingdom"),
+		  (val_sub, ":faction_score", 100),
+		  (val_add, "$player_right_to_rule"),
+		(try_end),
+
+		#(str_store_faction_name, s1, ":faction_no"),
+		#(assign, reg1, ":number_of_walled_centers"),
+		#(assign, reg2, ":number_of_lords"),
+		#(assign, reg3, ":relation_with_leader"),
+		#(assign, reg4, ":faction_score"),
+		#(display_message, "@OZANDEBUG : {s1}, centers:{reg1}, lords:{reg2}, rel:{reg3}, score:{reg4}"),
+
+		(gt, ":faction_score", ":score_to_beat"),
+
+		(assign, ":score_to_beat", ":faction_score"),
+        (assign, ":new_faction", ":faction_no"),
+	  (try_end),
+	  	  
 	  (assign, reg0, ":new_faction"),	
 	]),
 		
@@ -46855,8 +47108,7 @@ scripts = [
 	#Indictments, cont: Finalize where the lord goes
 	(try_begin),
 		(is_between, ":new_faction", kingdoms_begin, kingdoms_end),
-		
-		
+				
 		(try_begin),
 			(ge, "$cheat_mode", 1),
 			(str_store_troop_name, s4, ":troop_no"),
@@ -46959,5 +47211,137 @@ scripts = [
    (try_end),  
   ]),
   
-  
+  # script_refresh_center_inventories
+  ("refresh_center_inventories",
+  [
+    (reset_item_probabilities, 100),
+    (set_merchandise_modifier_quality, 150),
+
+    (reset_item_probabilities, 100),
+	(set_item_probability_in_merchandise, "itm_salt", 700),
+
+    (troop_add_merchandise, "trp_salt_mine_merchant", itp_type_goods,30),
+
+    # Add trade goods to merchant inventories
+    (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
+
+    (try_for_range, ":cur_center", towns_begin, towns_end),
+      (party_get_slot, ":cur_merchant", ":cur_center", slot_town_merchant),
+      (reset_item_probabilities,100),
+      (assign, ":total_probability", 0),
+      (try_for_range, ":cur_goods", trade_goods_begin, trade_goods_end),
+        (store_add, ":cur_price_slot", ":cur_goods", ":item_to_price_slot"),
+        (party_get_slot, ":cur_price", ":cur_center", ":cur_price_slot"),
+        (call_script, "script_center_get_production", ":cur_center", ":cur_goods"),
+        (assign, ":cur_probability", reg0),
+        (call_script, "script_center_get_consumption", ":cur_center", ":cur_goods"),
+        (val_div, reg0, 3),
+        (val_add, ":cur_probability", reg0),
+        (val_mul, ":cur_probability", 4),
+        (val_mul, ":cur_probability", average_price_factor),
+        (val_div, ":cur_probability", ":cur_price"),
+		(val_add, ":total_probability", ":cur_probability"),
+      (try_end),
+
+	  (party_get_slot, ":town_prosperity", ":cur_center", slot_town_prosperity),
+	  (store_div, ":number_of_items_in_town", ":town_prosperity", 2),
+	  (val_clamp, ":number_of_items_in_town", 10, 40),	
+
+      (try_for_range, ":cur_goods", trade_goods_begin, trade_goods_end),
+        (store_add, ":cur_price_slot", ":cur_goods", ":item_to_price_slot"),
+        (party_get_slot, ":cur_price", ":cur_center", ":cur_price_slot"),
+        (call_script, "script_center_get_production", ":cur_center", ":cur_goods"),
+        (assign, ":cur_probability", reg0),
+        (call_script, "script_center_get_consumption", ":cur_center", ":cur_goods"),
+        (val_div, reg0, 3),
+        (val_add, ":cur_probability", reg0),
+        (val_mul, ":cur_probability", 4),
+        (val_mul, ":cur_probability", average_price_factor),
+        (val_div, ":cur_probability", ":cur_price"),
+        (val_mul, ":cur_probability", ":number_of_items_in_town"),
+		(val_mul, ":cur_probability", 100),
+		(val_div, ":cur_probability", ":total_probability"),
+        (set_item_probability_in_merchandise, ":cur_goods", ":cur_probability"),						  
+      (try_end),
+
+      (troop_clear_inventory, ":cur_merchant"),
+
+      (troop_add_merchandise, ":cur_merchant", itp_type_goods, ":number_of_items_in_town"),	  
+      (troop_ensure_inventory_space, ":cur_merchant", 30),
+      (troop_sort_inventory, ":cur_merchant"),
+      (store_troop_gold, ":cur_gold", ":cur_merchant"),
+      (lt, ":cur_gold", 1500),
+      (store_random_in_range, ":new_gold", 500, 1000),
+      (call_script, "script_troop_add_gold", ":cur_merchant", ":new_gold"),
+    (try_end), 	
+  ]), 
+
+  # script_refresh_center_armories
+  ("refresh_center_armories",
+  [
+    (reset_item_probabilities, 100),
+	(set_merchandise_modifier_quality, 150),
+	(try_for_range, reg2, armor_merchants_begin, armor_merchants_end),
+	  (store_sub, ":cur_town", reg2, armor_merchants_begin),
+	  (val_add, ":cur_town", towns_begin),
+	  (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
+	  (troop_add_merchandise_with_faction, reg2, ":cur_faction", itp_type_body_armor, 16),
+	  (troop_add_merchandise_with_faction, reg2, ":cur_faction", itp_type_head_armor, 16),
+	  (troop_add_merchandise_with_faction, reg2, ":cur_faction", itp_type_foot_armor, 8),
+	  (troop_add_merchandise_with_faction, reg2, ":cur_faction", itp_type_hand_armor, 4),
+	  (troop_ensure_inventory_space, reg2, merchant_inventory_space),
+	  (troop_sort_inventory, reg2),
+	  (store_troop_gold, reg6, reg2),
+	  (lt, reg6, 900),
+	  (store_random_in_range, ":new_gold", 200, 400),
+	  (call_script, "script_troop_add_gold", reg2, ":new_gold"),
+    (end_try),
+  ]),
+
+  # script_refresh_center_weaponsmiths
+  ("refresh_center_weaponsmiths",
+  [
+    (reset_item_probabilities, 100),
+    (set_merchandise_modifier_quality, 150),
+    (try_for_range, reg2, weapon_merchants_begin, weapon_merchants_end),
+	  (store_sub, ":cur_town", reg2, weapon_merchants_begin),
+      (val_add, ":cur_town", towns_begin), 
+      (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
+      (troop_add_merchandise_with_faction, reg2, ":cur_faction", itp_type_one_handed_wpn, 5),
+      (troop_add_merchandise_with_faction, reg2, ":cur_faction", itp_type_two_handed_wpn, 5),
+      (troop_add_merchandise_with_faction, reg2, ":cur_faction", itp_type_polearm, 5),
+      (troop_add_merchandise_with_faction, reg2, ":cur_faction", itp_type_shield, 6),
+      (troop_add_merchandise_with_faction, reg2, ":cur_faction", itp_type_bow, 4),
+      (troop_add_merchandise_with_faction, reg2, ":cur_faction", itp_type_crossbow, 3),
+      (troop_add_merchandise_with_faction, reg2, ":cur_faction", itp_type_thrown, 5),
+      (troop_add_merchandise_with_faction, reg2, ":cur_faction", itp_type_arrows, 2),
+      (troop_add_merchandise_with_faction, reg2, ":cur_faction", itp_type_bolts, 2),
+      (troop_ensure_inventory_space, reg2, merchant_inventory_space),
+      (troop_sort_inventory, reg2), 
+      (store_troop_gold, reg6, reg2),
+      (lt, reg6, 900),
+      (store_random_in_range, ":new_gold", 200, 400),
+      (call_script, "script_troop_add_gold", reg2, ":new_gold"),
+    (try_end),
+  ]),
+
+  # script_refresh_center_stables
+  ("refresh_center_stables",
+  [
+    (reset_item_probabilities, 100),
+    (set_merchandise_modifier_quality, 150),
+    (try_for_range, ":cur_merchant", horse_merchants_begin, horse_merchants_end),
+      (store_sub, ":cur_town", ":cur_merchant", horse_merchants_begin),
+      (val_add, ":cur_town", towns_begin),
+      (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
+      (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_horse, 5),
+      (troop_ensure_inventory_space, ":cur_merchant", 65),
+      (troop_sort_inventory, ":cur_merchant"),
+      (store_troop_gold, ":cur_gold", ":cur_merchant"),
+      (lt, ":cur_gold", 600),
+      (store_random_in_range, ":new_gold", 200, 400),
+      (call_script, "script_troop_add_gold", ":cur_merchant", ":new_gold"),
+    (try_end),
+  ]),
+
 ]

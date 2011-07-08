@@ -2205,7 +2205,7 @@ mission_templates = [
   ),
 
   (
-    "lead_charge",mtf_battle_mode,charge,
+    "lead_charge",mtf_battle_mode|mtf_synch_inventory,charge,
     "You lead your men to battle.",
     [
      (1,mtef_defenders|mtef_team_0,0,aif_start_alarmed,12,[]),
@@ -2412,7 +2412,7 @@ mission_templates = [
   ),
 
   (
-    "village_attack_bandits",mtf_battle_mode,charge,
+    "village_attack_bandits",mtf_battle_mode|mtf_synch_inventory,charge,
     "You lead your men to battle.",
     [
      (3,mtef_visitor_source|mtef_team_1,0,aif_start_alarmed,1,[]),
@@ -2470,7 +2470,7 @@ mission_templates = [
 
 
   (
-    "village_raid",mtf_battle_mode,charge,
+    "village_raid",mtf_battle_mode|mtf_synch_inventory,charge,
     "You lead your men to battle.",
     [
      (3,mtef_defenders|mtef_team_0,af_override_horse,aif_start_alarmed,12,[]),
@@ -2851,7 +2851,7 @@ mission_templates = [
   ),
 
   (
-    "castle_attack_walls_defenders_sally",mtf_battle_mode,-1,
+    "castle_attack_walls_defenders_sally",mtf_battle_mode|mtf_synch_inventory,-1,
     "You attack the walls of the castle...",
     [
      (0,mtef_attackers|mtef_team_1,af_override_horse,aif_start_alarmed,12,[]),
@@ -2951,7 +2951,7 @@ mission_templates = [
 
 
   (
-    "castle_attack_walls_belfry",mtf_battle_mode,-1,
+    "castle_attack_walls_belfry",mtf_battle_mode|mtf_synch_inventory,-1,
     "You attack the walls of the castle...",
     [
      (0,mtef_attackers|mtef_team_1,af_override_horse,aif_start_alarmed,12,[]),
@@ -3032,7 +3032,7 @@ mission_templates = [
   ),
 
   (
-    "castle_attack_walls_ladder",mtf_battle_mode,-1,
+    "castle_attack_walls_ladder",mtf_battle_mode|mtf_synch_inventory,-1,
     "You attack the walls of the castle...",
     [
      (0,mtef_attackers|mtef_team_1,af_override_horse,aif_start_alarmed,12,[]),
@@ -13318,7 +13318,7 @@ mission_templates = [
   ),
   
   (
-	"bandit_lair",mtf_battle_mode,charge,
+	"bandit_lair",mtf_battle_mode|mtf_synch_inventory,charge,
     "Ambushing a bandit lair",
     [
       (0,mtef_team_0|mtef_use_exact_number,af_override_horse, aif_start_alarmed, 7,[]),

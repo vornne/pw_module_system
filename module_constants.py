@@ -1580,7 +1580,7 @@ ranged_weapons_end = "itm_torch"
 armors_begin = "itm_leather_gloves"
 armors_end = "itm_wooden_stick"
 shields_begin = "itm_wooden_shield"
-shields_end = "itm_jarid"
+shields_end = ranged_weapons_begin
 
 # Banner constants
 
@@ -1793,3 +1793,10 @@ ACHIEVEMENT_KASSAI_MASTER = 71,
 ACHIEVEMENT_IRON_BEAR = 72,
 ACHIEVEMENT_LEGENDARY_RASTAM = 73,
 ACHIEVEMENT_SVAROG_THE_MIGHTY = 74,
+
+ACHIEVEMENT_MEN_HANDLER = 75,
+ACHIEVEMENT_GIRL_POWER = 76,
+ACHIEVEMENT_QUEEN = 77,
+ACHIEVEMENT_EMPRESS = 78,
+ACHIEVEMENT_TALK_OF_THE_TOWN = 79,
+ACHIEVEMENT_LADY_OF_THE_LAKE = 80,

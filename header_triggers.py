@@ -21,8 +21,7 @@ ti_tab_pressed           = -21.0 #can only be used in module_mission_templates t
 ti_inventory_key_pressed = -22.0 #can only be used in module_mission_templates triggers
 ti_escape_pressed        = -23.0 #can only be used in module_mission_templates triggers
 ti_battle_window_opened  = -24.0 #can only be used in module_mission_templates triggers
-#ti_on_mission_start      = -20.0
-ti_on_agent_spawn 	= -25.0 #can only be used in module_mission_templates triggers
+ti_on_agent_spawn        = -25.0 #can only be used in module_mission_templates triggers
 ti_on_agent_killed_or_wounded = -26.0 #can only be used in module_mission_templates triggers
 ti_on_agent_knocked_down = -27.0 #can only be used in module_mission_templates triggers
 ti_on_agent_hit          = -28.0 #can only be used in module_mission_templates triggers
@@ -32,6 +31,10 @@ ti_on_agent_hit          = -28.0 #can only be used in module_mission_templates t
 # Register 0: damage dealer item_id
 # Position Register 0: position of the blow
 #                      rotation gives the direction of the blow
+# Trigger result: if returned result is greater than or equal to zero, inflicted damage is set to the value specified by the module.
+
+ti_on_player_exit        = -29.0 #can only be used in module_mission_templates triggers
+# Trigger Param 1: player_id
 
 ti_on_leave_area         = -30.0 #can only be used in module_mission_templates triggers
 ti_on_scene_prop_init    = -40.0 #can only be used in module_scene_props triggers

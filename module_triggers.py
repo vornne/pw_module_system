@@ -32,138 +32,29 @@ triggers = [
 # Tutorial:
   (0.1, 0, ti_once, [(map_free,0)], [(dialog_box,"str_tutorial_map1")]),
 
-#  (1.0, 0, ti_once, [(map_free,0)], [(start_map_conversation, "trp_guide", -1)]),
-
 # Refresh Merchants
-  (0.0, 0, 24.0, [], [
-                      (reset_item_probabilities,100),
-                      (set_merchandise_modifier_quality,150),
-
-
-                      (reset_item_probabilities,100),(set_item_probability_in_merchandise,"itm_salt",700),
-                      (troop_add_merchandise,"trp_salt_mine_merchant",itp_type_goods,num_merchandise_goods),
-
-                      # Add trade goods to merchant inventories
-#                      (store_sub, ":item_to_production_slot", slot_town_trade_good_productions_begin, trade_goods_begin),
-                      (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
-
-                      (try_for_range,":cur_center",towns_begin,towns_end),
-                        (party_get_slot,":cur_merchant",":cur_center",slot_town_merchant),
-                        (reset_item_probabilities,100),
-                        (try_for_range, ":cur_goods", trade_goods_begin, trade_goods_end),
-#                          (store_add, ":cur_production_slot", ":cur_goods", ":item_to_production_slot"),
-                          (store_add, ":cur_price_slot", ":cur_goods", ":item_to_price_slot"),
-#                          (party_get_slot, ":cur_production", ":cur_center", ":cur_production_slot"),
-                          (party_get_slot, ":cur_price", ":cur_center", ":cur_price_slot"),
-                      
-#                          (assign, ":cur_probability", 100),
-#                          (store_add, ":cur_production", 100, ":cur_production"),
-#                          (val_mul, ":cur_probability", ":cur_production"),
-#                          (val_div, ":cur_probability", 100),
-#                          (try_begin),
-#                            (gt, ":cur_probability", 100),
-#                            (store_sub, ":temp_dif", ":cur_probability", 100),
-#                            (val_mul, ":temp_dif", 4),
-#                            (val_add, ":cur_probability", ":temp_dif"),
-#                          (try_end),
-#                          (store_sub, ":temp_dif", average_price_factor, ":cur_price"),
-#                          (val_div, ":temp_dif", 2),
-#                          (val_add, ":cur_price", ":temp_dif"),
-
-						  (call_script, "script_center_get_production", ":cur_center", ":cur_goods"),
-						  (assign, ":cur_probability", reg0),
-						  (call_script, "script_center_get_consumption", ":cur_center", ":cur_goods"),
-						  (val_add, ":cur_probability", reg0),
-						  
-						  (val_mul, ":cur_probability", 4),
-
-
-                          (val_mul, ":cur_probability", average_price_factor),
-                          (val_div, ":cur_probability", ":cur_price"),
-                          (val_mul, ":cur_probability", average_price_factor),
-                          (val_div, ":cur_probability", ":cur_price"),
-                          (val_mul, ":cur_probability", average_price_factor),
-                          (val_div, ":cur_probability", ":cur_price"),
-#                          (val_mul, ":cur_probability", average_price_factor),
-#                          (val_div, ":cur_probability", ":cur_price"),
-                          (set_item_probability_in_merchandise,":cur_goods",":cur_probability"),
-                        (try_end),
-                        (troop_add_merchandise,":cur_merchant",itp_type_goods,num_merchandise_goods),
-
-                        (troop_ensure_inventory_space,":cur_merchant",merchant_inventory_space),
-                        (troop_sort_inventory, ":cur_merchant"),
-                        (store_troop_gold, ":cur_gold",":cur_merchant"),
-                        (lt,":cur_gold",1500),
-                        (store_random_in_range,":new_gold",500,1000),
-                        (call_script, "script_troop_add_gold", ":cur_merchant", ":new_gold"),
-                      (try_end),
-                     ]),
+  (0.0, 0, 72.0, [],
+  [    
+    (call_script, "script_refresh_center_inventories"),
+  ]),
 
 # Refresh Armor sellers
-  (0.0, 0, 24.0, [], [
-                      (reset_item_probabilities,100),
-                      (set_merchandise_modifier_quality,150),
-                      (try_for_range,reg(2),armor_merchants_begin,armor_merchants_end),
-                        (store_sub, ":cur_town", reg2, armor_merchants_begin),
-                        (val_add, ":cur_town", towns_begin),
-                        (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
-                        (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_body_armor,16),
-                        (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_head_armor,16),
-                        (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_foot_armor,8),
-                        (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_hand_armor,4),
-                        (troop_ensure_inventory_space,reg(2),merchant_inventory_space),
-                        (troop_sort_inventory, reg(2)),
-                        (store_troop_gold, reg(6),reg(2)),
-                        (lt,reg(6),900),
-                        (store_random_in_range,":new_gold",200,400),
-                        (call_script, "script_troop_add_gold", reg(2), ":new_gold"),
-                      (end_try,0),
-                     ]),
-
+  (0.0, 0, 72.0, [],
+  [    
+    (call_script, "script_refresh_center_armories"),
+  ]),
 
 # Refresh Weapon sellers
-  (0.0, 0, 24.0, [], [
-                      (reset_item_probabilities,100),
-                      (set_merchandise_modifier_quality,150),
-                      (try_for_range,reg(2),weapon_merchants_begin,weapon_merchants_end),
-                        (store_sub, ":cur_town", reg2, weapon_merchants_begin),
-                        (val_add, ":cur_town", towns_begin),
-                        (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
-                        (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_one_handed_wpn,5),
-                        (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_two_handed_wpn,5),
-                        (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_polearm,5),
-                        (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_shield,6),
-                        (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_bow,4),
-                        (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_crossbow,3),
-                        (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_thrown,5),
-                        (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_arrows,2),
-                        (troop_add_merchandise_with_faction,reg(2), ":cur_faction",itp_type_bolts,2),
-                        (troop_ensure_inventory_space,reg(2),merchant_inventory_space),
-                        (troop_sort_inventory, reg(2)),
-                        (store_troop_gold, reg(6),reg(2)),
-                        (lt,reg(6),900),
-                        (store_random_in_range,":new_gold",200,400),
-                      (call_script, "script_troop_add_gold", reg(2), ":new_gold"),
-                      (end_try,0),
-                     ]),
+  (0.0, 0, 72.0, [],
+  [
+    (call_script, "script_refresh_center_weaponsmiths"),
+  ]),
 
 # Refresh Horse sellers
-  (0.0, 0, 24.0, [], [
-                      (reset_item_probabilities,100),
-                      (set_merchandise_modifier_quality,150),
-                      (try_for_range,":cur_merchant",horse_merchants_begin,horse_merchants_end),
-                        (store_sub, ":cur_town", ":cur_merchant", horse_merchants_begin),
-                        (val_add, ":cur_town", towns_begin),
-                        (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
-                        (troop_add_merchandise_with_faction,":cur_merchant", ":cur_faction",itp_type_horse,5),
-                        (troop_ensure_inventory_space,":cur_merchant",65),
-                        (troop_sort_inventory, ":cur_merchant"),
-                        (store_troop_gold, ":cur_gold",":cur_merchant"),
-                        (lt,":cur_gold",600),
-                        (store_random_in_range,":new_gold",200,400),
-                        (call_script, "script_troop_add_gold", ":cur_merchant", ":new_gold"),
-                      (try_end),
-                     ]),
+  (0.0, 0, 72.0, [],
+  [
+    (call_script, "script_refresh_center_stables"),
+  ]),
   
 
 #############
@@ -1338,7 +1229,7 @@ triggers = [
                    (eq, ":cur_eliminated_by_player", "$qst_troublesome_bandits_eliminated_by_player"),
                    ],
                   [(display_message, "str_bandits_eliminated_by_another"),
-                   (call_script, "script_abort_quest", "qst_troublesome_bandits", 2),
+                   (call_script, "script_abort_quest", "qst_troublesome_bandits", 0),
                    ]),
 
   (0.3, 0.0, 1.1, [(check_quest_active, "qst_troublesome_bandits"),
@@ -1603,9 +1494,26 @@ triggers = [
     ]),
 
 
-
-
 #NPC system changes end
+
+# Lady of the lake achievement
+   (1, 0, 0,
+   [
+     (troop_get_type, ":is_female", "trp_player"),
+     (eq, ":is_female", 1),       
+     (try_for_range, ":companion", companions_begin, companions_end),
+       (troop_slot_eq, ":companion", slot_troop_occupation, slto_player_companion),
+       (troop_inventory_slot_get_item_amount, ":num_great_sword", ":companion", "itm_great_sword"),
+       (troop_inventory_slot_get_item_amount, ":num_sword_two_handed_a", ":companion", "itm_sword_two_handed_a"),
+       (troop_inventory_slot_get_item_amount, ":num_strange_great_sword", ":companion", "itm_strange_great_sword"),
+       (this_or_next|ge, ":num_great_sword", 1),
+       (this_or_next|ge, ":num_sword_two_handed_a", 1),
+       (ge, ":num_strange_great_sword", 1),
+       (unlock_achievement, ACHIEVEMENT_LADY_OF_THE_LAKE),
+     (try_end),
+    ],
+   []
+   ),
 
 
 

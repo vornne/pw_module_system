@@ -4143,52 +4143,49 @@ game_menus = [
       (try_end),
       
       (try_begin),
-        (le, ":minimum_power", 5),
+        (le, ":minimum_power", 25),
         (assign, ":division_constant", 1),
       (else_try),
-        (le, ":minimum_power", 10),
+        (le, ":minimum_power", 50),
         (assign, ":division_constant", 2),
       (else_try),
-        (le, ":minimum_power", 25),
+        (le, ":minimum_power", 75),
         (assign, ":division_constant", 3),
       (else_try),
-        (le, ":minimum_power", 50),
+        (le, ":minimum_power", 125),
         (assign, ":division_constant", 4),
       (else_try),
-        (le, ":minimum_power", 100),
+        (le, ":minimum_power", 200),
         (assign, ":division_constant", 5),
       (else_try),
-        (le, ":minimum_power", 200),
+        (le, ":minimum_power", 400),
         (assign, ":division_constant", 6),
       (else_try),
-        (le, ":minimum_power", 400),
+        (le, ":minimum_power", 800),
         (assign, ":division_constant", 7),
       (else_try),
-        (le, ":minimum_power", 800),
+        (le, ":minimum_power", 1600),
         (assign, ":division_constant", 8),
       (else_try),
-        (le, ":minimum_power", 1600),
+        (le, ":minimum_power", 3200),
         (assign, ":division_constant", 9),
       (else_try),
-        (le, ":minimum_power", 3200),
+        (le, ":minimum_power", 6400),
         (assign, ":division_constant", 10),
       (else_try),
-        (le, ":minimum_power", 6400),
+        (le, ":minimum_power", 12800),
         (assign, ":division_constant", 11),
       (else_try),
-        (le, ":minimum_power", 12800),
+        (le, ":minimum_power", 25600),
         (assign, ":division_constant", 12),
       (else_try),
-        (le, ":minimum_power", 25600),
+        (le, ":minimum_power", 51200),
         (assign, ":division_constant", 13),
       (else_try),
-        (le, ":minimum_power", 51200),
-        (assign, ":division_constant", 14),
-      (else_try),
         (le, ":minimum_power", 102400),
-        (assign, ":division_constant", 15),
+        (assign, ":division_constant", 14),
       (else_try),  
-        (assign, ":division_constant", 16),
+        (assign, ":division_constant", 15),
       (try_end),  
                                                                               
       (val_div, ":player_party_strength", ":division_constant"), #1.126, ":division_constant" was 5 before
@@ -5403,13 +5400,13 @@ game_menus = [
           (call_script, "script_party_count_members_with_full_health", "p_collective_friends"),          
           (assign, ":ally_num_soldiers", reg0),
           (eq, "$g_battle_result", -1),
-          (eq, ":ally_num_soldiers", 0), #battle lost (sdsd = TODO : also compare this with routed allies too like in other parts)
+          (eq, ":ally_num_soldiers", 0), #battle lost (TODO : also compare this with routed allies too like in other parts)
           (leave_encounter),
           (change_screen_return),
         (try_end),
         ],
     [
-      ("talk_to_siege_commander",[]," Request a meeting with the commander.",[
+      ("talk_to_siege_commander",[],"Request a meeting with the commander.",[
                                 (call_script, "script_get_meeting_scene"), (assign, ":meeting_scene", reg0),
                                 (modify_visitors_at_site,":meeting_scene"),(reset_visitors),
                                 (set_visitor,0,"trp_player"),
@@ -6067,7 +6064,7 @@ game_menus = [
           (call_script, "script_party_count_members_with_full_health", "p_main_party"),
           (assign, ":main_party_fit_regulars", reg0),
           (eq, "$g_battle_result", -1),
-          (eq, ":main_party_fit_regulars", 0), #all lost (sdsd = TODO : )
+          (eq, ":main_party_fit_regulars", 0), #all lost (TODO : )
           (assign, "$g_next_menu", "mnu_captivity_start_castle_defeat"),
           (jump_to_menu, "mnu_total_defeat"),
         (try_end),
@@ -6414,12 +6411,12 @@ game_menus = [
         (assign, "$no_soldiers_left", 0),
         (try_begin),
           (call_script, "script_party_count_members_with_full_health","p_main_party"),
-          (le, reg0, 0), #(sdsd = TODO : compare with num_routed_us)
+          (le, reg0, 0), #(TODO : compare with num_routed_us)
           (assign, "$no_soldiers_left", 1),
           (str_store_string, s4, "str_attack_walls_failure"),
         (else_try),
           (call_script, "script_party_count_members_with_full_health","$g_encountered_party"),
-          (le, reg0, 0), #(sdsd = TODO : compare with num_routed_enemies)
+          (le, reg0, 0), #(TODO : compare with num_routed_enemies)
           (assign, "$no_soldiers_left", 1),
           (assign, "$g_battle_result", 1),
           (str_store_string, s4, "str_attack_walls_success"),
@@ -6503,12 +6500,12 @@ game_menus = [
         (assign, "$no_soldiers_left", 0),
         (try_begin),
           (call_script, "script_party_count_members_with_full_health", "p_main_party"),
-          (le, reg0, 0), #(sdsd = TODO : compare with num_routed_us)
+          (le, reg0, 0), #(TODO : compare with num_routed_us)
           (assign, "$no_soldiers_left", 1),
           (str_store_string, s4, "str_attack_walls_failure"),
         (else_try),
           (call_script, "script_party_count_members_with_full_health", "p_collective_enemy"),
-          (le, reg0, 0), #(sdsd = TODO : compare with num_routed_enemies)
+          (le, reg0, 0), #(TODO : compare with num_routed_enemies)
           (assign, "$no_soldiers_left", 1),
           (assign, "$g_battle_result", 1),
           (str_store_string, s4, "str_attack_walls_success"),
@@ -7120,7 +7117,7 @@ game_menus = [
             (assign, ":enemy_finished", 0),
             (try_begin),
               (eq, "$g_battle_result", 1),
-              (eq, ":num_enemy_regulars_remaining", 0), #battle won (sdsd = TODO : compare with num_routed_us)
+              (eq, ":num_enemy_regulars_remaining", 0), #battle won (TODO : compare with num_routed_us)
               (assign, ":enemy_finished",1),
             (else_try),
               (eq, "$g_engaged_enemy", 1),
@@ -7137,7 +7134,7 @@ game_menus = [
             (try_begin),
               (this_or_next|eq, "$g_battle_result", -1),
               (troop_is_wounded,  "trp_player"),
-              (eq, ":num_ally_regulars_remaining", 0), #(sdsd = TODO : compare with num_routed_allies)
+              (eq, ":num_ally_regulars_remaining", 0), #(TODO : compare with num_routed_allies)
               (assign, ":battle_lost",1),
             (try_end),
             (this_or_next|eq, ":battle_lost",1),
@@ -7573,6 +7570,20 @@ game_menus = [
            (call_script, "script_cf_enter_center_location_bandit_check"),
          (else_try),
            (party_get_slot, ":merchant_troop", "$current_town", slot_town_elder),
+
+      #(try_for_range, ":cur_goods", trade_goods_begin, trade_goods_end),
+        #(store_sub, ":cur_good_price_slot", ":cur_goods", trade_goods_begin),
+        #(val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
+		#(party_get_slot, ":cur_price", "$current_town", ":cur_good_price_slot"),
+	    #(call_script, "script_center_get_production", "$current_town", ":cur_goods"),
+        #(assign, reg13, reg0),
+	    #(call_script, "script_center_get_consumption", "$current_town", ":cur_goods"),
+        #(str_store_party_name, s1, "$current_town"),
+        #(str_store_item_name, s2, ":cur_goods"),
+		#(assign, reg16, ":cur_price"),
+        #(display_log_message, "@DEBUG:{s1}-{s2}, prd: {reg13}, con: {reg0}, raw: {reg1}, cns: {reg2}, fee: {reg16}"),
+	  #(try_end),
+
            (change_screen_trade, ":merchant_troop"),
          (try_end),
          ]),
@@ -8411,8 +8422,52 @@ game_menus = [
             (party_set_slot, "$current_town", slot_village_number_of_cattle, ":num_cattle"),
           (try_end),
           (troop_clear_inventory, "trp_temp_troop"),
+
+		  #below line changed with below lines to make plunder result more realistic. Now only items produced in bound town can be stolen after raid.
+          #(reset_item_probabilities,100),
+
+		  #begin of changes
+		  (party_get_slot, ":bound_town", slot_village_bound_center, "$current_town"),
+          (store_sub, ":item_to_price_slot", slot_town_trade_good_prices_begin, trade_goods_begin),
           (reset_item_probabilities,100),
-          (troop_add_merchandise,"trp_temp_troop",itp_type_goods,45),
+          (assign, ":total_probability", 0),
+          (try_for_range, ":cur_goods", trade_goods_begin, trade_goods_end),
+            (store_add, ":cur_price_slot", ":cur_goods", ":item_to_price_slot"),
+            (party_get_slot, ":cur_price", ":bound_town", ":cur_price_slot"),
+            (call_script, "script_center_get_production", ":bound_town", ":cur_goods"),
+            (assign, ":cur_probability", reg0),
+            (call_script, "script_center_get_consumption", ":bound_town", ":cur_goods"),
+            (val_div, reg0, 3),
+            (val_add, ":cur_probability", reg0),
+            (val_mul, ":cur_probability", 4),
+            (val_mul, ":cur_probability", average_price_factor),
+            (val_div, ":cur_probability", ":cur_price"),
+			#first only simulation
+            #(set_item_probability_in_merchandise,":cur_goods",":cur_probability"),						  
+			(val_add, ":total_probability", ":cur_probability"),
+          (try_end),
+
+          (try_for_range, ":cur_goods", trade_goods_begin, trade_goods_end),
+            (store_add, ":cur_price_slot", ":cur_goods", ":item_to_price_slot"),
+            (party_get_slot, ":cur_price", ":bound_town", ":cur_price_slot"),
+            (call_script, "script_center_get_production", ":bound_town", ":cur_goods"),
+            (assign, ":cur_probability", reg0),
+            (call_script, "script_center_get_consumption", ":bound_town", ":cur_goods"),
+            (val_div, reg0, 3),
+            (val_add, ":cur_probability", reg0),
+            (val_mul, ":cur_probability", 4),
+            (val_mul, ":cur_probability", average_price_factor),
+            (val_div, ":cur_probability", ":cur_price"),
+
+			(val_mul, ":cur_probability", num_merchandise_goods),
+			(val_mul, ":cur_probability", 100),
+			(val_div, ":cur_probability", ":total_probability"),
+
+            (set_item_probability_in_merchandise,":cur_goods",":cur_probability"),						  
+          (try_end),
+		  #end of changes
+
+          (troop_add_merchandise,"trp_temp_troop",itp_type_goods,30),
           (troop_sort_inventory, "trp_temp_troop"),
           (change_screen_loot, "trp_temp_troop"),
         ]),
@@ -8489,7 +8544,7 @@ game_menus = [
           (is_between, "$g_encountered_party", towns_begin, towns_end),
           (store_sub, ":encountered_town_no", "$g_encountered_party", towns_begin),
           (set_achievement_stat, ACHIEVEMENT_MIGRATING_COCONUTS, ":encountered_town_no", 1),
-          
+
           (assign, ":there_are_villages_not_visited", 0),
           (try_for_range, ":cur_town", towns_begin, towns_end),
             (store_sub, ":encountered_town_no", ":cur_town", towns_begin),
@@ -10908,13 +10963,11 @@ game_menus = [
        (store_sub, ":cur_good_price_slot", ":cur_good", trade_goods_begin),
        (val_add, ":cur_good_price_slot", slot_town_trade_good_prices_begin),
        (party_get_slot, ":price", "$g_encountered_party", ":cur_good_price_slot"),
-	   
-	   
+	   	   
 	   (assign, ":total_centers", 0),
 	   (assign, ":calradian_average_price", 0),
 	   (assign, ":calradian_average_production", 0),
 	   (assign, ":calradian_average_consumption", 0),
-
 	   
 	   (try_for_range, ":center", centers_begin, centers_end),
 		(neg|is_between, ":center", castles_begin, castles_end),
@@ -10963,10 +11016,7 @@ game_menus = [
 	   (item_get_slot, ":production_string", ":cur_good", slot_item_production_string),
 	   (str_store_string, s4, ":production_string"),
 	   
-       (str_store_string, s1, "str___s3_price_=_reg4_calradian_average_reg6_capital_reg11_s4_base_reg1modified_by_raw_material_reg2modified_by_prosperity_reg3_calradian_average_production_base_reg5_total_reg12_consumed_reg7used_as_raw_material_reg8modified_total_reg9_calradian_consumption_base_reg10_total_reg13s1_"),
-
-	   
-	   
+       (str_store_string, s1, "str___s3_price_=_reg4_calradian_average_reg6_capital_reg11_s4_base_reg1modified_by_raw_material_reg2modified_by_prosperity_reg3_calradian_average_production_base_reg5_total_reg12_consumed_reg7used_as_raw_material_reg8modified_total_reg9_calradian_consumption_base_reg10_total_reg13s1_"),	   	   
      (try_end),
 	 
 	 
@@ -11084,13 +11134,27 @@ game_menus = [
      (store_sub, ":num_goods", trade_goods_end, trade_goods_begin),
      (store_mul, ":max_iteration", ":num_towns", ":num_goods"),
      (val_mul, ":max_iteration", ":max_skill"),
-     (val_div, ":max_iteration", 20),
+     (val_div, ":max_iteration", 15),
 
      (assign, ":org_encountered_party", "$g_encountered_party"),
 
      (try_for_range, ":unused", 0, ":max_iteration"),
        (store_random_in_range, ":random_trade_good", trade_goods_begin, trade_goods_end),
        (store_random_in_range, ":random_town", towns_begin, towns_end),
+	   
+	   (party_get_slot, ":cur_merchant", ":org_encountered_party", slot_town_merchant),	   
+	   (assign, ":item_found", 0),
+       #(troop_get_inventory_capacity, ":inv_size", ":cur_merchant"),
+       (try_for_range, ":i_slot", num_equipment_kinds, max_inventory_items + num_equipment_kinds),
+         (troop_get_inventory_slot, ":slot_item", ":cur_merchant", ":i_slot"),
+		 (try_begin),
+		   (eq, ":slot_item", ":random_trade_good"),
+		   (assign, ":item_found", 1),
+		 (try_end),
+	   (try_end),
+	   	   
+	   (eq, ":item_found", 1),
+
        (assign, ":already_best", 0),
        (try_begin),
          (eq, ":random_trade_good", ":best_result_1_item"),
@@ -11107,7 +11171,7 @@ game_menus = [
        (try_end),
        (eq, ":already_best", 0),
        (store_item_value, ":random_trade_good_price", ":random_trade_good"),
-       (assign, "$g_encountered_party", ":org_encountered_party"),
+       (assign, "$g_encountered_party", ":org_encountered_party"),	   
        (call_script, "script_game_get_item_buy_price_factor", ":random_trade_good"),
        (store_mul, ":random_trade_good_buy_price", ":random_trade_good_price", reg0),
        (val_div, ":random_trade_good_buy_price", 100),
@@ -11359,6 +11423,19 @@ game_menus = [
         (party_remove_prisoners, "$g_ransom_offer_party", "$g_ransom_offer_troop", 1),
         #(troop_set_slot, "$g_ransom_offer_troop", slot_troop_is_prisoner, 0),
         (call_script, "script_remove_troop_from_prison", "$g_ransom_offer_troop"),
+
+        (try_begin),
+            (troop_get_type, ":is_female", "trp_player"),
+            (eq, ":is_female", 1),
+
+            (get_achievement_stat, ":number_of_lords_sold", ACHIEVEMENT_MEN_HANDLER, 1),
+            (val_add, ":number_of_lords_sold", 1),
+            (set_achievement_stat, ACHIEVEMENT_MEN_HANDLER, 1, ":number_of_lords_sold"),
+
+            (eq, ":number_of_lords_sold", 3),
+            (unlock_achievement, ACHIEVEMENT_MEN_HANDLER),
+        (try_end),
+
         (change_screen_return),
         ]),
       ("ransom_reject",[],"Reject the offer.",
@@ -13100,7 +13177,12 @@ game_menus = [
 	  (else_try),
 		(unlock_achievement, ACHIEVEMENT_MANIFEST_DESTINY),
 	  (try_end),
-	  
+
+        (try_begin),
+            (troop_get_type, ":is_female", "trp_player"),
+            (eq, ":is_female", 1),
+            (unlock_achievement, ACHIEVEMENT_EMPRESS),
+        (try_end),	  
       ],
     [
       ("continue",[],"Continue...",
