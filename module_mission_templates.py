@@ -461,14 +461,9 @@ mission_templates = [
       (try_end),
       ]),
 
-    (0, 0, 0, [(game_key_clicked, gk_character_window),(call_script, "script_cf_no_input_presentation_active")],
-     [(try_begin),
-        (neg|is_presentation_active, "prsnt_display_agent_labels"),
-        (assign, "$g_display_agent_labels", 1),
-        (start_presentation, "prsnt_display_agent_labels"),
-      (else_try),
-        (assign, "$g_display_agent_labels", 0),
-      (try_end),
+    (0, 0, 0, [(game_key_clicked, gk_action_menu),(call_script, "script_cf_no_input_presentation_active")],
+     [(neg|is_presentation_active, "prsnt_action_menu"),
+      (start_presentation, "prsnt_action_menu"),
       ]),
 
     (0, 0, 0.1, [(game_key_is_down, gk_target_agent),(call_script, "script_cf_no_input_presentation_active")],
@@ -486,10 +481,6 @@ mission_templates = [
       (else_try),
         (assign, "$g_display_chat_overlay", 0),
       (try_end),
-      ]),
-
-    (0, 1, 1, [(key_clicked, key_slash),(call_script, "script_cf_no_input_presentation_active")],
-     [(multiplayer_send_message_to_server, client_event_detach_scene_prop),
       ]),
 
     (0.3, 0.3, 0, [(troop_slot_eq, "trp_last_chat_message", slot_last_chat_message_not_recieved, 1)],

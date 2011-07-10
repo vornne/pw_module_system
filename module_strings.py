@@ -420,6 +420,14 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("reg0_player_of_reg1", "{reg0} player of {reg1}"),
   ("reg0", "{!}{reg0}"),
   ("s0", "{!}{s0}"),
+  ("enable_s0", "Enable {s0}"),
+  ("disable_s0", "Disable {s0}"),
+
+  ("toggle_name_labels", "Toggle name labels"),
+  ("detach_cart_pack", "Detach cart / pack"),
+  ("action_menu_end", "action_menu_end"),
+  ("s0_are_you_sure", "{s0} - are you sure?"),
+  ("confirmation", "confirmation"),
 
   ("done", "Done"),
   ("use", "Use"),

@@ -342,6 +342,7 @@ ship_rotation_multiplier              = 3
 
 escape_menu_item_height               = 35
 admin_panel_item_height               = 40
+action_menu_item_height               = 23
 faction_menu_item_height              = 120
 chat_overlay_item_height              = 20
 chat_overlay_max_lines                = 100
@@ -415,3 +416,6 @@ admin_action_log_strings_begin = "str_log_admin_kick"
 
 ambient_sounds_begin = "snd_fire_loop"
 ambient_sounds_end = "snd_sounds_end"
+
+action_menu_strings_begin = "str_toggle_name_labels"
+action_menu_strings_end = "str_action_menu_end"
