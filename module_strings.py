@@ -502,6 +502,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("craft_wrong_resources", "You don't seem to have the right resources."),
   ("no_horse", "You have no horse."),
   ("too_wounded_to_rest", "Too wounded to rest here."),
+  ("item_too_long_for_container", "That item is too long to fit inside the container."),
 
   ("chat_format", "[{s1}] {s0}"),
   ("send_message_to_players_nearby", "Send message to players nearby:"),
@@ -532,6 +533,7 @@ To sail a ship requires two players (or one player moving around a lot): using t
 When the ramp is resting on the deck, using will move it away from the player, extending over the side, then using once more will move it back to the center; if the ship is not moving the ramp will angle down near ground level. The up arrow key can be used to climb up the side of the ship from close beside the middle section of the hull. \
 Ships will be damaged when colliding with the ground, large objects in the water, or other ships, but they can be repaired with wood by engineers; otherwise, after enough damage they will sink. \
 If you stay under water for too long you will drown - more quickly the faster you move.^^\
+Carts are attached by using from the front side, and the inventory is accessed by using from the other side; unattaching can be done by using again, or by pressing the slash key.^^\
 The money bag window (which is toggled with the native inventory key) can be used to drop money bag items, or access money chests. The value of the last money bag picked up is used when dropping one or pressing attack to get the money, rather than the particular bag you have wielded (due to game engine limitations). \
 To deposit gold in a chest you must be near it, and to withdraw you also either need to be the lord of the associated faction, break the chest open with a weapon, or use a lock pick to open it (looting skill makes success more likely). To tell if a money chest is unlocked, press and release the use button: if you hear a click sound it is locked, but if no sound it is unlocked; locked teleport doors work the same way, except that they are relocked by using the door as a member of the faction owning the castle. \
 When you die, a bag with a small percentage of your money and part of the value of your armor will be dropped, along with all your equipped items.^^\

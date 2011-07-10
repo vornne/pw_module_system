@@ -32,6 +32,7 @@ slot_player_has_faction_door_key      = 13
 slot_player_has_faction_chest_key     = 14
 slot_player_teleport_to_ship_no       = 15
 slot_player_last_faction_kicked_from  = 16
+slot_player_accessing_instance_id     = 17
 
 slot_player_equip_item_0              = 20
 slot_player_equip_item_1              = 21
@@ -129,13 +130,20 @@ scene_prop_state_destroyed            = 1
 scene_prop_state_hidden               = 2
 scene_prop_state_regenerating         = 3
 
-slot_scene_prop_inventory_max_size    = 998
-slot_scene_prop_inventory_count       = 999
-slot_scene_prop_inventory_begin       = 1000
-slot_scene_prop_inventory_obj_begin   = 2000
-slot_scene_prop_inventory_obj_item_0  = 2990
-slot_scene_prop_inventory_mesh_begin  = 3000
-slot_scene_prop_inventory_mesh_item_0 = 3990
+slot_scene_prop_inventory_max_size    = 198
+slot_scene_prop_inventory_count       = 199
+slot_scene_prop_inventory_begin       = 200
+slot_scene_prop_inventory_item_0      = 290
+slot_scene_prop_inventory_mod_begin   = 300
+slot_scene_prop_inventory_mod_item_0  = 390
+slot_scene_prop_inventory_obj_begin   = 400
+slot_scene_prop_inventory_obj_item_0  = 490
+slot_scene_prop_inventory_mesh_begin  = 500
+slot_scene_prop_inventory_mesh_item_0 = 590
+slot_scene_prop_inventory_end         = slot_scene_prop_inventory_mod_begin
+slot_scene_prop_inventory_mod_end     = slot_scene_prop_inventory_obj_begin
+slot_scene_prop_inventory_obj_end     = slot_scene_prop_inventory_mesh_begin
+inventory_count_maximum               = slot_scene_prop_inventory_item_0 - slot_scene_prop_inventory_begin
 
 ########################################################
 ##  ITEM SLOTS             #############################
@@ -301,7 +309,7 @@ max_distance_local_chat_shout         = 5000
 ambient_distance_local_chat           = 1000
 ambient_distance_local_chat_shout     = 2000
 z_position_to_hide_object             = -4999
-max_distance_to_use                   = 200
+max_distance_to_use                   = 300
 
 sell_item_gold_multiplier             = 80
 castle_tax_gold_multiplier            = 20
@@ -354,6 +362,9 @@ change_faction_type_outlawed          = 2
 
 inventory_slots_per_row               = 6
 inventory_slot_spacing                = 100
+inventory_mesh_offset                 = 51
+inventory_container_x_offset          = 190
+inventory_container_y_offset          = 175
 
 select_agent_max_x                    = 300
 select_agent_max_y                    = 200

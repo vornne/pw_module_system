@@ -454,6 +454,11 @@ mission_templates = [
         (start_presentation, "prsnt_respawn_time_counter"),
       (try_end),
       (start_presentation, "prsnt_gold"),
+      (try_begin),
+        (gt, "$g_show_inventory_instance_id", 0),
+        (assign, "$g_show_inventory_instance_id", 0),
+        (multiplayer_send_message_to_server, client_event_transfer_inventory),
+      (try_end),
       ]),
 
     (0, 0, 0, [(game_key_clicked, gk_character_window),(call_script, "script_cf_no_input_presentation_active")],
