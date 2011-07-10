@@ -20,6 +20,7 @@ player_spawn_state_invulnerable       = 1
 player_spawn_state_at_marker          = 2
 player_spawn_state_alive              = 3
 
+slot_player_inactive_index            = 5
 slot_player_next_chat_event_type      = 6
 slot_player_list_button_id            = 7
 slot_player_outlaw_rating             = 8
@@ -283,7 +284,6 @@ team_spectators                       = 2
 
 spawn_invulnerable_time               = 10
 lord_wait_for_reconnect_interval      = 300
-loop_player_check_interval            = 5
 loop_player_check_outlaw_interval     = 60
 loop_agent_check_interval             = 2
 loop_horse_check_interval             = 30

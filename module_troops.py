@@ -157,7 +157,6 @@ troops = [
 
   ["playable_troops_end","playable_troops_end","playable_troops_end",0,0,0,0,[],0,0,0,0,0],
 
-  ["active_players_array","active_players_array","active_players_array",0,0,0,0,[],0,0,0,0,0],
   ["inactive_players_array","inactive_players_array","inactive_players_array",0,0,0,0,[],0,0,0,0,0],
   ["mission_data","mission_data","mission_data",0,0,0,0,[],0,0,0,0,0],
   ["banner_background_color_array","banner_background_color_array","banner_background_color_array",0,0,0,0,[],0,0,0,0,0],
