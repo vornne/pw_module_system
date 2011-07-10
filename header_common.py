@@ -31,6 +31,7 @@ server_event_admin_chat                         = 23
 server_event_admin_chat_shout                   = 24
 server_event_admin_set_permissions              = 25
 
+client_event_agent_loot_armor                   = 97
 client_event_toggle_drop_armor                  = 98
 client_event_admin_equip_item                   = 99
 client_event_poll_vote                          = 100

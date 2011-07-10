@@ -469,7 +469,6 @@ mission_templates = [
     (0, 0, 0.1, [(game_key_is_down, gk_target_agent),(call_script, "script_cf_no_input_presentation_active")],
      [(multiplayer_get_my_player, ":player_id"),
       (player_is_active, ":player_id"),
-      (player_is_admin, ":player_id"),
       (call_script, "script_select_target_agent"),
       ]),
 

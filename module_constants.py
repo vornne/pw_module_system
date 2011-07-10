@@ -310,6 +310,7 @@ ambient_distance_local_chat           = 1000
 ambient_distance_local_chat_shout     = 2000
 z_position_to_hide_object             = -4999
 max_distance_to_use                   = 300
+max_distance_to_loot                  = 100
 
 sell_item_gold_multiplier             = 80
 castle_tax_gold_multiplier            = 20
