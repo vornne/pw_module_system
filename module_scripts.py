@@ -5845,6 +5845,8 @@ scripts = [
       (try_begin),
         (agent_is_active, ":attached_to_agent"),
         (agent_is_alive, ":attached_to_agent"),
+        (agent_get_attached_scene_prop, ":other_instance_id", ":attached_to_agent"),
+        (eq, ":other_instance_id", ":instance_id"),
         (assign, ":fail", 1),
       (else_try),
         (scene_prop_set_slot, ":instance_id", slot_scene_prop_attached_to_agent, ":attach_agent_id"),
