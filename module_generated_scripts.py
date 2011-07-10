@@ -34,6 +34,10 @@ def generate_initialize_item_slots():
       script_body.append((item_set_slot, item_id, slot_item_length, length))
     if (item[7] & imodbit_female == imodbit_female):
       script_body.append((item_set_slot, item_id, slot_item_gender, tf_female))
+    item_type = item[3] & 0xff
+    item_max_ammo = get_max_ammo(item[6])
+    if (item_type == itp_type_arrows or item_type == itp_type_bolts or item_type == itp_type_thrown) and item_max_ammo > 0:
+      script_body.append((item_set_slot, item_id, slot_item_max_ammo, item_max_ammo))
   for entry in item_class_list:
     script_body.append((item_set_slot, entry[0], slot_item_class, entry[1]))
     if len(entry) > 2 and entry[2] > 0:
