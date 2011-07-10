@@ -165,19 +165,19 @@ min_respawn_period                              = 3
 max_respawn_period                              = 31
 
 net_value_upper_bound = 1 << 31
-net_sound_multiplier = 1 << 16
-net_sound_mask = (1 << 16) - 1
+net_sound_shift = 16
+net_sound_mask = (1 << net_sound_shift) - 1
 
-net_pack_3_mask_1 = (1 << 10) - 1
-net_pack_3_mask_2 = net_pack_3_mask_1 << 10
-net_pack_3_mask_3 = net_pack_3_mask_1 << 20
-net_pack_3_value_upper_bound = (1 << 10)
-net_pack_3_multiplier_2 = (1 << 10)
-net_pack_3_multiplier_3 = (1 << 20)
+net_pack_3_shift_2 = 10
+net_pack_3_shift_3 = 20
+net_pack_3_value_upper_bound = 1 << net_pack_3_shift_2
+net_pack_3_mask_1 = net_pack_3_value_upper_bound - 1
+net_pack_3_mask_2 = net_pack_3_mask_1 << net_pack_3_shift_2
+net_pack_3_mask_3 = net_pack_3_mask_1 << net_pack_3_shift_3
 
-net_chat_event_mask = 0xFF
-net_chat_type_multiplier = 0x100
-net_chat_param_1_multiplier = 0x10000
+net_chat_type_shift = 8
+net_chat_param_1_shift = net_chat_type_shift * 2
+net_chat_event_mask = (1 << net_chat_type_shift) - 1
 
 stats_chart_score_shift = 8
 stats_chart_ranking_shift = 24
