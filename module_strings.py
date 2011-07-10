@@ -425,6 +425,10 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 
   ("toggle_name_labels", "Toggle name labels"),
   ("detach_cart_pack", "Detach cart / pack"),
+  ("toggle_head", "Toggle head armor"),
+  ("discard_body", "Discard body armor"),
+  ("discard_foot", "Discard foot armor"),
+  ("toggle_hand", "Toggle hand armor"),
   ("action_menu_end", "action_menu_end"),
   ("s0_are_you_sure", "{s0} - are you sure?"),
   ("confirmation", "confirmation"),
@@ -542,6 +546,7 @@ When the ramp is resting on the deck, using will move it away from the player, e
 Ships will be damaged when colliding with the ground, large objects in the water, or other ships, but they can be repaired with wood by engineers; otherwise, after enough damage they will sink. \
 If you stay under water for too long you will drown - more quickly the faster you move.^^\
 Carts are attached by using from the front side, and the inventory is accessed by using from the other side; unattaching can be done by using again, or by pressing the slash key.^^\
+An action menu can be accessed by holding down a control (same as the native character window); from it your head and hand armor can be toggled on and off (as if you put it in your pocket) but body and foot armor can only be dropped.^^\
 The money bag window (which is toggled with the native inventory key) can be used to drop money bag items, or access money chests. The value of the last money bag picked up is used when dropping one or pressing attack to get the money, rather than the particular bag you have wielded (due to game engine limitations). \
 To deposit gold in a chest you must be near it, and to withdraw you also either need to be the lord of the associated faction, break the chest open with a weapon, or use a lock pick to open it (looting skill makes success more likely). To tell if a money chest is unlocked, press and release the use button: if you hear a click sound it is locked, but if no sound it is unlocked; locked teleport doors work the same way, except that they are relocked by using the door as a member of the faction owning the castle. \
 When you die, a bag with a small percentage of your money and part of the value of your armor will be dropped, along with all your equipped items.^^\
