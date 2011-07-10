@@ -344,7 +344,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("invalid_scene", "Invalid scene."),
   ("command_not_implemented", "Command is not implemented."),
   ("bot_count", "Bot count:"),
-  ("round_max_seconds", "round_max_seconds:"),
+  ("round_max_seconds", "Seconds before removing spawned items:"),
   ("respawn_period", "Respawn period (seconds):"),
   ("num_bots_voteable", "num_bots_voteable:"),
   ("maps_voteable", "Allow polls to change scene:"),
