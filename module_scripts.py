@@ -7274,7 +7274,7 @@ scripts = [
       (position_get_y, ":y_pos", pos3),
       (val_sub, ":y_pos", presentation_max_y / 2),
       (val_abs, ":y_pos"),
-      (lt, ":y_pos", select_agent_max_x),
+      (lt, ":y_pos", select_agent_max_y),
       (val_mul, ":x_pos", ":x_pos"),
       (val_mul, ":y_pos", ":y_pos"),
       (store_add, ":score", ":x_pos", ":y_pos"),
