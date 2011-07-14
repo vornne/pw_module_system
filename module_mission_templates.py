@@ -10615,6 +10615,7 @@ mission_templates = [
          
            (store_mission_timer_a, "$g_round_finish_time"),
            (assign, "$g_round_ended", 1),
+
            (assign, "$g_flag_is_not_ready", 1),
         
            (assign, "$g_winner_team", 0),
@@ -11307,7 +11308,7 @@ mission_templates = [
            (player_get_agent_id, ":my_agent_id", ":my_player_no"),
            (eq, ":my_agent_id", ":agent_no"),
            (ge, ":my_agent_id", 0),
-           (agent_get_team, "$my_team_at_start_of_round", ":my_agent_id"),
+           (agent_get_team, "$my_team_at_start_of_round", ":my_agent_id"),		   
          (try_end),         
          
          (call_script, "script_calculate_new_death_waiting_time_at_death_mod"),
@@ -12038,8 +12039,7 @@ mission_templates = [
 
          (get_max_players, ":num_players"),
          (try_for_range, ":player_no", 0, ":num_players"),
-           (player_is_active, ":player_no"),
-           (player_set_slot, ":player_no", slot_player_spawned_this_round, 0),
+           (player_is_active, ":player_no"),           
            (player_get_agent_id, ":player_agent", ":player_no"),
            (ge, ":player_agent", 0),
            (agent_is_alive, ":player_agent"),
@@ -12054,7 +12054,9 @@ mission_templates = [
          (val_div, ":per_round_gold_addition", 100),
          (get_max_players, ":num_players"),
          (try_for_range, ":player_no", 0, ":num_players"),
-           (player_is_active, ":player_no"),
+           (player_is_active, ":player_no"),		   
+		   (player_slot_eq, ":player_no", slot_player_spawned_this_round, 1),
+
            (player_get_gold, ":player_gold", ":player_no"),
            (player_get_team_no, ":player_team", ":player_no"),
 
@@ -12076,6 +12078,11 @@ mission_templates = [
            #new money system addition end
          
            (player_set_gold, ":player_no", ":player_gold", multi_max_gold_that_can_be_stored),
+         (try_end),
+
+         (try_for_range, ":player_no", 0, ":num_players"),
+           (player_is_active, ":player_no"),
+           (player_set_slot, ":player_no", slot_player_spawned_this_round, 0),
          (try_end),
 
          #initialize my team at start of round (it will be assigned again at next round's first death)
@@ -13072,8 +13079,7 @@ mission_templates = [
 
          (get_max_players, ":num_players"),
          (try_for_range, ":player_no", 0, ":num_players"),
-           (player_is_active, ":player_no"),
-           (player_set_slot, ":player_no", slot_player_spawned_this_round, 0),
+           (player_is_active, ":player_no"),           
            (player_get_agent_id, ":player_agent", ":player_no"),
            (ge, ":player_agent", 0),
            (agent_is_alive, ":player_agent"),
@@ -13101,6 +13107,7 @@ mission_templates = [
 
          (try_for_range, ":player_no", 0, ":num_players"),
            (player_is_active, ":player_no"),
+		   (player_slot_eq, ":player_no", slot_player_spawned_this_round, 1),
            (player_get_gold, ":player_gold", ":player_no"),
            (player_get_team_no, ":player_team", ":player_no"),           
            (val_add, ":player_gold", ":per_round_gold_addition"), #standard           
@@ -13123,6 +13130,11 @@ mission_templates = [
            #new money system addition end
 
            (player_set_gold, ":player_no", ":player_gold", multi_max_gold_that_can_be_stored),
+         (try_end),
+
+         (try_for_range, ":player_no", 0, ":num_players"),
+           (player_is_active, ":player_no"),
+           (player_set_slot, ":player_no", slot_player_spawned_this_round, 0),
          (try_end),
 
          #initialize my team at start of round (it will be assigned again at next round's first death)

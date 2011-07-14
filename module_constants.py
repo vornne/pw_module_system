@@ -470,16 +470,16 @@ slot_town_trade_good_productions_begin       = 500 #a harmless number, until it 
 
 #These affect production but in some cases also demand, so it is perhaps easier to itemize them than to have separate 
 
-slot_village_number_of_cattle            = 205
+slot_village_number_of_cattle   = 205
 slot_center_head_cattle         = 205 #dried meat, cheese, hides, butter
 slot_center_head_sheep			= 206 #sausages, wool
-slot_center_head_horses		 	= 207 #horses can be a trade item used in tracking ,but which are never offered for sale
+slot_center_head_horses		 	= 207 #horses can be a trade item used in tracking but which are never offered for sale
 
-slot_center_acres_pasture       = 208
+slot_center_acres_pasture       = 208 #pasture area for grazing of cattles and sheeps, if this value is high then number of cattles and sheeps increase faster
 slot_center_acres_grain			= 209 #grain
-slot_center_acres_olives        = 210 #nothing for now
+slot_center_acres_olives        = 210 #olives
 slot_center_acres_vineyard		= 211 #fruit
-slot_center_acres_flax          = 212 #flax - can be used for sailcloth
+slot_center_acres_flax          = 212 #flax
 slot_center_acres_dates			= 213 #dates
 
 slot_center_fishing_fleet		= 214 #smoked fish
@@ -491,8 +491,6 @@ slot_center_kirmiz_farms		= 218 #dyes
 
 slot_center_iron_deposits       = 219 #iron
 slot_center_fur_traps			= 220 #furs
-#timber
-#pitch
 
 slot_center_mills				= 221 #bread
 slot_center_breweries			= 222 #ale

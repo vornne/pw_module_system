@@ -33,25 +33,25 @@ triggers = [
   (0.1, 0, ti_once, [(map_free,0)], [(dialog_box,"str_tutorial_map1")]),
 
 # Refresh Merchants
-  (0.0, 0, 72.0, [],
+  (0.0, 0, 168.0, [],
   [    
     (call_script, "script_refresh_center_inventories"),
   ]),
 
 # Refresh Armor sellers
-  (0.0, 0, 72.0, [],
+  (0.0, 0, 168.0, [],
   [    
     (call_script, "script_refresh_center_armories"),
   ]),
 
 # Refresh Weapon sellers
-  (0.0, 0, 72.0, [],
+  (0.0, 0, 168.0, [],
   [
     (call_script, "script_refresh_center_weaponsmiths"),
   ]),
 
 # Refresh Horse sellers
-  (0.0, 0, 72.0, [],
+  (0.0, 0, 168.0, [],
   [
     (call_script, "script_refresh_center_stables"),
   ]),
@@ -1503,14 +1503,21 @@ triggers = [
      (eq, ":is_female", 1),       
      (try_for_range, ":companion", companions_begin, companions_end),
        (troop_slot_eq, ":companion", slot_troop_occupation, slto_player_companion),
-       (troop_inventory_slot_get_item_amount, ":num_great_sword", ":companion", "itm_great_sword"),
-       (troop_inventory_slot_get_item_amount, ":num_sword_two_handed_a", ":companion", "itm_sword_two_handed_a"),
-       (troop_inventory_slot_get_item_amount, ":num_strange_great_sword", ":companion", "itm_strange_great_sword"),
-       (this_or_next|ge, ":num_great_sword", 1),
-       (this_or_next|ge, ":num_sword_two_handed_a", 1),
-       (ge, ":num_strange_great_sword", 1),
-       (unlock_achievement, ACHIEVEMENT_LADY_OF_THE_LAKE),
-     (try_end),
+
+       (troop_get_inventory_capacity, ":inv_cap", ":companion"),
+       (try_for_range, ":i_slot", 0, ":inv_cap"),
+         (troop_get_inventory_slot, ":item_id", ":companion", ":i_slot"),
+
+		 (ge, ":item_id", 0),
+
+	 	 (this_or_next|eq, ":item_id", "itm_great_sword"),
+	 	 (this_or_next|eq, ":item_id", "itm_sword_two_handed_a"),
+		 (eq, ":item_id", "itm_strange_great_sword"),
+		 		 
+		 (unlock_achievement, ACHIEVEMENT_LADY_OF_THE_LAKE),
+		 (assign, ":inv_cap", 0),
+	   (try_end),
+	 (try_end),
     ],
    []
    ),

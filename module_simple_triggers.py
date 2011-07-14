@@ -1371,7 +1371,7 @@ simple_triggers = [
     ]),
 
   # Refresh merchant inventories
-   (72,
+   (168,
    [
       (try_for_range, ":village_no", villages_begin, villages_end),
         (call_script, "script_refresh_village_merchant_inventory", ":village_no"),
@@ -1390,84 +1390,77 @@ simple_triggers = [
 
   # Refresh number of cattle in villages
   (24 * 7,
-   [(try_for_range, ":village_no", centers_begin, centers_end),
-	  (neg|is_between, ":village_no", castles_begin, castles_end),
-      (party_get_slot, ":num_cattle", ":village_no", slot_center_head_cattle),
-      (party_get_slot, ":num_sheep", ":village_no", slot_center_head_sheep),
-      (party_get_slot, ":num_acres", ":village_no", slot_center_acres_pasture),
-	  (val_max, ":num_acres", 1),
-	  
-	  (store_mul, ":grazing_capacity", ":num_cattle", 400),
-	  (store_mul, ":sheep_addition", ":num_sheep", 200),
-	  (val_add, ":grazing_capacity", ":sheep_addition"),
-	  (val_div, ":grazing_capacity", ":num_acres"),
-	  (try_begin),
-		(eq, "$cheat_mode", 1),
-	    (assign, reg4, ":grazing_capacity"),
-		(str_store_party_name, s4, ":village_no"),
-	    #(display_message, "@{!}DEBUG -- Herd adjustment: {s4} at {reg4}% of grazing capacity"),
-	  (try_end),
-	  
-	  
-      (store_random_in_range, ":random_no", 0, 100),
-      (try_begin), #Disaster
-        (eq, ":random_no", 0),#1% chance of epidemic - should happen once every two years
-        #(assign, ":num_cattle", 0), #formerly
-        (val_min, ":num_cattle", 10),
+   [
+     (try_for_range, ":village_no", centers_begin, centers_end),
+	   (neg|is_between, ":village_no", castles_begin, castles_end),
+	   (party_get_slot, ":num_cattle", ":village_no", slot_center_head_cattle),
+	   (party_get_slot, ":num_sheep", ":village_no", slot_center_head_sheep),
+	   (party_get_slot, ":num_acres", ":village_no", slot_center_acres_pasture),
+	   (val_max, ":num_acres", 1),
+	   
+	   (store_mul, ":grazing_capacity", ":num_cattle", 400),
+	   (store_mul, ":sheep_addition", ":num_sheep", 200),
+	   (val_add, ":grazing_capacity", ":sheep_addition"),
+	   (val_div, ":grazing_capacity", ":num_acres"),
+	   
+	   (store_random_in_range, ":random_no", 0, 100),
+	   (try_begin), #Disaster
+	     (eq, ":random_no", 0),#1% chance of epidemic - should happen once every two years
+		 (val_min, ":num_cattle", 10),
+		 
+       (else_try), #Overgrazing
+         (gt, ":grazing_capacity", 100),
 		
-        (try_begin),
-#          (eq, "$cheat_mode", 1),
-#          (str_store_party_name, s1, ":village_no"),
-#          (display_message, "@{!}Cattle in {s1} are exterminated due to famine."),
-        (try_end),
+         (val_mul, ":num_sheep", 90), #10% decrease at number of cattles
+         (val_div, ":num_sheep", 100),
 		
-      (else_try), #Overgrazing
-	    (gt, ":grazing_capacity", 100),
-		
-		(val_mul, ":num_sheep", 9),
-		(val_div, ":num_sheep", 10),
-		(val_mul, ":num_cattle", 9),
-		(val_div, ":num_cattle", 10),
-     (else_try), #Population boom
-	    (lt, ":grazing_capacity", 50),
+         (val_mul, ":num_cattle", 90), #10% decrease at number of sheeps
+         (val_div, ":num_cattle", 100),
+		 
+       (else_try), #superb grazing
+         (lt, ":grazing_capacity", 30),
 
-        (val_mul, ":num_cattle", 6),
-        (val_div, ":num_cattle", 5),
-		(val_add, ":num_cattle", 1),
+         (val_mul, ":num_cattle", 120), #20% increase at number of cattles
+         (val_div, ":num_cattle", 100),
+         (val_add, ":num_cattle", 1),
 		
-        (val_mul, ":num_sheep", 6),
-        (val_div, ":num_sheep", 5),
-		(val_add, ":num_sheep", 1),
+         (val_mul, ":num_sheep", 120), #20% increase at number of sheeps
+         (val_div, ":num_sheep", 100),
+         (val_add, ":num_sheep", 1),
 		
-     (else_try), #good grazing
-	    (lt, ":grazing_capacity", 100),
-        (lt, ":random_no", 50),#double growth
+       (else_try), #very good grazing
+         (lt, ":grazing_capacity", 60),
 
-        (val_mul, ":num_cattle", 21),
-        (val_div, ":num_cattle", 20),
-		(try_begin),
-			(lt, ":num_cattle", 21),
-			(val_add, ":num_cattle", 1),
-		(try_end),
+         (val_mul, ":num_cattle", 110), #10% increase at number of cattles
+         (val_div, ":num_cattle", 100),
+         (val_add, ":num_cattle", 1),
 		
-        (val_mul, ":num_sheep", 21),
-        (val_div, ":num_sheep", 20),
-		(try_begin),
-			(lt, ":num_sheep", 21),
-			(val_add, ":num_sheep", 1),
-		(try_end),
+         (val_mul, ":num_sheep", 110), #10% increase at number of sheeps
+         (val_div, ":num_sheep", 100),
+         (val_add, ":num_sheep", 1),
 
+       (else_try), #good grazing
+         (lt, ":grazing_capacity", 100),
+         (lt, ":random_no", 50),
+
+         (val_mul, ":num_cattle", 105), #5% increase at number of cattles
+         (val_div, ":num_cattle", 100),
+         (try_begin), #if very low number of cattles and there is good grazing then increase number of cattles also by one
+           (le, ":num_cattle", 20),
+           (val_add, ":num_cattle", 1),
+         (try_end),
 		
+         (val_mul, ":num_sheep", 105), #5% increase at number of sheeps
+         (val_div, ":num_sheep", 100),
+         (try_begin), #if very low number of sheeps and there is good grazing then increase number of sheeps also by one
+           (le, ":num_sheep", 20),
+           (val_add, ":num_sheep", 1),
+         (try_end),		
+       (try_end),
+
+       (party_set_slot, ":village_no", slot_center_head_cattle, ":num_cattle"),
+       (party_set_slot, ":village_no", slot_center_head_sheep, ":num_sheep"),	  	  	  
      (try_end),
-
-     (party_set_slot, ":village_no", slot_center_head_cattle, ":num_cattle"),
-     (party_set_slot, ":village_no", slot_center_head_sheep, ":num_sheep"),
-	  	  	  
-#Reassigning the cattle production in the village
-#      (store_sub, ":production", ":num_cattle", 10),
-#      (val_div, ":production", 2),
-#      (call_script, "script_center_change_trade_good_production", ":village_no", "itm_cattle_meat", ":production", 0),
-    (try_end),
     ]),
 
    #Accumulate taxes
@@ -2039,7 +2032,7 @@ simple_triggers = [
            (eq, ":cur_center", ":home_center"),
 		   
 		   #Peasants trade in their home center
-		   (call_script, "script_do_party_center_trade", ":party_no", ":home_center", 4), #this needs to be the same as the center		   
+		   (call_script, "script_do_party_center_trade", ":party_no", ":home_center", 3), #this needs to be the same as the center		   
 		   (store_faction_of_party, ":center_faction", ":cur_center"),
            (party_set_faction, ":party_no", ":center_faction"),           		   
            (party_get_slot, ":market_town", ":home_center", slot_village_market_town),
@@ -2052,7 +2045,7 @@ simple_triggers = [
              (party_get_slot, ":cur_ai_object", ":party_no", slot_party_ai_object),
              (eq, ":cur_center", ":cur_ai_object"),
 
-             (call_script, "script_do_party_center_trade", ":party_no", ":cur_ai_object", 4), #raised from 10
+             (call_script, "script_do_party_center_trade", ":party_no", ":cur_ai_object", 3), #raised from 10
              (assign, ":total_change", reg0),
 		     #This is roughly 50% of what a caravan would pay
 			 
@@ -3926,20 +3919,20 @@ simple_triggers = [
    (party_set_name, "p_desert_bandit_spawn_point", "str_the_deserts"),
 
    
-   #This to correct inappropriate home strings - Katrin to Uxkhal, Matheld to Fearichen
+   #this to correct inappropriate home strings - Katrin to Uxkhal, Matheld to Fearichen
    (troop_set_slot, "trp_npc11", slot_troop_home, "p_town_7"),
    (troop_set_slot, "trp_npc8", slot_troop_home, "p_village_35"),
    
    (troop_set_slot, "trp_npc15", slot_troop_town_with_contacts, "p_town_20"), #durquba
    
-   #mazigh, sekhtem, qalyut, tilimsal, shibal zumr, tamnuh, habba
-   (party_set_slot, "p_village_93", slot_center_linen_looms, 0),
-   (party_set_slot, "p_village_94", slot_center_linen_looms, 0),
-   (party_set_slot, "p_village_95", slot_center_linen_looms, 0),
-   (party_set_slot, "p_village_96", slot_center_linen_looms, 0),
-   (party_set_slot, "p_village_97", slot_center_linen_looms, 0),
-   (party_set_slot, "p_village_102", slot_center_linen_looms, 0),
-   (party_set_slot, "p_village_109", slot_center_linen_looms, 0),
+   #this to correct linen production at villages of durquba 
+   (party_set_slot, "p_village_93", slot_center_linen_looms, 0), #mazigh
+   (party_set_slot, "p_village_94", slot_center_linen_looms, 0), #sekhtem
+   (party_set_slot, "p_village_95", slot_center_linen_looms, 0), #qalyut
+   (party_set_slot, "p_village_96", slot_center_linen_looms, 0), #tilimsal
+   (party_set_slot, "p_village_97", slot_center_linen_looms, 0), #shibal zumr
+   (party_set_slot, "p_village_102", slot_center_linen_looms, 0), #tamnuh
+   (party_set_slot, "p_village_109", slot_center_linen_looms, 0), #habba
 
    (party_set_slot, "p_village_67", slot_center_fishing_fleet, 0), #Tebandra
    (party_set_slot, "p_village_5", slot_center_fishing_fleet, 15), #Kulum
