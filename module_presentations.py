@@ -4294,7 +4294,7 @@ presentations = [
      [(set_fixed_point_multiplier, 1000),
       (create_text_overlay, "$g_presentation_obj_target_agent_name", "str_empty_string", tf_right_align|tf_with_outline),
       (position_set_x, pos1, 990),
-      (position_set_y, pos1, 20),
+      (position_set_y, pos1, 700),
       (overlay_set_position, "$g_presentation_obj_target_agent_name", pos1),
       (position_set_x, pos1, 900),
       (position_set_y, pos1, 900),
