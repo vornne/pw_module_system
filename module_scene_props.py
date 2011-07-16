@@ -2185,6 +2185,8 @@ scene_props = [
   ("pw_buy_scale_gauntlets",spr_buy_item_flags(1),"scale_gauntlets_b_L","bo_armor_hand", spr_buy_item_triggers("itm_scale_gauntlets", resources=[], skill_required=1)),
   ("pw_buy_gauntlets",spr_buy_item_flags(1),"gauntlets_L","bo_armor_hand", spr_buy_item_triggers("itm_gauntlets", resources=[], skill_required=1)),
 
+  ("pw_buy_practice_sword",spr_buy_item_flags(3),"pw_practice_sword","bo_weapon", spr_buy_item_triggers("itm_practice_sword", resources=["itm_wood_pole_short"], skill_required=2)),
+  ("pw_buy_heavy_practice_sword",spr_buy_item_flags(5),"pw_heavy_practice_sword","bo_weapon", spr_buy_item_triggers("itm_heavy_practice_sword", resources=["itm_wood_pole_short"], skill_required=2)),
   ("pw_buy_butchering_knife",spr_buy_item_flags(3),"khyber_knife_new","bo_weapon_small", spr_buy_item_triggers("itm_butchering_knife", resources=["itm_iron_bar_short"], skill_required=2)),
   ("pw_buy_winged_mace",spr_buy_item_flags(6),"flanged_mace","bo_weapon_small", spr_buy_item_triggers("itm_winged_mace", resources=["itm_iron_bar"], skill_required=1)),
   ("pw_buy_spiked_mace",spr_buy_item_flags(4),"spiked_mace_new","bo_weapon_small", spr_buy_item_triggers("itm_spiked_mace", resources=["itm_iron_bar"], skill_required=1)),
