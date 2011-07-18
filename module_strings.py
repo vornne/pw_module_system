@@ -512,8 +512,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("lord_of_s1_withdraws_offer_of_peace", "The lord of the {s1} withdraws the offer of peace."),
   ("lord_of_s1_offers_peace", "The lord of the {s1} offers peace."),
 
-  ("not_riding_cart_horse", "You are not riding a cart horse."),
-  ("already_towing_cart", "Already towing another cart."),
+  ("not_riding_necessary_horse", "You are not riding the necessary horse."),
+  ("already_attached_cart", "Already attached to another cart."),
   ("resource_required", "More resources required."),
   ("not_at_mast_or_rudder", "You are not close enough to the mast or rudder."),
   ("craft_not_skilled", "You don't seem to be skilled enough."),

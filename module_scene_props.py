@@ -2414,8 +2414,8 @@ scene_props = [
   ("pw_drawbridge_a",sokf_moveable,"drawbridge","bo_drawbridge", []),
   ("pw_drawbridge_winch_b",sokf_moveable|spr_use_time(2),"winch_b","bo_winch", spr_drawbridge_winch_triggers("pw_drawbridge_b")),
   ("pw_drawbridge_b",sokf_moveable,"castle_drawbridges_open","bo_castle_drawbridges_open", []),
-  ("pw_cart_a",sokf_moveable|spr_use_time(1),"pw_cart_a","bo_pw_cart_a", spr_cart_triggers(horse=1, detach_offset=60, detach_rotation=-20, inventory_count=48, max_item_length=250)),
-  ("pw_cart_b",sokf_moveable|spr_use_time(1),"pw_cart_b","bo_pw_cart_b", spr_cart_triggers(horse=1, detach_offset=110, detach_rotation=-6, inventory_count=42, max_item_length=250)),
+  ("pw_cart_a",sokf_moveable|spr_use_time(1),"pw_cart_a","bo_pw_cart_a", spr_cart_triggers(horse="itm_cart_horse", detach_offset=60, detach_rotation=-20, inventory_count=48, max_item_length=250)),
+  ("pw_cart_b",sokf_moveable|spr_use_time(1),"pw_cart_b","bo_pw_cart_b", spr_cart_triggers(horse="itm_cart_horse", detach_offset=110, detach_rotation=-6, inventory_count=42, max_item_length=250)),
   ("pw_wheelbarrow",sokf_moveable|spr_use_time(1),"pw_hand_cart_a","bo_pw_hand_cart_a", spr_cart_triggers(detach_offset=47, detach_rotation=15, inventory_count=12, max_item_length=120)),
   ("pw_hand_cart",sokf_moveable|spr_use_time(1),"pw_hand_cart_b","bo_pw_hand_cart_b", spr_cart_triggers(detach_offset=90, inventory_count=24, max_item_length=150)),
 
