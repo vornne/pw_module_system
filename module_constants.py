@@ -365,7 +365,7 @@ change_faction_type_outlawed          = 2
 
 inventory_slots_per_row               = 6
 inventory_slot_spacing                = 100
-inventory_mesh_offset                 = 51
+inventory_mesh_offset                 = 50
 inventory_container_x_offset          = 190
 inventory_container_y_offset          = 175
 
