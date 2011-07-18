@@ -457,6 +457,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("stockpile", "Stockpile"),
   ("export", "Export"),
   ("build", "Build"),
+  ("access", "Access"),
+  ("attach", "Attach"),
   ("s0__s1_", "{!}{s0} ({s1})"),
   ("drop_money_bag", "Drop money bag"),
   ("deposit_money_chest", "Deposit in money chest"),

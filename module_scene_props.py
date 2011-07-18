@@ -221,7 +221,7 @@ def spr_portcullis_winch_triggers(target_scene_prop, move_steps=5, step_size=100
     [link_scene_prop, target_scene_prop],
     [init_scene_prop, "script_cf_init_winch", move_steps, step_size, winch_type_portcullis]]
 
-def spr_cart_triggers(horse=0, detach_offset=0, detach_rotation=0, inventory_count=0, max_item_length=100):
+def spr_cart_triggers(horse=0, detach_offset=0, detach_rotation=0, inventory_count=0, max_item_length=100, use_string="str_attach"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_position, detach_offset),
@@ -229,6 +229,7 @@ def spr_cart_triggers(horse=0, detach_offset=0, detach_rotation=0, inventory_cou
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_attached_to_agent, -1),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_inventory_count, spr_check_inventory_count(inventory_count)),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, max_item_length),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
       ]),
     spr_call_script_use_trigger("script_cf_use_cart", horse)]
 
@@ -433,7 +434,7 @@ def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000)
     spr_call_script_cancel_use_trigger("script_cf_pick_chest_lock", 1),
     spr_call_script_use_trigger("script_cf_pick_chest_lock", 0)]
 
-def spr_item_chest_triggers(inventory_count=6, max_item_length=100, use_string=0):
+def spr_item_chest_triggers(inventory_count=6, max_item_length=100, use_string="str_access"):
   return [(ti_on_scene_prop_init,
     [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_inventory_count, spr_check_inventory_count(inventory_count)),
