@@ -595,6 +595,7 @@ pw ships:^value 1 = initial ramp position (0 = center, 1 = left, 2 = right)^Only
 pw_castle_capture_point:^value 1 = faction / castle id^^\
 pw_castle_sign:^value 1 = faction / castle id^value 2 = number of the name, listed at the end of strings.txt (name can't be one used by another castle)^^\
 pw_castle_money_chest:^value 1 = faction / castle id^value 2 = initial gold^^\
+pw_item_chest_*:^value 1 = faction / castle id^^\
 pw_scene_day_time:^value 1 = scene hour of day (0 - 23)^^\
 pw_scene_cloud_haze:^value 1 = global cloud (adjusts skybox)^value 2 = global haze^^\
 pw_scene_ambient_sound:^value 1 = sound id offset from snd_fire_loop^value 2 = probability the sound will be played (0 - 100) or 127 = looping^^\

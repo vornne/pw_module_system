@@ -413,7 +413,7 @@ def spr_capture_castle_triggers():
 def spr_chest_flags(use_time=1):
   return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached|spr_use_time(max(use_time, 1))
 
-def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000):
+def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000, probability=100):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
@@ -431,17 +431,27 @@ def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000)
       (call_script, "script_cf_hit_chest", ":instance_id", ":hit_damage", hit_points),
       ]),
     (ti_on_scene_prop_destroy, []),
-    spr_call_script_cancel_use_trigger("script_cf_pick_chest_lock", 1),
-    spr_call_script_use_trigger("script_cf_pick_chest_lock", 0)]
+    spr_call_script_cancel_use_trigger("script_cf_pick_chest_lock", 0),
+    spr_call_script_use_trigger("script_cf_pick_chest_lock", probability)]
 
-def spr_item_chest_triggers(inventory_count=6, max_item_length=100, use_string="str_access"):
+def spr_item_chest_triggers(inventory_count=6, max_item_length=100, use_string="str_access", hit_points=1000, probability=100):
   return [(ti_on_scene_prop_init,
     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_inventory_count, spr_check_inventory_count(inventory_count)),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, max_item_length),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
       ]),
-    spr_call_script_use_trigger("script_cf_use_inventory")]
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_chest", ":instance_id", ":hit_damage", hit_points),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    spr_call_script_cancel_use_trigger("script_cf_pick_chest_lock", 0),
+    spr_call_script_use_trigger("script_cf_use_inventory", probability)]
 
 def spr_fire_place_triggers():
   return [(ti_on_scene_prop_init,
@@ -2437,9 +2447,9 @@ scene_props = [
 
   ("pw_castle_sign",0,"tree_house_guard_a","bo_tree_house_guard_a", [(ti_on_scene_prop_use, [])]),
   ("pw_castle_capture_point",spr_use_time(60),"pw_castle_flag_post","bo_pw_castle_flag_post", spr_capture_castle_triggers()),
-  ("pw_castle_money_chest",spr_chest_flags(30),"pw_chest_b","bo_pw_chest_b", spr_castle_money_chest_triggers(hit_points=6000)),
-  ("pw_item_chest_a",spr_use_time(1),"pw_chest_c","bo_pw_chest_c", spr_item_chest_triggers(inventory_count=48, max_item_length=180)),
-  ("pw_item_chest_b",spr_use_time(1),"pw_chest_b","bo_pw_chest_b", spr_item_chest_triggers(inventory_count=32, max_item_length=100)),
+  ("pw_castle_money_chest",spr_chest_flags(2),"pw_chest_b","bo_pw_chest_b", spr_castle_money_chest_triggers(hit_points=6000)),
+  ("pw_item_chest_a",spr_chest_flags(1),"pw_chest_c","bo_pw_chest_c", spr_item_chest_triggers(hit_points=7000, inventory_count=48, max_item_length=180)),
+  ("pw_item_chest_b",spr_chest_flags(1),"pw_chest_b","bo_pw_chest_b", spr_item_chest_triggers(hit_points=5000, inventory_count=32, max_item_length=100)),
 
   ("pw_signpost_castle",0,"pw_signpost_castle","bo_pw_signpost", []),
   ("pw_signpost_docks",0,"pw_signpost_docks","bo_pw_signpost", []),
