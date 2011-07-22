@@ -36,7 +36,7 @@ function player_register_name($player_uid, $escaped_name, $warband_server_id)
       $result = mysql_query("UPDATE player_names SET last_used_time = CURRENT_TIMESTAMP() WHERE id = '$row[id]';");
       if (!$result) return pw_database_error();
     }
-    elseif (player_check_clan_tag($row["unique_id"], $escaped_name) == 2)
+    elseif (player_check_clan_tag($row["unique_id"], $escaped_name) == pw_name_server_config::clan_tag_error)
     {
       $result = mysql_query("UPDATE player_names SET unique_id = '$player_uid' WHERE id = '$row[id]';");
       if (!$result) return pw_database_error();
@@ -58,7 +58,6 @@ function player_register_name($player_uid, $escaped_name, $warband_server_id)
   {
     $result = mysql_query("SELECT id FROM player_names WHERE unique_id = '$player_uid' ORDER BY last_used_time;");
     if (!$result) return pw_database_error();
-    global $max_names_per_player;
     if (mysql_num_rows($result) >= pw_name_server_config::max_names_per_player)
     {
       $row =  mysql_fetch_assoc($result);
@@ -136,5 +135,6 @@ $return_code = player_register_name($player_uid, $escaped_name, $warband_server_
 
 $permissions = player_get_admin_permissions($player_uid, $warband_server_id);
 
+if (is_numeric($player_name)) $player_name = "_" . $player_name;
 echo "$return_code|$player_id|$player_uid|$player_name|$permissions";
 ?>

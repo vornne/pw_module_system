@@ -609,7 +609,7 @@ These two separate values are combined: for example, 31 = outlaw faction and 60%
 On scene load, the props are linked by searching for the nearest prop in the scene of the specified type, with the same value 2, and that hasn't already been linked; so for example, with a teleport door pair on opposite sides of the scene, you could set the value 2 of both to 53 and not use that number for any of the other props of the same type, so they are linked correctly even when not close together, or if someone else adds more props of the same type in between."),
 
   ("name_server_error_code_reg0", "Name server: error code {reg0}."),
-  ("name_server_invalid_response", "Name server: invalid response '{reg0}|{reg1}|{reg2}|{s0}'."),
+  ("name_server_invalid_response", "Name server: invalid response '{reg0}|{reg1}|{reg2}|{s0}|{reg3}'."),
   ("name_server_log_s10", "Name server: player {s0} ({reg2}): {s10}"),
   ("kicked_using_other_players_name", "Kicked for using another player's name."),
   ("kicked_using_other_clan_tag", "Kicked for using another clan's tag."),
