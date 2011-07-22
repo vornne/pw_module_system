@@ -4818,7 +4818,7 @@ scripts = [
 
     (agent_get_troop_id, ":troop_id", ":agent_id"),
     (store_skill_level, ":engineer", "skl_engineer", ":troop_id"),
-    (ge, ":engineer", 2),
+    (ge, ":engineer", 1),
     (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
     (ge, ":resource_item_id", all_items_begin),
     (item_slot_eq, ":resource_item_id", slot_item_class, item_class_wood),
@@ -4852,7 +4852,7 @@ scripts = [
 
     (agent_get_troop_id, ":troop_id", ":agent_id"),
     (store_skill_level, ":engineer", "skl_engineer", ":troop_id"),
-    (ge, ":engineer", 3),
+    (ge, ":engineer", 2),
     (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
     (ge, ":resource_item_id", all_items_begin),
     (item_slot_eq, ":resource_item_id", slot_item_class, item_class_iron),
