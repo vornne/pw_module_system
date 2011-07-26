@@ -310,6 +310,7 @@ max_distance_local_chat_shout         = 5000
 ambient_distance_local_chat           = 1000
 ambient_distance_local_chat_shout     = 2000
 z_position_to_hide_object             = -4999
+z_position_water_level                = -50
 max_distance_to_use                   = 300
 max_distance_to_loot                  = 100
 
