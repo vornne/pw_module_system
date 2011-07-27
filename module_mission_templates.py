@@ -474,7 +474,7 @@ mission_templates = [
 
     (0, 0, 0, [(key_clicked, key_f7),(call_script, "script_cf_no_input_presentation_active")],
      [(try_begin),
-        (eq, "$g_display_chat_overlay", 0),
+        (neg|is_presentation_active, "prsnt_chat_overlay"),
         (assign, "$g_display_chat_overlay", 1),
         (start_presentation, "prsnt_chat_overlay"),
       (else_try),

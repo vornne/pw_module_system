@@ -263,7 +263,6 @@ slot_mission_data_faction_to_change_name_of     = 100
 
 slot_last_chat_message_event_type     = 0
 slot_last_chat_message_not_recieved   = 1
-slot_last_chat_message_buffer_color_begin       = 10
 
 chat_event_type_local                 = 0
 chat_event_type_local_shout           = 1
@@ -272,6 +271,8 @@ chat_event_type_faction               = 4
 chat_event_type_faction_lord          = 5
 chat_event_type_admin                 = 6
 chat_event_type_admin_shout           = 7
+
+slot_chat_overlay_color               = 0
 
 slot_ship_array_count                 = 0
 slot_ship_array_begin                 = 1
@@ -347,11 +348,12 @@ escape_menu_item_height               = 35
 admin_panel_item_height               = 40
 action_menu_item_height               = 23
 faction_menu_item_height              = 120
-chat_overlay_item_height              = 20
-chat_overlay_max_lines                = 100
-chat_overlay_ring_buffer_begin        = 60
-chat_overlay_ring_buffer_size         = 10
-chat_overlay_ring_buffer_end          = chat_overlay_ring_buffer_begin + chat_overlay_ring_buffer_size
+chat_overlay_item_height              = 17
+chat_overlay_ring_buffer_begin        = "trp_chat_overlay_ring_buffer_0"
+chat_overlay_ring_buffer_end          = "trp_chat_overlay_ring_buffer_end"
+chat_overlay_ring_buffer_size         = 11
+local_chat_color                      = 0xFFFFDD8A
+local_chat_shout_color                = 0xFFFF8C27
 admin_chat_color                      = 0xFFFF00FF
 invalid_faction_color                 = 0xFF888888
 
