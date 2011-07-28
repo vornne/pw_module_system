@@ -3416,6 +3416,7 @@ scripts = [
       (is_between, ":castle_no", slot_mission_data_castle_owner_faction_begin, slot_mission_data_castle_owner_faction_end),
       (val_add, ":castle_no", slot_mission_data_castle_name_string_begin),
       (troop_get_slot, ":name_string_id", "trp_mission_data", ":castle_no"),
+      (is_between, ":name_string_id", castle_names_begin, castle_names_end),
       (str_store_string, ":output_castle_name", ":name_string_id"),
     (else_try),
       (str_store_string, ":output_castle_name", castle_names_end),
