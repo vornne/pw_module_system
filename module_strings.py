@@ -575,6 +575,8 @@ As admin, holding down right shift while voting overrides the poll. The selected
 * Factions are enabled for the scene if at least one capture point is placed for their starting castle.^\
 * Spawn points are 0 - 4 for commoners, 10 - 14 for outlaws, 20 - 24 for castle 1, and so on, up to 90 - 94 for castle 8.^\
 * For rotating scene props like trees or destroyable doors, place the origin at or slightly above ground level.^\
+* Make sure to adjust ships to the right height for the water level on the hull, as the scripts will use that since each ship mesh has a different height.^\
+* Place at least one castle sign for every castle (or capturable area), so the stats chart and capture messages will use proper names.^\
 ^-- Edit scene mode keys^\
 F1 = this information^\
 F2 = scene prop editor value information^\
