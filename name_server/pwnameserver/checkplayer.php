@@ -133,7 +133,8 @@ if (is_null($player_id) || is_null($player_uid) || is_null($player_name)) die((s
 $escaped_name = mysql_real_escape_string($player_name);
 $return_code = player_register_name($player_uid, $escaped_name, $warband_server_id);
 
-$permissions = player_get_admin_permissions($player_uid, $warband_server_id);
+if (filter_has_var(INPUT_GET, "admin")) $permissions = player_get_admin_permissions($player_uid, $warband_server_id);
+else $permissions = -1;
 
 if (is_numeric($player_name)) $player_name = "_" . $player_name;
 echo "$return_code|$player_id|$player_uid|$player_name|$permissions";
