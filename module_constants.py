@@ -344,6 +344,7 @@ ship_rotation_maximum                 = 5
 ship_forwards_multiplier              = 100
 ship_rotation_multiplier              = 3
 
+player_list_item_height               = 20
 escape_menu_item_height               = 35
 admin_panel_item_height               = 40
 action_menu_item_height               = 23
