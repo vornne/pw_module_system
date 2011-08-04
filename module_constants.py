@@ -33,6 +33,7 @@ slot_player_has_faction_chest_key     = 14
 slot_player_teleport_to_ship_no       = 15
 slot_player_last_faction_kicked_from  = 16
 slot_player_accessing_instance_id     = 17
+slot_player_last_action_time          = 18
 
 slot_player_equip_item_0              = 20
 slot_player_equip_item_1              = 21
@@ -301,6 +302,7 @@ loop_horse_check_interval             = 30
 loop_health_check_interval            = 15
 stack_count_check_interval            = 5
 redraw_castle_banners_interval        = 60
+repeat_action_min_interval            = 5
 poll_time_duration                    = 60
 
 max_distance_to_play_sound            = 10000
