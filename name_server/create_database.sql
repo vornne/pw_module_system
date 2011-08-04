@@ -8,6 +8,7 @@ CREATE TABLE player_names (
   last_used_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   inserted_by_warband_server_id INT(5) UNSIGNED DEFAULT NULL,
   PRIMARY KEY (id),
+  KEY (unique_id),
   UNIQUE KEY (name)
 );
 
@@ -30,7 +31,8 @@ CREATE TABLE clan_players (
   id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   clan_id INT(5) UNSIGNED NOT NULL,
   unique_id INT(7) UNSIGNED NOT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE KEY (clan_id, unique_id)
 );
 
 CREATE TABLE warband_servers (
@@ -62,5 +64,5 @@ CREATE TABLE admin_permissions (
   all_items BOOLEAN DEFAULT FALSE NOT NULL,
   mute BOOLEAN DEFAULT FALSE NOT NULL,
   PRIMARY KEY (id),
-  UNIQUE KEY (unique_id, server_id)
+  UNIQUE KEY (server_id, unique_id)
 );

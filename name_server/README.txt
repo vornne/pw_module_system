@@ -71,3 +71,7 @@ str_name_server_password MyPassword
 
 Make sure you don't add any extra lines or spaces to strings.txt, just replace
 the existing values.
+
+If the database is already set up from a previous version, you can copy the
+relevant lines from update_database.sql to the mysql command line tool, rather
+than regenerating the database from scratch and losing all your data.
