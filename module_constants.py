@@ -66,7 +66,8 @@ slot_player_admin_no_announce         = 52
 slot_player_admin_no_override_poll    = 53
 slot_player_admin_no_all_items        = 54
 slot_player_admin_no_mute             = 55
-slot_player_admin_end                 = 56
+slot_player_admin_no_animals          = 56
+slot_player_admin_end                 = 57
 
 ########################################################
 ##  AGENT SLOTS            #############################
