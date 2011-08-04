@@ -303,7 +303,7 @@ mission_templates = [
         (call_script, "script_check_agent_drowning", ":agent_id"),
         (try_begin),
           (eq, "$g_loop_horse_check", 1),
-          (neg|agent_is_human, ":loop_agent_id"),
+          (neg|agent_is_human, ":agent_id"),
           (call_script, "script_check_remove_lost_horse", ":agent_id"),
         (try_end),
         (try_begin),
