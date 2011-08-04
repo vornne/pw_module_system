@@ -5591,6 +5591,7 @@ scripts = [
       (val_mul, ":direction", 2),
       (eq, ":winch_type", winch_type_portcullis),
       (assign, ":new_target", 0),
+      (neq, ":new_target", ":current_target"),
       (assign, ":animation_time", 20),
       (call_script, "script_scene_prop_play_sound", ":moveable_instance_id", "snd_body_fall_big"),
     (else_try),
