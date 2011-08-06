@@ -526,6 +526,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("item_too_long_for_container", "That item is too long to fit inside the container."),
   ("no_bodies_in_range_loot", "No bodies in range to loot."),
   ("too_far_away_loot", "Too far away to loot."),
+  ("cant_loot_own_corpse", "You can't loot your own corpse."),
 
   ("chat_format", "[{s1}] {s0}"),
   ("send_message_to_players_nearby", "Send message to players nearby:"),
