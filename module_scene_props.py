@@ -468,6 +468,16 @@ def spr_fire_place_triggers():
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_use, [])]
 
+def spr_well_triggers():
+  return [(ti_on_scene_prop_use,
+     [(store_trigger_param_1, ":agent_id"),
+      (agent_get_wielded_item, ":wielded_item_id", ":agent_id", 0),
+      (eq, ":wielded_item_id", "itm_bucket"),
+      (call_script, "script_cf_agent_consume_item", ":agent_id", "itm_bucket", 1),
+      (agent_equip_item, ":agent_id", "itm_water_bucket"),
+      (agent_set_wielded_item, ":agent_id", "itm_water_bucket"),
+      ])]
+
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
   ("inventory",sokf_type_container|sokf_place_at_origin,"package","bobaggage", []),
@@ -1056,7 +1066,7 @@ scene_props = [
   ("wood_b",0,"wood_b","bo_wood_b", []),
   ("wood_heap",0,"wood_heap_a","bo_wood_heap_a", []),
   ("wood_heap_b",0,"wood_heap_b","bo_wood_heap_b", []),
-  ("water_well_a",0,"water_well_a","bo_water_well_a", []),
+  ("water_well_a",spr_use_time(5),"water_well_a","bo_water_well_a", spr_well_triggers()),
   ("net_a",0,"net_a","bo_net_a", []),
   ("net_b",0,"net_b","0", []),
 
@@ -1611,7 +1621,7 @@ scene_props = [
   ("arabian_wall_b",0,"arabian_wall_b","bo_arabian_wall_b", []),
   ("arabian_ground_a",0,"arabian_ground_a","bo_arabian_ground_a_fixed", []),
   ("arabian_parterre_a",0,"arabian_parterre_a","bo_arabian_parterre_a", []),
-  ("well_shaft",0,"well_shaft","bo_well_shaft", []),
+  ("well_shaft",spr_use_time(5),"well_shaft","bo_well_shaft", spr_well_triggers()),
   ("horse_mill",0,"horse_mill","bo_horse_mill", []),
   ("horse_mill_collar",0,"horse_mill_collar","bo_horse_mill_collar", []),
   ("arabian_stable",0,"arabian_stable","bo_arabian_stable", []),
