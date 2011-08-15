@@ -4876,7 +4876,7 @@ scripts = [
     (position_get_y, ":relative_y_position", pos3),
     (try_begin),
       (eq, ":resource_item_id", "itm_iron_ore"),
-      (assign, ":processed_item_count", 4),
+      (assign, ":processed_item_count", 2),
       (assign, ":processed_item_id", "itm_iron_bar"),
     (else_try),
       (ge, ":relative_y_position", 0),
