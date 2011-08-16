@@ -334,8 +334,7 @@ repairable_repairing                  = 3
 repairable_resource_required          = 4
 repairable_repaired                   = 5
 
-destroy_scene_prop_hit_points         = 200
-sink_ship_hit_points                  = 500
+min_scene_prop_hit_points             = 1
 
 ship_station_not_on_ship              = 0
 ship_station_none                     = 1

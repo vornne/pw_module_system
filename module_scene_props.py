@@ -32,7 +32,7 @@ def spr_check_value(value, low, high, name):
     raise Exception(`name` + " value must be between " + `low` + " and " + `high`)
   return value
 
-def spr_check_hit_points(hp, low_hp=destroy_scene_prop_hit_points):
+def spr_check_hit_points(hp, low_hp=min_scene_prop_hit_points):
   return spr_check_value(hp, low_hp + 1, max_correctly_displayed_hp, "Hit points")
 
 def spr_check_inventory_count(count):
@@ -319,7 +319,7 @@ def spr_ship_triggers(hit_points=1000, length=1000, width=200, speed=5, sail=-1,
     raise Exception("Ship speed must be between 1 and " + `ship_forwards_maximum`)
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
-      (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points, sink_ship_hit_points)),
+      (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, length),
@@ -364,7 +364,7 @@ def spr_build_flags():
 def spr_bridge_footing_triggers():
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
-      (scene_prop_set_hit_points, ":instance_id", destroy_scene_prop_hit_points),
+      (scene_prop_set_hit_points, ":instance_id", 1000),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_build"),
       ]),
     (ti_on_scene_prop_hit,
@@ -397,7 +397,7 @@ def spr_wall_triggers(build_spr, hit_points=1000, height=1000):
 def spr_build_wall_triggers():
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
-      (scene_prop_set_hit_points, ":instance_id", destroy_scene_prop_hit_points),
+      (scene_prop_set_hit_points, ":instance_id", 1000),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_build"),
       ]),
     (ti_on_scene_prop_hit,
