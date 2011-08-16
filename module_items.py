@@ -734,6 +734,8 @@ items = [
  142, weight(30)|spd_rtng(50)|weapon_length(32)|swing_damage(5,blunt)|thrust_damage(5,blunt), imodbits_none, [(item_class, item_class_wood, 800)]],
 ["board", "Board", [("pw_board",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_axe_back,
  210, weight(10)|spd_rtng(60)|weapon_length(50)|swing_damage(10,blunt)|thrust_damage(10,blunt), imodbits_none, [(item_class, item_class_wood, 200)]],
+["iron_ore_small", "Small Iron Ore", [("pw_iron_ore_small",0)], itp_type_polearm|itp_two_handed|itp_primary, itcf_carry_bow_back,
+ 400, weight(30)|spd_rtng(60)|swing_damage(7,blunt)|thrust_damage(7,blunt)|weapon_length(50), imodbits_none, [(item_class, item_class_iron, 0)]],
 ["iron_ore", "Iron Ore", [("pw_iron_ore",0)], itp_type_polearm|itp_two_handed|itp_primary, itcf_carry_bow_back,
  850, weight(60)|spd_rtng(50)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(50), imodbits_none, [(item_class, item_class_iron, 0)]],
 ["iron_piece", "Iron Piece", [("pw_iron_piece",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_bow_back,

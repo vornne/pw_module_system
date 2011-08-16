@@ -2010,6 +2010,7 @@ scene_props = [
   ("pw_iron_mine",spr_resource_flags(),"pw_iron_mine","bo_pw_iron_mine", spr_hit_mine_triggers("itm_iron_ore", resource_hp=60, hardness=4)),
   ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_iron_ore", resource_hp=70, hardness=4)),
   ("pw_iron_mine_b",spr_resource_flags(),"pw_iron_mine_b","bo_pw_iron_mine_b", spr_hit_mine_triggers("itm_iron_ore", resource_hp=50, hardness=5)),
+  ("pw_iron_mine_small",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_iron_ore_small", resource_hp=40, hardness=4)),
 
   ("pw_stockpile_wood_block",spr_use_time(1),"wood_heap_a","bo_wood_heap_a", spr_stockpile_resource_triggers("itm_wood_block")),
   ("pw_stockpile_wood_branch",spr_use_time(1),"wood_heap_b","bo_wood_heap_b", spr_stockpile_resource_triggers("itm_branch")),
@@ -2020,6 +2021,7 @@ scene_props = [
   ("pw_export_wood_pole",spr_use_time(6),"pw_wood_pole","bo_weapon_big", spr_export_item_triggers("itm_wood_pole")),
   ("pw_export_wood_block",spr_use_time(5),"wood_heap_a","bo_wood_heap_a", spr_export_item_triggers("itm_wood_block")),
   ("pw_export_board",spr_use_time(6),"pw_board","bo_weapon_small", spr_export_item_triggers("itm_board")),
+  ("pw_export_iron_ore_small",spr_use_time(10),"pw_iron_ore_small","bo_weapon_small", spr_export_item_triggers("itm_iron_ore_small")),
   ("pw_export_iron_ore",spr_use_time(10),"pw_iron_ore","bo_weapon_small", spr_export_item_triggers("itm_iron_ore")),
   ("pw_export_iron_bar_short",spr_use_time(10),"pw_iron_bar_short","bo_weapon_small", spr_export_item_triggers("itm_iron_bar_short")),
   ("pw_export_iron_bar",spr_use_time(10),"pw_iron_bar","bo_weapon_small", spr_export_item_triggers("itm_iron_bar")),
