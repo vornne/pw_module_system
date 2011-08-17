@@ -451,11 +451,16 @@ def save_statement_block(ofile,statement_name,can_fail_statement,statement_block
     print "WARNING: store_script_param_1 is used more than once:" + statement_name
   if (store_script_param_2_uses > 1):
     print "WARNING: store_script_param_2 is used more than once:" + statement_name
-  i = 0
-  while (i < len(local_vars)):
+  for i in xrange(0, len(local_vars)):
     if (local_var_uses[i] == 0 and not(local_vars[i].startswith("unused"))):
       print "WARNING: Local variable never used: " + local_vars[i] + ", at: " + str(statement_name)
-    i = i + 1
+  if current_depth != 0:
+    if current_depth > 0:
+      missing = " missing"
+    else:
+      missing = " extra"
+      current_depth *= -1
+    print "WARNING: " + `current_depth` + missing + " try_end: " + str(statement_name)
 
 def compile_global_vars(statement_block,variable_list, variable_uses):
   for statement in statement_block:
