@@ -5,6 +5,7 @@ from header_operations import *
 from header_triggers import *
 from header_sounds import *
 from module_constants import *
+import header_debug as dbg
 import string
 
 ####################################################################################################################

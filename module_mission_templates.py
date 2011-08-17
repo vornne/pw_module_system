@@ -6,6 +6,7 @@ from header_sounds import *
 from header_music import *
 from header_items import *
 from module_constants import *
+import header_debug as dbg
 
 ####################################################################################################################
 #   Each mission-template is a tuple that contains the following fields:

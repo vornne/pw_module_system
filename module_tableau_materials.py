@@ -3,6 +3,7 @@ from header_mission_templates import *
 from header_tableau_materials import *
 from header_items import *
 from module_constants import *
+import header_debug as dbg
 
 ####################################################################################################################
 #  Each tableau material contains the following fields:
