@@ -380,6 +380,8 @@ select_agent_max_y                    = 200
 presentation_max_x                    = 1000
 presentation_max_y                    = 750
 
+max_scene_prop_instance_id            = 10000
+
 all_items_begin = "itm_straw_hat"
 all_items_end = "itm_all_items_end"
 

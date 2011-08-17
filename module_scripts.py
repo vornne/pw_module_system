@@ -6989,10 +6989,9 @@ scripts = [
 
   ("setup_ship_collision_props",
    [
-    (assign, ":end_loop", 10000),
     (assign, ":current_index", slot_ship_array_collision_props_begin),
     (assign, ":count", 0),
-    (try_for_range, ":instance_id", 0, ":end_loop"),
+    (try_for_range, ":instance_id", 0, max_scene_prop_instance_id),
       (prop_instance_is_valid, ":instance_id"),
       (prop_instance_get_position, pos1, ":instance_id"),
       (position_get_z, ":prop_height", pos1),

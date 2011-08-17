@@ -232,6 +232,7 @@ def spr_cart_triggers(horse=0, detach_offset=0, detach_rotation=0, inventory_cou
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, max_item_length),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_width, access_distance),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_collision_kind, -1),
       ]),
     spr_call_script_use_trigger("script_cf_use_cart", horse)]
 
