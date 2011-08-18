@@ -162,7 +162,7 @@ commands_hard_coded_begin                       = command_get_max_players
 commands_hard_coded_end                         = command_set_anti_cheat + 1
 
 min_num_players                                 = 2
-max_num_players                                 = 240
+max_num_players                                 = 250
 min_respawn_period                              = 3
 max_respawn_period                              = 31
 
