@@ -453,24 +453,25 @@ def save_statement_block(ofile,statement_name,can_fail_statement,statement_block
     print "WARNING: store_script_param_2 is used more than once:" + statement_name
   for i in xrange(0, len(local_vars)):
     if (local_var_uses[i] == 0 and not(local_vars[i].startswith("unused"))):
-      print "WARNING: Local variable never used: " + local_vars[i] + ", at: " + str(statement_name)
+      print "WARNING: Local variable never used: " + local_vars[i] + ", at: " + statement_name
   if current_depth != 0:
     if current_depth > 0:
       missing = " missing"
     else:
       missing = " extra"
       current_depth *= -1
-    print "WARNING: " + `current_depth` + missing + " try_end: " + str(statement_name)
+    print "WARNING: " + `current_depth` + missing + " try_end, at: " + statement_name
 
 def compile_global_vars(statement_block,variable_list, variable_uses):
   for statement in statement_block:
     compile_global_vars_in_statement(statement, variable_list, variable_uses)
 
 
-def save_simple_triggers(ofile,triggers,variable_list, variable_uses,tag_uses,quick_strings):
+def save_simple_triggers(ofile, triggers, variable_list, variable_uses, tag_uses, quick_strings, debug_name="unknown"):
   ofile.write("%d\n"%len(triggers))
   for trigger in triggers:
     ofile.write("%f "%(trigger[0]))
-    save_statement_block(ofile,0,1,trigger[1]  , variable_list, variable_uses,tag_uses,quick_strings)
+    debug_name += ", trigger id " + `trigger[0]`
+    save_statement_block(ofile, debug_name, 1, trigger[1], variable_list, variable_uses, tag_uses, quick_strings)
     ofile.write("\n")
   ofile.write("\n")

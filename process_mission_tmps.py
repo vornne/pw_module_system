@@ -21,8 +21,12 @@ def save_triggers(file,template_name,triggers,variable_list,variable_uses,tag_us
   for i in xrange(len(triggers)):
     trigger = triggers[i]
     file.write("%f %f %f "%(trigger[trigger_check_pos],trigger[trigger_delay_pos],trigger[trigger_rearm_pos]))
-    save_statement_block(file, 0, 1, trigger[trigger_conditions_pos]  , variable_list,variable_uses,tag_uses,quick_strings)
-    save_statement_block(file, 0, 1, trigger[trigger_consequences_pos], variable_list,variable_uses,tag_uses,quick_strings)
+    if trigger[0] < 0.0:
+      debug_name = template_name + ", trigger id " + `trigger[0]`
+    else:
+      debug_name = template_name + ", trigger #" + `i`
+    save_statement_block(file, debug_name + " conditions", 1, trigger[trigger_conditions_pos]  , variable_list,variable_uses,tag_uses,quick_strings)
+    save_statement_block(file, debug_name + " consequences", 1, trigger[trigger_consequences_pos], variable_list,variable_uses,tag_uses,quick_strings)
     file.write("\n")
   file.write("\n")
 

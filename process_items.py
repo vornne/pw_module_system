@@ -54,7 +54,7 @@ def write_items(variable_list,variable_uses,tag_uses,quick_strings):
     trigger_list = []
     if (len(item) > 8):
       trigger_list = item[8]
-    save_simple_triggers(ofile,trigger_list, variable_list,variable_uses,tag_uses,quick_strings)
+    save_simple_triggers(ofile, trigger_list, variable_list, variable_uses, tag_uses, quick_strings, debug_name=item[0])
 
 
   ofile.close()
