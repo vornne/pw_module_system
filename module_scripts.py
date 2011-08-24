@@ -1680,7 +1680,6 @@ scripts = [
     (troop_set_slot, "trp_ship_array", slot_ship_array_collision_props_count, 0),
     (assign, "$g_loop_ship_to_check", 0),
     (assign, "$g_loop_ship_check_time", 0),
-    (assign, "$g_loop_resource_to_check", 0),
     (assign, "$g_ambient_sound_instance_no", 0),
     (assign, "$g_show_inventory_instance_id", 0),
     (faction_set_slot, "fac_1", slot_faction_banner_mesh, "mesh_banner_kingdom_f"),
