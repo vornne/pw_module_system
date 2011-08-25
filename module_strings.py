@@ -497,6 +497,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("s1_captured_s2", "The {s1} have captured {s2}!"),
   ("door_locked_by_s1", "The door is locked by the {s1}."),
   ("door_bolted", "The door is bolted on the other side."),
+  ("chest_locked_by_s1", "This chest is locked by the {s1}."),
   ("s0_killed_faction_member", "{s0} killed a member of the same faction!"),
   ("s0_killed_friendly_faction_member", "{s0} killed a member of a friendly faction!"),
   ("s0_has_been_outlawed", "{s0} has been outlawed!"),
