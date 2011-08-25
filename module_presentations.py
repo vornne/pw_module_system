@@ -2240,6 +2240,13 @@ presentations = [
       (overlay_set_position, "$g_presentation_obj_faction_admin_change_banner", pos1),
       (val_add, ":cur_y", escape_menu_item_height),
 
+      (create_text_overlay, reg0, "str_choose_an_option", 0),
+      (overlay_set_color, reg0, 0xFFFFFF),
+      (position_set_x, pos1, 0),
+      (position_set_y, pos1, ":cur_y"),
+      (overlay_set_position, reg0, pos1),
+      (overlay_set_size, reg0, pos2),
+
       (presentation_set_duration, 999999),
       ]),
     (ti_on_presentation_event_state_change,
