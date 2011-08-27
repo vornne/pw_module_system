@@ -4632,6 +4632,7 @@ scripts = [
       (player_slot_eq, ":player_id", slot_player_has_faction_door_key, 1),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_unlocked, 0),
       (scene_prop_set_slot, ":linked_door_instance_id", slot_scene_prop_unlocked, 0),
+      (agent_play_sound, ":agent_id", "snd_lock"),
     (else_try),
       (scene_prop_slot_eq, ":instance_id", slot_scene_prop_unlocked, 1),
     (else_try),
