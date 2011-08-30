@@ -184,7 +184,7 @@ mission_templates = [
 
     (ti_on_player_exit, 0, 0, [],
      [(store_trigger_param_1, ":player_id"),
-      (call_script, "script_save_player_exit", ":player_id"),
+      (call_script, "script_cf_save_player_exit", ":player_id"),
       ]),
 
     (ti_on_agent_spawn, 0, 0, [],
@@ -247,7 +247,8 @@ mission_templates = [
       (try_for_range, ":player_id", "$g_loop_player_id", ":loop_end"),
         (player_is_active, ":player_id"),
         (try_begin),
-          (neg|player_slot_eq, ":player_id", slot_player_spawn_state, player_spawn_state_alive),
+          (this_or_next|player_slot_eq, ":player_id", slot_player_spawn_state, player_spawn_state_dead),
+          (player_slot_eq, ":player_id", slot_player_spawn_state, player_spawn_state_invulnerable),
           (call_script, "script_cf_player_check_spawn_agent", ":player_id"),
           (assign, ":loop_end", -1),
           (store_add, "$g_loop_player_id", ":player_id", 1),
