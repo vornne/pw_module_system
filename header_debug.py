@@ -1,5 +1,5 @@
 from header_common import reg
-from header_operations import assign, display_message
+from header_operations import assign, display_message, server_add_message_to_log
 
 register_begin = 80
 register_end = 100
@@ -29,7 +29,7 @@ def op(name, operation, *args):
   increment()
   return tuple(op)
 
-def display(message=None, reset=True):
+def generate_string(message, reset):
   global current_register
   global register_names
   string_list = ["@"]
@@ -43,4 +43,10 @@ def display(message=None, reset=True):
   debug_string = ''.join(string_list)
   if reset is True:
     current_register = register_begin
-  return (display_message, debug_string)
+  return debug_string
+
+def display(message=None, reset=True):
+  return (display_message, generate_string(message, reset))
+
+def log(message=None, reset=True):
+  return (server_add_message_to_log, generate_string(message, reset))
