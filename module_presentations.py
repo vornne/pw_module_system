@@ -633,7 +633,7 @@ presentations = [
       (position_set_y, pos1, ":cur_y"),
       (overlay_set_position, reg0, pos1),
 
-      (create_number_box_overlay, "$g_presentation_obj_admin_panel_time_limit", 5, 10081),
+      (create_number_box_overlay, "$g_presentation_obj_admin_panel_time_limit", 5, 40321),
       (position_set_x, pos1, 390),
       (position_set_y, pos1, ":cur_y"),
       (overlay_set_position, "$g_presentation_obj_admin_panel_time_limit", pos1),

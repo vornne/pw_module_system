@@ -1458,7 +1458,7 @@ scripts = [
       (assign, ":value", "$g_map_time_limit"),
     (else_try),
       (eq, ":command", command_set_map_time_limit),
-      (val_clamp, ":value", 5, 10081),
+      (val_clamp, ":value", 5, 40321),
       (assign, "$g_map_time_limit", ":value"),
     (else_try),
       (eq, ":command", command_get_team_point_limit),
