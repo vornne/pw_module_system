@@ -457,6 +457,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("mine", "Mine"),
   ("harvest", "Harvest"),
   ("burn", "Burn"),
+  ("destroy_s1", "Destroy {s1}"),
+  ("destroy_all_items_cart", "Destroy all items in cart"),
   ("process_wood", "Process wood"),
   ("process_iron", "Process iron"),
   ("stockpile", "Stockpile"),

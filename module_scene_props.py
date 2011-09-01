@@ -480,6 +480,13 @@ def spr_well_triggers():
       (agent_set_wielded_item, ":agent_id", "itm_water_bucket"),
       ])]
 
+def spr_destroy_heap_triggers():
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_destroy_s1"),
+      ]),
+    spr_call_script_use_trigger("script_cf_use_destroy_heap")]
+
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
   ("inventory",sokf_type_container|sokf_place_at_origin,"package","bobaggage", []),
@@ -2351,6 +2358,8 @@ scene_props = [
   ("pw_buy_torch",spr_use_time(1),"pw_torch","bo_weapon_small", spr_buy_item_triggers("itm_torch", resources=["itm_stick"], skill_required=1)),
   ("pw_buy_banner",spr_use_time(10),"pw_banner_pole_only","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01")),
   ("pw_buy_banner_mercenary",spr_use_time(15),"pw_banner_pole_only","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01", mercenary=True)),
+
+  ("pw_destroy_heap",spr_use_time(2),"destroy_heap","bo_destroy_heap", spr_destroy_heap_triggers()),
 
   ("pw_test_gold",spr_use_time(1),"tree_house_guard_a","bo_tree_house_guard_a", spr_gain_gold_triggers(10000)),
   ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a_fixed", spr_rest_triggers(30)),
