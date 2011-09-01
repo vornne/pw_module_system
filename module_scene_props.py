@@ -2016,6 +2016,7 @@ scene_props = [
 
   ("pw_stockpile_wood_block",spr_use_time(1),"pw_wood_heap_a","bo_wood_heap_a", spr_stockpile_resource_triggers("itm_wood_block")),
   ("pw_stockpile_wood_branch",spr_use_time(1),"wood_heap_b","bo_wood_heap_b", spr_stockpile_resource_triggers("itm_branch")),
+  ("pw_stockpile_iron_ore_small",spr_use_time(1),"pw_iron_ore_small","bo_weapon_small", spr_stockpile_resource_triggers("itm_iron_ore_small")),
   ("pw_stockpile_iron_ore",spr_use_time(1),"pw_iron_ore","bo_weapon_small", spr_stockpile_resource_triggers("itm_iron_ore")),
   ("pw_stockpile_iron_bar",spr_use_time(1),"pw_chest_c","bo_pw_chest_c", spr_stockpile_resource_triggers("itm_iron_bar")),
   ("pw_export_wood_stick",spr_use_time(2),"pw_wood_box","bo_pw_wood_box", spr_export_item_triggers("itm_stick")),
