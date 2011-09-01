@@ -29,11 +29,12 @@ slot_player_non_lord_troop_id         = 10
 slot_player_poll_faction_id           = 11
 slot_player_requested_spawn_point     = 12
 slot_player_has_faction_door_key      = 13
-slot_player_has_faction_chest_key     = 14
-slot_player_teleport_to_ship_no       = 15
-slot_player_last_faction_kicked_from  = 16
-slot_player_accessing_instance_id     = 17
-slot_player_last_action_time          = 18
+slot_player_has_faction_money_key     = 14
+slot_player_has_faction_item_key      = 15
+slot_player_teleport_to_ship_no       = 16
+slot_player_last_faction_kicked_from  = 17
+slot_player_accessing_instance_id     = 18
+slot_player_last_action_time          = 19
 
 slot_player_equip_item_0              = 20
 slot_player_equip_item_1              = 21
