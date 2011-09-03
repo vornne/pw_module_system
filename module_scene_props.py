@@ -1563,7 +1563,7 @@ scene_props = [
   ("city_fly_day",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_bug_fly_1")])]),
   ("flue_smoke_tall",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_flue_smoke_tall")])]),
   ("flue_smoke_short",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_flue_smoke_short")])]),
-  ("moon_beam",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_moon_beam_1"), (particle_system_add_new, "psys_moon_beam_paricle_1")])]),
+  ("moon_beam",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_moon_beam_1"), (particle_system_add_new, "psys_moon_beam_particle_1")])]),
   ("fire_small",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_fireplace_fire_small")])]),
   ("fire_big",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_fireplace_fire_big")])]),
   ("battle_field_smoke",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_war_smoke_tall")])]),
