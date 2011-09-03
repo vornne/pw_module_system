@@ -42,7 +42,6 @@ imod_smelling = 40
 imod_rotten = 41
 imod_large_bag = 42
 
-
 imodbit_plain = 1
 imodbit_cracked = 2
 imodbit_rusty = 4

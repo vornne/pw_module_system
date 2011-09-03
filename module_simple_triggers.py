@@ -14,10 +14,8 @@ from module_constants import *
 #
 #  Each simple trigger contains the following fields:
 # 1) Check interval: How frequently this trigger will be checked
-# 2) Operation block: This must be a valid operation block. See header_operations.py for reference. 
+# 2) Operation block: This must be a valid operation block. See header_operations.py for reference.
 ####################################################################################################################
-
-
 
 simple_triggers = [
 ]

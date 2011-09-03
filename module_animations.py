@@ -12,7 +12,6 @@ from header_animations import *
 #  4.3) Beginning frame of the sequence within the animation resource.
 #  4.4) Ending frame of the sequence within the animation resource.
 #  4.5) Sequence flags: could be anything beginning with arf_ defined in header_animations.py
-#
 ####################################################################################################################
 
 #plan :

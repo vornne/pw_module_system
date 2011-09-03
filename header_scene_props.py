@@ -14,7 +14,7 @@ sokf_type_mask             = 0x00000000000000FF
 sokf_add_fire              = 0x0000000000000100
 sokf_add_smoke             = 0x0000000000000200
 sokf_add_light             = 0x0000000000000400
-sokf_show_hit_point_bar    = 0x0000000000000800    
+sokf_show_hit_point_bar    = 0x0000000000000800
 sokf_place_at_origin       = 0x0000000000001000
 sokf_dynamic               = 0x0000000000002000
 sokf_invisible             = 0x0000000000004000
@@ -22,8 +22,7 @@ sokf_destructible          = 0x0000000000008000
 sokf_moveable              = 0x0000000000010000
 sokf_face_player           = 0x0000000000020000
 sokf_dynamic_physics       = 0x0000000000040000
-sokf_missiles_not_attached = 0x0000000000080000 #works only for dynamic mission objects
-
+sokf_missiles_not_attached = 0x0000000000080000 # works only for dynamic mission objects
 
 spbf_hit_points_mask       = 0x00000000000000FF
 spbf_hit_points_bits       = 20
@@ -42,7 +41,6 @@ def spr_use_time(x):
 def get_spr_use_time(y):
   return (y >> spbf_use_time_bits) & spbf_init_use_time_mask
 
-#Animation Mode
-
+# animation mode
 spanim_linear              = 0
 spanim_loop_linear         = 4

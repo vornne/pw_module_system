@@ -15,8 +15,8 @@ from header_parties import *
 #  9) Ai-target party
 # 10) Initial coordinates.
 # 11) List of stacks. Each stack record is a triple that contains the following fields:
-#   11.1) Troop-id. 
-#   11.2) Number of troops in this stack. 
+#   11.1) Troop-id.
+#   11.2) Number of troops in this stack.
 #   11.3) Member flags. Use pmf_is_prisoner to note that this member is a prisoner.
 # 12) Party direction in degrees [optional]
 ####################################################################################################################

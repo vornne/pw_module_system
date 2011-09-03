@@ -11,7 +11,6 @@ text_pos = 3
 opt_token_pos = 4
 sentence_consequences_pos = 5
 
-
 anyone      = 0x00000fff
 repeat_for_factions = 0x00001000
 repeat_for_parties  = 0x00002000

@@ -6,4 +6,3 @@
 
 from header_common import *
 from header_operations import *
-

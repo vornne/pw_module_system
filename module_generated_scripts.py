@@ -1,3 +1,9 @@
+####################################################################################################################
+# This file is for scripts that are generated automatically from lists generated in other module files,
+# which needs to be executed once just before writing scripts.txt, rather than every time module_scripts is loaded,
+# to avoid extra or cyclic dependencies.
+####################################################################################################################
+
 from module_scripts import *
 from module_items import *
 from module_scene_props import *

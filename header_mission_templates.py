@@ -21,28 +21,28 @@ grc_cavalry  = 2
 grc_heroes   = 3
 grc_everyone = 9
 
-mordr_hold				= 0
-mordr_follow			= 1
-mordr_charge			= 2
-mordr_mount				= 3
-mordr_dismount			= 4
-mordr_advance			= 5
-mordr_fall_back			= 6
-mordr_stand_closer		= 7
-mordr_spread_out		= 8
+mordr_hold              = 0
+mordr_follow            = 1
+mordr_charge            = 2
+mordr_mount             = 3
+mordr_dismount          = 4
+mordr_advance           = 5
+mordr_fall_back         = 6
+mordr_stand_closer      = 7
+mordr_spread_out        = 8
 mordr_use_blunt_weapons = 9
-mordr_use_any_weapon	= 10
-mordr_stand_ground		= 11
-mordr_hold_fire			= 12
-mordr_fire_at_will		= 13
+mordr_use_any_weapon    = 10
+mordr_stand_ground      = 11
+mordr_hold_fire         = 12
+mordr_fire_at_will      = 13
 mordr_retreat           = 14
 
-rordr_free				= 0
-rordr_mount				= 1
-rordr_dismount			= 2
+rordr_free              = 0
+rordr_mount             = 1
+rordr_dismount          = 2
 
-wordr_use_any_weapon	= 0
-wordr_use_blunt_weapons	= 1
+wordr_use_any_weapon    = 0
+wordr_use_blunt_weapons = 1
 
 aordr_fire_at_will      = 0
 aordr_hold_your_fire    = 1
@@ -75,7 +75,6 @@ mtef_attackers           = 0x00000080
 mtef_no_leader           = 0x00000100
 mtef_no_companions       = 0x00000200
 mtef_no_regulars         = 0x00000400
-#mtef_team_0              = 0x00001000
 mtef_team_0              = 0x00001000
 mtef_team_1              = 0x00002000
 mtef_team_2              = 0x00003000
@@ -93,8 +92,7 @@ mtef_use_exact_number    = 0x02000000
 mtef_leader_only         = mtef_no_companions | mtef_no_regulars
 mtef_regulars_only       = mtef_no_companions | mtef_no_leader
 
-
-#alter flags
+# alter flags
 af_override_weapons         = 0x0000000f
 af_override_weapon_0        = 0x00000001
 af_override_weapon_1        = 0x00000002
@@ -102,33 +100,25 @@ af_override_weapon_2        = 0x00000004
 af_override_weapon_3        = 0x00000008
 af_override_head            = 0x00000010
 af_override_body            = 0x00000020
-#af_override_leg             = 0x00000040
 af_override_foot            = 0x00000040
 af_override_gloves          = 0x00000080
 af_override_horse           = 0x00000100
 af_override_fullhelm        = 0x00000200
-
-#af_override_hands           = 0x00000100
 af_require_civilian         = 0x10000000
-
-#af_override_all_but_horse   = 0x000000ff
 af_override_all_but_horse   = af_override_weapons | af_override_head | af_override_body |af_override_gloves
 af_override_all             = af_override_horse | af_override_all_but_horse
 af_override_everything      = af_override_all | af_override_foot
 
-
 requires_third_party = 0x00000001
 
-#mission template flags. also in mission_template.h
-#use only the lower 12 bits. Upper 20 is taken up by xsize and ysize.
+# mission template flags. also in mission_template.h
+# use only the lower 12 bits. Upper 20 is taken up by xsize and ysize.
 mtf_arena_fight         = 0x00000001 #identify enemies through team_no
 mtf_team_fight          = 0x00000001 #identify enemies through team_no
 mtf_battle_mode         = 0x00000002 #No inventory access
 mtf_commit_casualties   = 0x00000010
 mtf_no_blood            = 0x00000100
 mtf_synch_inventory     = 0x00010000 #Make a backup of player inventory and restore it at mission end.
-
-
 
 max_size = 1023
 xsize_bits = 12
@@ -139,8 +129,6 @@ def xsize(n):
 def ysize(n):
   return (n & max_size) << ysize_bits
 
-#Mission result flags. also in mission.h
+# Mission result flags. also in mission.h
 mc_loot                 = 0x0001
 mc_imprison_unconscious = 0x0002
-
-

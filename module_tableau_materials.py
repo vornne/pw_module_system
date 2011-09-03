@@ -17,11 +17,10 @@ import header_debug as dbg
 #  8) Tableau mesh max x (int): divided by 1000 and used when a mesh is auto-generated using the tableau material
 #  9) Tableau mesh max y (int): divided by 1000 and used when a mesh is auto-generated using the tableau material
 #  10) Operations block (list): A list of operations. See header_operations.py for reference.
-#     The operations block is executed when the tableau is activated.
-# 
+#      The operations block is executed when the tableau is activated.
 ####################################################################################################################
 
-#banner height = 200, width = 85 with wood, 75 without wood
+# banner height = 200, width = 85 with wood, 75 without wood
 
 def tableau_armor_banner(mesh_tableau, banner_xyz=(0,0,0), banner_scale=100, mesh_xyz=(0,0,100)):
   script = [(store_script_param, ":banner_mesh", 1),

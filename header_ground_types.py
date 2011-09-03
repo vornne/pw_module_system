@@ -9,5 +9,3 @@ ground_forest = 7
 ground_pebbles = 8
 ground_village = 9
 ground_path = 10
-
-

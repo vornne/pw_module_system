@@ -9,7 +9,7 @@ from header_triggers import *
 #     The prefix icon_ is automatically added before each map icon id.
 #  2) Map icon flags. See header_map icons.py for a list of available flags
 #  3) Mesh name.
-#  4) Scale. 
+#  4) Scale.
 #  5) Sound.
 #  6) Offset x position for the flag icon.
 #  7) Offset y position for the flag icon.

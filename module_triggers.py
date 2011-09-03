@@ -19,7 +19,7 @@ from module_constants import *
 #    Every time the trigger is checked, the conditions block will be executed.
 #    If the conditions block returns true, the consequences block will be executed.
 #    If the conditions block is empty, it is assumed that it always evaluates to true.
-# 5) Consequences block (list). This must be a valid operation block. See header_operations.py for reference. 
+# 5) Consequences block (list). This must be a valid operation block. See header_operations.py for reference.
 ####################################################################################################################
 
 triggers = [

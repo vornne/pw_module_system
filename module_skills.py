@@ -3,15 +3,14 @@ from header_skills import *
 
 ####################################################################################################################
 #  Each skill contains the following fields:
-#  1) Skill id (string): used for referencing skills in other files. The prefix skl_ is automatically added before each skill-id .
+#  1) Skill id (string): used for referencing skills in other files. The prefix skl_ is automatically added before each skill-id.
 #  2) Skill name (string).
-#  3) Skill flags (int). See header_skills.py for a list of available flags
+#  3) Skill flags (int). See header_skills.py for a list of available flags.
 #  4) Maximum level of the skill (int).
 #  5) Skill description (string): used in character window for explaining the skills.
-# 
 ####################################################################################################################
 
-#Hardcoded skills are {names (indexes, beginning with 0)}:
+# Hardcoded skills are {names (indexes, beginning with 0)}:
 # Trade (1)
 # Leadership (2)
 # Prisoner Management (3)

@@ -1,5 +1,3 @@
-import random
-
 from header_common import *
 from header_items import *
 from header_troops import *
@@ -19,9 +17,6 @@ from header_skills import *
 #           str_6|agi_6|int_4|cha_5|level(5)
 # 10) Weapon proficiencies (int): Example usage:
 #           wp_one_handed(55)|wp_two_handed(90)|wp_polearm(36)|wp_archery(80)|wp_crossbow(24)|wp_throwing(45)
-#     The function wp(x) will create random weapon proficiencies close to value x.
-#     To make an expert archer with other weapon proficiencies close to 60 you can use something like:
-#           wp_archery(160) | wp(60)
 # 11) Skills (int): See header_skills.py to see a list of skills. Example:
 #           knows_ironflesh_3|knows_power_strike_2|knows_athletics_2|knows_riding_2
 # 12) Face code (int): You can obtain the face code by pressing ctrl+E in face generator screen
@@ -31,43 +26,16 @@ from header_skills import *
 ####################################################################################################################
 
 def wp(x):
-  n = 0
-  r = 10 + int(x / 10)
-  n |= wp_one_handed(x)
-  n |= wp_two_handed(x)
-  n |= wp_polearm(x)
-  n |= wp_archery(x)
-  n |= wp_crossbow(x)
-  n |= wp_throwing(x)
-  return n
+  return wp_one_handed(x)|wp_two_handed(x)|wp_polearm(x)|wp_archery(x)|wp_crossbow(x)|wp_throwing(x)
 
 def wpe(m,a,c,t):
-   n = 0
-   n |= wp_one_handed(m)
-   n |= wp_two_handed(m)
-   n |= wp_polearm(m)
-   n |= wp_archery(a)
-   n |= wp_crossbow(c)
-   n |= wp_throwing(t)
-   return n
+  return wp_one_handed(m)|wp_two_handed(m)|wp_polearm(m)|wp_archery(a)|wp_crossbow(c)|wp_throwing(t)
 
 def wpex(o,w,p,a,c,t):
-   n = 0
-   n |= wp_one_handed(o)
-   n |= wp_two_handed(w)
-   n |= wp_polearm(p)
-   n |= wp_archery(a)
-   n |= wp_crossbow(c)
-   n |= wp_throwing(t)
-   return n
+  return wp_one_handed(o)|wp_two_handed(w)|wp_polearm(p)|wp_archery(a)|wp_crossbow(c)|wp_throwing(t)
 
 def wp_melee(x):
-  n = 0
-  r = 10 + int(x / 10)
-  n |= wp_one_handed(x + 20)
-  n |= wp_two_handed(x)
-  n |= wp_polearm(x + 10)
-  return n
+  return wp_one_handed(x + 20)|wp_two_handed(x)|wp_polearm(x + 10)
 
 reserved = 0
 no_scene = 0
@@ -83,10 +51,13 @@ pw_attr = cha_30|level(1)
 knows_pw = knows_weapon_master_10
 
 troops = [
-  ["player","Player","Player",tf_hero|tf_unmoveable_in_party_window,no_scene,reserved,0, [], str_4|agi_4|int_4|cha_4,wp(15),0,0x000000018000000136db6db6db6db6db00000000001db6db0000000000000000],
-  ["multiplayer_profile_troop_male","multiplayer_profile_troop_male","multiplayer_profile_troop_male", tf_hero|tf_guarantee_all, 0, 0, 0, [], str_14, 0, 0, 0x000000018000000136db6db6db6db6db00000000001db6db0000000000000000],
-  ["multiplayer_profile_troop_female","multiplayer_profile_troop_female","multiplayer_profile_troop_female", tf_hero|tf_female|tf_guarantee_all, 0, 0, 0, [], str_14, 0, 0, 0x000000018000000136db6db6db6db6db00000000001db6db0000000000000000],
-  ["temp_troop","Temp Troop","Temp Troop",tf_hero,no_scene,reserved, 0,[],0,0,0,0],
+  ["player","Player","Player",tf_hero|tf_unmoveable_in_party_window,no_scene,reserved,0, [],
+   str_4|agi_4|int_4|cha_4,wp(15),0,0x000000018000000136db6db6db6db6db00000000001db6db0000000000000000],
+  ["multiplayer_profile_troop_male","multiplayer_profile_troop_male","multiplayer_profile_troop_male", tf_hero|tf_guarantee_all,0,0,0, [],
+   str_14, 0, 0, 0x000000018000000136db6db6db6db6db00000000001db6db0000000000000000],
+  ["multiplayer_profile_troop_female","multiplayer_profile_troop_female","multiplayer_profile_troop_female", tf_hero|tf_female|tf_guarantee_all,0,0,0, [],
+   str_14, 0, 0, 0x000000018000000136db6db6db6db6db00000000001db6db0000000000000000],
+  ["temp_troop","Temp Troop","Temp Troop",tf_hero,no_scene,reserved,0,[],0,0,0,0],
 ####################################################################################################################
 # Troops before this point are hardwired into the game and their order should not be changed!
 ####################################################################################################################

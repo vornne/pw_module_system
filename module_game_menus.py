@@ -11,7 +11,7 @@ from module_constants import *
 #  (menu-id, menu-flags, menu_text, mesh-name, [<operations>], [<options>]),
 #
 #   Each game menu is a tuple that contains the following fields:
-#  
+#
 #  1) Game-menu id (string): used for referencing game-menus in other files.
 #     The prefix menu_ is automatically added before each game-menu-id
 #
@@ -30,7 +30,6 @@ from module_constants import *
 #   6.3) Menu-option text (string).
 #   6.4) Consequences block (list). This must be a valid operation block. See header_operations.py for reference. 
 #        The consequences are executed for the menu option that has been selected by the player.
-#
 #
 # Note: The first Menu is the initial character creation menu.
 ####################################################################################################################

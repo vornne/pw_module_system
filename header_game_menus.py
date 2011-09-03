@@ -10,7 +10,7 @@ from header_item_modifiers import *
 from header_skills import *
 from header_troops import *
 
-#menu flags:
+# menu flags:
 mnf_join_battle            = 0x00000001 #Consider this menu when the player joins a battle
 mnf_auto_enter             = 0x00000010 #Automatically enter the town with the first menu option. 
 mnf_enable_hot_keys        = 0x00000100 #Enables P,I,C keys

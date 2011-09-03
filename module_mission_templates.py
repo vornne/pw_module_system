@@ -30,7 +30,6 @@ import header_debug as dbg
 #     See module_triggers.py for infomation about triggers.
 #
 #  Please note that mission templates is work in progress and can be changed in the future versions.
-#
 ####################################################################################################################
 
 mission_templates = [

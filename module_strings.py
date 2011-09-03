@@ -4,7 +4,7 @@ strings = [
   ("empty_string", " "),
   ("yes", "Yes."),
   ("no", "No."),
-# Strings before this point are hardwired.  
+# Strings before this point are hardwired.
   ("credits_1", "Mount&Blade: Warband Copyright 2008-2010 Taleworlds Entertainment"),
   ("credits_2", "Game design:^Armagan Yavuz^Steve Negus^Cem Cimenbicer"),
   ("credits_3", "Programming:^Armagan Yavuz^Cem Cimenbicer^Serdar Kocdemir^Ozan Gumus"),

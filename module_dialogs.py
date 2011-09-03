@@ -9,7 +9,6 @@ from header_triggers import *
 
 from module_constants import *
 
-
 ####################################################################################################################
 # During a dialog, the dialog lines are scanned from top to bottom.
 # If the dialog-line is spoken by the player, all the matching lines are displayed for the player to pick from.
