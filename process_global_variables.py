@@ -1,6 +1,3 @@
-#import string
-#import types
-
 from module_info import *
 from module_triggers import *
 from module_dialogs import *
@@ -11,20 +8,16 @@ from module_variables import *
 from process_common import *
 from process_operations import *
 
-
-
-#-------------------------------------------------------
-
-def compile_all_global_vars(variable_list,variable_uses, triggers, sentences, game_menus, mission_templates, scripts, simple_triggers):
+def compile_all_global_vars(variable_list, variable_uses, triggers, sentences, game_menus, mission_templates, scripts, simple_triggers):
   temp_list = []
   list_type = type(temp_list)
   for varb in reserved_variables:
     try:
-	  add_variable(varb, variable_list, variable_uses)
+      add_variable(varb, variable_list, variable_uses)
     except:
       print "Error in variable:"
       print variable
-  
+
   for trigger in triggers:
     try:
       compile_global_vars(trigger[3], variable_list,variable_uses),
@@ -41,7 +34,7 @@ def compile_all_global_vars(variable_list,variable_uses, triggers, sentences, ga
     except:
       print "Error in scene prop:"
       print scene_prop
-      
+
   for sentence in sentences:
     try:
       compile_global_vars(sentence[2], variable_list,variable_uses),
@@ -80,16 +73,15 @@ def compile_all_global_vars(variable_list,variable_uses, triggers, sentences, ga
       print "Error in presentation:"
       print presentation
 
-  for i_script in xrange(len(scripts)):
+  for script in scripts:
     try:
-      func = scripts[i_script]
-      if (type(func[1]) == list_type):
-        compile_global_vars(func[1], variable_list,variable_uses)
+      if (type(script[1]) == list_type):
+        compile_global_vars(script[1], variable_list,variable_uses)
       else:
-        compile_global_vars(func[2], variable_list,variable_uses)
+        compile_global_vars(script[2], variable_list,variable_uses)
     except:
       print "Error in script:"
-      print func
+      print script
 
   for simple_trigger in simple_triggers:
     try:

@@ -6,8 +6,8 @@ from process_common import *
 
 def save_python_header():
   ofile = open("./ID_music.py","w")
-  for i_track in xrange(len(tracks)):
-    ofile.write("track_%s = %d\n"%(tracks[i_track][0],i_track))
+  for i, track in enumerate(tracks):
+    ofile.write("track_%s = %d\n"%(track[0], i))
   ofile.write("\n\n")
   ofile.close()
 
@@ -18,6 +18,6 @@ def save_tracks():
     file.write("%s %d %d\n"%(track[1], track[2], (track[2] | track[3])))
   file.close()
 
-print "Exporting tracks..."
+print "Exporting music..."
 save_python_header()
 save_tracks()

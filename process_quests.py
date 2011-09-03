@@ -18,15 +18,13 @@ def save_quests():
 
 def save_python_header():
   ofile = open("./ID_quests.py","w")
-  for i_quest in xrange(len(quests)):
-    ofile.write("qst_%s = %d\n"%(quests[i_quest][0],i_quest))
-  for i_quest in xrange(len(quests)):
-    ofile.write("qsttag_%s = %d\n"%(quests[i_quest][0],opmask_quest_index|i_quest))
+  for i, quest in enumerate(quests):
+    ofile.write("qst_%s = %d\n"%(quest[0], i))
+  for i, quest in enumerate(quests):
+    ofile.write("qsttag_%s = %d\n"%(quest[0], opmask_quest_index|i))
   ofile.write("\n\n")
   ofile.close()
 
-
-print "Exporting quest data..."
+print "Exporting quests..."
 save_quests()
 save_python_header()
-  

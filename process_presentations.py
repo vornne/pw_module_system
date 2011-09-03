@@ -13,7 +13,7 @@ def save_presentations(variable_list,variable_uses,tag_uses,quick_strings):
   ofile.write("presentationsfile version 1\n")
   ofile.write(" %d\n"%(len(presentations)))
   for presentation in presentations:
-    ofile.write("prsnt_%s %d %d "%(presentation[0], presentation[1], find_str_id(module_meshes.meshes, presentation[2])))
+    ofile.write("prsnt_%s %d %d "%(presentation[0], presentation[1], find_str_id(module_meshes.meshes, presentation[2], tag_mesh)))
     save_simple_triggers(ofile, presentation[3], variable_list, variable_uses, tag_uses, quick_strings, debug_name=presentation[0])
     ofile.write("\n")
   ofile.close()
@@ -21,17 +21,16 @@ def save_presentations(variable_list,variable_uses,tag_uses,quick_strings):
 
 def save_python_header():
   file = open("./ID_presentations.py","w")
-  for i_presentation in xrange(len(presentations)):
-    file.write("prsnt_%s = %d\n"%(presentations[i_presentation][0],i_presentation))
+  for i, presentation in enumerate(presentations):
+    file.write("prsnt_%s = %d\n"%(presentation[0], i))
   file.close()
 
 print "Exporting presentations..."
 save_python_header()
 variable_uses = []
 variables = load_variables(export_dir,variable_uses)
-tag_uses = load_tag_uses(export_dir)
+tag_uses = []
 quick_strings = load_quick_strings(export_dir)
 save_presentations(variables,variable_uses,tag_uses,quick_strings)
 save_variables(export_dir,variables,variable_uses)
-save_tag_uses(export_dir,tag_uses)
 save_quick_strings(export_dir,quick_strings)

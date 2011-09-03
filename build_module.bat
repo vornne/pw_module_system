@@ -1,5 +1,5 @@
 @echo off
-python build_module.py
+python -tt build_module.py
 @del *.pyc
 echo.
 echo ______________________________

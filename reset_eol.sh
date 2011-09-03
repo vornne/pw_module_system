@@ -31,7 +31,6 @@ FILE_NAMES="
   sounds.txt
   strings.txt
   tableau_materials.txt
-  tag_uses.txt
   triggers.txt
   troops.txt
   variable_uses.txt

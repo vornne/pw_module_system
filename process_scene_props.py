@@ -19,17 +19,16 @@ def save_scene_props(variable_list,variable_uses,tag_uses,quick_strings):
 
 def save_python_header():
   file = open("./ID_scene_props.py","w")
-  for i_scene_prop in xrange(len(scene_props)):
-    file.write("spr_%s = %d\n"%(scene_props[i_scene_prop][0],i_scene_prop))
+  for i, scene_prop in enumerate(scene_props):
+    file.write("spr_%s = %d\n"%(scene_prop[0], i))
   file.close()
 
 print "Exporting scene props..."
 save_python_header()
 variable_uses = []
 variables = load_variables(export_dir,variable_uses)
-tag_uses = load_tag_uses(export_dir)
+tag_uses = []
 quick_strings = load_quick_strings(export_dir)
 save_scene_props(variables,variable_uses,tag_uses,quick_strings)
 save_variables(export_dir,variables,variable_uses)
-save_tag_uses(export_dir,tag_uses)
 save_quick_strings(export_dir,quick_strings)

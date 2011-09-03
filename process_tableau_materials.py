@@ -18,17 +18,16 @@ def save_tableau_materials(variable_list,variable_uses,tag_uses,quick_strings):
 
 def save_python_header():
   ofile = open("./ID_tableau_materials.py","w")
-  for i_tableau in xrange(len(tableaus)):
-    ofile.write("tableau_%s = %d\n"%(tableaus[i_tableau][0],i_tableau))
+  for i, tableau in enumerate(tableaus):
+    ofile.write("tableau_%s = %d\n"%(tableau[0], i))
   ofile.close()
 
-print "Exporting tableau materials data..."
+print "Exporting tableau materials..."
 save_python_header()
 variable_uses = []
 variables = load_variables(export_dir, variable_uses)
-tag_uses = load_tag_uses(export_dir)
+tag_uses = []
 quick_strings = load_quick_strings(export_dir)
 save_tableau_materials(variables,variable_uses,tag_uses,quick_strings)
 save_variables(export_dir,variables,variable_uses)
-save_tag_uses(export_dir, tag_uses)
 save_quick_strings(export_dir,quick_strings)

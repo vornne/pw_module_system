@@ -1149,7 +1149,7 @@ store_normalized_team_count                       = 2385 # (store_normalized_tea
 set_postfx                                        = 2386 # (set_postfx,<value>),
 set_river_shader_to_mud                           = 2387 # (set_river_shader_to_mud), changes river material for muddy env
 
-lhs_operations = [
+lhs_operations = frozenset([
   try_for_range,
   try_for_range_backwards,
   try_for_parties,
@@ -1431,9 +1431,9 @@ lhs_operations = [
   store_defender_count,
   store_attacker_count,
   store_normalized_team_count,
-]
+])
 
-global_lhs_operations = [
+global_lhs_operations = frozenset([
   val_lshift,
   val_rshift,
   val_add,
@@ -1443,9 +1443,9 @@ global_lhs_operations = [
   val_max,
   val_min,
   val_mod,
-]
+])
 
-can_fail_operations = [
+can_fail_operations = frozenset([
   ge,
   eq,
   gt,
@@ -1539,6 +1539,7 @@ can_fail_operations = [
   agent_is_alarmed,
   scene_prop_get_instance,
   scene_item_get_instance,
+  scene_spawned_item_get_instance,
   scene_allows_mounted_units,
   prop_instance_is_valid,
   prop_instance_intersects_with_prop_instance,
@@ -1548,4 +1549,12 @@ can_fail_operations = [
   is_currently_night,
   store_random_party_of_template,
   str_is_empty,
-]
+])
+
+try_begin_operations = frozenset([
+  try_begin,
+  try_for_range,
+  try_for_range_backwards,
+  try_for_parties,
+  try_for_agents,
+])

@@ -183,10 +183,10 @@ def weapon_length(x):
 
 def shield_width(x):
   return weapon_length(x)
- 
+
 def shield_height(x):
   return shoot_speed(x)
- 
+
 def get_weapon_length(y):
   return ((y >> iwf_weapon_length_bits) & ibf_10bit_mask)
 

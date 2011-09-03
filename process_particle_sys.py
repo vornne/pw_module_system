@@ -53,10 +53,10 @@ def save_particle_systems():
 
 def save_python_header():
   ofile = open("./ID_particle_systems.py","w")
-  for i_particle_system in xrange(len(particle_systems)):
-    ofile.write("psys_%s = %d\n"%(particle_systems[i_particle_system][0],i_particle_system))
+  for i, particle_system in enumerate(particle_systems):
+    ofile.write("psys_%s = %d\n"%(particle_system[0], i))
   ofile.close()
 
-print "Exporting particle data..."
+print "Exporting particle systems..."
 save_particle_systems()
 save_python_header()

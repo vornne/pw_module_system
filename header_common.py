@@ -270,23 +270,17 @@ opmask_quick_string         =  tag_quick_string   << op_num_value_bits
 
 
 def reg(reg_no):
-  if (reg_no < 0):
-    print ("Error register_no negative")
-    cause_error()
+  if not 0 < reg_no < 128:
+    raise Exception("ERROR: invalid register number.")
   return opmask_register | reg_no
 
-def find_object(objects,object_id):
-  result = -1
-  num_objects = len(objects)
-  i_object = 0
-  while (i_object < num_objects) and (result == -1):
-    object = objects[i_object]
+def find_object(objects, object_id):
+  for i, object in enumerate(objects):
     if (object[0] == object_id):
-      result = i_object
-    i_object += 1
-  return result
+      return i
+  return -1
 
-def find_str_id(objects, object_id):
+def find_str_id(objects, object_id, tag):
   if isinstance(object_id, str):
     object_str = object_id.partition("_")[2]
     if not object_str:
@@ -294,7 +288,7 @@ def find_str_id(objects, object_id):
     object_id = -1
     for i, object_i in enumerate(objects):
       if (object_i[0] == object_str):
-        object_id = i
+        object_id = i|(tag << op_num_value_bits)
         break
   return object_id
 

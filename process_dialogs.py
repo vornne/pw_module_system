@@ -8,18 +8,17 @@ from module_dialogs import *
 from process_common import *
 from process_operations import *
 
+import module_troops
+import module_party_templates
 
 speaker_pos = 0
-ipt_token_pos = 1
-sentence_conditions_pos = 2
-text_pos = 3
-opt_token_pos = 4
-sentence_consequences_pos = 5
-sentence_voice_over_pos = 6
-
-
-
-#-------------------------------------------------------
+flags_pos = 1
+ipt_token_pos = 2
+sentence_conditions_pos = 3
+text_pos = 4
+opt_token_pos = 5
+sentence_consequences_pos = 6
+sentence_voice_over_pos = 7
 
 def save_dialog_states(dialog_states):
   file = open(export_dir + "dialog_states.txt","w")
@@ -27,41 +26,17 @@ def save_dialog_states(dialog_states):
     file.write("%s\n"%dialog_state)
   file.close()
 
-
-#def compile_variables(cookies_list):
-#  for trigger in triggers:
-#    for consequence in trigger[trigger_consequences_pos]:
-#      compile_statement(consequence,cookies_list)
-#  for sentence in sentences:
-#    for consequence in sentence[sentence_consequences_pos]:
-#      compile_statement(consequence,cookies_list)
-#  for trigger in triggers:
-#    for condition in trigger[trigger_conditions_pos]:
-#      compile_statement(condition,cookies_list)
-#  for sentence in sentences:
-#    for condition in sentence[sentence_conditions_pos]:
-#      compile_statement(condition,cookies_list)
-#  return cookies_list
-
 def save_triggers(variable_list,variable_uses,triggers,tag_uses,quick_strings):
   file = open(export_dir + "triggers.txt","w")
   file.write("triggersfile version 1\n")
   file.write("%d\n"%len(triggers))
-  for i in xrange(len(triggers)):
-    trigger = triggers[i]
+  for trigger in triggers:
     file.write("%f %f %f "%(trigger[trigger_check_pos],trigger[trigger_delay_pos],trigger[trigger_rearm_pos]))
     save_statement_block(file,0,1,trigger[trigger_conditions_pos]  , variable_list, variable_uses,tag_uses,quick_strings)
     save_statement_block(file,0,1,trigger[trigger_consequences_pos], variable_list, variable_uses,tag_uses,quick_strings)
-#    for condition in trigger[trigger_conditions_pos]:
-#      save_operation(file,condition,variable_list)
-#    file.write(" %d "%(len(trigger[trigger_consequences_pos])))
-#    for consequence in trigger[trigger_consequences_pos]:
-#      save_operation(file,consequence,variable_list)
     file.write("\n")
   file.close()
 
-
-#=================================================================
 def compile_sentence_tokens(sentences):
   input_tokens = []
   output_tokens = []
@@ -124,7 +99,7 @@ def create_auto_id(sentence,auto_ids):
           done = 1
         else:
           i += 1
-      else:      
+      else:
         done = 1
         auto_ids[auto_id] = text
     if not done:
@@ -136,7 +111,7 @@ def create_auto_id(sentence,auto_ids):
       auto_id = new_auto_id
       auto_ids[auto_id] = text
     return auto_id
-  
+
 def create_auto_id2(sentence,auto_ids):
     text = sentence[text_pos]
     token_ipt = convert_to_identifier(sentence[ipt_token_pos])
@@ -169,7 +144,19 @@ def save_sentences(variable_list,variable_uses,sentences,tag_uses,quick_strings,
     sentence = sentences[i]
     try:
       dialog_id = create_auto_id2(sentence,auto_ids)
-      file.write("%s %d %d "%(dialog_id,sentence[speaker_pos],input_states[i]))
+      trp_pt = sentence[speaker_pos]
+      flags = sentence[flags_pos]
+      speaker = 0
+      if flags & other:
+        speaker = find_str_id(module_troops.troops, trp_pt) << other_bits
+        flags ^= other
+        trp_pt = trp_pt[0]
+      if flags & party_tpl:
+        speaker |= find_str_id(module_party_templates.party_templates, trp_pt)
+      else:
+        speaker |= find_str_id(module_troops.troops, trp_pt)
+      speaker |= flags
+      file.write("%s %d %d "%(dialog_id,speaker,input_states[i]))
       save_statement_block(file, 0, 1, sentence[sentence_conditions_pos], variable_list,variable_uses,tag_uses,quick_strings)
 
       file.write("%s "%(string.replace(sentence[text_pos]," ","_")))
@@ -187,20 +174,14 @@ def save_sentences(variable_list,variable_uses,sentences,tag_uses,quick_strings,
       print sentence
   file.close()
 
-# Registered cookies is a list which enables the order of cookies to remain fixed across changes.
-# In order to remove cookies not used anymore, edit the cookies_registery.py and remove all entries.
-
-print "exporting triggers..."
+print "Exporting triggers..."
 variable_uses = []
 variables = load_variables(export_dir,variable_uses)
-tag_uses = load_tag_uses(export_dir)
+tag_uses = []
 quick_strings = load_quick_strings(export_dir)
-#compile_variables(variables)
 save_triggers(variables,variable_uses,triggers,tag_uses,quick_strings)
-print "exporting dialogs..."
+print "Exporting dialogs..."
 (input_states,output_states) = compile_sentence_tokens(dialogs)
 save_sentences(variables,variable_uses,dialogs,tag_uses,quick_strings,input_states,output_states)
 save_variables(export_dir,variables,variable_uses)
-save_tag_uses(export_dir, tag_uses)
 save_quick_strings(export_dir,quick_strings)
-#print "finished."

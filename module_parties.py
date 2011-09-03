@@ -6,7 +6,9 @@ from header_parties import *
 #  1) Party id: used for referencing parties in other files.
 #     The prefix p_ is automatically added before each party id.
 #  2) Party name.
-#  3) Party flags. See header_parties.py for a list of available flags
+#  3) Icon and flags.
+#   3.1) Map icon.
+#   3.2) Party flags. See header_parties.py for a list of available flags.
 #  4) Menu. ID of the menu to use when this party is met. The value 0 uses the default party encounter system.
 #  5) Party-template. ID of the party template this party belongs to. Use pt_none as the default value.
 #  6) Faction.
@@ -24,5 +26,5 @@ from header_parties import *
 no_menu = 0
 
 parties = [
-  ("main_party","Main Party",pf_limit_members,no_menu,"pt_none",0,0,ai_bhvr_hold,0,(17, 52.5),[("trp_player",1,0)]),
+  ("main_party","Main Party",(0,pf_limit_members),no_menu,"pt_none",0,0,ai_bhvr_hold,0,(17, 52.5),[("trp_player",1,0)]),
 ]

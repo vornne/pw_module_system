@@ -9,12 +9,9 @@ import string
 
 # WARNING: The following should be the same as the number in face_generator.h
 num_voice_types = 2
-#####################
-
 
 def replace_spaces(s0):
   return string.replace(s0," ","_")
-
 
 def write_face_tex(ofile,tex_set):
   ofile.write(" %d "%len(tex_set)) 
@@ -42,7 +39,7 @@ def write_voices(ofile, voices):
   for voice_rec in voices:
     ofile.write(" %d %s "%(voice_rec[0],voice_rec[1]))
   ofile.write("\n")
-    
+
 def export_skins(skins):
   ofile = open(export_dir + "skins.txt","w")
   ofile.write("skins_file version 1\n")
@@ -70,13 +67,14 @@ def export_skins(skins):
     blood_particles_1 = 0
     blood_particles_2 = 0
     constraints = []
-    if len(skin) > 15:
-      blood_particles_1 = find_str_id(module_particle_systems.particle_systems, skin[15])
-    if len(skin) > 16:
-      blood_particles_2 = find_str_id(module_particle_systems.particle_systems, skin[16])
-    if len(skin) > 17:
+    skin_count = len(skin)
+    if skin_count > 15:
+      blood_particles_1 = find_str_id(module_particle_systems.particle_systems, skin[15], tag_particle_sys)
+    if skin_count > 16:
+      blood_particles_2 = find_str_id(module_particle_systems.particle_systems, skin[16], tag_particle_sys)
+    if skin_count > 17:
       constraints = skin[17]
-    
+
     ofile.write("%s %d\n %s %s %s\n"%(skin_name, skin_flags, body_name, calf_name, hand_name))
     ofile.write(" %s %d "%(head_mesh,len(face_keys)))
     for face_key in face_keys:
@@ -84,7 +82,7 @@ def export_skins(skins):
     ofile.write("\n%d\n"%len(hair_meshes))
     for mesh_name in hair_meshes:
       ofile.write(" %s "%mesh_name)
-    ofile.write("\n %d\n"%len(beard_meshes)) 
+    ofile.write("\n %d\n"%len(beard_meshes))
     for bmn in beard_meshes:
       ofile.write("  %s\n"%bmn)
     ofile.write("\n")
@@ -97,9 +95,9 @@ def export_skins(skins):
     ofile.write("%d\n"%(len(constraints)))
     for constraint in constraints:
       ofile.write("\n%f %d %d "%(constraint[0], constraint[1], (len(constraint) - 2)))
-      for i_pair in xrange(len(constraint)):
-        if i_pair > 1:
-          ofile.write(" %f %d"%(constraint[i_pair][0], constraint[i_pair][1]))
+      for i, pair in enumerate(constraint):
+        if i > 1:
+          ofile.write(" %f %d"%(pair[0], pair[1]))
     ofile.write("\n")
   ofile.close()
 

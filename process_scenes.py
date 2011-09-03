@@ -5,11 +5,11 @@ from process_common import *
 
 def save_python_header():
   ofile = open("./ID_scenes.py","w")
-  for i_scene in xrange(len(scenes)):
-    ofile.write("scn_%s = %d\n"%(convert_to_identifier(scenes[i_scene][0]),i_scene))
+  for i, scene in enumerate(scenes):
+    ofile.write("scn_%s = %d\n"%(convert_to_identifier(scene[0]), i))
   ofile.close()
 
-print "Exporting scene data..."
+print "Exporting scenes..."
 save_python_header()
 
 from process_operations import *
@@ -19,28 +19,21 @@ scene_name_pos = 0
 passages_pos = 8
 scene_outer_terrain_pos = 10
 
-
 def write_vec(ofile,vec):
   ofile.write(" %f %f %f "%vec)
-  
+
 def write_passage(ofile,scenes,passage):
-  scene_no = 0
-  found = 0
-  while (not found) and (scene_no < len(scenes)):
-    if (scenes[scene_no][0] == passage):
-      found = 1
-    else:
-      scene_no += 1
   if (passage == "exit"):
     scene_no = 100000
   elif (passage == ""):
     scene_no = 0
-  elif not found:
-    print "Error passage not found:"
-    print passage
-    do_error()
+  for i, scene in enumerate(scenes):
+    if (scene[0] == passage):
+      scene_no = i
+      break
+  else:
+    raise Exception("ERROR: passage not found: " + passage)
   ofile.write(" %d "%scene_no)
-
 
 def save_scenes(variables,variable_uses,tag_uses):
   ofile = open(export_dir + "scenes.txt","w")
@@ -72,9 +65,8 @@ def save_scenes(variables,variable_uses,tag_uses):
 
 variable_uses = []
 variables = load_variables(export_dir, variable_uses)
-tag_uses = load_tag_uses(export_dir)
+tag_uses = []
 quick_strings = load_quick_strings(export_dir)
 save_scenes(variables,variable_uses,tag_uses)
 save_variables(export_dir,variables,variable_uses)
-save_tag_uses(export_dir,tag_uses)
 save_quick_strings(export_dir,quick_strings)

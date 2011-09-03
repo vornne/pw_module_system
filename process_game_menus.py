@@ -16,7 +16,6 @@ def save_game_menu_item(ofile,variable_list,variable_uses,menu_item,tag_uses,qui
   if (len(menu_item) > 4):
     door_name = menu_item[4]
   ofile.write(" %s "%(string.replace(door_name," ","_")))
-    
 
 def save_game_menus(variable_list,variable_uses,tag_uses,quick_strings):
   ofile = open(export_dir + "menus.txt","w")
@@ -34,17 +33,16 @@ def save_game_menus(variable_list,variable_uses,tag_uses,quick_strings):
 
 def save_python_header():
   ofile = open("./ID_menus.py","w")
-  for i_game_menu in xrange(len(game_menus)):
-    ofile.write("menu_%s = %d\n"%(game_menus[i_game_menu][0],i_game_menu))
+  for i, game_menu in enumerate(game_menus):
+    ofile.write("menu_%s = %d\n"%(game_menu[0], i))
   ofile.close()
 
-print "Exporting game menus data..."
+print "Exporting game menus..."
 save_python_header()
 variable_uses = []
 variables = load_variables(export_dir, variable_uses)
-tag_uses = load_tag_uses(export_dir)
+tag_uses = []
 quick_strings = load_quick_strings(export_dir)
 save_game_menus(variables,variable_uses,tag_uses,quick_strings)
 save_variables(export_dir,variables,variable_uses)
-save_tag_uses(export_dir, tag_uses)
 save_quick_strings(export_dir,quick_strings)

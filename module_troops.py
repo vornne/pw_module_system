@@ -9,7 +9,9 @@ from header_skills import *
 #  2) Toop name (string).
 #  3) Plural troop name (string).
 #  4) Troop flags (int). See header_troops.py for a list of available flags
-#  5) Scene (int) (only applicable to heroes) For example: scn_reyvadin_castle|entry(1) puts troop in reyvadin castle's first entry point
+#  5) Scene and entry.
+#   5.1) Scene (only applicable to heroes).
+#   5.2) Entry point using the entry() function: for example, entry(15).
 #  6) Reserved (int). Put constant "reserved" or 0.
 #  7) Faction (int)
 #  8) Inventory (list): Must be a list of items
