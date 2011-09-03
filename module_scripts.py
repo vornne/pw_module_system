@@ -6392,7 +6392,7 @@ scripts = [
         (ge, ":horse_value", 2000),
         (gt, ":last_rider", -40),
         (assign, ":kill", 0),
-      (end_try),
+      (try_end),
       (eq, ":kill", 1),
       (agent_fade_out, ":horse_agent_id"),
     (else_try),
