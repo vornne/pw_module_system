@@ -107,7 +107,7 @@ troops = [
    ["itm_fur_hat","itm_headcloth","itm_fur_coat","itm_leather_vest","itm_ankle_boots","itm_woolen_hose"],
    str_10|agi_10|pw_attr,wpex(70,50,50,10,20,20),knows_pw|knows_athletics_2|knows_power_strike_1|knows_wound_treatment_5|knows_riding_2,default_face_1,default_face_2],
   ["sailor","Sailor","a sailor",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_fur_hat_b","itm_woolen_cap","itm_tabard","itm_pelt_coat","itm_ankle_boots","itm_wrapping_boots","itm_club","itm_blunt_falchion"],
+   ["itm_felt_hat_b","itm_woolen_cap","itm_tabard","itm_pelt_coat","itm_ankle_boots","itm_wrapping_boots","itm_club","itm_blunt_falchion"],
    str_14|agi_12|pw_attr,wpex(95,80,80,50,50,70),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_athletics_2|knows_sailing_9|knows_riding_1,default_face_1,default_face_2],
   ["traveler","Traveler","a traveler",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_fur_hat","itm_leather_steppe_cap_a","itm_fur_coat","itm_leather_jacket","itm_ankle_boots","itm_wrapping_boots","itm_old_knife"],
