@@ -168,7 +168,7 @@ mission_templates = [
       (server_get_max_num_players, "$g_spawn_marker_count"),
       (val_add, "$g_spawn_marker_count", 1),
       (try_for_range, ":unused", 0, "$g_spawn_marker_count"),
-        (spawn_scene_prop, "spr_spawn_marker"),
+        (spawn_scene_prop, "spr_code_spawn_marker"),
       (try_end),
       (assign, "$g_spawned_bot_count", 0),
       (call_script, "script_check_name_server"),

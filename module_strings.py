@@ -585,6 +585,7 @@ As admin, holding down right shift while voting overrides the poll. The selected
 * For rotating scene props like trees or destroyable doors, place the origin at or slightly above ground level.^\
 * Make sure to adjust ships to the right height for the water level on the hull, as the scripts will use that since each ship mesh has a different height.^\
 * Place at least one castle sign for every castle (or capturable area), so the stats chart and capture messages will use proper names.^\
+* The scene props starting with code_ should not be placed manually in your scene: they are spawned by the scripts as needed.^\
 ^-- Edit scene mode keys^\
 F1 = this information^\
 F2 = scene prop editor value information^\

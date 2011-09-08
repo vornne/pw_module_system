@@ -2375,7 +2375,7 @@ scene_props = [
   ("pw_rest_horse_hay",spr_use_time(40),"pw_horse_hay","bo_pw_horse_hay", spr_rest_triggers(70, min_health_pct=30, horse=1)),
   ("pw_clean_blood",spr_use_time(10),"cloth_a","bo_cloth_a", spr_clean_blood_triggers()),
 
-  ("spawn_marker",0,"0","0", []),
+  ("code_spawn_marker",0,"0","0", []),
   ("pw_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_weapon_big", spr_change_troop_triggers("trp_peasant", cost=50, after_respawn=True, use_string="str_troop_leave_faction")),
   ("pw_change_troop_serf",spr_use_time(30),"trident","bo_weapon_big", spr_change_troop_triggers("trp_serf", cost=150)),
   ("pw_change_troop_militia",spr_use_time(30),"practice_sword","bo_weapon", spr_change_troop_triggers("trp_militia", cost=500)),
@@ -2519,8 +2519,8 @@ scene_props = [
 
   ("pw_buy_test_horse",spr_use_time(1),"wood_a","bo_wood_a_fixed", spr_buy_item_triggers("itm_test_horse")),
 
-  ("freeze_agent",sokf_moveable,"0","bo_freeze_agent", []),
-  ("freeze_horse_agent",sokf_moveable,"0","bo_freeze_horse_agent", []),
+  ("code_freeze_agent",sokf_moveable,"0","bo_freeze_agent", []),
+  ("code_freeze_horse_agent",sokf_moveable,"0","bo_freeze_horse_agent", []),
 
 ]
 
