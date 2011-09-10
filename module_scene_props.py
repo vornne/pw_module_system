@@ -629,7 +629,7 @@ scene_props = [
   ("ai_limiter_4m" ,sokf_invisible|sokf_type_ai_limiter,"barrier_4m" ,"bo_barrier_4m" , []),
   ("ai_limiter_8m" ,sokf_invisible|sokf_type_ai_limiter,"barrier_8m" ,"bo_barrier_8m" , []),
   ("ai_limiter_16m",sokf_invisible|sokf_type_ai_limiter,"barrier_16m","bo_barrier_16m", []),
-  ("Shield",sokf_dynamic,"0","boshield", []),
+  ("shield",sokf_dynamic,"0","boshield", []),
   ("shelves",0,"shelves","boshelves", []),
   ("table_tavern",0,"table_tavern","botable_tavern", []),
   ("table_castle_a",0,"table_castle_a","bo_table_castle_a", []),
