@@ -1,4 +1,3 @@
-# -*- coding: cp1254 -*-
 strings = [
   ("no_string", "NO STRING!"),
   ("empty_string", " "),

@@ -1,4 +1,3 @@
-# -*- coding: cp1254 -*-
 from header_common import *
 from header_operations import *
 from module_constants import *
