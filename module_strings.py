@@ -535,7 +535,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("chat_format", "[{s1}] {s0}"),
   ("send_message_to_players_nearby", "Send message to players nearby:"),
   ("send_message_to_the_s11", "Send message to the {s11}:"),
-  ("change_faction_name", "Change the name of your faction:"),
+  ("change_name_of_your_faction", "Change the name of your faction:"),
   ("send_admin_message", "Send administrator message:"),
   ("send_admin_message_to_s1", "Send administrator message to {s1}:"),
   ("admin_chat_format", "*ADMIN* [{s1}] {s0}"),

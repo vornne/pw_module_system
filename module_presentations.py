@@ -2267,7 +2267,7 @@ presentations = [
       (else_try),
         (eq, ":object", "$g_presentation_obj_faction_admin_change_name"),
         (presentation_set_duration, 0),
-        (assign, "$g_chat_box_string_id", "str_change_faction_name"),
+        (assign, "$g_chat_box_string_id", "str_change_name_of_your_faction"),
         (assign, "$g_chat_box_event_type", chat_event_type_set_faction_name),
         (start_presentation, "prsnt_chat_box"),
       (else_try),
