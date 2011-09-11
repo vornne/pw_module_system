@@ -1,3 +1,5 @@
+#!/usr/bin/python -tt
+
 from module_items import *
 from module_scene_props import *
 from process_common import *
