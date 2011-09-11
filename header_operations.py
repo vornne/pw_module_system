@@ -1149,6 +1149,22 @@ store_normalized_team_count                       = 2385 # (store_normalized_tea
 set_postfx                                        = 2386 # (set_postfx,<value>),
 set_river_shader_to_mud                           = 2387 # (set_river_shader_to_mud), changes river material for muddy env
 
+opcode_names = dict((opcode, name) for name, opcode in globals().iteritems() if isinstance(opcode, int))
+
+def get_opcode_name(opcode):
+  prefix = None
+  try:
+    if opcode & this_or_next:
+      prefix = "this_or_next|"
+      opcode ^= this_or_next
+    if opcode & neg:
+      prefix = prefix + "neg|" if prefix else "neg|"
+      opcode ^= neg
+    opname = opcode_names[opcode]
+  except (KeyError, TypeError):
+    opname = repr(opcode)
+  return prefix + opname if prefix else opname
+
 lhs_operations = frozenset([
   try_for_range,
   try_for_range_backwards,
@@ -1443,7 +1459,7 @@ global_lhs_operations = frozenset([
   val_max,
   val_min,
   val_mod,
-])
+] + list(lhs_operations))
 
 can_fail_operations = frozenset([
   ge,

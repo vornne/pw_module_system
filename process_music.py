@@ -1,23 +1,8 @@
-import string
-from header_common import *
-from module_info import *
-from module_music import *
-from process_common import *
+import process_operations as po
+import module_music
 
-def save_python_header():
-  ofile = open("./ID_music.py","w")
-  for i, track in enumerate(tracks):
-    ofile.write("track_%s = %d\n"%(track[0], i))
-  ofile.write("\n\n")
-  ofile.close()
+def process_entry(processor, txt_file, entry, index):
+  txt_file.write("%s %d %d\r\n" % (entry[1], entry[2], entry[2]|entry[3]))
 
-def save_tracks():
-  file = open(export_dir + "music.txt","w")
-  file.write("%d\n"%len(tracks))
-  for track in tracks:
-    file.write("%s %d %d\n"%(track[1], track[2], (track[2] | track[3])))
-  file.close()
-
-print "Exporting music..."
-save_python_header()
-save_tracks()
+export = po.make_export(data=module_music.tracks, data_name="music", tag="track",
+    header_format="%d\r\n", process_entry=process_entry)

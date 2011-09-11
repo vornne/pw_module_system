@@ -1,355 +1,295 @@
-import string
-
-from process_common import *
+import collections
 from header_common import *
 from header_operations import *
+from header_triggers import *
+import process_common as pc
+import module_info
 
-from module_strings import *
-from module_skills import *
-from module_music import *
-from module_meshes import *
-from module_sounds import *
-from module_items import *
-from module_troops import *
-from module_factions import *
-from module_quests import *
-from module_party_templates import *
-from module_parties import *
-from module_scenes import *
-from module_scripts import *
-from module_mission_templates import *
-from module_game_menus import *
-from module_particle_systems import *
-from module_scene_props import *
-from module_scene_props import *
-from module_presentations import *
-from module_map_icons import *
-from module_tableau_materials import *
-from module_animations import *
+remove_opmask = 0xffffffff
 
-def get_id_value(tag, identifier, tag_uses):
-  tag_type = -1
-  id_no = -1
-  if (tag == "str"):
-    id_no = find_object(strings, identifier)
-    tag_type = tag_string
-  elif (tag == "itm"):
-    id_no = find_object(items, identifier)
-    tag_type = tag_item
-  elif (tag == "trp"):
-    id_no = find_object(troops, identifier)
-    tag_type = tag_troop
-  elif (tag == "fac"):
-    id_no = find_object(factions, identifier)
-    tag_type = tag_faction
-  elif (tag == "qst"):
-    id_no = find_object(quests, identifier)
-    tag_type = tag_quest
-  elif (tag == "pt"):
-    id_no = find_object(party_templates, identifier)
-    tag_type = tag_party_tpl
-  elif (tag == "p"):
-    id_no = find_object(parties, identifier)
-    tag_type = tag_party
-  elif (tag == "scn"):
-    id_no = find_object(scenes, identifier)
-    tag_type = tag_scene
-  elif (tag == "mt"):
-    id_no = find_object(mission_templates, identifier)
-    tag_type = tag_mission_tpl
-  elif (tag == "mnu"):
-    id_no = find_object(game_menus, identifier)
-    tag_type = tag_menu
-  elif (tag == "script"):
-    id_no = find_object(scripts, identifier)
-    tag_type = tag_script
-  elif (tag == "psys"):
-    id_no = find_object(particle_systems, identifier)
-    tag_type = tag_particle_sys
-  elif (tag == "spr"):
-    id_no = find_object(scene_props, identifier)
-    tag_type = tag_scene_prop
-  elif (tag == "prsnt"):
-    id_no = find_object(presentations, identifier)
-    tag_type = tag_presentation
-  elif (tag == "snd"):
-    id_no = find_object(sounds, identifier)
-    tag_type = tag_sound
-  elif (tag == "icon"):
-    id_no = find_object(map_icons, identifier)
-    tag_type = tag_map_icon
-  elif (tag == "skl"):
-    id_no = find_object(skills, identifier)
-    tag_type = tag_skill
-  elif (tag == "track"):
-    id_no = find_object(tracks, identifier)
-    tag_type = tag_track
-  elif (tag == "mesh"):
-    id_no = find_object(meshes, identifier)
-    tag_type = tag_mesh
-  elif (tag == "anim"):
-    id_no = find_object(animations, identifier)
-    tag_type = tag_animation
-  elif (tag == "tableau"):
-    id_no = find_object(tableaus, identifier)
-    tag_type = tag_tableau
+class LocalVariables:
+  """Manages local variable mapping to numbers."""
 
-  return (tag_type, id_no)
+  def __init__(self):
+    self.variables = {}
+    self.number = 0
 
-def get_identifier_value(full_str, tag_uses):
-  underscore_pos = string.find(full_str, "_")
-  result = -1
-  if (underscore_pos > 0):
-    tag_str = full_str[0:underscore_pos]
-    id_str  = full_str[underscore_pos + 1:len(full_str)]
-    (tag_type, id_no) = get_id_value(tag_str, id_str, tag_uses)
-    if (tag_type > 0):
-      if (id_no < 0):
-        print "Error: Unable to find object: " + full_str
-      else:
-        result = id_no | (tag_type << op_num_value_bits)
-    else:
-      print "Error: Unrecognized tag: " + tag_str + " in object: " + full_str
-  else:
-    print "Error: Invalid object: " + full_str + ". Variables should start with a $ or : character and references should start with a tag"
-  return result
+  def add_id(self, name, uses=0):
+    id_uses = self.variables.setdefault(name, [self.number, 0])
+    if id_uses[0] == self.number:
+      self.number += 1
+    if uses > 0:
+      id_uses[1] += uses
+    return self.opmask|id_uses[0]
 
-def load_quick_strings(export_dir):
-  quick_strings = []
-  try:
-    file = open(export_dir + "quick_strings.txt", "r")
-    str_list = file.readlines()
-    file.close()
-    for s in str_list:
-      s = string.strip(s)
-      if s:
-        ssplit = s.split(' ')
-        if len(ssplit) == 2:
-          quick_strings.append(ssplit)
-  except:
-    print "Creating new quick_strings.txt file..."
-  return quick_strings
+  def get_id(self, name):
+    try:
+      id_uses = self.variables[name]
+      id_uses[1] += 1
+      return self.opmask|id_uses[0]
+    except KeyError:
+      pc.ERROR("local variable '%s' used uninitialized" % name)
 
-def save_quick_strings(export_dir, quick_strings):
-  file = open(export_dir + "quick_strings.txt", "w")
-  file.write("%d\n" % len(quick_strings))
-  for quick_string in quick_strings:
-    file.write("%s %s\n" % (quick_string[0], quick_string[1]))
-  file.close()
+  def warn_unused(self, location):
+    for name, id_uses in self.variables.iteritems():
+      if id_uses[1] == 0 and not name.startswith("unused"):
+        pc.WARNING("variable '%s' never used" % name, entry=location)
 
-def load_variables(export_dir, variable_uses):
-  variables = []
-  try:
-    file = open(export_dir + "variables.txt", "r")
-    var_list = file.readlines()
-    file.close()
-    for v in var_list:
-      vv = string.strip(v)
-      if vv:
-        variables.append(vv)
-  except:
-    print "variables.txt not found. Creating new variables.txt file"
+  opmask = opmask_local_variable
 
-  try:
-    file = open(export_dir + "variable_uses.txt", "r")
-    var_list = file.readlines()
-    file.close()
-    for v in  var_list:
-      vv = string.strip(v)
-      if vv:
-        variable_uses.append(int(vv))
-  except:
-    print "variable_uses.txt not found. Creating new variable_uses.txt file"
+class GlobalVariables(LocalVariables):
+  """Manages global variable loading, saving, and mapping to numbers."""
 
-  return variables
+  def __init__(self):
+    LocalVariables.__init__(self)
+    self.variables = collections.OrderedDict()
 
-def save_variables(export_dir, variables_list, variable_uses):
-  file = open(export_dir + "variables.txt", "w")
-  for i in xrange(len(variables_list)):
-    file.write("%s\n"%variables_list[i])
-  file.close()
-  file = open(export_dir + "variable_uses.txt", "w")
-  for i in xrange(len(variables_list)):
-    file.write("%d\n"%variable_uses[i])
-  file.close()
+  def load_old(self):
+    try:
+      with open("variables.txt", "r") as old_file:
+        for name in old_file:
+          name = name.strip()
+          if name:
+            self.add_id(name, uses=1)
+    except EnvironmentError:
+      pass
 
-def check_varible_not_defined(variable_string, variables_list):
-  if variable_string in variables_list:
-    print "WARNING: Variable name used for both local and global contexts: " + variable_string
+  def write(self):
+    with open(module_info.export_path("variables.txt"), "wb") as var_file:
+      for name, id_uses in self.variables.iteritems():
+        var_file.write("%s\r\n" % name)
 
-def add_variable(variable_string, variables_list, variable_uses):
-  found = 0
-  for i_t in xrange(len(variables_list)):
-    if variable_string == variables_list[i_t]:
-      found = 1
-      variable_uses[i_t] = variable_uses[i_t] - 1
-      break
-  if not found:
-    variables_list.append(variable_string)
-    variable_uses.append(-1)
+  opmask = opmask_variable
 
-def get_variable(variable_string, variables_list, variable_uses):
-  found = 0
-  result = -1
-  var_string = variable_string[1:]
-  for i_t in xrange(len(variables_list)):
-    if var_string == variables_list[i_t]:
-      found = 1
-      result = i_t
-      variable_uses[result] = variable_uses[result] + 1
-      break
-  if not found:
-    if (variable_string[0] == '$'):
-      variables_list.append(variable_string)
-      variable_uses.append(0)
-      result = len(variables_list) - 1
-      print "WARNING: Usage of unassigned global variable: " + variable_string
-    else:
-      print "ERROR: Usage of unassigned local variable: " + variable_string
-  return result
+class QuickStrings:
+  """Manages quick string loading, saving, and mapping to numbers."""
 
-def is_lhs_operation(op_code):
-  return op_code in lhs_operations
+  def __init__(self):
+    self.quick_strings = collections.OrderedDict()
+    self.number = 0
 
-def is_lhs_operation_for_global_vars(op_code):
-  return op_code in lhs_operations or op_code in global_lhs_operations
-
-def is_can_fail_operation(op_code):
-  return op_code in can_fail_operations
-
-def insert_quick_string_with_auto_id(sentence, quick_strings):
-  id_str = "qstr_" + convert_to_identifier_with_no_lowercase(sentence)
-  sentence = replace_spaces(sentence)
-  id_len = 25
-  index = -1
-  for i, quick_string in enumerate(quick_strings):
-    if id_str.startswith(quick_string[0], 0, id_len):
-      if quick_string[1] == sentence:
-        index = i
-        break
-      else:
+  def add_str(self, sentence):
+    full_id = pc.convert_to_identifier(sentence)
+    sentence = pc.replace_spaces(sentence)
+    id_len = min(len(full_id), 20)
+    id_str = full_id[:id_len]
+    duplicate_number = 1
+    result = None
+    while result is None:
+      num_str = self.quick_strings.setdefault(id_str, [self.number, sentence])
+      if num_str[0] == self.number:
+        result = self.number
+        self.number += 1
+      elif num_str[1] == sentence:
+        result = num_str[0]
+      elif id_len < len(full_id):
         id_len += 1
-  else:
-    index = len(quick_strings)
-    quick_strings.append([id_str[0:id_len], sentence])
-  return index
+        id_str = full_id[:id_len]
+      else:
+        id_str = "%s%d" % (full_id, duplicate_number)
+        duplicate_number += 1
+    return opmask_quick_string|result
 
-def process_param(param, global_vars_list, global_var_uses, local_vars_list, local_var_uses, tag_uses, quick_strings):
-  result = 0
-  if isinstance(param, str):
-    if (param[0] == '$'):
-      check_varible_not_defined(param[1:], local_vars_list)
-      result = get_variable(param, global_vars_list, global_var_uses)
-      result |= opmask_variable
-    elif (param[0] == ':'):
-      check_varible_not_defined(param[1:], global_vars_list)
-      result = get_variable(param, local_vars_list, local_var_uses)
-      result |= opmask_local_variable
-    elif (param[0] == '@'):
-      result = insert_quick_string_with_auto_id(param[1:], quick_strings)
-      result |= opmask_quick_string
+  def load_old(self):
+    try:
+      with open("quick_strings.txt", "r") as old_file:
+        for line in old_file:
+          id_str = line.partition(" ")
+          if id_str[0].startswith("qstr_") and id_str[2]:
+            self.quick_strings[id_str[0][5:]] = [self.number, str.strip(id_str[2])]
+            self.number += 1
+    except EnvironmentError:
+      pass
+
+  def write(self):
+    with open(module_info.export_path("quick_strings.txt"), "wb") as f:
+      f.write("%d\r\n" % len(self.quick_strings))
+      for id_str, num_str in self.quick_strings.iteritems():
+        f.write("qstr_%s %s\r\n" % (id_str, num_str[1]))
+
+
+class IdentifierMap:
+  """Maps text identifiers for different types of module data to numbers."""
+
+  def __init__(self):
+    self.tag_map = {}
+
+  def load_ids(self, tag, data, opmask):
+    if not tag in self.tag_map:
+      self.tag_map[tag] = {}
+    id_map = self.tag_map[tag]
+    for i, entry in enumerate(data):
+      name = entry[0]
+      if name in id_map:
+        pc.ERROR("duplicate identifier '%s_%s'" % (tag, name))
+      id_map[name] = opmask|i
+
+  def get_id(self, tag, name, opmask=False):
+    try:
+      id_no = self.tag_map[tag][name]
+      return id_no if opmask else id_no & remove_opmask
+    except KeyError:
+      pc.ERROR("identifier '%s_%s' not found" % (tag, name))
+
+class Processor:
+  """Compiles operation blocks in module data to the numbers in the module text files."""
+
+  def __init__(self, global_variables, quick_strings, identifier_map, write_id=False, show_backtrace=False):
+    self.global_variables = global_variables
+    self.quick_strings = quick_strings
+    self.identifier_map = identifier_map
+    self.write_id = write_id
+    self.show_backtrace = show_backtrace
+
+  def process_id(self, param, tag=None):
+    if isinstance(param, str):
+      tag_name = param.partition("_")
+      if tag and tag_name[0] != tag:
+        pc.ERROR("identifier '%s_%s' is the wrong type: %s required" % (tag_name[0], tag_name[2], tag))
+      param = self.identifier_map.get_id(tag_name[0], tag_name[2], opmask=False)
+    return param
+
+  def process_param(self, param, opcode=None):
+    result = None
+    if isinstance(param, str):
+      if param[0] == ':':
+        if opcode and opcode in lhs_operations:
+          result = self.local_variables.add_id(param[1:])
+        else:
+          result = self.local_variables.get_id(param[1:])
+      elif param[0] == '$':
+        uses = 1 if opcode and opcode in global_lhs_operations else 0
+        result = self.global_variables.add_id(param[1:], uses)
+      elif param[0] == '@':
+        result = self.quick_strings.add_str(param[1:])
+      else:
+        tag_name = param.partition("_")
+        result = self.identifier_map.get_id(tag_name[0], tag_name[2], opmask=True)
     else:
-      result = get_identifier_value(param, tag_uses)
-      if (result < 0):
-        print "ERROR: Illegal Identifier: " + param
-  else:
-    result = param
-  return result
+      result = param
+    return result
 
-def save_statement(ofile, opcode, no_variables, statement, variable_list, variable_uses, local_vars_list, local_var_uses, tag_uses, quick_strings):
-  if no_variables:
-    ofile.write("%d 0 " % opcode)
-  else:
-    statement_len = len(statement) - 1
-    ofile.write("%d %d " % (opcode, statement_len))
-    if is_lhs_operation(opcode) and statement_len > 0:
-      lhs_var = statement[1]
-      if isinstance(lhs_var, str) and lhs_var[0] == ':':
-        add_variable(lhs_var[1:], local_vars_list, local_var_uses)
-    for param in statement[1:]:
-      operand = process_param(param, variable_list, variable_uses, local_vars_list, local_var_uses, tag_uses, quick_strings)
-      ofile.write("%d " % operand)
+  def process_statement(self, statement):
+    try:
+      if isinstance(statement, (int, long)):
+        opcode = statement
+        param_count = 0
+      else:
+        opcode = statement[0]
+        param_count = len(statement) - 1
+      result = ["%d %d " % (opcode, param_count)]
+    except TypeError:
+      raise pc.ModuleSystemError("invalid operation %s" % repr(statement))
+    if param_count > 0:
+      check_opcode = opcode
+      for param in statement[1:]:
+        param_no = self.process_param(param, check_opcode)
+        try:
+          result.append("%d " % param_no)
+        except TypeError:
+          raise pc.ModuleSystemError("invalid parameter %s" % repr(param), opcode=opcode)
+        except pc.ModuleSystemError as e:
+          e.opcode = opcode
+          raise
+        check_opcode = None
+    return result, opcode
 
-def save_statement2(ofile, opcode, no_variables, statement, variable_list, variable_uses, local_vars_list, local_var_uses, tag_uses, quick_strings):
-  if no_variables == 0:
-    lenstatement = len(statement) - 1
-    if is_lhs_operation(opcode):
-      if (lenstatement > 0):
-        param = statement[1]
-        if isinstance(param, str):
-          if (param[0] == ':'):
-            add_variable(param[1:], local_vars_list, local_var_uses)
-  else:
-    lenstatement = 0
-  ofile.write("%d %d "%(opcode, lenstatement))
-  for i in xrange(lenstatement):
-    operand = process_param(statement[i + 1], variable_list, variable_uses, local_vars_list, local_var_uses, tag_uses, quick_strings)
-    ofile.write("%d "%operand)
+  def process_block(self, block, name, check_can_fail=False):
+    self.local_variables = LocalVariables()
+    statement_count = block_len(block)
+    result = [" %d " % statement_count]
+    current_indent = 0
+    for statement in block:
+      statement_result, opcode = self.process_statement(statement)
+      result.extend(statement_result)
+      if opcode in try_begin_operations:
+        current_indent += 1
+      elif opcode == try_end:
+        current_indent -= 1
+      if check_can_fail and current_indent == 0 and ((opcode in can_fail_operations or
+          ((opcode == call_script and statement[1].startswith("cf_", 7)))) and (not name.startswith("cf_"))):
+        pc.WARNING("script can fail: use cf_ at the beginning of its name", entry=name, opcode=opcode)
+    self.local_variables.warn_unused(name)
+    if current_indent != 0:
+      if current_indent > 0:
+        missing = "missing"
+      else:
+        missing = "extra"
+        current_indent *= -1
+      pc.ERROR("%d %s try_end" % (current_indent, missing))
+    return result
 
-def compile_global_vars_in_statement(statement, variable_list, variable_uses):
-  opcode = 0
-  if not isinstance(statement, (list, tuple)):
-    opcode = statement
-  else:
-    opcode = statement[0]
-    if is_lhs_operation_for_global_vars(opcode):
-      if (len(statement) > 1):
-        param = statement[1]
-        if isinstance(param, str):
-          if (statement[1][0] == '$'):
-            add_variable(statement[1][1:], variable_list, variable_uses)
+  def process_block_name(self, block, name):
+    try:
+      return self.process_block(block, name)
+    except pc.ModuleSystemError as e:
+      if not e.entry:
+        e.entry = name
+      raise
 
-def save_statement_block(ofile, statement_name, can_fail_statement, statement_block, variable_list, variable_uses, tag_uses, quick_strings):
-  local_vars = []
-  local_var_uses = []
-  ofile.write(" %d "%(len(statement_block)))
-  store_script_param_1_uses = 0
-  store_script_param_2_uses = 0
-  current_depth = 0
-  can_fail = 0
-  for statement in statement_block:
-    if isinstance(statement, (list, tuple)):
-      opcode = statement[0]
-      no_variables = 0
+  def process_triggers(self, triggers, name):
+    result = ["%d" % block_len(triggers)]
+    for trigger in triggers:
+      result.append("\r\n%f " % trigger[0])
+      trigger_name = "%s: %s" % (name, get_trigger_name(trigger[0]))
+      try:
+        result.extend(self.process_block(trigger[1], trigger_name))
+      except pc.ModuleSystemError as e:
+        e.entry = trigger_name
+        raise
+    result.append("\r\n")
+    return result
+
+
+def make_export(data, data_name, tag=None, file_name=None, header_format=None, process_entry=None, process_list=None):
+  """Generates module system data exporting functions."""
+  def export_wrapper(processor):
+    if not file_name:
+      file_name_ = data_name
     else:
-      opcode = statement
-      no_variables = 1
-    if opcode in try_begin_operations:
-      current_depth = current_depth + 1
-    elif opcode == try_end:
-      current_depth = current_depth - 1
-    elif opcode == store_script_param_1 or (opcode == store_script_param and statement[2] == 1):
-      store_script_param_1_uses = store_script_param_1_uses + 1
-    elif opcode == store_script_param_2 or (opcode == store_script_param and statement[2] == 2):
-      store_script_param_2_uses = store_script_param_2_uses + 1
-    elif (can_fail_statement == 0 and current_depth == 0 and
-        (is_can_fail_operation(opcode) or ((opcode == call_script) and (statement[1].startswith("cf_", 7)))) and (not statement_name.startswith("cf_"))):
-      print "WARNING: Script can fail from opcode " + `opcode` + ". Use cf_ at the beginning of its name: " + statement_name
-    save_statement(ofile, opcode, no_variables, statement, variable_list, variable_uses, local_vars, local_var_uses, tag_uses, quick_strings)
-  if (store_script_param_1_uses > 1):
-    print "WARNING: store_script_param_1 is used more than once:" + statement_name
-  if (store_script_param_2_uses > 1):
-    print "WARNING: store_script_param_2 is used more than once:" + statement_name
-  for local_var, uses in zip(local_vars, local_var_uses):
-    if uses == 0 and not local_var.startswith("unused"):
-      print "WARNING: Local variable never used: " + local_var + ", at: " + statement_name
-  if current_depth != 0:
-    if current_depth > 0:
-      missing = " missing"
+      file_name_ = file_name
+    txt_file = open(module_info.export_path("%s.txt" % file_name_), "wb")
+    print "Exporting %s..." % data_name.replace("_", " ")
+    if tag and processor.write_id:
+      id_file = open("ID_%s.py" % data_name, "w")
     else:
-      missing = " extra"
-      current_depth *= -1
-    print "WARNING: " + `current_depth` + missing + " try_end, at: " + statement_name
+      id_file = None
+    try:
+      if process_list:
+        process_list(processor, txt_file)
+      if header_format:
+        txt_file.write(header_format % len(data))
+      for i, entry in enumerate(data):
+        name = entry[0]
+        if tag:
+          pc.assert_valid_identifier(name, entry=data_name)
+          if id_file:
+            id_file.write("%s_%s = %d\n" % (tag, name, i))
+        if process_entry:
+          try:
+            process_entry(processor, txt_file, entry, i)
+          except pc.ModuleSystemError as e:
+            if not e.entry:
+              e.entry = "%s_%s" % (tag, name) if tag else "#%d" % i
+            raise
+          except Exception as e:
+            if processor.show_backtrace:
+              raise
+            else:
+              msg = e.args[0]
+              if isinstance(e, TypeError) and ("has no len()" in msg or
+                "object is not iterable" in msg or "object is not subscriptable" in msg):
+                msg = "a list was expected: %s" % msg
+              else:
+                msg = "%s: %s" % (type(e).__name__, repr(msg))
+              raise pc.ModuleSystemError(msg, entry=("%s_%s" % (tag, name) if tag else "#%d" % i))
+    finally:
+      txt_file.close()
+      if id_file:
+        id_file.close()
+  return export_wrapper
 
-def compile_global_vars(statement_block, variable_list, variable_uses):
-  for statement in statement_block:
-    compile_global_vars_in_statement(statement, variable_list, variable_uses)
-
-def save_simple_triggers(ofile, triggers, variable_list, variable_uses, tag_uses, quick_strings, debug_name="unknown"):
-  ofile.write("%d\n"%len(triggers))
-  for trigger in triggers:
-    ofile.write("%f "%trigger[0])
-    debug_name += ", trigger id " + `trigger[0]`
-    save_statement_block(ofile, debug_name, 1, trigger[1], variable_list, variable_uses, tag_uses, quick_strings)
-    ofile.write("\n")
-  ofile.write("\n")
+def block_len(block):
+  if not isinstance(block, (list, tuple)):
+    pc.ERROR("%s %s found where list was expected" % (repr(block), type(block)))
+  return len(block)

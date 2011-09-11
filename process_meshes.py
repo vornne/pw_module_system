@@ -1,24 +1,10 @@
-import string
-from header_common import *
-from module_info import *
-from module_meshes import *
+import process_common as pc
+import process_operations as po
+import module_meshes
 
-from process_common import *
+def process_entry(processor, txt_file, entry, index):
+  txt_file.write("mesh_%s %d %s %f %f %f %f %f %f %f %f %f\r\n" % (entry[0:2] +
+      (pc.replace_spaces(entry[2]),) + entry[3:12]))
 
-def save_meshes():
-  ofile = open(export_dir + "meshes.txt","w")
-  ofile.write("%d\n"%len(meshes))
-  for mesh in meshes:
-    ofile.write("mesh_%s %d %s %f %f %f %f %f %f %f %f %f\n"%(mesh[0],mesh[1],replace_spaces(mesh[2]),mesh[3],mesh[4],mesh[5],mesh[6],mesh[7],mesh[8],mesh[9],mesh[10],mesh[11]))
-  ofile.close()
-
-def save_python_header():
-  ofile = open("./ID_meshes.py","w")
-  for i, mesh in enumerate(meshes):
-    ofile.write("mesh_%s = %d\n"%(mesh[0], i))
-  ofile.write("\n\n")
-  ofile.close()
-
-print "Exporting meshes..."
-save_python_header()
-save_meshes()
+export = po.make_export(data=module_meshes.meshes, data_name="meshes", tag="mesh",
+    header_format="%d\r\n", process_entry=process_entry)

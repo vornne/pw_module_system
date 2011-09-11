@@ -1,27 +1,9 @@
-import string
+import process_common as pc
+import process_operations as po
+import module_info_pages
 
-from module_info import *
-from module_info_pages import *
+def process_entry(processor, txt_file, entry, index):
+  txt_file.write("ip_%s %s %s\r\n" % (entry[0], pc.replace_spaces(entry[1]), pc.replace_spaces(entry[2])))
 
-from process_common import *
-
-def save_info_pages():
-  ofile = open(export_dir + "info_pages.txt","w")
-  ofile.write("infopagesfile version 1\n")
-  ofile.write("%d\n"%(len(info_pages)))
-  for i, info_page in enumerate(info_pages):
-    ofile.write("ip_%s %s %s"%(info_page[0], string.replace(info_page[1]," ","_"), string.replace(info_page[2]," ","_")))
-    ofile.write("\n")
-  ofile.close()
-
-def save_python_header():
-  ofile = open("./ID_info_pages.py","w")
-  for i, info_page in enumerate(info_pages):
-    ofile.write("ip_%s = %d\n"%(info_page[0], i))
-  ofile.write("\n\n")
-  ofile.close()
-
-print "Exporting info pages..."
-save_info_pages()
-save_python_header()
-  
+export = po.make_export(data=module_info_pages.info_pages, data_name="info_pages", tag="info",
+    header_format="infopagesfile version 1\r\n%d\r\n", process_entry=process_entry)

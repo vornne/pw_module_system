@@ -1,30 +1,9 @@
-import string
+import process_common as pc
+import process_operations as po
+import module_quests
 
-from module_info import *
-from module_quests import *
+def process_entry(processor, txt_file, entry, index):
+  txt_file.write("qst_%s %s %d %s \r\n" % (entry[0], pc.replace_spaces(entry[1]), entry[2], pc.replace_spaces(entry[3])))
 
-from process_common import *
-
-def save_quests():
-  ofile = open(export_dir + "quests.txt","w")
-  ofile.write("questsfile version 1\n")
-  ofile.write("%d\n"%(len(quests)))
-  for i_quest in xrange(len(quests)):
-    quest = quests[i_quest]
-    ofile.write("qst_%s %s %d "%(quest[0],(string.replace(quest[1]," ","_")),quest[2]))
-    ofile.write("%s "%(string.replace(quest[3]," ","_")))
-    ofile.write("\n")
-  ofile.close()
-
-def save_python_header():
-  ofile = open("./ID_quests.py","w")
-  for i, quest in enumerate(quests):
-    ofile.write("qst_%s = %d\n"%(quest[0], i))
-  for i, quest in enumerate(quests):
-    ofile.write("qsttag_%s = %d\n"%(quest[0], opmask_quest_index|i))
-  ofile.write("\n\n")
-  ofile.close()
-
-print "Exporting quests..."
-save_quests()
-save_python_header()
+export = po.make_export(data=module_quests.quests, data_name="quests", tag="qst",
+    header_format="questsfile version 1\r\n%d\r\n", process_entry=process_entry)

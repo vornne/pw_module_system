@@ -1,34 +1,12 @@
-import string
+import process_operations as po
+from header_scene_props import *
+import module_scene_props
 
-from module_info import *
-from module_scene_props import *
+def process_entry(processor, txt_file, entry, index):
+  output_list = ["spr_%s %d %d %s %s " % (entry[0], entry[1], get_spr_hit_points(entry[1]), entry[2], entry[3])]
+  output_list.extend(processor.process_triggers(entry[4], entry[0]))
+  output_list.append("\r\n\r\n")
+  txt_file.write("".join(output_list))
 
-from process_common import *
-from process_operations import *
-
-def save_scene_props(variable_list,variable_uses,tag_uses,quick_strings):
-  ofile = open(export_dir + "scene_props.txt","w")
-  ofile.write("scene_propsfile version 1\n")
-  ofile.write(" %d\n"%(len(scene_props)))
-  for scene_prop in scene_props:
-    ofile.write("spr_%s %d %d %s %s "%(scene_prop[0], scene_prop[1], get_spr_hit_points(scene_prop[1]), scene_prop[2], scene_prop[3]))
-    save_simple_triggers(ofile, scene_prop[4], variable_list, variable_uses, tag_uses, quick_strings, debug_name=scene_prop[0])
-    ofile.write("\n")
-  ofile.close()
-
-
-def save_python_header():
-  file = open("./ID_scene_props.py","w")
-  for i, scene_prop in enumerate(scene_props):
-    file.write("spr_%s = %d\n"%(scene_prop[0], i))
-  file.close()
-
-print "Exporting scene props..."
-save_python_header()
-variable_uses = []
-variables = load_variables(export_dir,variable_uses)
-tag_uses = []
-quick_strings = load_quick_strings(export_dir)
-save_scene_props(variables,variable_uses,tag_uses,quick_strings)
-save_variables(export_dir,variables,variable_uses)
-save_quick_strings(export_dir,quick_strings)
+export = po.make_export(data=module_scene_props.scene_props, data_name="scene_props", tag="spr",
+    header_format="scene_propsfile version 1\r\n %d\r\n", process_entry=process_entry)

@@ -159,6 +159,14 @@ ti_on_presentation_mouse_press                    = -64.0
 ti_on_init_map_icon                               = -70.0
 # trigger param 1: id of the owner party
 
+trigger_names = dict((trigger, name) for name, trigger in globals().iteritems() if isinstance(trigger, float))
+
+def get_trigger_name(trigger):
+  try:
+    return trigger_names[trigger]
+  except (KeyError, TypeError):
+    return repr(trigger)
+
 # keys that can be checked by key_is_down and key_clicked
 key_1 = 0x02
 key_2 = 0x03

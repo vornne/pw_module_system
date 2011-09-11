@@ -1,59 +1,22 @@
-import types
-from header_game_menus import *
-from module_info import *
-from module_game_menus import *
-from module_parties import *
-from process_operations import *
+import process_common as pc
+import process_operations as po
+import module_parties
 
-from process_common import *
+def process_list(processor, txt_file):
+  party_count = len(module_parties.parties)
+  txt_file.write("partiesfile version 1\r\n%d %d\r\n" % (party_count, party_count))
 
-import module_party_templates
-import module_factions
-import module_troops
-import module_map_icons
+def process_entry(processor, txt_file, entry, index):
+  icon_flags = (entry[2][1] if po.block_len(entry[2]) > 1 else 0) | processor.process_id(entry[2][0], "icon") if entry[2] else 0
+  menu = processor.process_id(entry[3], "mnu")
+  template = processor.process_id(entry[4], "pt")
+  faction = processor.process_id(entry[5], "fac")
+  pos = entry[9]
+  txt_file.write(" 1 %d %d p_%s %s %d %d %d %d %d %d %d %d %d %f %f %f %f %f %f 0.0 %d " % (index, index, entry[0],
+      pc.replace_spaces(entry[1]), icon_flags, menu, template, faction, entry[6], entry[6], entry[7], entry[8], entry[8],
+      pos[0], pos[1], pos[0], pos[1], pos[0], pos[1], len(entry[10])))
+  txt_file.write("".join("%d %d 0 %d " % (processor.process_id(member[0], "trp"), member[1], member[2]) for member in entry[10]))
+  txt_file.write("\r\n%f\r\n" % ((3.1415926 / 180.0) * entry[11] if len(entry) > 11 else 0.0))
 
-def save_parties(parties):
-  file = open(export_dir + "parties.txt","w")
-  file.write("partiesfile version 1\n")
-  party_count = len(parties)
-  file.write("%d %d\n"%(party_count, party_count))
-  for i, party in enumerate(parties):
-    file.write(" 1 %d %d "%(i, i))
-    icon_flags = find_str_id(module_map_icons.map_icons, party[2][0], tag_map_icon) | (party[2][1] if len(party[2]) > 1 else 0)
-    file.write("p_%s %s %d "%(convert_to_identifier(party[0]),replace_spaces(party[1]), icon_flags))
-    menu_no = 0
-    menu_param = party[3]
-    if (type(menu_param) == types.StringType):
-      menu_no = find_object(game_menus,menu_param,tag_menu)
-      if (menu_no < 0):
-        print "Error: Unable to find menu-id :" + menu_param
-    else:
-      menu_no = menu_param
-    file.write("%d "%(menu_no))
-    file.write("%d %d %d %d %d "%(find_str_id(module_party_templates.party_templates, party[4], tag_party_tpl), find_str_id(module_factions.factions, party[5], tag_faction), party[6], party[6],party[7]))
-    ai_behavior_object = find_str_id(parties, party[8], tag_party)
-    file.write("%d %d "%(ai_behavior_object,ai_behavior_object))
-    position = party[9]
-    default_behavior_location = position
-    file.write("%f %f "%(default_behavior_location[0],default_behavior_location[1]))
-    file.write("%f %f "%(default_behavior_location[0],default_behavior_location[1]))
-    file.write("%f %f 0.0 "%position)
-    member_list = party[10]
-    file.write("%d "%len(member_list))
-    for member in member_list:
-      file.write("%d %d 0 %d "%(find_str_id(module_troops.troops, member[0], tag_troop),member[1],member[2]))
-    bearing = 0.0
-    if (len(party) > 11):
-      bearing = (3.1415926 / 180.0) * party[11]
-    file.write("\n%f\n"%(bearing))
-  file.close()
-
-def save_python_header(parties):
-  file = open("./ID_parties.py","w")
-  for i, party in enumerate(parties):
-    file.write("p_%s = %d\n"%(convert_to_identifier(party[0]), i))
-  file.close()
-
-print "Exporting parties..."
-save_python_header(parties)
-save_parties(parties)
+export = po.make_export(data=module_parties.parties, data_name="parties", tag="p",
+    process_list=process_list, process_entry=process_entry)

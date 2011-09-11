@@ -1,36 +1,11 @@
-import string
+import process_operations as po
+import module_presentations
 
-from module_info import *
-from module_presentations import *
+def process_entry(processor, txt_file, entry, index):
+  output_list = ["prsnt_%s %d %d " % (entry[0], entry[1], processor.process_id(entry[2], "mesh"))]
+  output_list.extend(processor.process_triggers(entry[3], entry[0]))
+  output_list.append("\r\n\r\n")
+  txt_file.write("".join(output_list))
 
-from process_common import *
-from process_operations import *
-
-import module_meshes
-
-def save_presentations(variable_list,variable_uses,tag_uses,quick_strings):
-  ofile = open(export_dir + "presentations.txt","w")
-  ofile.write("presentationsfile version 1\n")
-  ofile.write(" %d\n"%(len(presentations)))
-  for presentation in presentations:
-    ofile.write("prsnt_%s %d %d "%(presentation[0], presentation[1], find_str_id(module_meshes.meshes, presentation[2], tag_mesh)))
-    save_simple_triggers(ofile, presentation[3], variable_list, variable_uses, tag_uses, quick_strings, debug_name=presentation[0])
-    ofile.write("\n")
-  ofile.close()
-
-
-def save_python_header():
-  file = open("./ID_presentations.py","w")
-  for i, presentation in enumerate(presentations):
-    file.write("prsnt_%s = %d\n"%(presentation[0], i))
-  file.close()
-
-print "Exporting presentations..."
-save_python_header()
-variable_uses = []
-variables = load_variables(export_dir,variable_uses)
-tag_uses = []
-quick_strings = load_quick_strings(export_dir)
-save_presentations(variables,variable_uses,tag_uses,quick_strings)
-save_variables(export_dir,variables,variable_uses)
-save_quick_strings(export_dir,quick_strings)
+export = po.make_export(data=module_presentations.presentations, data_name="presentations", tag="prsnt",
+    header_format="presentationsfile version 1\r\n %d\r\n", process_entry=process_entry)

@@ -1,25 +1,9 @@
-import string
-from header_common import *
-from module_info import *
-from module_strings import *
+import process_common as pc
+import process_operations as po
+import module_strings
 
-from process_common import *
+def process_entry(processor, txt_file, entry, index):
+  txt_file.write("str_%s %s\r\n" % (entry[0], pc.replace_spaces(entry[1])))
 
-def save_strings(strings):
-  ofile = open(export_dir + "strings.txt","w")
-  ofile.write("stringsfile version 1\n")
-  ofile.write("%d\n"%len(strings))
-  for string in strings:
-    ofile.write("str_%s %s\n"%(convert_to_identifier(string[0]),replace_spaces(string[1])))
-  ofile.close()
-
-def save_python_header():
-  ofile = open("./ID_strings.py","w")
-  for i, string in enumerate(strings):
-    ofile.write("str_%s = %d\n"%(convert_to_identifier(string[0]), i))
-  ofile.write("\n\n")
-  ofile.close()
-
-print "Exporting strings..."
-save_python_header()
-save_strings(strings)
+export = po.make_export(data=module_strings.strings, data_name="strings", tag="str",
+    header_format="stringsfile version 1\r\n%d\r\n", process_entry=process_entry)

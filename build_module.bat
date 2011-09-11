@@ -1,9 +1,6 @@
 @echo off
 python -tt build_module.py
 @del *.pyc
-echo.
-echo ______________________________
-echo.
-echo Script processing has ended.
-echo Press any key to exit. . .
+echo
+echo Press any key to exit...
 pause>nul

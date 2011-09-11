@@ -1,28 +1,11 @@
-from header_common import *
-from module_info import *
-from module_postfx import *
+import process_operations as po
+import module_postfx
 
-def write_python_header(postfx_params_list):
-  file = open("./ID_postfx_params.py","w")
-  for i, postfx_param in enumerate(postfx_params_list):
-    file.write("pfx_%s = %d\n"%(postfx_param[0], i))
-  file.write("\n\n")
-  file.close()
+def process_entry(processor, txt_file, entry, index):
+  output_list = ["pfx_%s %d %d" % entry[0:3]]
+  output_list.extend("  %f %f %f %f" % tuple(e) for e in entry[3:6])
+  output_list.append("\r\n")
+  txt_file.write("".join(output_list))
 
-def write_postfx_params(postfx_params_list):
-  ofile = open(export_dir + "postfx.txt","w")
-  ofile.write("postfx_paramsfile version 1\n")
-  ofile.write("%d\n"%len(postfx_params_list))
-  for postfx_param in postfx_params_list:
-    ofile.write("pfx_%s %d %d"%(postfx_param[0], postfx_param[1],postfx_param[2]))
-    params_list1 = postfx_param[3]
-    params_list2 = postfx_param[4]
-    params_list3 = postfx_param[5]
-    ofile.write("  %f %f %f %f"%(params_list1[0], params_list1[1], params_list1[2], params_list1[3]))
-    ofile.write("  %f %f %f %f"%(params_list2[0], params_list2[1], params_list2[2], params_list2[3]))
-    ofile.write("  %f %f %f %f\n"%(params_list3[0], params_list3[1], params_list3[2], params_list3[3]))
-  ofile.close()
-
-print "Exporting postfx_params..."
-write_postfx_params(postfx_params)
-write_python_header(postfx_params)
+export = po.make_export(data=module_postfx.postfx_params, data_name="postfx", tag="pfx",
+    header_format="postfx_paramsfile version 1\r\n%d\r\n", process_entry=process_entry)

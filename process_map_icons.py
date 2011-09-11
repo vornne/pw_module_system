@@ -1,43 +1,21 @@
-import string
-from module_info import *
-from module_map_icons import *
+import process_operations as po
+import module_map_icons
 
-from process_common import *
-from process_operations import *
+def process_entry(processor, txt_file, entry, index):
+  entry_len = len(entry)
+  output_list = ["%s %d %s %f %d " % (entry[0], entry[1], entry[2], entry[3], processor.process_id(entry[4], "snd"))]
+  triggers = []
+  if entry_len >= 8:
+    output_list.append("%f %f %f " % entry[5:8])
+    if entry_len > 8:
+      triggers = entry[8]
+  else:
+    output_list.append("0 0 0 ")
+    if entry_len > 5:
+      triggers = entry[5]
+  output_list.extend(processor.process_triggers(triggers, entry[0]))
+  output_list.append("\r\n\r\n")
+  txt_file.write("".join(output_list))
 
-import module_sounds
-
-def save_map_icons(variable_list,variable_uses,tag_uses,quick_strings):
-  ofile = open(export_dir + "map_icons.txt","w")
-  ofile.write("map_icons_file version 1\n")
-  ofile.write("%d\n"%len(map_icons))
-  for map_icon in map_icons:
-    triggers = []
-    sound_id = find_str_id(module_sounds.sounds, map_icon[4], tag_sound)
-    if (len(map_icon) >= 8):
-      ofile.write("%s %d %s %f %d %f %f %f "%(map_icon[0],map_icon[1],map_icon[2],map_icon[3],sound_id,map_icon[5],map_icon[6],map_icon[7]))
-      if (len(map_icon) == 9):
-        triggers = map_icon[8]
-    else:
-      ofile.write("%s %d %s %f %d 0 0 0 "%(map_icon[0],map_icon[1],map_icon[2],map_icon[3],sound_id))
-      if (len(map_icon) == 6):
-        triggers = map_icon[5]
-    save_simple_triggers(ofile,triggers, variable_list,variable_uses,tag_uses,quick_strings)
-    ofile.write("\n")
-  ofile.close()
-
-def save_python_header():
-  ofile = open("./ID_map_icons.py","w")
-  for i, map_icon in enumerate(map_icons):
-    ofile.write("icon_%s = %d\n"%(map_icon[0], i))
-  ofile.close()
-
-print "Exporting map icons..."
-save_python_header()
-variable_uses = []
-variables = load_variables(export_dir,variable_uses)
-tag_uses = []
-quick_strings = load_quick_strings(export_dir)
-save_map_icons(variables,variable_uses,tag_uses,quick_strings)
-save_variables(export_dir,variables,variable_uses)
-save_quick_strings(export_dir,quick_strings)
+export = po.make_export(data=module_map_icons.map_icons, data_name="map_icons", tag="icon",
+    header_format="map_icons_file version 1\r\n%d\r\n", process_entry=process_entry)

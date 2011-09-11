@@ -1,48 +1,20 @@
-import string
-import types
+import process_common as pc
+import process_operations as po
+import module_game_menus
 
-from module_info import *
-from module_game_menus import *
+def process_entry(processor, txt_file, entry, index):
+  output_list = ["menu_%s %d %s %s" % (entry[0], entry[1], pc.replace_spaces(entry[2]), entry[3])]
+  output_list.extend(processor.process_block(entry[4], entry[0]))
+  output_list.append("%d\r\n" % po.block_len(entry[5]))
+  for menu in entry[5]:
+    output_list.append(" mno_%s " % menu[0])
+    name = "%s: %s" % (entry[0], menu[0])
+    output_list.extend(processor.process_block(menu[1], name + " conditions"))
+    output_list.append(" %s " % pc.replace_spaces(menu[2]))
+    output_list.extend(processor.process_block(menu[3], name + " consequences"))
+    output_list.append(" %s " % pc.replace_spaces(menu[4]) if len(menu) > 4 else " . ")
+  output_list.append("\r\n")
+  txt_file.write("".join(output_list))
 
-from process_common import *
-from process_operations import *
-
-def save_game_menu_item(ofile,variable_list,variable_uses,menu_item,tag_uses,quick_strings):
-  ofile.write(" mno_%s "%(menu_item[0]))
-  save_statement_block(ofile,0, 1, menu_item[1], variable_list, variable_uses,tag_uses,quick_strings)
-  ofile.write(" %s "%(string.replace(menu_item[2]," ","_")))
-  save_statement_block(ofile,0, 1, menu_item[3], variable_list, variable_uses,tag_uses,quick_strings)
-  door_name = "."
-  if (len(menu_item) > 4):
-    door_name = menu_item[4]
-  ofile.write(" %s "%(string.replace(door_name," ","_")))
-
-def save_game_menus(variable_list,variable_uses,tag_uses,quick_strings):
-  ofile = open(export_dir + "menus.txt","w")
-  ofile.write("menusfile version 1\n")
-  ofile.write(" %d\n"%(len(game_menus)))
-  for game_menu in game_menus:
-    ofile.write("menu_%s %d %s %s"%(game_menu[0],game_menu[1],string.replace(game_menu[2]," ","_"),game_menu[3]))
-    save_statement_block(ofile,0,1, game_menu[4]  , variable_list, variable_uses,tag_uses,quick_strings)
-    menu_items = game_menu[5]
-    ofile.write("%d\n"%(len(menu_items)))
-    for menu_item in menu_items:
-      save_game_menu_item(ofile,variable_list,variable_uses,menu_item,tag_uses,quick_strings)
-    ofile.write("\n")
-  ofile.close()
-
-def save_python_header():
-  ofile = open("./ID_menus.py","w")
-  for i, game_menu in enumerate(game_menus):
-    ofile.write("menu_%s = %d\n"%(game_menu[0], i))
-  ofile.close()
-
-print "Exporting game menus..."
-save_python_header()
-variable_uses = []
-variables = load_variables(export_dir, variable_uses)
-tag_uses = []
-quick_strings = load_quick_strings(export_dir)
-save_game_menus(variables,variable_uses,tag_uses,quick_strings)
-save_variables(export_dir,variables,variable_uses)
-save_quick_strings(export_dir,quick_strings)
+export = po.make_export(data=module_game_menus.game_menus, data_name="game_menus", tag="menu", file_name="menus",
+    header_format="menusfile version 1\r\n %d\r\n", process_entry=process_entry)

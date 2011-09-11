@@ -274,24 +274,6 @@ def reg(reg_no):
     raise Exception("ERROR: invalid register number.")
   return opmask_register | reg_no
 
-def find_object(objects, object_id):
-  for i, object in enumerate(objects):
-    if (object[0] == object_id):
-      return i
-  return -1
-
-def find_str_id(objects, object_id, tag):
-  if isinstance(object_id, str):
-    object_str = object_id.partition("_")[2]
-    if not object_str:
-      object_str = object_id
-    object_id = -1
-    for i, object_i in enumerate(objects):
-      if (object_i[0] == object_str):
-        object_id = i|(tag << op_num_value_bits)
-        break
-  return object_id
-
 s0 =  0
 s1 =  1
 s2 =  2

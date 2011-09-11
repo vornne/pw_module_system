@@ -1,187 +1,79 @@
-import string
-import types
+import process_common as pc
+import process_operations as po
+import module_dialogs
+import module_info
+from header_dialogs import *
 
-from module_info import *
-from module_triggers import *
-from module_dialogs import *
+start_states = []
+end_states = []
 
-from process_common import *
-from process_operations import *
-
-import module_troops
-import module_party_templates
-
-speaker_pos = 0
-flags_pos = 1
-ipt_token_pos = 2
-sentence_conditions_pos = 3
-text_pos = 4
-opt_token_pos = 5
-sentence_consequences_pos = 6
-sentence_voice_over_pos = 7
-
-def save_dialog_states(dialog_states):
-  file = open(export_dir + "dialog_states.txt","w")
-  for dialog_state in dialog_states:
-    file.write("%s\n"%dialog_state)
-  file.close()
-
-def save_triggers(variable_list,variable_uses,triggers,tag_uses,quick_strings):
-  file = open(export_dir + "triggers.txt","w")
-  file.write("triggersfile version 1\n")
-  file.write("%d\n"%len(triggers))
-  for trigger in triggers:
-    file.write("%f %f %f "%(trigger[trigger_check_pos],trigger[trigger_delay_pos],trigger[trigger_rearm_pos]))
-    save_statement_block(file,0,1,trigger[trigger_conditions_pos]  , variable_list, variable_uses,tag_uses,quick_strings)
-    save_statement_block(file,0,1,trigger[trigger_consequences_pos], variable_list, variable_uses,tag_uses,quick_strings)
-    file.write("\n")
-  file.close()
-
-def compile_sentence_tokens(sentences):
-  input_tokens = []
-  output_tokens = []
-  dialog_states = ["start","party_encounter","prisoner_liberated","enemy_defeated","party_relieved","event_triggered","close_window","trade","exchange_members", "trade_prisoners","buy_mercenaries","view_char","training","member_chat","prisoner_chat"]
-  dialog_state_usages = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-  for sentence in sentences:
-    output_token_id = -1
-    output_token = sentence[opt_token_pos]
-    found = 0
-    for i_t in xrange(len(dialog_states)):
-      if output_token == dialog_states[i_t]:
-        output_token_id = i_t
-        found = 1
-        break
-    if not found:
-      dialog_states.append(output_token)
-      dialog_state_usages.append(0)
-      output_token_id = len(dialog_states) - 1
-    output_tokens.append(output_token_id)
-  for sentence in sentences:
-    input_token_id = -1
-    input_token = sentence[ipt_token_pos]
-    found = 0
-    for i_t in xrange(len(dialog_states)):
-      if input_token == dialog_states[i_t]:
-        input_token_id = i_t
-        dialog_state_usages[i_t] = dialog_state_usages[i_t] + 1
-        found = 1
-        break
-    if not found:
-      print sentence[ipt_token_pos]
-      print sentence[text_pos]
-      print sentence[opt_token_pos]
-      print "**********************************************************************************"
-      print "ERROR: INPUT TOKEN NOT FOUND:" + input_token
-      print "**********************************************************************************"
-      print "**********************************************************************************"
-    input_tokens.append(input_token_id)
-  save_dialog_states(dialog_states)
-  for i_t in xrange(len(dialog_states)):
-    if dialog_state_usages[i_t] == 0:
-      print "ERROR: Output token not found: " + dialog_states[i_t]
-  return (input_tokens, output_tokens)
-
-def create_auto_id(sentence,auto_ids):
-    text = convert_to_identifier(sentence[text_pos])
-    done = 0
-    i = 20
-    lt = len(text)
-    if (i > lt):
-      i  = lt
-    auto_id = "dlga_" + text[0:i]
-    done = 0
-    if auto_ids.has_key(auto_id) and (auto_ids[auto_id] == text):
-      done = 1
-    while (i <= lt) and not done:
-      auto_id = "dlga_" + text[0:i]
-      if auto_ids.has_key(auto_id):
-        if auto_ids[auto_id] == text:
-          done = 1
-        else:
-          i += 1
-      else:
-        done = 1
-        auto_ids[auto_id] = text
-    if not done:
-      number = 1
-      new_auto_id = auto_id + str(number)
-      while auto_ids.has_key(new_auto_id):
-        number += 1
-        new_auto_id = auto_id + str(number)
-      auto_id = new_auto_id
-      auto_ids[auto_id] = text
-    return auto_id
-
-def create_auto_id2(sentence,auto_ids):
-    text = sentence[text_pos]
-    token_ipt = convert_to_identifier(sentence[ipt_token_pos])
-    token_opt = convert_to_identifier(sentence[opt_token_pos])
-    done = 0
-    auto_id = "dlga_" + token_ipt + ":" + token_opt
-    done = 0
-    if not auto_ids.has_key(auto_id):
-      done = 1
-    else:
-      if auto_ids.has_key(auto_id) and (auto_ids[auto_id] == text):
-        done = 1
-    if not done:
-      number = 1
-      new_auto_id = auto_id + "." + str(number)
-      while auto_ids.has_key(new_auto_id):
-        number += 1
-        new_auto_id = auto_id + "." + str(number)
-      auto_id = new_auto_id
-    auto_ids[auto_id] = text
-    return auto_id
- 
-def save_sentences(variable_list,variable_uses,sentences,tag_uses,quick_strings,input_states,output_states):
-  file = open(export_dir + "conversation.txt","w")
-  file.write("dialogsfile version 2\n")
-  file.write("%d\n"%len(sentences))
-  # Create an empty dictionary
-  auto_ids = {}
-  for i in xrange(len(sentences)):
-    sentence = sentences[i]
+def compile_dialog_states(processor, dialog_file):
+  global start_states
+  global end_states
+  unique_state_list = ["start", "party_encounter", "prisoner_liberated", "enemy_defeated", "party_relieved",
+      "event_triggered", "close_window", "trade", "exchange_members", "trade_prisoners", "buy_mercenaries",
+      "view_char", "training", "member_chat", "prisoner_chat"]
+  unique_state_usages = [1 for i in unique_state_list]
+  unique_states = dict((k, i) for i, k in enumerate(unique_state_list))
+  last_index = len(unique_state_list)
+  for entry in module_dialogs.dialogs:
+    end_state = entry[5]
+    index = unique_states.setdefault(end_state, last_index)
+    if index == last_index:
+      last_index += 1
+      unique_state_list.append(end_state)
+      unique_state_usages.append(0)
+    end_states.append(index)
+  for entry in module_dialogs.dialogs:
+    start_state = entry[2]
     try:
-      dialog_id = create_auto_id2(sentence,auto_ids)
-      trp_pt = sentence[speaker_pos]
-      flags = sentence[flags_pos]
-      speaker = 0
-      if flags & other:
-        speaker = find_str_id(module_troops.troops, trp_pt) << other_bits
-        flags ^= other
-        trp_pt = trp_pt[0]
-      if flags & party_tpl:
-        speaker |= find_str_id(module_party_templates.party_templates, trp_pt)
-      else:
-        speaker |= find_str_id(module_troops.troops, trp_pt)
-      speaker |= flags
-      file.write("%s %d %d "%(dialog_id,speaker,input_states[i]))
-      save_statement_block(file, 0, 1, sentence[sentence_conditions_pos], variable_list,variable_uses,tag_uses,quick_strings)
+      index = unique_states[start_state]
+      unique_state_usages[index] += 1
+      start_states.append(index)
+    except KeyError:
+      pc.ERROR("starting dialog state '%s' has no matching ending state" % start_state)
+  for state, usages in zip(unique_state_list, unique_state_usages):
+    if not usages:
+      pc.ERROR("ending dialog state '%s' is not used" % state)
+  with open(module_info.export_path("dialog_states.txt"), "wb") as state_file:
+    state_file.write("".join("%s\r\n" % e for e in unique_state_list))
 
-      file.write("%s "%(string.replace(sentence[text_pos]," ","_")))
-      if (len(sentence[text_pos]) == 0):
-        file.write("NO_TEXT ")
-      file.write(" %d "%(output_states[i]))
-      save_statement_block(file, 0, 1, sentence[sentence_consequences_pos], variable_list,variable_uses,tag_uses,quick_strings)
-      if (len(sentence) > sentence_voice_over_pos):
-        file.write("%s "%sentence[sentence_voice_over_pos])
-      else:
-        file.write("NO_VOICEOVER ")
-      file.write("\n")
-    except:
-      print "Error in dialog line:"
-      print sentence
-  file.close()
+dialog_names = {}
 
-print "Exporting triggers..."
-variable_uses = []
-variables = load_variables(export_dir,variable_uses)
-tag_uses = []
-quick_strings = load_quick_strings(export_dir)
-save_triggers(variables,variable_uses,triggers,tag_uses,quick_strings)
-print "Exporting dialogs..."
-(input_states,output_states) = compile_sentence_tokens(dialogs)
-save_sentences(variables,variable_uses,dialogs,tag_uses,quick_strings,input_states,output_states)
-save_variables(export_dir,variables,variable_uses)
-save_quick_strings(export_dir,quick_strings)
+def get_dialog_name(start_state, end_state, text):
+  global dialog_names
+  name = "dlga_%s:%s" % (pc.convert_to_identifier(start_state), pc.convert_to_identifier(end_state))
+  text_list = dialog_names.setdefault(name, [])
+  for i, existing_text in enumerate(text_list):
+    if text == existing_text:
+      name = "%s.%d" % (name, i + 1)
+      break
+  else:
+    text_list.append(text)
+  return name
+
+def process_entry(processor, txt_file, entry, index):
+  name = get_dialog_name(entry[start_state_pos], entry[end_state_pos], entry[text_pos])
+  trp_pt = entry[speaker_pos]
+  flags = entry[flags_pos]
+  speaker = 0
+  if flags & other:
+    speaker = processor.process_id(trp_pt[1], "trp") << other_bits
+    flags ^= other
+    trp_pt = trp_pt[0]
+  if flags & party_tpl:
+    speaker |= processor.process_id(trp_pt, "pt")
+  else:
+    speaker |= processor.process_id(trp_pt, "trp")
+  speaker |= flags
+  output_list = ["%s %d %d " % (name, speaker, start_states[index])]
+  output_list.extend(processor.process_block_name(entry[conditions_pos], "%s conditions" % name))
+  output_list.append("%s " % pc.replace_spaces(entry[text_pos]) if entry[text_pos] else "NO_TEXT ")
+  output_list.append(" %d " % end_states[index])
+  output_list.extend(processor.process_block_name(entry[consequences_pos], "%s consequences" % name))
+  output_list.append("%s " % entry[voice_pos] if len(entry) > voice_pos else "NO_VOICEOVER ")
+  output_list.append("\r\n")
+  txt_file.write("".join(output_list))
+
+export = po.make_export(data=module_dialogs.dialogs, data_name="dialogs", file_name="conversation",
+    header_format="dialogsfile version 2\r\n%d\r\n", process_entry=process_entry, process_list=compile_dialog_states)

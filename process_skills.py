@@ -1,29 +1,9 @@
-import string
-from header_common import *
-from module_info import *
-from module_skills import *
-from process_common import *
+import process_common as pc
+import process_operations as po
+import module_skills
 
-skill_name_pos = 1
-skill_attribute_pos = 2
-skill_max_level_pos= 3
-skill_desc_pos = 4
+def process_entry(processor, txt_file, entry, index):
+  txt_file.write("skl_%s %s %d %d %s\r\n" % (entry[0], pc.replace_spaces(entry[1]), entry[2], entry[3], pc.replace_spaces(entry[4])))
 
-def save_skills():
-  ofile = open(export_dir + "skills.txt","w")
-  ofile.write("%d\n"%(len(skills)))
-  for skill in skills:
-    ofile.write("skl_%s %s "%(skill[0], replace_spaces(skill[1])))
-    ofile.write("%d %d %s\n"%(skill[skill_attribute_pos],skill[skill_max_level_pos],(string.replace(skill[skill_desc_pos]," ","_"))))
-  ofile.close()
-
-def save_python_header():
-  ofile = open("./ID_skills.py","w")
-  for i, skill in enumerate(skills):
-    ofile.write("skl_%s = %d\n"%(skill[0], i))
-  ofile.write("\n\n")
-  ofile.close()
-
-print "Exporting skills..."
-save_python_header()
-save_skills()
+export = po.make_export(data=module_skills.skills, data_name="skills", tag="skl",
+    header_format="%d\r\n", process_entry=process_entry)
