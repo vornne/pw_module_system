@@ -2544,7 +2544,7 @@ def fill_scene_props_list(list_var, trigger_id, modify_function):
 scene_props_to_link = []
 def make_link_scene_prop_entry(spr_name, link_list):
   link_list = [spr_name] + [spr_name if x == link_scene_prop_self else x for x in link_list]
-  link_list = map(spr_tag, link_list)
+  link_list = [spr_tag(x) for x in link_list]
   for unused in range(len(link_list), linked_scene_prop_slot_count + 1):
     link_list.append(-1)
   return link_list

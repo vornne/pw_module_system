@@ -65,7 +65,7 @@ def generate_setup_scene_props_after_mission_start():
       (scene_prop_get_num_instances, ":num_instances", link_entry[0]),
       (try_for_range, ":instance_no", 0, ":num_instances"),
         (scene_prop_get_instance, ":instance_id", link_entry[0], ":instance_no"),
-        tuple([call_script] + [link_entry[1]] + [":instance_id"] + link_entry[2:]),
+        tuple([call_script, link_entry[1], ":instance_id"] + link_entry[2:]),
       (try_end),
       ])
   return script_body
