@@ -6,6 +6,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description="Build the Mount&Blade Warband module system.")
 parser.add_argument("-i", "--write-ids", action="store_true", help="write ID_*.py files")
+parser.add_argument("-d", "--build-data", action="store_true", help="build data *.txt files")
 parser.add_argument("-t", "--show-backtrace", action="store_true", help="show full backtrace for errors")
 group = parser.add_mutually_exclusive_group()
 group.add_argument("-w", "--warnings-fatal", action="store_true", help="treat all warnings as fatal errors")
@@ -141,6 +142,18 @@ try:
   process_dialogs.export(processor)
   import process_postfx
   process_postfx.export(processor)
+
+  if args.build_data:
+    import os
+    data_path = module_info.export_path("Data")
+    if not os.path.isdir(data_path):
+      os.mkdir(data_path)
+    import module_flora_kinds
+    module_flora_kinds.export(processor)
+    import module_ground_specs
+    module_ground_specs.export(processor)
+    import module_skyboxes
+    module_skyboxes.export(processor)
 
   global_variables.warn_unused(None)
   global_variables.write()
