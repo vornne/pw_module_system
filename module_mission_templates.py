@@ -523,7 +523,7 @@ mission_templates = [
       ]),
 
     (0, 0, 0, [],
-     [(key_clicked, key_f7),
+     [(key_clicked, key_f10),
       (call_script, "script_cf_no_input_presentation_active"),
       (try_begin),
         (neg|is_presentation_active, "prsnt_chat_overlay"),
