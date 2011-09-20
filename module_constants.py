@@ -276,7 +276,8 @@ chat_event_type_faction_lord          = 5
 chat_event_type_admin                 = 6
 chat_event_type_admin_shout           = 7
 
-slot_chat_overlay_color               = 0
+slot_chat_overlay_local_color         = 0
+slot_chat_overlay_faction_color       = 1
 
 slot_ship_array_count                 = 0
 slot_ship_array_begin                 = 1

@@ -427,7 +427,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("disable_s0", "Disable {s0}"),
 
   ("toggle_name_labels", "Toggle name labels"),
-  ("toggle_local_chat_overlay", "Toggle local chat overlay"),
+  ("toggle_chat_overlay", "Toggle chat overlay"),
+  ("toggle_local_faction_chat", "Toggle local or faction chat"),
   ("detach_cart_pack", "Detach cart / pack"),
   ("toggle_head", "Toggle head armor"),
   ("discard_body", "Discard body armor"),
