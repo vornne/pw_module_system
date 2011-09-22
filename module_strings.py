@@ -460,7 +460,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("destroy_s1", "Destroy {s1}"),
   ("destroy_all_items_cart", "Destroy all items in cart"),
   ("process_wood", "Process wood"),
-  ("process_iron", "Process iron"),
+  ("process_metal", "Smelt metal"),
   ("stockpile", "Stockpile"),
   ("export", "Export"),
   ("build", "Build"),

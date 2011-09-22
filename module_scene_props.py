@@ -280,7 +280,7 @@ def spr_hit_plant_triggers(resource_item, full_hp=1000, resource_hp=200, hardnes
 def spr_resource_flags():
   return sokf_destructible|sokf_show_hit_point_bar|sokf_moveable|sokf_missiles_not_attached
 
-def spr_hit_mine_triggers(resource_item, resource_hp=100, hardness=1, regrow_interval=14400, use_string="str_mine"):
+def spr_hit_mine_triggers(resource_item, resource_hp=100, random_hp=0, hardness=1, regrow_interval=14400, use_string="str_mine"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
@@ -289,7 +289,7 @@ def spr_hit_mine_triggers(resource_item, resource_hp=100, hardness=1, regrow_int
     (ti_on_scene_prop_hit,
      [(store_trigger_param_1, ":instance_id"),
       (store_trigger_param_2, ":hit_damage"),
-      (call_script, "script_cf_hit_regrowing_resource", ":instance_id", ":hit_damage", resource_hp, resource_item, hardness, item_class_mining, "skl_labouring", 21, 0, regrow_interval, "script_hit_iron_mine_effect"),
+      (call_script, "script_cf_hit_regrowing_resource", ":instance_id", ":hit_damage", resource_hp, resource_item, hardness, item_class_mining, "skl_labouring", 21, 0, regrow_interval, "script_hit_iron_mine_effect", random_hp),
       ]),
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_animation_finished,
@@ -2025,6 +2025,8 @@ scene_props = [
   ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_iron_ore", resource_hp=70, hardness=4)),
   ("pw_iron_mine_b",spr_resource_flags(),"pw_iron_mine_b","bo_pw_iron_mine_b", spr_hit_mine_triggers("itm_iron_ore", resource_hp=50, hardness=5)),
   ("pw_iron_mine_small",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_iron_ore_small", resource_hp=40, hardness=4)),
+  ("pw_gold_mine",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_gold_nugget", resource_hp=200, random_hp=200, hardness=6)),
+  ("pw_silver_mine",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_silver_nugget", resource_hp=150, random_hp=100, hardness=5)),
 
   ("pw_stockpile_wood_block",spr_use_time(1),"pw_wood_heap_a","bo_wood_heap_a", spr_stockpile_resource_triggers("itm_wood_block")),
   ("pw_stockpile_wood_branch",spr_use_time(1),"wood_heap_b","bo_wood_heap_b", spr_stockpile_resource_triggers("itm_branch")),
@@ -2041,8 +2043,12 @@ scene_props = [
   ("pw_export_iron_bar_short",spr_use_time(10),"pw_iron_bar_short","bo_weapon_small", spr_export_item_triggers("itm_iron_bar_short")),
   ("pw_export_iron_bar",spr_use_time(10),"pw_iron_bar","bo_weapon_small", spr_export_item_triggers("itm_iron_bar")),
   ("pw_export_iron_bar_long",spr_use_time(10),"pw_iron_bar_long","bo_weapon_small", spr_export_item_triggers("itm_iron_bar_long")),
+  ("pw_export_gold_nugget",spr_use_time(7),"pw_gold_nugget","bo_weapon_small", spr_export_item_triggers("itm_gold_nugget")),
+  ("pw_export_gold_bar",spr_use_time(15),"pw_gold_bar","bo_weapon_small", spr_export_item_triggers("itm_gold_bar")),
+  ("pw_export_silver_nugget",spr_use_time(7),"pw_silver_nugget","bo_weapon_small", spr_export_item_triggers("itm_silver_nugget")),
+  ("pw_export_silver_bar",spr_use_time(15),"pw_silver_bar","bo_weapon_small", spr_export_item_triggers("itm_silver_bar")),
   ("pw_process_wood",spr_use_time(6),"bench_tavern_b","bo_bench_tavern_b", spr_process_resource_triggers("script_cf_process_wood", use_string="str_process_wood")),
-  ("pw_process_iron",spr_use_time(8),"smithy_forge","bo_smithy_forge", spr_process_resource_triggers("script_cf_process_iron", use_string="str_process_iron")),
+  ("pw_process_iron",spr_use_time(8),"pw_smithy_forge","bo_pw_smithy_forge", spr_process_resource_triggers("script_cf_process_iron", use_string="str_process_metal")),
 
   ("pw_buy_straw_hat",spr_buy_item_flags(1),"straw_hat_new","bo_armor_head", spr_buy_item_triggers("itm_straw_hat", resources=[], skill_required=1)),
   ("pw_buy_head_wrappings",spr_buy_item_flags(1),"head_wrapping","bo_armor_head", spr_buy_item_triggers("itm_head_wrappings", resources=[], skill_required=1)),
