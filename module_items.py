@@ -787,7 +787,7 @@ items = [
 ["poisoned_dagger", "Poisoned Dagger", [("pw_dagger_poison",0),("scab_dagger",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_left|itcf_show_holster_when_drawn,
  1570, weight(0.75)|difficulty(0)|spd_rtng(105)|weapon_length(47)|swing_damage(18,cut)|thrust_damage(24,pierce), imodbits_sword],
 
-["money_bag", "Money Bag", [("pw_money_bag",0)], itp_type_one_handed_wpn|itp_primary, itcf_carry_quiver_right_vertical|itcf_thrust_onehanded,
+["money_bag", "Money Bag", [("pw_money_bag_hold",0),("pw_money_bag",ixmesh_carry),("pw_money_bag_inv",ixmesh_inventory)], itp_type_one_handed_wpn|itp_primary, itcf_carry_quiver_front_right|itcf_thrust_onehanded,
  0, weight(1)|spd_rtng(80), imodbits_none, [(ti_on_weapon_attack, [(store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_money_bag_item", ":agent_id")])]],
 
 ["torch", "Torch", [("pw_torch", 0),("pw_torch",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_spear,
