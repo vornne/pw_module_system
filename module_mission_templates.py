@@ -236,6 +236,8 @@ mission_templates = [
      [(store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":horse_agent_id"),
       (agent_set_slot, ":horse_agent_id", slot_agent_horse_last_rider, ":agent_id"),
+      (agent_get_position, pos1, ":horse_agent_id"),
+      (agent_set_scripted_destination, ":horse_agent_id", pos1, 0),
       ]),
 
     (0, 0, 0.5,
