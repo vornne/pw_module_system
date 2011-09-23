@@ -772,6 +772,17 @@ items = [
  240, weight(5)|spd_rtng(70)|weapon_length(45)|swing_damage(5,blunt), imodbits_none, [(ti_on_weapon_attack, [(store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_bucket", ":agent_id")])]],
 ["water_bucket", "Water Bucket", [("pw_bucket_water",0),("pw_bucket_water_ground",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_slashright_onehanded,
  250, weight(40)|spd_rtng(50)|weapon_length(45)|swing_damage(10,blunt), imodbits_none],
+["fishing_spear", "Fishing Spear", [("pw_fishing_spear",0)], itp_type_polearm|itp_primary|itp_two_handed|itp_cant_use_on_horseback|itp_wooden_parry, itc_spear|itcf_carry_spear,
+ 340, weight(2.25)|spd_rtng(55)|weapon_length(183)|swing_damage(0, cut)|thrust_damage(10, pierce), imodbits_none,
+ [(ti_on_weapon_attack, [(position_move_y, pos1, 270), (store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_fishing_tool", ":agent_id")])]],
+["fishing_net", "Fishing Net", [("pw_fishing_net_b",0),("pw_fishing_net_a",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_slashright_onehanded,
+ 823, weight(5)|spd_rtng(40)|weapon_length(50)|swing_damage(0, cut)|thrust_damage(0, cut), imodbits_none,
+ [(ti_on_weapon_attack, [(position_move_y, pos1, -50), (position_move_z, pos1, -200), (store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_fishing_tool", ":agent_id")])]],
+
+["fish", "Fish", [("pw_fish",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
+ 23, weight(1)|spd_rtng(72)|weapon_length(45)|swing_damage(2,cut), imodbits_none, [(item_class, item_class_food, 3)]],
+["cooked_fish", "Cooked Fish", [("pw_fish_cooked",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
+ 57, weight(1)|spd_rtng(70)|weapon_length(45)|swing_damage(1,cut), imodbits_none, [(item_class, item_class_food, 20)]],
 
 ["surgeon_scalpel", "Surgeon's Scalpel", [("dagger_b",0),("dagger_b_scabbard",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_thrust_onehanded|itcf_carry_dagger_front_left|itcf_show_holster_when_drawn,
  3560, weight(0.75)|difficulty(0)|spd_rtng(50)|weapon_length(36)|thrust_damage(15, pierce), imodbits_sword],

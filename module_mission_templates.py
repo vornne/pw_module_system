@@ -476,6 +476,18 @@ mission_templates = [
       (eq, "$g_fire_place_instance_no", 0),
       ], []),
 
+    (0.1, 0, 30,
+     [(multiplayer_is_server),
+      (try_begin),
+        (scene_prop_get_instance, ":instance_id", "spr_pw_fish_school", "$g_fish_school_instance_no"),
+        (call_script, "script_move_fish_school", ":instance_id"),
+        (val_add, "$g_fish_school_instance_no", 1),
+      (else_try),
+        (assign, "$g_fish_school_instance_no", 0),
+      (try_end),
+      (eq, "$g_fish_school_instance_no", 0),
+      ], []),
+
     (ti_escape_pressed, 0, 0, [],
      [(call_script, "script_cf_no_input_presentation_active"),
       (start_presentation, "prsnt_escape_menu"),

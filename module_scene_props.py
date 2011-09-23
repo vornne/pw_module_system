@@ -2363,6 +2363,8 @@ scene_props = [
   ("pw_buy_repair_hammer",spr_buy_item_flags(7),"pw_repair_hammer","bo_weapon_small", spr_buy_item_triggers("itm_repair_hammer", resources=["itm_iron_piece", "itm_stick"], skill_required=2)),
   ("pw_buy_lock_pick",spr_buy_item_flags(24),"pw_lock_pick","bo_weapon_small", spr_buy_item_triggers("itm_lock_pick", resources=["itm_iron_piece"], skill_required=3)),
   ("pw_buy_bucket",spr_buy_item_flags(10),"pw_bucket_ground","bo_pw_bucket", spr_buy_item_triggers("itm_bucket", pos_offset=(0,0,20), resources=[("itm_board", 2), "itm_iron_piece"], skill_required=2)),
+  ("pw_buy_fishing_spear",spr_buy_item_flags(9),"pw_fishing_spear","bo_weapon_big", spr_buy_item_triggers("itm_fishing_spear", resources=["itm_wood_pole", "itm_iron_bar_short"], skill_required=2)),
+  ("pw_buy_fishing_net",spr_buy_item_flags(33),"pw_fishing_net_b","bo_pw_fishing_net_b", spr_buy_item_triggers("itm_fishing_net", pos_offset=(150,-100,0), rotate=(0,-90,0), resources=[("itm_wood_pole_short", 2)], skill_required=2)),
   ("pw_buy_surgeon_scalpel",spr_buy_item_flags(30),"dagger_b_scabbard","bo_weapon_small", spr_buy_item_triggers("itm_surgeon_scalpel", resources=["itm_iron_piece"], skill_required=4)),
   ("pw_buy_dagger",spr_buy_item_flags(7),"scab_dagger","bo_weapon_small", spr_buy_item_triggers("itm_dagger", resources=["itm_iron_bar_short"], skill_required=3)),
   ("pw_buy_poisoned_dagger",spr_buy_item_flags(45),"scab_dagger","bo_weapon_small", spr_buy_item_triggers("itm_poisoned_dagger", resources=["itm_dagger", "itm_poison_herb"], skill_required=4)),
@@ -2528,6 +2530,8 @@ scene_props = [
       (play_sound, "snd_fire_loop", 0),
       ]),
     ]),
+
+  ("pw_fish_school",sokf_invisible,"barrier_capsule","0", []),
 
   ("pw_buy_test_horse",spr_use_time(1),"wood_a","bo_wood_a_fixed", spr_buy_item_triggers("itm_test_horse")),
 

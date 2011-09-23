@@ -319,9 +319,14 @@ max_distance_local_chat_shout         = 5000
 ambient_distance_local_chat           = 1000
 ambient_distance_local_chat_shout     = 2000
 z_position_to_hide_object             = -4999
-z_position_water_level                = -50
+z_position_water_level                = -30
 max_distance_to_use                   = 300
 max_distance_to_loot                  = 100
+max_distance_to_catch_fish            = 2000
+fish_school_minimum_depth             = 200
+fish_school_maximum_depth             = 1000
+fish_school_maximum_count             = 100
+fish_spawn_time                       = 300
 
 sell_item_gold_multiplier             = 80
 castle_tax_gold_multiplier            = 20
