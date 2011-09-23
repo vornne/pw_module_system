@@ -170,6 +170,7 @@ item_class_iron                       = 5
 item_class_lock_pick                  = 6
 item_class_heraldic                   = 7
 item_class_precious                   = 8
+item_class_food                       = 9
 
 ########################################################
 ##  FACTION SLOTS          #############################

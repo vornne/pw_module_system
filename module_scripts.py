@@ -6340,6 +6340,21 @@ scripts = [
     (agent_set_wielded_item, ":agent_id", "itm_water_bucket"),
     ]),
 
+  ("cf_eat_food",
+   [(multiplayer_is_server),
+    (store_script_param, ":agent_id", 1),
+    (store_script_param, ":item_id", 2),
+
+    (agent_is_alive, ":agent_id"),
+    (agent_get_action_dir, ":direction", ":agent_id"),
+    (eq, ":direction", 0),
+    (call_script, "script_cf_agent_consume_item", ":agent_id", ":item_id", 1),
+    (item_get_slot, ":food_amount", ":item_id", slot_item_resource_amount),
+    (store_agent_hit_points, ":hit_points", ":agent_id", 1),
+    (val_add, ":hit_points", ":food_amount"),
+    (agent_set_hit_points, ":agent_id", ":hit_points", 1),
+    ]),
+
   ("check_agent_health",
    [(store_script_param, ":agent_id", 1),
 

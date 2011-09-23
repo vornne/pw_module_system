@@ -1014,11 +1014,19 @@ def fill_item_class_list():
     if len(item) <= 8:
       continue
     trigger_list = item[8]
+    triggers_to_pop = []
     for i, trigger in enumerate(trigger_list):
       if trigger[0] == item_class:
         list_entry = [item_id]
         list_entry.extend(trigger[1:])
         item_class_list.append(list_entry)
-        trigger_list.pop(i)
-        break
+        if trigger[1] == item_class_food:
+          trigger_list[i] = (ti_on_weapon_attack,
+           [(store_trigger_param_1, ":agent_id"),
+            (call_script, "script_cf_eat_food", ":agent_id", item_id),
+            ])
+        else:
+          triggers_to_pop.append(i)
+    for i in reversed(triggers_to_pop):
+      trigger_list.pop(i)
 fill_item_class_list()
