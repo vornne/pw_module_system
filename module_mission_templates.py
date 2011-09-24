@@ -710,7 +710,7 @@ mission_templates = [
       (agent_get_position, pos1, ":agent_id"),
       (position_move_x, 50),
       (set_spawn_position, pos1),
-      (spawn_horse, "itm_test_horse"),
+      (spawn_horse, "itm_admin_horse"),
       ]),
 
     (0, 0, 0, [(key_clicked, key_f10)],
