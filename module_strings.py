@@ -633,7 +633,7 @@ On scene load, the props are linked by searching for the nearest prop in the sce
   ("name_server", "localhost/pwnameserver"),
   ("name_server_password", "WD915Kyi18"),
 
-  ("scene_name_1", "Test Scene"),
+  ("scene_name_1", "Default Scene"),
   ("scene_name_2", "Scene 2"),
   ("scene_name_3", "Scene 3"),
   ("scene_name_4", "Scene 4"),
