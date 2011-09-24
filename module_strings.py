@@ -595,7 +595,7 @@ F2 = scene prop editor value information^\
 F9 = spawn new random player agent^\
 F10 = move agent to the positions of all scene props added to the ship collision list when the scene was loaded^\
 F11 = spawn test horse at agent position^\
-F12 = measure distance to the first spr_pw_test_gold"),
+F12 = measure distance to the first spr_pointer_arrow"),
   ("pw_editor_values_info", "Scene prop editor values 1 and 2^^\
 pw_buy_*, pw_stockpile_*:^value 1 = faction + multiplier^value 2 = initial stockpile count^^\
 pw_export_*:^value 1 = faction + multiplier^value 2 = faction tax multiplier^^\

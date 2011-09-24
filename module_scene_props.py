@@ -2374,10 +2374,6 @@ scene_props = [
 
   ("pw_destroy_heap",spr_use_time(2),"destroy_heap","bo_destroy_heap", spr_destroy_heap_triggers()),
 
-  ("pw_test_gold",spr_use_time(1),"tree_house_guard_a","bo_tree_house_guard_a", spr_gain_gold_triggers(10000)),
-  ("pw_test_health",spr_use_time(1),"wood_a","bo_wood_a_fixed", spr_rest_triggers(30)),
-  ("pw_test_poison",spr_use_time(1),"wood_b","bo_wood_b", spr_rest_triggers(-30, min_health_pct=0)),
-
   ("pw_rest_bed_a",spr_use_time(40),"bed_a","bo_bed_a", spr_rest_triggers(40, min_health_pct=35)),
   ("pw_rest_bed_b",spr_use_time(25),"bed_b","bo_bed_b", spr_rest_triggers(20, min_health_pct=50)),
   ("pw_rest_bed_c",spr_use_time(30),"bed_c","bo_bed_c", spr_rest_triggers(30, min_health_pct=40)),
@@ -2532,8 +2528,6 @@ scene_props = [
     ]),
 
   ("pw_fish_school",sokf_invisible,"barrier_capsule","0", []),
-
-  ("pw_buy_test_horse",spr_use_time(1),"wood_a","bo_wood_a_fixed", spr_buy_item_triggers("itm_test_horse")),
 
   ("code_freeze_agent",sokf_moveable,"0","bo_freeze_agent", []),
   ("code_freeze_horse_agent",sokf_moveable,"0","bo_freeze_horse_agent", []),

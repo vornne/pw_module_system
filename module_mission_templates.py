@@ -692,7 +692,7 @@ mission_templates = [
       ]),
 
     (0, 0, 0, [(key_clicked, key_f12)],
-     [(scene_prop_get_instance, ":instance_id", "spr_pw_test_gold", 0),
+     [(scene_prop_get_instance, ":instance_id", "spr_pointer_arrow", 0),
       (prop_instance_get_position, pos1, ":instance_id"),
       (get_player_agent_no, ":agent_id"),
       (agent_is_active, ":agent_id"),
