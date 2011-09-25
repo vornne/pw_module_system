@@ -223,6 +223,7 @@ def spr_portcullis_winch_triggers(target_scene_prop, move_steps=5, step_size=100
 def spr_cart_triggers(horse=0, detach_offset=0, detach_rotation=0, inventory_count=0, max_item_length=100, access_distance=100, use_string="str_attach"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_required_horse, horse),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_position, detach_offset),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_rotation, detach_rotation),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_attached_to_agent, -1),
@@ -231,8 +232,15 @@ def spr_cart_triggers(horse=0, detach_offset=0, detach_rotation=0, inventory_cou
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_width, access_distance),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_collision_kind, -1),
+      (call_script, "script_add_cart_to_list", ":instance_id"),
       ]),
-    spr_call_script_use_trigger("script_cf_use_cart", horse)]
+    (ti_on_scene_prop_use,
+     [(store_trigger_param_1, ":agent_id"),
+      (store_trigger_param_2, ":instance_id"),
+      (call_script, "script_cart_choose_action", ":agent_id", ":instance_id"),
+      (call_script, "script_cf_use_cart", ":agent_id", ":instance_id", reg0),
+      ]),
+    ]
 
 def spr_tree_flags():
   return sokf_destructible|sokf_show_hit_point_bar|sokf_moveable|sokf_missiles_not_attached

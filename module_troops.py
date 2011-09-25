@@ -148,5 +148,6 @@ troops = [
   ["chat_overlay_ring_buffer_10","-","-",0,0,0,0,[],0,0,0,0,0],
   ["chat_overlay_ring_buffer_end","-","-",0,0,0,0,[],0,0,0,0,0],
   ["ship_array","ship_array","ship_array",0,0,0,0,[],0,0,0,0,0],
+  ["cart_array","cart_array","cart_array",0,0,0,0,[],0,0,0,0,0],
   ["removed_scene_props","removed_scene_props","removed_scene_props",0,0,0,0,[],0,0,0,0,0],
 ]

@@ -429,6 +429,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("toggle_name_labels", "Toggle name labels"),
   ("toggle_chat_overlay", "Toggle chat overlay"),
   ("toggle_local_faction_chat", "Toggle local or faction chat"),
+  ("attach_cart_pack", "Attach nearby cart / pack"),
   ("detach_cart_pack", "Detach cart / pack"),
   ("toggle_head", "Toggle head armor"),
   ("discard_body", "Discard body armor"),
