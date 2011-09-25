@@ -393,10 +393,10 @@ mission_templates = [
 
     (10, 0, 0, [],
      [(multiplayer_is_server),
-      (troop_get_slot, ":resources_count", "trp_removed_scene_props", slot_removed_resources_count),
+      (troop_get_slot, ":resources_count", "trp_removed_scene_props", slot_array_count),
       (gt, ":resources_count", 0),
-      (val_add, ":resources_count", slot_removed_resources_begin),
-      (try_for_range, ":resource_slot", slot_removed_resources_begin, ":resources_count"),
+      (val_add, ":resources_count", slot_array_begin),
+      (try_for_range, ":resource_slot", slot_array_begin, ":resources_count"),
         (troop_get_slot, ":instance_id", "trp_removed_scene_props", ":resource_slot"),
         (try_begin),
           (le, ":instance_id", 0),
