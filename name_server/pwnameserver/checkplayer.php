@@ -1,4 +1,12 @@
 <?php
+header_remove();
+function set_content_length($output)
+{
+  header("Content-Length: ".strlen($output));
+  return $output;
+}
+ob_start("set_content_length");
+
 require("private/config.php");
 
 function player_check_clan_tag($player_uid, $escaped_name)
