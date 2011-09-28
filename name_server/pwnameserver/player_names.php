@@ -1,20 +1,30 @@
 <?php
 function check_player_name_actions()
 {
-  $id = filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT, array("options"=>array("min_range"=>0)));
-  if (is_null($id) || $id === false) return;
-  if (isset($_POST["remove_name"]))
+  if (!filter_has_var(INPUT_POST, "ids")) return;
+  $ids = $_POST["ids"];
+  if (!is_array($ids)) return;
+  $remove_names = filter_has_var(INPUT_POST, "remove_names");
+  $set_permissions = filter_has_var(INPUT_POST, "set_permissions");
+  foreach ($ids as $id)
   {
-    $result = mysql_query("DELETE FROM player_names WHERE id = '$id';");
-    if (!$result) return echo_database_error();
+    $id = filter_var($id, FILTER_VALIDATE_INT, array("options"=>array("min_range"=>0)));
+    if ($remove_names)
+    {
+      $result = mysql_query("DELETE FROM player_names WHERE id = '$id';");
+      if (!$result) return echo_database_error();
+    }
+    else if ($set_permissions)
+    {
+      $result = mysql_query("SELECT unique_id FROM player_names WHERE id = '$id' LIMIT 1;");
+      if (!$result) return echo_database_error();
+      if (!$row = mysql_fetch_assoc($result)) return;
+      $result = mysql_query("INSERT INTO admin_permissions (unique_id, server_id) VALUES ('$row[unique_id]', '$_SESSION[server_id]') ON DUPLICATE KEY UPDATE server_id = server_id;");
+      if (!$result) return echo_database_error();
+    }
   }
-  else if (isset($_POST["set_permissions"]))
+  if ($set_permissions)
   {
-    $result = mysql_query("SELECT unique_id FROM player_names WHERE id = '$id' LIMIT 1;");
-    if (!$result) return echo_database_error();
-    if (!$row = mysql_fetch_assoc($result)) return;
-    $result = mysql_query("INSERT INTO admin_permissions (unique_id, server_id) VALUES ('$row[unique_id]', '$_SESSION[server_id]');");
-    if (!$result) return echo_database_error();
     echo('<script type="text/javascript">window.location = "?page=admin_permissions"</script>');
   }
 }
@@ -84,19 +94,19 @@ function show_player_names()
   echo('</tr></thead><tbody>');
   while ($row = mysql_fetch_assoc($result))
   {
-    $rb_id = "rb_$row[id]";
-    echo("<tr><td><input type=\"radio\" name=\"id\" value=\"$row[id]\" id=\"$rb_id\"/></td>");
-    echo("<td><label for=\"$rb_id\">$row[unique_id]</label></td>");
+    $cb_id = "cb_$row[id]";
+    echo("<tr><td><input type=\"checkbox\" name=\"ids[]\" value=\"$row[id]\" id=\"$cb_id\"/></td>");
+    echo("<td><label for=\"$cb_id\">$row[unique_id]</label></td>");
     $player_name = htmlspecialchars($row["player_name"]);
-    echo("<td><label for=\"$rb_id\">$player_name</label></td>");
-    echo("<td><label for=\"$rb_id\">$row[last_used_time]</label></td>");
+    echo("<td><label for=\"$cb_id\">$player_name</label></td>");
+    echo("<td><label for=\"$cb_id\">$row[last_used_time]</label></td>");
     $server_name = htmlspecialchars($row["server_name"]);
-    echo("<td><label for=\"$rb_id\">$server_name</label></td>");
+    echo("<td><label for=\"$cb_id\">$server_name</label></td>");
     echo("</tr>\n");
   }
   echo("</tbody></table>\n");
   echo('<div class="database_actions">');
-  echo('<input type="submit" name="remove_name" value="Remove name"/>');
+  echo('<input type="submit" name="remove_names" value="Remove names"/>');
   echo('<input type="submit" name="set_permissions" value="Set permissions"/>');
   echo("</div></form>\n");
 }
