@@ -11,10 +11,9 @@ require("private/config.php");
 
 function player_check_clan_tag($player_uid, $escaped_name)
 {
-  $clan_tag_end = strpos($escaped_name, '_');
-  if ($clan_tag_end !== false)
+  $clan_tag = strtok($escaped_name, "\\".pw_name_server_config::valid_separators);
+  if ($clan_tag !== false)
   {
-    $clan_tag = substr($escaped_name, 0, $clan_tag_end);
     $result = mysql_query("SELECT clan_id FROM clan_tags WHERE tag = '$clan_tag';");
     if (!$result) return pw_database_error();
     if ($row = mysql_fetch_assoc($result))
@@ -144,7 +143,7 @@ if (is_null($player_id) || is_null($player_uid) || !filter_has_var(INPUT_GET, "n
 
 $return_code = pw_name_server_config::name_invalid_error;
 $permissions = -1;
-$name_restrictions = array("options"=>array("regexp"=>"/^[a-z0-9]([_ ]?[a-z0-9])*$/i"));
+$name_restrictions = array("options"=>array("regexp"=>"/^[a-z0-9]([".pw_name_server_config::valid_separators."]?[a-z0-9])*$/i"));
 $player_name = filter_input(INPUT_GET, "name", FILTER_VALIDATE_REGEXP, $name_restrictions);
 if ($player_name)
 {
