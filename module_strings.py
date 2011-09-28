@@ -632,6 +632,7 @@ On scene load, the props are linked by searching for the nearest prop in the sce
   ("name_server_log_s10", "Name server: player {s0} ({reg2}): {s10}"),
   ("kicked_using_other_players_name", "Kicked for using another player's name."),
   ("kicked_using_other_clan_tag", "Kicked for using another clan's tag."),
+  ("kicked_using_invalid_name", "Kicked for using invalid characters in the name."),
   ("http_s1_password_s2_id_reg1_uid_reg2_name_s3", "http://{s1}/checkplayer.php?password={s2}&id={reg1}&uid={reg2}&name={s3}"),
   ("http_s0_admin", "{s0}&admin"),
   ("name_server", "localhost/pwnameserver"),

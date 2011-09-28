@@ -59,7 +59,7 @@ function player_register_name($player_uid, $escaped_name, $warband_server_id)
     }
     else
     {
-      return pw_name_server_config::name_error;
+      return pw_name_server_config::name_used_error;
     }
   }
   else
@@ -120,30 +120,48 @@ function player_get_admin_permissions($player_uid, $warband_server_id)
   return $permissions;
 }
 
+function exit_code($code)
+{
+  exit("$code");
+}
+
 $server_password = filter_input(INPUT_GET, "password", FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
-if (!$server_password) die((string)pw_name_server_config::input_error);
+if (!$server_password) exit_code(pw_name_server_config::input_error);
 
 $config = new pw_name_server_config();
-if (!$config->connect_database()) die((string)pw_name_server_config::database_error);
+if (!$config->connect_database()) exit_code(pw_name_server_config::database_error);
 
 $server_password = mysql_real_escape_string($server_password);
 $warband_server_id = warband_server_id($server_password);
-if (is_null($warband_server_id)) die((string)pw_name_server_config::password_error);
+if (is_null($warband_server_id)) exit_code(pw_name_server_config::password_error);
 
 $id_restrictions = array("options"=>array("min_range"=>0, "max_range"=>250));
 $player_id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT, $id_restrictions);
-if ($player_id == 0) die((string)pw_name_server_config::success);
+if ($player_id == 0) exit_code(pw_name_server_config::success);
 $id_restrictions = array("options"=>array("min_range"=>1, "max_range"=>10000000));
 $player_uid = filter_input(INPUT_GET, "uid", FILTER_VALIDATE_INT, $id_restrictions);
-$player_name = filter_input(INPUT_GET, "name", FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
-if (is_null($player_id) || is_null($player_uid) || is_null($player_name)) die((string)pw_name_server_config::input_error);
+if (is_null($player_id) || is_null($player_uid) || !filter_has_var(INPUT_GET, "name")) exit_code(pw_name_server_config::input_error);
 
-$escaped_name = mysql_real_escape_string($player_name);
-$return_code = player_register_name($player_uid, $escaped_name, $warband_server_id);
+$return_code = pw_name_server_config::name_invalid_error;
+$permissions = -1;
+$name_restrictions = array("options"=>array("regexp"=>"/^[a-z0-9]([_ ]?[a-z0-9])*$/i"));
+$player_name = filter_input(INPUT_GET, "name", FILTER_VALIDATE_REGEXP, $name_restrictions);
+if ($player_name)
+{
+  $escaped_name = mysql_real_escape_string($player_name);
+  $return_code = player_register_name($player_uid, $escaped_name, $warband_server_id);
 
-if (filter_has_var(INPUT_GET, "admin")) $permissions = player_get_admin_permissions($player_uid, $warband_server_id);
-else $permissions = -1;
-
+  if (filter_has_var(INPUT_GET, "admin"))
+  {
+    $permissions = player_get_admin_permissions($player_uid, $warband_server_id);
+  }
+}
+else
+{
+  $player_name = preg_replace("/\|/", "/", $_GET["name"]);
+  if (!$player_name) $player_name = "NULL";
+}
 if (is_numeric($player_name)) $player_name = "_" . $player_name;
+
 echo "$return_code|$player_id|$player_uid|$player_name|$permissions";
 ?>

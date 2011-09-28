@@ -12,8 +12,9 @@ class pw_name_server_config
   const database_error = -2;
   const input_error = -1;
   const success = 0;
-  const name_error = 1;
+  const name_used_error = 1;
   const clan_tag_error = 2;
+  const name_invalid_error = 3;
 
   public $connection;
 
