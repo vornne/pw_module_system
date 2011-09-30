@@ -454,6 +454,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("cant_equip_item", "You can't equip this item."),
   ("collect_reg1_gold", "Collect {reg1} gold"),
   ("rest", "Rest"),
+  ("rest_horse", "Rest horse"),
   ("winch_lower", "Lower"),
   ("winch_raise", "Raise"),
   ("winch_drop", "Drop"),
