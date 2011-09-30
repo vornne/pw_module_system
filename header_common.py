@@ -13,7 +13,7 @@ server_event_player_set_slot                    = 5
 server_event_scene_prop_set_slot                = 6
 server_event_faction_set_slot                   = 7
 server_event_troop_set_slot                     = 8
-server_event_set_attached_scene_prop            = 9
+server_event_agent_set_slot                     = 9
 server_event_show_inventory                     = 10
 server_event_chat_message_recieved              = 11
 server_event_local_chat                         = 12
@@ -30,6 +30,7 @@ server_event_faction_lord_chat                  = 22
 server_event_admin_chat                         = 23
 server_event_admin_chat_shout                   = 24
 server_event_admin_set_permissions              = 25
+server_event_set_attached_scene_prop            = 26
 
 client_event_agent_loot_armor                   = 97
 client_event_toggle_drop_armor                  = 98
