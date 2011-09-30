@@ -518,6 +518,7 @@ mission_templates = [
         (start_presentation, "prsnt_respawn_time_counter"),
       (try_end),
       (start_presentation, "prsnt_gold"),
+      (start_presentation, "prsnt_food_bar"),
       (try_begin),
         (gt, "$g_show_inventory_instance_id", 0),
         (assign, "$g_show_inventory_instance_id", 0),

@@ -372,4 +372,7 @@ meshes = [
   ("pw_stats_chart_all", 0, "pw_stats_chart_all", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("pw_stats_chart_selected", 0, "pw_stats_chart_selected", 0, 0, 0, 0, 0, 0, 1, 1, 1),
 
+  ("pw_status_background_player", 0, "pw_status_background_player", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("pw_status_food_bar", 0, "pw_status_food_bar", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+
 ]

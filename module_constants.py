@@ -51,6 +51,8 @@ slot_player_equip_item_1_ammo         = 31
 slot_player_equip_item_2_ammo         = 32
 slot_player_equip_item_3_ammo         = 33
 
+slot_player_spawn_food_amount         = 34
+
 slot_player_admin_no_panel            = 40
 slot_player_admin_no_gold             = 41
 slot_player_admin_no_kick             = 42
@@ -81,6 +83,7 @@ slot_agent_poisoner_agent_id          = 3
 slot_agent_poisoner_player_uid        = 4
 slot_agent_freeze_instance_id         = 5
 slot_agent_is_targeted                = 6
+slot_agent_food_amount                = 7
 
 slot_agent_money_bag_1_value          = 10
 slot_agent_money_bag_2_value          = 11
@@ -392,6 +395,8 @@ presentation_max_x                    = 1000
 presentation_max_y                    = 750
 
 max_scene_prop_instance_id            = 10000
+
+max_food_amount                       = 100
 
 all_items_begin = "itm_straw_hat"
 all_items_end = "itm_all_items_end"

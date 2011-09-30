@@ -532,6 +532,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("craft_wrong_resources", "You don't seem to have the right resources."),
   ("no_horse", "You have no horse."),
   ("too_wounded_to_rest", "Too wounded to rest here."),
+  ("too_hungry_to_rest", "Too hungry to rest here."),
   ("item_too_long_for_container", "That item is too long to fit inside the container."),
   ("cant_put_money_bag_in_container", "You can't put money bags inside containers."),
   ("no_bodies_in_range_loot", "No bodies in range to loot."),
