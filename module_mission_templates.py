@@ -426,7 +426,7 @@ mission_templates = [
      [(multiplayer_is_server),
       (eq, "$g_game_ended", 0),
       (store_mission_timer_a, ":current_time"),
-      (store_mul, ":game_end_time", "$g_map_time_limit", 60),
+      (store_mul, ":game_end_time", "$g_game_time_limit", 60),
       (try_begin),
         (call_script, "script_cf_victory_condition_met"),
         (assign, ":faction_id", reg0),
