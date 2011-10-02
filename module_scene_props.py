@@ -294,7 +294,7 @@ def spr_field_flags():
 def spr_hit_field_triggers(resource_item, plant_item, plant_spr, height=200, full_hp=1000, resource_hp=200, tool_class=-1, regrow_interval=600, use_string="str_harvest"):
   return [(ti_on_scene_prop_init,
     [(store_trigger_param_1, ":instance_id"),
-     (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, height),
+     (scene_prop_set_slot, ":instance_id", slot_scene_prop_height, height),
      (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(full_hp)),
      (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, full_hp),
      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
@@ -425,7 +425,7 @@ def spr_wall_triggers(build_spr, hit_points=1000, height=1000, no_move_physics=F
   triggers = [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
-      (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, height),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_height, height),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_no_move_physics, int(no_move_physics))
       ]),
