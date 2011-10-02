@@ -314,6 +314,27 @@ def spr_field_plant_triggers(seeds=4, water=2):
       (call_script, "script_cf_field_animation_finished", ":instance_id", seeds, water),
       ])]
 
+def spr_hit_vine_triggers(resource_item, resources=1, length=300, height=150, full_hp=1000, tool_class=-1, regrow_interval=60, use_string="str_prune"):
+  return [(ti_on_scene_prop_init,
+    [(store_trigger_param_1, ":instance_id"),
+     (scene_prop_set_slot, ":instance_id", slot_scene_prop_resource_item_id, resource_item),
+     (scene_prop_set_slot, ":instance_id", slot_scene_prop_seeds, resources),
+     (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, length),
+     (scene_prop_set_slot, ":instance_id", slot_scene_prop_height, height),
+     (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(full_hp)),
+     (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, full_hp),
+     (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, full_hp),
+     (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
+     (scene_prop_set_slot, ":instance_id", slot_scene_prop_regrow_script, "script_regrow_vine"),
+     ]),
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_vine", ":instance_id", ":hit_damage", tool_class, regrow_interval),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_use, [])]
+
 def spr_hit_mine_triggers(resource_item, resource_hp=100, random_hp=0, hardness=1, regrow_interval=14400, use_string="str_mine"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -2065,6 +2086,8 @@ scene_props = [
   ("pw_herb_bush_poison",spr_resource_flags(),"pw_herb_b_bush","bo_pw_herb_bush", spr_hit_plant_triggers("itm_poison_herb", full_hp=600, resource_hp=30, regrow_interval=2000)),
   ("pw_wheat_field",spr_field_flags(),"pw_wheat_field","bo_pw_wheat_field", spr_hit_field_triggers(resource_item="itm_wheat_sheaf", plant_item="itm_wheat_sack", plant_spr="spr_code_wheat", height=180, full_hp=1000, resource_hp=100, tool_class=item_class_grain_harvesting, regrow_interval=600)),
   ("code_wheat",0,"pw_wheat","0", spr_field_plant_triggers(seeds=4, water=2)),
+  ("pw_grape_vine",spr_resource_flags(),"pw_grape_vine","bo_pw_grape_vine", spr_hit_vine_triggers("itm_grapes", resources=10, full_hp=300, length=350, height=100, tool_class=item_class_knife, regrow_interval=300)),
+  ("pw_grape_vine_stake",0,"pw_grape_vine_stake","bo_pw_grape_vine_stake", []),
 
   ("pw_iron_mine",spr_resource_flags(),"pw_iron_mine","bo_pw_iron_mine", spr_hit_mine_triggers("itm_iron_ore", resource_hp=60, hardness=4)),
   ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_iron_ore", resource_hp=70, hardness=4)),
@@ -2099,6 +2122,7 @@ scene_props = [
   ("pw_process_grind_slow",spr_use_time(20),"horse_mill","bo_horse_mill", spr_process_resource_triggers("script_cf_process_grind", use_string="str_process_grind")),
   ("pw_process_cook_fast",spr_use_time(7),"village_oven","bo_village_oven_fixed", spr_process_resource_triggers("script_cf_process_cook", use_string="str_process_cook")),
   ("pw_process_cook_slow",spr_use_time(16)|sokf_invisible,"pw_invisible_station","bo_pw_invisible_station", spr_process_resource_triggers("script_cf_process_cook", use_string="str_process_cook")),
+  ("pw_process_press",spr_use_time(15),"winery_wine_press","bo_winery_wine_press", spr_process_resource_triggers("script_cf_process_press", use_string="str_process_press")),
 
   ("pw_buy_straw_hat",spr_buy_item_flags(1),"straw_hat_new","bo_armor_head", spr_buy_item_triggers("itm_straw_hat", resources=[], skill_required=1)),
   ("pw_buy_head_wrappings",spr_buy_item_flags(1),"head_wrapping","bo_armor_head", spr_buy_item_triggers("itm_head_wrappings", resources=[], skill_required=1)),
@@ -2290,7 +2314,6 @@ scene_props = [
 
   ("pw_buy_practice_sword",spr_buy_item_flags(3),"pw_practice_sword","bo_weapon", spr_buy_item_triggers("itm_practice_sword", resources=["itm_wood_pole_short"], skill_required=2)),
   ("pw_buy_heavy_practice_sword",spr_buy_item_flags(5),"pw_heavy_practice_sword","bo_weapon", spr_buy_item_triggers("itm_heavy_practice_sword", resources=["itm_wood_pole_short"], skill_required=2)),
-  ("pw_buy_butchering_knife",spr_buy_item_flags(3),"khyber_knife_new","bo_weapon_small", spr_buy_item_triggers("itm_butchering_knife", resources=["itm_iron_bar_short"], skill_required=2)),
   ("pw_buy_winged_mace",spr_buy_item_flags(6),"flanged_mace","bo_weapon_small", spr_buy_item_triggers("itm_winged_mace", resources=["itm_iron_bar"], skill_required=2)),
   ("pw_buy_spiked_mace",spr_buy_item_flags(4),"spiked_mace_new","bo_weapon_small", spr_buy_item_triggers("itm_spiked_mace", resources=["itm_iron_bar"], skill_required=2)),
   ("pw_buy_mace_2",spr_buy_item_flags(3),"mace_a","bo_weapon_small", spr_buy_item_triggers("itm_mace_2", resources=["itm_iron_piece", "itm_stick"], skill_required=1)),
@@ -2418,6 +2441,10 @@ scene_props = [
   ("pw_buy_sickle",spr_buy_item_flags(6),"pw_sickle","bo_weapon_small", spr_buy_item_triggers("itm_sickle", resources=["itm_iron_bar_short", "itm_stick"], skill_required=2)),
   ("pw_buy_scythe",spr_buy_item_flags(14),"pw_scythe","bo_weapon_big", spr_buy_item_triggers("itm_scythe", resources=["itm_iron_bar", "itm_wood_pole"], skill_required=2)),
   ("pw_buy_wheat_sack",spr_buy_item_flags(3),"pw_wheat_sack","bo_weapon_small", spr_buy_item_triggers("itm_wheat_sack", pos_offset=(0,0,-20), resources=["itm_wheat_sheaf"], skill_required=1)),
+  ("pw_buy_kitchen_knife",spr_buy_item_flags(3),"pw_kitchen_knife","bo_weapon_small", spr_buy_item_triggers("itm_kitchen_knife", resources=["itm_iron_piece"], skill_required=2)),
+  ("pw_buy_cleaver",spr_buy_item_flags(3),"cleaver_new","bo_weapon_small", spr_buy_item_triggers("itm_cleaver", resources=["itm_iron_bar_short"], skill_required=2)),
+  ("pw_buy_knife",spr_buy_item_flags(3),"peasant_knife_new","bo_weapon_small", spr_buy_item_triggers("itm_knife", resources=["itm_iron_bar_short"], skill_required=2)),
+  ("pw_buy_butchering_knife",spr_buy_item_flags(3),"khyber_knife_new","bo_weapon_small", spr_buy_item_triggers("itm_butchering_knife", resources=["itm_iron_bar_short"], skill_required=3)),
   ("pw_buy_surgeon_scalpel",spr_buy_item_flags(30),"dagger_b_scabbard","bo_weapon_small", spr_buy_item_triggers("itm_surgeon_scalpel", resources=["itm_iron_piece"], skill_required=4)),
   ("pw_buy_dagger",spr_buy_item_flags(7),"scab_dagger","bo_weapon_small", spr_buy_item_triggers("itm_dagger", resources=["itm_iron_bar_short"], skill_required=3)),
   ("pw_buy_poisoned_dagger",spr_buy_item_flags(45),"scab_dagger","bo_weapon_small", spr_buy_item_triggers("itm_poisoned_dagger", resources=["itm_dagger", "itm_poison_herb"], skill_required=4)),
