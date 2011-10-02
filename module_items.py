@@ -719,7 +719,7 @@ items = [
 ["charger", "Charger", [("charger_new",0)], itp_type_horse, 0,
  8640, hit_points(165)|body_armor(58)|difficulty(4)|horse_speed(43)|horse_maneuver(44)|horse_charge(32)|horse_scale(112), imodbits_none],
 ["plated_charger", "Plated Charger", [("plated_charger",0)], itp_type_horse, 0,
- 10340, hit_points(180)|body_armor(65)|difficulty(5)|horse_speed(40)|horse_maneuver(45)|horse_charge(40)|horse_scale(112), imodbits_none],
+ 10340, hit_points(180)|body_armor(65)|difficulty(4)|horse_speed(40)|horse_maneuver(45)|horse_charge(40)|horse_scale(112), imodbits_none],
 
 ["stick", "Stick", [("wooden_stick",0),("pw_stick_carry",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_quiver_back,
  53, weight(3)|spd_rtng(90)|swing_damage(5,blunt)|weapon_length(63), imodbits_none, [(item_class, item_class_wood, 100)]],
