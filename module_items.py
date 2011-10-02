@@ -806,6 +806,10 @@ items = [
  162, weight(25)|weapon_length(100), imodbits_none, [(item_class, item_class_food, 5)]],
 ["bread", "Bread", [("pw_bread_a",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_bowcase_left,
  68, weight(1)|spd_rtng(65)|weapon_length(20)|swing_damage(1,cut), imodbits_none, [(item_class, item_class_food, 25)]],
+["meat", "Raw Meat", [("pw_meat_raw",0)], itp_type_polearm|itp_two_handed|itp_cant_use_on_horseback|itp_primary, itc_dagger|itcf_carry_bow_back,
+ 56, weight(25)|spd_rtng(65)|weapon_length(53)|swing_damage(10,blunt), imodbits_none, [(item_class, item_class_food, 10)]],
+["cooked_meat", "Cooked Meat", [("pw_meat_cooked",0)], itp_type_polearm|itp_two_handed|itp_cant_use_on_horseback|itp_primary, itc_dagger|itcf_carry_bow_back,
+ 158, weight(25)|spd_rtng(60)|weapon_length(53)|swing_damage(8,blunt), imodbits_none, [(item_class, item_class_food, 30)]],
 
 ["surgeon_scalpel", "Surgeon's Scalpel", [("dagger_b",0),("dagger_b_scabbard",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_thrust_onehanded|itcf_carry_dagger_front_left|itcf_show_holster_when_drawn,
  3560, weight(0.75)|difficulty(0)|spd_rtng(50)|weapon_length(36)|thrust_damage(15, pierce), imodbits_sword],
