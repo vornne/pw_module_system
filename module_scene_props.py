@@ -288,6 +288,32 @@ def spr_hit_plant_triggers(resource_item, full_hp=1000, resource_hp=200, hardnes
 def spr_resource_flags():
   return sokf_destructible|sokf_show_hit_point_bar|sokf_moveable|sokf_missiles_not_attached
 
+def spr_field_flags():
+  return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+
+def spr_hit_field_triggers(resource_item, plant_item, plant_spr, height=200, full_hp=1000, resource_hp=200, tool_class=-1, regrow_interval=600, use_string="str_harvest"):
+  return [(ti_on_scene_prop_init,
+    [(store_trigger_param_1, ":instance_id"),
+     (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, height),
+     (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(full_hp)),
+     (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, full_hp),
+     (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
+     ]),
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_field", ":instance_id", ":hit_damage", resource_hp, resource_item, plant_item, tool_class, regrow_interval),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_use, []),
+    [init_scene_prop, "script_cf_setup_field", plant_spr]]
+
+def spr_field_plant_triggers(seeds=4, water=2):
+  return [(ti_on_scene_prop_animation_finished,
+     [(store_trigger_param_1, ":instance_id"),
+      (call_script, "script_cf_field_animation_finished", ":instance_id", seeds, water),
+      ])]
+
 def spr_hit_mine_triggers(resource_item, resource_hp=100, random_hp=0, hardness=1, regrow_interval=14400, use_string="str_mine"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -2037,6 +2063,8 @@ scene_props = [
   ("pw_stick_bush_2c",spr_resource_flags(),"bushes02_c","bo_bushes02_a_fixed", spr_hit_plant_triggers("itm_stick", full_hp=1500, resource_hp=50, regrow_interval=120, effect_script="script_hit_bush_effect")),
   ("pw_herb_bush_a",spr_resource_flags(),"pw_herb_a_bush","bo_pw_herb_bush", spr_hit_plant_triggers("itm_healing_herb", full_hp=400, resource_hp=40, regrow_interval=600)),
   ("pw_herb_bush_poison",spr_resource_flags(),"pw_herb_b_bush","bo_pw_herb_bush", spr_hit_plant_triggers("itm_poison_herb", full_hp=600, resource_hp=30, regrow_interval=2000)),
+  ("pw_wheat_field",spr_field_flags(),"pw_wheat_field","bo_pw_wheat_field", spr_hit_field_triggers(resource_item="itm_wheat_sheaf", plant_item="itm_wheat_sack", plant_spr="spr_code_wheat", height=180, full_hp=1000, resource_hp=100, tool_class=item_class_grain_harvesting, regrow_interval=600)),
+  ("code_wheat",0,"pw_wheat","0", spr_field_plant_triggers(seeds=4, water=2)),
 
   ("pw_iron_mine",spr_resource_flags(),"pw_iron_mine","bo_pw_iron_mine", spr_hit_mine_triggers("itm_iron_ore", resource_hp=60, hardness=4)),
   ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_iron_ore", resource_hp=70, hardness=4)),
@@ -2050,6 +2078,7 @@ scene_props = [
   ("pw_stockpile_iron_ore_small",spr_use_time(1),"pw_iron_ore_small","bo_weapon_small", spr_stockpile_resource_triggers("itm_iron_ore_small")),
   ("pw_stockpile_iron_ore",spr_use_time(1),"pw_iron_ore","bo_weapon_small", spr_stockpile_resource_triggers("itm_iron_ore")),
   ("pw_stockpile_iron_bar",spr_use_time(1),"pw_chest_c","bo_pw_chest_c", spr_stockpile_resource_triggers("itm_iron_bar")),
+  ("pw_stockpile_flour_sack",spr_use_time(1),"mill_flour_sack_desk_a","bo_mill_flour_sack_desk_a_fixed", spr_stockpile_resource_triggers("itm_flour_sack")),
   ("pw_export_wood_stick",spr_use_time(2),"pw_wood_box","bo_pw_wood_box", spr_export_item_triggers("itm_stick")),
   ("pw_export_wood_branch",spr_use_time(5),"wood_heap_b","bo_wood_heap_b", spr_export_item_triggers("itm_branch")),
   ("pw_export_wood_pole",spr_use_time(6),"pw_wood_pole","bo_weapon_big", spr_export_item_triggers("itm_wood_pole")),
@@ -2066,6 +2095,10 @@ scene_props = [
   ("pw_export_silver_bar",spr_use_time(15),"pw_silver_bar","bo_weapon_small", spr_export_item_triggers("itm_silver_bar")),
   ("pw_process_wood",spr_use_time(6),"bench_tavern_b","bo_bench_tavern_b", spr_process_resource_triggers("script_cf_process_wood", use_string="str_process_wood")),
   ("pw_process_iron",spr_use_time(8),"pw_smithy_forge","bo_pw_smithy_forge", spr_process_resource_triggers("script_cf_process_iron", use_string="str_process_metal")),
+  ("pw_process_grind_fast",spr_use_time(5)|sokf_invisible,"pw_invisible_station","bo_pw_invisible_station", spr_process_resource_triggers("script_cf_process_grind", use_string="str_process_grind")),
+  ("pw_process_grind_slow",spr_use_time(20),"horse_mill","bo_horse_mill", spr_process_resource_triggers("script_cf_process_grind", use_string="str_process_grind")),
+  ("pw_process_cook_fast",spr_use_time(7),"village_oven","bo_village_oven_fixed", spr_process_resource_triggers("script_cf_process_cook", use_string="str_process_cook")),
+  ("pw_process_cook_slow",spr_use_time(16)|sokf_invisible,"pw_invisible_station","bo_pw_invisible_station", spr_process_resource_triggers("script_cf_process_cook", use_string="str_process_cook")),
 
   ("pw_buy_straw_hat",spr_buy_item_flags(1),"straw_hat_new","bo_armor_head", spr_buy_item_triggers("itm_straw_hat", resources=[], skill_required=1)),
   ("pw_buy_head_wrappings",spr_buy_item_flags(1),"head_wrapping","bo_armor_head", spr_buy_item_triggers("itm_head_wrappings", resources=[], skill_required=1)),
@@ -2382,6 +2415,9 @@ scene_props = [
   ("pw_buy_bucket",spr_buy_item_flags(10),"pw_bucket_ground","bo_pw_bucket", spr_buy_item_triggers("itm_bucket", pos_offset=(0,0,20), resources=[("itm_board", 2), "itm_iron_piece"], skill_required=2)),
   ("pw_buy_fishing_spear",spr_buy_item_flags(9),"pw_fishing_spear","bo_weapon_big", spr_buy_item_triggers("itm_fishing_spear", resources=["itm_wood_pole", "itm_iron_bar_short"], skill_required=2)),
   ("pw_buy_fishing_net",spr_buy_item_flags(33),"pw_fishing_net_b","bo_pw_fishing_net_b", spr_buy_item_triggers("itm_fishing_net", pos_offset=(150,-100,0), rotate=(0,-90,0), resources=[("itm_wood_pole_short", 2)], skill_required=2)),
+  ("pw_buy_sickle",spr_buy_item_flags(6),"pw_sickle","bo_weapon_small", spr_buy_item_triggers("itm_sickle", resources=["itm_iron_bar_short", "itm_stick"], skill_required=2)),
+  ("pw_buy_scythe",spr_buy_item_flags(14),"pw_scythe","bo_weapon_big", spr_buy_item_triggers("itm_scythe", resources=["itm_iron_bar", "itm_wood_pole"], skill_required=2)),
+  ("pw_buy_wheat_sack",spr_buy_item_flags(3),"pw_wheat_sack","bo_weapon_small", spr_buy_item_triggers("itm_wheat_sack", pos_offset=(0,0,-20), resources=["itm_wheat_sheaf"], skill_required=1)),
   ("pw_buy_surgeon_scalpel",spr_buy_item_flags(30),"dagger_b_scabbard","bo_weapon_small", spr_buy_item_triggers("itm_surgeon_scalpel", resources=["itm_iron_piece"], skill_required=4)),
   ("pw_buy_dagger",spr_buy_item_flags(7),"scab_dagger","bo_weapon_small", spr_buy_item_triggers("itm_dagger", resources=["itm_iron_bar_short"], skill_required=3)),
   ("pw_buy_poisoned_dagger",spr_buy_item_flags(45),"scab_dagger","bo_weapon_small", spr_buy_item_triggers("itm_poisoned_dagger", resources=["itm_dagger", "itm_poison_herb"], skill_required=4)),

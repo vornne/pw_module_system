@@ -67,6 +67,17 @@ def itm_castle_banner(faction, suffix):
   return ["pw_banner_castle_" + faction + suffix, "Castle Banner", [("pw_banner_castle",0)], itp_no_pick_up_from_ground, 0,
    0, 0, imodbits_none, [(ti_on_init_item, [(cur_item_set_tableau_material, "tableau_castle_banner_" + suffix, faction)])]]
 
+def itm_throw_wheat_trigger(item_id):
+ return (ti_on_weapon_attack,
+   [(multiplayer_is_server),
+    (position_move_x, pos1, -10),
+    (position_move_y, pos1, 50),
+    (position_move_z, pos1, -50),
+    (position_rotate_x, pos1, -30),
+    (position_rotate_y, pos1, -30),
+    (particle_system_burst, "psys_throw_wheat", pos1, 50),
+    ])
+
 items = [
 ["no_item", "INVALID ITEM", [("invalid_item", 0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger,
  0, weight(1)|spd_rtng(1)|weapon_length(1)|swing_damage(1, blunt)|thrust_damage(1, blunt), imodbits_none],
@@ -769,20 +780,32 @@ items = [
 ["lock_pick", "Lock Pick", [("pw_lock_pick",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_quiver_front_right,
  1260, weight(0.25)|spd_rtng(100)|weapon_length(23)|swing_damage(1,blunt)|thrust_damage(5,pierce), imodbits_none, [(item_class, item_class_lock_pick)]],
 ["bucket", "Bucket", [("pw_bucket",0),("pw_bucket_ground",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_slashright_onehanded,
- 240, weight(5)|spd_rtng(70)|weapon_length(45)|swing_damage(5,blunt), imodbits_none, [(ti_on_weapon_attack, [(store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_bucket", ":agent_id")])]],
+ 240, weight(5)|spd_rtng(70)|weapon_length(100)|swing_damage(5,blunt), imodbits_none, [(ti_on_weapon_attack, [(store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_bucket", ":agent_id")])]],
 ["water_bucket", "Water Bucket", [("pw_bucket_water",0),("pw_bucket_water_ground",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_slashright_onehanded,
- 250, weight(40)|spd_rtng(50)|weapon_length(45)|swing_damage(10,blunt), imodbits_none],
+ 250, weight(40)|spd_rtng(50)|weapon_length(100)|swing_damage(10,blunt), imodbits_none],
 ["fishing_spear", "Fishing Spear", [("pw_fishing_spear",0)], itp_type_polearm|itp_primary|itp_two_handed|itp_cant_use_on_horseback|itp_wooden_parry, itc_spear|itcf_carry_spear,
  340, weight(2.25)|spd_rtng(55)|weapon_length(183)|swing_damage(0, cut)|thrust_damage(10, pierce), imodbits_none,
  [(ti_on_weapon_attack, [(position_move_y, pos1, 270), (store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_fishing_tool", ":agent_id")])]],
 ["fishing_net", "Fishing Net", [("pw_fishing_net_b",0),("pw_fishing_net_a",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_slashright_onehanded,
  823, weight(5)|spd_rtng(40)|weapon_length(50)|swing_damage(0, cut)|thrust_damage(0, cut), imodbits_none,
  [(ti_on_weapon_attack, [(position_move_y, pos1, -50), (position_move_z, pos1, -200), (store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_fishing_tool", ":agent_id")])]],
+["sickle", "Sickle", [("pw_sickle",0)], itp_type_one_handed_wpn|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_slashright_onehanded|itcf_carry_dagger_front_right,
+ 136, weight(0.5)|difficulty(0)|spd_rtng(80)|weapon_length(100)|swing_damage(10, cut)|thrust_damage(0, cut), imodbits_none, [(item_class, item_class_grain_harvesting)]],
+["scythe", "Scythe", [("pw_scythe",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_no_parry|itp_unbalanced|itp_cant_use_on_horseback, itcf_slashleft_polearm|itcf_carry_spear,
+ 549, weight(2)|difficulty(0)|spd_rtng(70)|weapon_length(160)|swing_damage(25, cut)|thrust_damage(0, cut), imodbits_polearm, [(item_class, item_class_grain_harvesting)]],
 
 ["fish", "Fish", [("pw_fish",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
  23, weight(1)|spd_rtng(72)|weapon_length(45)|swing_damage(2,cut), imodbits_none, [(item_class, item_class_food, 3)]],
 ["cooked_fish", "Cooked Fish", [("pw_fish_cooked",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
  57, weight(1)|spd_rtng(70)|weapon_length(45)|swing_damage(1,cut), imodbits_none, [(item_class, item_class_food, 20)]],
+["wheat_sack", "Wheat Sack", [("pw_throwing_wheat",0),("pw_thrown_wheat",ixmesh_flying_ammo),("pw_wheat_sack",ixmesh_carry),("pw_wheat_sack",ixmesh_inventory)], itp_type_thrown|itp_primary|itp_cant_use_on_horseback, itcf_throw_stone|itcf_carry_quiver_right_vertical|itcf_show_holster_when_drawn,
+ 20, weight(0.25)|spd_rtng(90)|weapon_length(20)|shoot_speed(10)|max_ammo(10), imodbits_none, [itm_throw_wheat_trigger("itm_wheat_sack")]],
+["wheat_sheaf", "Wheat Sheaf", [("pw_wheat_sheaf",0)], itp_type_one_handed_wpn|itp_two_handed|itp_primary|itp_no_parry, itcf_thrust_onehanded|itcf_carry_bow_back,
+ 35, weight(3)|spd_rtng(20)|weapon_length(45), imodbits_none, [(item_class, item_class_food, 1)]],
+["flour_sack", "Flour Sack", [("pw_flour_sack",0),("pw_flour_sack_carry",ixmesh_carry)], itp_type_polearm|itp_two_handed|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_carry_quiver_back,
+ 162, weight(25)|weapon_length(100), imodbits_none, [(item_class, item_class_food, 5)]],
+["bread", "Bread", [("pw_bread_a",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_bowcase_left,
+ 68, weight(1)|spd_rtng(65)|weapon_length(20)|swing_damage(1,cut), imodbits_none, [(item_class, item_class_food, 25)]],
 
 ["surgeon_scalpel", "Surgeon's Scalpel", [("dagger_b",0),("dagger_b_scabbard",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_thrust_onehanded|itcf_carry_dagger_front_left|itcf_show_holster_when_drawn,
  3560, weight(0.75)|difficulty(0)|spd_rtng(50)|weapon_length(36)|thrust_damage(15, pierce), imodbits_sword],

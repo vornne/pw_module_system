@@ -133,6 +133,9 @@ slot_scene_prop_stack_count           = 33
 slot_scene_prop_stack_count_update_time = 34
 slot_scene_prop_unlocked              = 35
 
+slot_scene_prop_water                 = 40
+slot_scene_prop_seeds                 = 41
+
 scene_prop_state_active               = 0
 scene_prop_state_destroyed            = 1
 scene_prop_state_hidden               = 2
@@ -175,6 +178,7 @@ item_class_lock_pick                  = 6
 item_class_heraldic                   = 7
 item_class_precious                   = 8
 item_class_food                       = 9
+item_class_grain_harvesting           = 10
 
 ########################################################
 ##  FACTION SLOTS          #############################

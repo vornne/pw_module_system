@@ -206,5 +206,6 @@ sounds = [
  ("damage_ship", sf_priority_7|sf_vol_10, ["shield_broken.ogg"]),
  ("lock", sf_priority_7|sf_vol_10, ["hit_wood_metal_6.ogg"]),
  ("pick_lock_fail", sf_priority_7|sf_vol_10, ["hit_wood_wood_1.ogg"]),
+ ("fire",sf_priority_9|sf_vol_15, ["Fire_Torch_Loop3.ogg"]),
  ("sounds_end", 0, []),
 ]
