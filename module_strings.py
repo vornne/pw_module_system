@@ -470,6 +470,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("process_grind", "Grind"),
   ("process_cook", "Cook"),
   ("process_press", "Press"),
+  ("process_brew", "Brew"),
   ("stockpile", "Stockpile"),
   ("export", "Export"),
   ("build", "Build"),

@@ -2123,6 +2123,7 @@ scene_props = [
   ("pw_process_cook_fast",spr_use_time(7),"village_oven","bo_village_oven_fixed", spr_process_resource_triggers("script_cf_process_cook", use_string="str_process_cook")),
   ("pw_process_cook_slow",spr_use_time(16)|sokf_invisible,"pw_invisible_station","bo_pw_invisible_station", spr_process_resource_triggers("script_cf_process_cook", use_string="str_process_cook")),
   ("pw_process_press",spr_use_time(15),"winery_wine_press","bo_winery_wine_press", spr_process_resource_triggers("script_cf_process_press", use_string="str_process_press")),
+  ("pw_process_brew",spr_use_time(30),"brewery_pool","bo_brewery_pool", spr_process_resource_triggers("script_cf_process_brew", use_string="str_process_brew")),
 
   ("pw_buy_straw_hat",spr_buy_item_flags(1),"straw_hat_new","bo_armor_head", spr_buy_item_triggers("itm_straw_hat", resources=[], skill_required=1)),
   ("pw_buy_head_wrappings",spr_buy_item_flags(1),"head_wrapping","bo_armor_head", spr_buy_item_triggers("itm_head_wrappings", resources=[], skill_required=1)),
