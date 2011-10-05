@@ -37,7 +37,7 @@ def spr_check_hit_points(hp, low_hp=min_scene_prop_hit_points):
 def spr_check_inventory_count(count):
   return spr_check_value(count, 1, inventory_count_maximum, "Inventory count")
 
-def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=False):
+def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=False, price_multiplier=None):
   init_trigger = (ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_item_id, item_id),
@@ -51,6 +51,8 @@ def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=Fals
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count_update_time, -1),
       (prop_instance_get_variation_id_2, ":initial_stack_count", ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count, ":initial_stack_count")])
+  if price_multiplier is not None:
+    init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_multiplier, price_multiplier))
   return init_trigger
 
 def spr_call_script_trigger(script_name, trigger_type, *args):
@@ -75,29 +77,32 @@ def spr_buy_item_flags(use_time=1):
 
 crafting_info = []
 
-def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_string=None, tableau=None, resources=[], skill_required=0):
+def spr_apply_pos_offset(trigger_block, pos_offset, rotate):
+  if pos_offset[0] != 0:
+    trigger_block.append((position_move_x, pos1, pos_offset[0]))
+  if pos_offset[1] != 0:
+    trigger_block.append((position_move_y, pos1, pos_offset[1]))
+  if pos_offset[2] != 0:
+    trigger_block.append((position_move_z, pos1, pos_offset[2]))
+  if rotate[0] != 0:
+    trigger_block.append((position_rotate_x, pos1, rotate[0]))
+  if rotate[1] != 0:
+    trigger_block.append((position_rotate_y, pos1, rotate[1]))
+  if rotate[2] != 0:
+    trigger_block.append((position_rotate_z, pos1, rotate[2]))
+
+def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_string=None, tableau=None, resources=[], skill_required=0, price_multiplier=None):
   buy_trigger = (ti_on_scene_prop_cancel_use,
      [(store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":instance_id"),
       (prop_instance_get_position, pos1, ":instance_id")])
-  if pos_offset[0] != 0:
-    buy_trigger[1].append((position_move_x, pos1, pos_offset[0]))
-  if pos_offset[1] != 0:
-    buy_trigger[1].append((position_move_y, pos1, pos_offset[1]))
-  if pos_offset[2] != 0:
-    buy_trigger[1].append((position_move_z, pos1, pos_offset[2]))
-  if rotate[0] != 0:
-    buy_trigger[1].append((position_rotate_x, pos1, rotate[0]))
-  if rotate[1] != 0:
-    buy_trigger[1].append((position_rotate_y, pos1, rotate[1]))
-  if rotate[2] != 0:
-    buy_trigger[1].append((position_rotate_z, pos1, rotate[2]))
+  spr_apply_pos_offset(buy_trigger[1], pos_offset, rotate)
   if len(resources) > 0:
     buy_trigger[1].append((call_script, "script_cf_use_item_stockpile", ":agent_id", ":instance_id", -1, -1, -1, -1, -1))
   else:
     buy_trigger[1].append((call_script, "script_cf_buy_item", ":agent_id", ":instance_id"))
   craft_trigger = (ti_on_scene_prop_use, [])
-  init_trigger = spr_item_init_trigger(item_id, use_string, tableau, stockpile=(len(resources) > 0))
+  init_trigger = spr_item_init_trigger(item_id, use_string=use_string, tableau=tableau, stockpile=(len(resources) > 0), price_multiplier=price_multiplier)
   if len(resources) > 0:
     craft_trigger[1].extend([
       (store_trigger_param_1, ":agent_id"),
@@ -119,8 +124,18 @@ def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_strin
     crafting_info.append([item_id, skill_required, resources])
   return [init_trigger, buy_trigger, craft_trigger]
 
-def spr_export_item_triggers(item_id, use_string="str_export"):
-  return [spr_item_init_trigger(item_id, use_string), spr_call_script_use_trigger("script_cf_export_item")]
+def spr_export_item_triggers(item_id, use_string="str_export", price_multiplier=None):
+  return [spr_item_init_trigger(item_id, use_string=use_string, price_multiplier=price_multiplier),
+    spr_call_script_use_trigger("script_cf_export_item")]
+
+def spr_import_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_string="str_import", price_multiplier=500):
+  buy_trigger = (ti_on_scene_prop_use,
+     [(store_trigger_param_1, ":agent_id"),
+      (store_trigger_param_2, ":instance_id"),
+      (prop_instance_get_position, pos1, ":instance_id")])
+  spr_apply_pos_offset(buy_trigger[1], pos_offset, rotate)
+  buy_trigger[1].append((call_script, "script_cf_buy_item", ":agent_id", ":instance_id"))
+  return [spr_item_init_trigger(item_id, use_string=use_string, price_multiplier=price_multiplier), buy_trigger]
 
 def spr_gain_gold_triggers(gold_value, use_string="str_collect_reg1_gold"):
   return [(ti_on_scene_prop_init,

@@ -474,6 +474,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("process_tavern", "Serve"),
   ("stockpile", "Stockpile"),
   ("export", "Export"),
+  ("import", "Import"),
   ("build", "Build"),
   ("access", "Access"),
   ("attach", "Attach"),
@@ -614,6 +615,7 @@ F12 = measure distance to the first spr_pointer_arrow"),
   ("pw_editor_values_info", "Scene prop editor values 1 and 2^^\
 pw_buy_*, pw_stockpile_*:^value 1 = faction + multiplier^value 2 = initial stockpile count^^\
 pw_export_*:^value 1 = faction + multiplier^value 2 = faction tax multiplier^^\
+pw_import_*:^value 1 = faction + multiplier^^\
 pw_change_troop_*:^value 1 = faction + multiplier^^\
 pw_door_rotate_*:^value 1 = faction + multiplier^value 2 = options bitfield (0x1 = start open, 0x2 = bolted, 0x4 = not pickable)^^\
 pw_door_teleport_*:^value 1 = faction + multiplier^value 2 = linking id with x^^\
