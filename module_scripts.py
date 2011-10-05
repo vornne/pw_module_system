@@ -3377,7 +3377,7 @@ scripts = [
         (player_is_active, ":player_id"),
         (multiplayer_send_3_int_to_player, ":player_id", server_event_troop_set_slot, "trp_mission_data", ":castle_no", ":faction_id"),
       (try_end),
-      (call_script, "script_redraw_castle_banners", ":castle_no"), #need a delay to make sure the castle owners are updated on clients first?
+      (call_script, "script_redraw_castle_banners", ":castle_no"),
     (try_end),
     ]),
 
@@ -8726,7 +8726,7 @@ scripts = [
         (eq, ":castle_faction_id", ":faction_id"),
         (store_add, ":castle_is_active_slot", ":castle_no", slot_mission_data_castle_is_active_begin),
         (troop_slot_eq, "trp_mission_data", ":castle_is_active_slot", 1),
-        (call_script, "script_redraw_castle_banners", ":castle_no"), #need a delay to make sure the faction banner is updated on clients first?
+        (call_script, "script_redraw_castle_banners", ":castle_no"),
       (try_end),
     (else_try),
       (eq, ":action", faction_admin_action_kick_player),
