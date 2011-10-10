@@ -2628,7 +2628,12 @@ scene_props = [
       ]),
     ]),
 
-  ("pw_fish_school",sokf_invisible,"barrier_capsule","0", []),
+  ("pw_fish_school",sokf_invisible,"barrier_capsule","0", [
+    (ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_collision_kind, -1),
+      ]),
+    ]),
 
   ("code_freeze_agent",sokf_moveable,"0","bo_freeze_agent", []),
   ("code_freeze_horse_agent",sokf_moveable,"0","bo_freeze_horse_agent", []),

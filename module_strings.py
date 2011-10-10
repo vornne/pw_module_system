@@ -631,6 +631,7 @@ pw_item_chest_*:^value 1 = faction / castle id^^\
 pw_scene_day_time:^value 1 = scene hour of day (0 - 23)^^\
 pw_scene_cloud_haze:^value 1 = global cloud (adjusts skybox)^value 2 = global haze^^\
 pw_scene_ambient_sound:^value 1 = sound id offset from snd_fire_loop^value 2 = probability the sound will be played (0 - 100) or 127 = looping^^\
+pw_fish_school:^value 1 = maximum depth (in meters)^value 2 = maximum fish count^^\
 ^The values can be modified in the scene editor panel, scene prop section: the two fields, labelled 'Var No' and 'Var 2 No'. These can each store an integer in the range 0 - 127.^\
 ^The scene props with 'value 1 = faction + multiplier' share the same code for storing a combination of faction id / castle id and gold value multiplier in value 1:^\
 0 is the commoner faction, which normally means the prop is not associated with any faction, 1 for outlaws, and 2 - 9 associate the scene prop with a castle (which defaults to the corresponding faction id from 2 - 5).^\
