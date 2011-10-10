@@ -605,6 +605,7 @@ As admin, holding down right shift while voting overrides the poll. The selected
 * Place at least one castle sign for every castle (or capturable area), so the stats chart and capture messages will use proper names.^\
 * The scene props starting with code_ should not be placed manually in your scene: they are spawned by the scripts as needed.^\
 * Fish schools should be placed somewhere in water, and will move randomly to nearby shallow parts.^\
+* The maximum number of lights in a scene that will be visible is 10: a limitation of the game engine.^\
 ^-- Edit scene mode keys^\
 F1 = this information^\
 F2 = scene prop editor value information^\
@@ -631,6 +632,7 @@ pw_item_chest_*:^value 1 = faction / castle id^^\
 pw_scene_day_time:^value 1 = scene hour of day (0 - 23)^^\
 pw_scene_cloud_haze:^value 1 = global cloud (adjusts skybox)^value 2 = global haze^^\
 pw_scene_ambient_sound:^value 1 = sound id offset from snd_fire_loop^value 2 = probability the sound will be played (0 - 100) or 127 = looping^^\
+pw_scene_light:^value 1 = flicker magnitude^value 2 = flicker interval^scale x = red, 1.00 = 100^scale y = green, 1.00 = 100^scale z = blue, 1.00 = 100^^\
 pw_fish_school:^value 1 = maximum depth (in meters)^value 2 = maximum fish count^^\
 ^The values can be modified in the scene editor panel, scene prop section: the two fields, labelled 'Var No' and 'Var 2 No'. These can each store an integer in the range 0 - 127.^\
 ^The scene props with 'value 1 = faction + multiplier' share the same code for storing a combination of faction id / castle id and gold value multiplier in value 1:^\
