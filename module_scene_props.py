@@ -959,8 +959,8 @@ scene_props = [
 
   ("banner_pole", sokf_moveable, "banner_pole", "bo_banner_pole", []),
 
-  ("custom_banner_01",0,"custom_banner_01","0", []),
-  ("custom_banner_02",0,"custom_banner_02","0", []),
+  ("custom_banner_01",0,"pw_banner_castle","0", []),
+  ("custom_banner_02",0,"pw_banner_castle","0", []),
 
   ("banner_a",0,"banner_a01","0", []),
   ("banner_b",0,"banner_a02","0", []),
