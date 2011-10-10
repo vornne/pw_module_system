@@ -2481,6 +2481,7 @@ scene_props = [
   ("pw_rest_dungeon_bed_b",spr_use_time(20),"dungeon_bed_b","bo_dungeon_bed_b", spr_rest_triggers(8, min_health_pct=70)),
   ("pw_rest_horse_trough",spr_use_time(20),"feeding_trough_a","bo_feeding_trough_a", spr_rest_triggers(30, min_health_pct=30, horse=1, use_string="str_rest_horse")),
   ("pw_rest_horse_hay",spr_use_time(40),"pw_horse_hay","bo_pw_horse_hay", spr_rest_triggers(70, min_health_pct=30, horse=1, use_string="str_rest_horse")),
+  ("pw_rest_horse_manger",spr_use_time(30),"wall_manger_a","bo_wall_manger_a", spr_rest_triggers(60, min_health_pct=25, horse=1, use_string="str_rest_horse")),
   ("pw_clean_blood",spr_use_time(10),"cloth_a","bo_cloth_a", spr_clean_blood_triggers()),
 
   ("code_spawn_marker",0,"0","0", []),
@@ -2537,6 +2538,7 @@ scene_props = [
   ("pw_door_rotate_towngate_right",spr_rotate_door_flags(2),"towngate_rectangle_door_right","bo_towngate_rectangle_door_right_fixed", spr_rotate_door_triggers(hit_points=10000)),
   ("pw_door_rotate_earth_left",spr_rotate_door_flags(2),"earth_sally_gate_left","bo_earth_sally_gate_left", spr_rotate_door_triggers(hit_points=10000, left=1)),
   ("pw_door_rotate_earth_right",spr_rotate_door_flags(2),"earth_sally_gate_right","bo_earth_sally_gate_right", spr_rotate_door_triggers(hit_points=10000)),
+  ("pw_door_rotate_stable",spr_rotate_door_flags(1),"pw_full_stable_door_a","bo_pw_full_stable_door_a", spr_rotate_door_triggers(hit_points=1000, left=1)),
 
   ("pw_wooden_bridge_a",spr_structure_flags(),"bridge_wooden","bo_bridge_wooden_fixed", spr_bridge_triggers("pw_wooden_bridge_a_footing", hit_points=15000)),
   ("pw_wooden_bridge_a_footing",spr_build_flags(),"box_a","bo_box_a", spr_bridge_footing_triggers()),
