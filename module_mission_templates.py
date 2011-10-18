@@ -722,6 +722,7 @@ mission_templates = [
       (position_move_x, 50),
       (set_spawn_position, pos1),
       (spawn_horse, "itm_admin_horse"),
+      (agent_equip_item, ":agent_id", "itm_torch"),
       ]),
 
     (0, 0, 0, [(key_clicked, key_f10)],
