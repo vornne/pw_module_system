@@ -2576,7 +2576,7 @@ scene_props = [
   ("pw_cart_b",sokf_moveable|spr_use_time(1),"pw_cart_b","bo_pw_cart_b", spr_cart_triggers(horse="itm_cart_horse", detach_offset=110, detach_rotation=-6, inventory_count=42, max_item_length=250, access_distance=120)),
   ("pw_wheelbarrow",sokf_moveable|spr_use_time(1),"pw_hand_cart_a","bo_pw_hand_cart_a", spr_cart_triggers(detach_offset=47, detach_rotation=15, inventory_count=12, max_item_length=120, access_distance=75)),
   ("pw_hand_cart",sokf_moveable|spr_use_time(1),"pw_hand_cart_b","bo_pw_hand_cart_b", spr_cart_triggers(detach_offset=90, inventory_count=24, max_item_length=150, access_distance=130)),
-  ("pw_back_basket",sokf_moveable|spr_use_time(2),"pw_back_basket","bo_pw_back_basket", spr_cart_triggers(detach_offset=-12, inventory_count=5, max_item_length=100, access_distance=40)),
+  ("pw_back_basket",sokf_moveable|spr_use_time(2),"pw_back_basket","bo_pw_back_basket", spr_cart_triggers(detach_offset=-12, inventory_count=5, max_item_length=95, access_distance=40)),
   ("pw_back_box",sokf_moveable|spr_use_time(3),"pw_back_box","bo_pw_back_box", spr_cart_triggers(detach_offset=-13, inventory_count=10, max_item_length=80, access_distance=50)),
   ("pw_horse_pack",sokf_moveable|spr_use_time(2),"pw_horse_pack","bo_pw_horse_pack", spr_cart_triggers(horse=1, detach_offset=49, inventory_count=20, max_item_length=100, access_distance=80)),
 
