@@ -3284,6 +3284,7 @@ DEFINE_STANDART_TECHNIQUE( standart_skin_nobump_specmap,				false,  true, true, 
 //nospec versions:
 //
 DEFINE_STANDART_TECHNIQUE( standart_noskin_nobump_nospec,				false, false, false, false, false, true)
+DEFINE_STANDART_TECHNIQUE( standart_noskin_nobump_nospec_noterraincolor,	false, false, false, false, false, false)
 DEFINE_STANDART_TECHNIQUE( standart_noskin_bump_nospec,					true,  false, false, false, false, true)
 DEFINE_STANDART_TECHNIQUE( standart_noskin_bump_nospec_noterraincolor, 	true,  false, false, false, false, false)
 DEFINE_STANDART_TECHNIQUE( standart_skin_nobump_nospec,					false,  true, false, false, false, true)
