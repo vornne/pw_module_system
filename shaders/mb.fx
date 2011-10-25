@@ -2489,8 +2489,7 @@ VS_OUTPUT_BUMP_DYNAMIC_NEW vs_main_bump_interior_new (float4 vPosition : POSITIO
 	return Out;
 }
 
-//uses standart-style normal maps
-PS_OUTPUT ps_main_bump_interior_new( VS_OUTPUT_BUMP_DYNAMIC_NEW In, uniform const bool use_specularmap ) //ps_main_bump_interior with std normalmaps
+PS_OUTPUT ps_main_bump_interior_new( VS_OUTPUT_BUMP_DYNAMIC_NEW In, uniform const bool use_specularmap, uniform const bool greenbump = false)
 {
 	PS_OUTPUT Output;
 
@@ -2499,8 +2498,16 @@ PS_OUTPUT ps_main_bump_interior_new( VS_OUTPUT_BUMP_DYNAMIC_NEW In, uniform cons
 	// effective lights!?
 
 	#ifndef USE_LIGHTING_PASS
-	float3 normal = 2.0f * tex2D(NormalTextureSampler, In.Tex0).rgb - 1.0f;
-
+	float3 normal;
+	if (greenbump)
+	{
+		normal.xy = (2.0f * tex2D(NormalTextureSampler, In.Tex0).ag - 1.0f);
+		normal.z = sqrt(1.0f - dot(normal.xy, normal.xy));
+	}
+	else
+	{
+		normal = 2.0f * tex2D(NormalTextureSampler, In.Tex0).rgb - 1.0f;
+	}
 
 //	float LD = In.vec_to_light_0.w;
 	float LD_0 = saturate(1.0f / dot(In.vec_to_light_0.xyz,In.vec_to_light_0.xyz));
@@ -2580,6 +2587,16 @@ technique bumpmap_interior_new_specmap
 		PixelShader = compile ps_2_0 ps_main_bump_interior_new(true);
 	}
 }
+
+technique bumpmap_interior_new_greenbump
+{
+	pass P0
+	{
+		VertexShader = compile vs_2_0 vs_main_bump_interior_new();
+		PixelShader = compile ps_2_0 ps_main_bump_interior_new(false, true);
+	}
+}
+
 
 DEFINE_LIGHTING_TECHNIQUE(bumpmap_interior, 1, 1, 0, 0, 0)
 #endif
@@ -2924,13 +2941,23 @@ VS_OUTPUT_STANDART vs_main_standart_Instanced (uniform const int PcfMode, unifor
 PS_OUTPUT ps_main_standart ( VS_OUTPUT_STANDART In, uniform const int PcfMode,
 									uniform const bool use_bumpmap, uniform const bool use_specularfactor,
 									uniform const bool use_specularmap, uniform const bool ps2x,
-									uniform const bool use_aniso, uniform const bool terrain_color_ambient = true )
+									uniform const bool use_aniso, uniform const bool terrain_color_ambient = true,
+									uniform const bool greenbump = false)
 {
 	PS_OUTPUT Output;
 
 	float3 normal;
-	if(use_bumpmap) {
-		normal = (2.0f * tex2D(NormalTextureSampler, In.Tex0) - 1.0f);
+	if (use_bumpmap)
+	{
+		if (greenbump)
+		{
+			normal.xy = (2.0f * tex2D(NormalTextureSampler, In.Tex0).ag - 1.0f);
+			normal.z = sqrt(1.0f - dot(normal.xy, normal.xy));
+		}
+		else
+		{
+			normal = (2.0f * tex2D(NormalTextureSampler, In.Tex0) - 1.0f);
+		}
 	}
 	else
 	{
@@ -3306,6 +3333,21 @@ DEFINE_STANDART_TECHNIQUE_INSTANCED( standart_noskin_bump_nospec_high_noterrainc
 
 DEFINE_STANDART_TECHNIQUE_HIGH_INSTANCED( standart_noskin_bump_specmap_high_Instanced,		true, false,  true, true , false)
 DEFINE_STANDART_TECHNIQUE_HIGH_INSTANCED( standart_noskin_bump_nospecmap_high_Instanced,	true, false,  true, false, false)
+
+#define DEFINE_STANDART_TECHNIQUE_GREENBUMP(tech_name, high, terraincolor)	\
+				technique tech_name	\
+				{ pass P0 { VertexShader = compile vs_2_0 vs_main_standart(PCF_NONE, true, false); \
+							PixelShader = compile PS_2_X ps_main_standart(PCF_NONE, true, false, false, high, false, terraincolor, true);} } \
+				technique tech_name##_SHDW	\
+				{ pass P0 { VertexShader = compile vs_2_0 vs_main_standart(PCF_DEFAULT, true, false); \
+							PixelShader = compile PS_2_X ps_main_standart(PCF_DEFAULT, true, false, false, high, false, terraincolor, true);} } \
+				technique tech_name##_SHDWNVIDIA	\
+				{ pass P0 { VertexShader = compile vs_2_0 vs_main_standart(PCF_NVIDIA, true, false); \
+							PixelShader = compile ps_2_a ps_main_standart(PCF_NVIDIA, true, false, false, high, false, terraincolor, true);} } \
+				DEFINE_LIGHTING_TECHNIQUE(tech_name, 0, true, false, false, false)
+
+DEFINE_STANDART_TECHNIQUE_GREENBUMP( standart_noskin_bump_nospec_noterraincolor_greenbump,			false, false)
+DEFINE_STANDART_TECHNIQUE_GREENBUMP( standart_noskin_bump_nospec_high_noterraincolor_greenbump,		true, false)
 
 //aniso versions:
 //technique nospecular_skin_bumpmap_high_aniso
