@@ -3182,7 +3182,7 @@ scripts = [
     (assign, ":packed_position", ":pos_x"),
     (val_lshift, ":pos_y", net_pack_3_shift_2),
     (val_or, ":packed_position", ":pos_y"),
-    (val_lshift, ":pos_y", net_pack_3_shift_3),
+    (val_lshift, ":pos_z", net_pack_3_shift_3),
     (val_or, ":packed_position", ":pos_z"),
     (try_for_agents, ":agent_id"),
       (agent_is_active, ":agent_id"),
