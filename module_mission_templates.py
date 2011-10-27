@@ -494,6 +494,7 @@ mission_templates = [
         (val_add, "$g_fish_school_instance_no", 1),
       (else_try),
         (assign, "$g_fish_school_instance_no", 0),
+        (call_script, "script_check_fishing_nets"),
       (try_end),
       (eq, "$g_fish_school_instance_no", 0),
       ], []),
