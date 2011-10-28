@@ -699,6 +699,13 @@ On scene load, the props are linked by searching for the nearest prop in the sce
   ("castle_name_31", "Tandcot Outpost"),
   ("castle_name_32", "Durifell Outpost"),
   ("castle_name_33", "Brackaltwald Outpost"),
+  ("castle_name_34", "Avalon"),
+  ("castle_name_35", "Camelot"),
+  ("castle_name_36", "City of Camelot"),
+  ("castle_name_37", "Troll Cave"),
+  ("castle_name_38", "Riverhigh Mine"),
+  ("castle_name_39", "Iron Abbey"),
+  ("castle_name_40", "Imperial Prison"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]
