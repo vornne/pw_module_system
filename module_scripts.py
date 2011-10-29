@@ -3302,6 +3302,8 @@ scripts = [
         (val_mul, ":multiplier", ":scene_prop_multiplier"),
         (val_div, ":multiplier", 100),
         (val_mul, ":value", ":scene_prop_multiplier"),
+        (val_div, ":value", 100),
+        (val_max, ":value", 1),
       (try_end),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_value, ":value"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_multiplier, ":multiplier"),
