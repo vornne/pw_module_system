@@ -3086,7 +3086,7 @@ presentations = [
           (agent_is_alive, ":agent_id"),
           (agent_get_player_id, ":player_id", ":agent_id"),
           (neq, ":player_id", ":my_player"),
-          (agent_get_item_slot, ":body_item_id", ":agent_id", 5),
+          (agent_get_item_slot, ":body_item_id", ":agent_id", ek_body),
           (neq, ":body_item_id", "itm_invisible_body"),
           (agent_get_position, pos2, ":agent_id"),
           (position_move_z, pos2, 160),

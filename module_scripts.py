@@ -8410,6 +8410,8 @@ scripts = [
       (agent_is_human, ":agent_id"),
       (agent_set_slot, ":agent_id", slot_agent_is_targeted, 0),
       (neq, ":agent_id", ":my_agent_id"),
+      (agent_get_item_slot, ":body_item_id", ":agent_id", ek_body),
+      (neq, ":body_item_id", "itm_invisible_body"),
       (agent_get_position, pos2, ":agent_id"),
       (position_move_z, pos2, 160),
       (agent_get_horse, ":horse", ":agent_id"),
