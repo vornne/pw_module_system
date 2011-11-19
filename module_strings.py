@@ -474,6 +474,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("process_press", "Press"),
   ("process_brew", "Brew"),
   ("process_tavern", "Serve"),
+  ("process_preserve", "Preserve"),
   ("stockpile", "Stockpile"),
   ("export", "Export"),
   ("import", "Import"),
