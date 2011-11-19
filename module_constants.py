@@ -233,7 +233,8 @@ slot_faction_relations_begin          = 30
 
 faction_cost_change_banner            = 500
 faction_cost_change_name              = 500
-faction_cost_kick_player              = 1000
+faction_cost_kick_player              = 500
+faction_cost_outlaw_player            = 1000
 
 ########################################################
 ##  SCENE SLOTS            #############################
@@ -383,6 +384,7 @@ invalid_faction_color                 = 0xFF888888
 
 outlaw_rating_for_kill                = 2
 outlaw_rating_for_team_kill           = 5
+outlaw_rating_for_lord_outlawed       = 4
 outlaw_rating_outlawed                = 15
 outlaw_rating_maximum                 = 30
 

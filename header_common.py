@@ -212,6 +212,7 @@ faction_admin_action_toggle_player_money_key    = 3
 faction_admin_action_toggle_player_item_key     = 4
 faction_admin_action_set_relation_hostile       = 5
 faction_admin_action_set_relation_peaceful      = 6
+faction_admin_action_outlaw_player              = 7
 
 max_possible_gold                               = 1000000000
 max_correctly_displayed_gold                    = 131071
