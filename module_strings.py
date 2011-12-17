@@ -414,6 +414,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("loot_as_factions", "Looting: commoners and outlaws treated as factions"),
   ("loot_never_commoners", "Looting: commoners never drop money bags"),
   ("loot_independent", "Looting: commoners and outlaws treated independently"),
+  ("respawn_with_partial_health", "Respawn with partial health"),
+  ("respawn_with_full_health", "Respawn with full health"),
   ("player_name", "Player Name"),
   ("class", "Class"),
   ("kills", "Kills"),

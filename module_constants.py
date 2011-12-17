@@ -258,6 +258,7 @@ slot_troop_equipment_hand_begin       = 8 * troop_slot_count_per_equipment_type
 slot_troop_equipment_horse_begin      = 9 * troop_slot_count_per_equipment_type
 
 slot_troop_ranking                    = 50
+slot_troop_spawn_health_percent       = 51
 
 slot_player_array_size                = 0
 slot_player_array_begin               = 1
