@@ -126,7 +126,7 @@ items = [
  78, weight(1)|head_armor(7)|difficulty(0), imodbits_cloth, init_heraldic_item("tableau_colored_helmets_new_d")],
 ["ladys_hood", "Woolen Hood", [("ladys_hood_new", 0)], itp_type_head_armor, 0,
  120, weight(1)|head_armor(8)|difficulty(0), imodbits_cloth],
-["fur_hat", "Fur Hat", [("fur_hat_a_new", 0)], itp_type_head_armor, 0,
+["fur_hat", "Fur Hat", [("noel_helmet", 0)], itp_type_head_armor, 0,
  110, weight(0.5)|head_armor(8)|difficulty(0), imodbits_cloth],
 ["felt_hat", "Felt Hat", [("felt_hat_a_new", 0)], itp_type_head_armor, 0,
  74, weight(1)|head_armor(8)|difficulty(0), imodbits_cloth, init_heraldic_item("tableau_colored_helmets_new_b")],

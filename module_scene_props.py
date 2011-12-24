@@ -2159,7 +2159,7 @@ scene_props = [
   ("pw_buy_barbette",spr_buy_item_flags(1),"barbette_new","bo_armor_head", spr_buy_item_triggers("itm_barbette", resources=[], skill_required=1)),
   ("pw_buy_arming_cap",spr_buy_item_flags(1),"arming_cap_a_new","bo_armor_head", spr_buy_item_triggers("itm_arming_cap", resources=[], skill_required=1, tableau="tableau_colored_helmets_new_d")),
   ("pw_buy_ladys_hood",spr_buy_item_flags(1),"ladys_hood_new","bo_armor_head", spr_buy_item_triggers("itm_ladys_hood", resources=[], skill_required=1)),
-  ("pw_buy_fur_hat",spr_buy_item_flags(1),"fur_hat_a_new","bo_armor_head", spr_buy_item_triggers("itm_fur_hat", resources=[], skill_required=1)),
+  ("pw_buy_fur_hat",spr_buy_item_flags(1),"noel_helmet","bo_armor_head", spr_buy_item_triggers("itm_fur_hat", resources=[], skill_required=1)),
   ("pw_buy_felt_hat",spr_buy_item_flags(1),"felt_hat_a_new","bo_armor_head", spr_buy_item_triggers("itm_felt_hat", resources=[], skill_required=1, tableau="tableau_colored_helmets_new_b")),
   ("pw_buy_felt_hat_b",spr_buy_item_flags(1),"felt_hat_b_new","bo_armor_head", spr_buy_item_triggers("itm_felt_hat_b", resources=[], skill_required=1, tableau="tableau_colored_helmets_new_b")),
   ("pw_buy_leather_cap",spr_buy_item_flags(1),"leather_cap_a_new","bo_armor_head", spr_buy_item_triggers("itm_leather_cap", resources=[], skill_required=1)),
