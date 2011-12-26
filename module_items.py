@@ -1071,6 +1071,7 @@ itm_castle_banner("fac_8", "b"),
  0, weight(1)|difficulty(30)|spd_rtng(120)|weapon_length(120)|swing_damage(50, cut)|thrust_damage(50, pierce), imodbits_sword_high],
 
 ["all_items_end", "all_items_end", [("shield_round_a", 0)], 0, 0, 1, 0, 0],
+["pointer_arrow", "pointer_arrow", [("pointer_arrow", 0)], 0, 0, 1, 0, 0],
 ]
 
 item_class_list = []

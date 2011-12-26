@@ -563,7 +563,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("admin_chat_to_player_format", "*ADMIN* [{s1}] > [{s2}] {s0}"),
   ("admin_announcement_format", "*ANNOUNCEMENT* [{s1}] {s0}"),
 
-  ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12}"),
+  ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12} link id: {reg13}"),
+  ("error_unlinked_scene_prop", "Unlinked scene prop instance: {reg10} kind: {reg11} link id: {reg12} - only valid if this prop has not been added since loading the scene."),
+  ("no_more_unlinked_scene_props", "No more unlinked scene props."),
   ("error_scene_prop_0_pw", "Error: scene prop instance id 0 (kind {reg0}) is scripted (pw), so it might not work correctly."),
   ("pw_welcome", "{s10}^^\
 General Information^^\
@@ -614,6 +616,7 @@ As admin, holding down right shift while voting overrides the poll. The selected
 ^-- Edit scene mode keys^\
 F1 = this information^\
 F2 = scene prop editor value information^\
+F8 = move agent to the positions of all scene props that can't find the other prop they need to link with.^\
 F9 = spawn new random player agent^\
 F10 = move agent to the positions of all scene props added to the ship collision list when the scene was loaded^\
 F11 = spawn test horse at agent position^\
