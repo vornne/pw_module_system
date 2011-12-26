@@ -1315,7 +1315,7 @@ scripts = [
         (else_try),
           (eq, ":item_type", itp_type_shield),
           (set_result_string, "str_requires_shield_reg1"),
-          (assign, ":troop_level", 0),
+          (store_skill_level, ":troop_level", "skl_shield", ":troop_id"),
         (else_try),
           (eq, ":item_type", itp_type_horse),
           (set_result_string, "str_requires_riding_reg1"),
@@ -4006,7 +4006,7 @@ scripts = [
         (store_skill_level, ":troop_level", "skl_power_throw", ":troop_id"),
       (else_try),
         (eq, ":item_type", itp_type_shield),
-        (assign, ":troop_level", 0), #disabled for multiplayer troops
+        (store_skill_level, ":troop_level", "skl_shield", ":troop_id"),
       (else_try),
         (eq, ":item_type", itp_type_horse),
         (store_skill_level, ":troop_level", "skl_riding", ":troop_id"),

@@ -510,7 +510,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("requires_strength_reg1", "Requires strength: {reg1}"),
   ("requires_power_draw_reg1", "Requires power draw: {reg1}"),
   ("requires_power_throw_reg1", "Requires power throw: {reg1}"),
-  ("requires_shield_reg1", "This shield cannot be used ({reg1})"),
+  ("requires_shield_reg1", "Requires shield: {reg1}"),
   ("requires_riding_reg1", "Requires riding: {reg1}"),
   ("joined_the_s1", "You have joined the {s1}."),
   ("must_leave_s1_first", "You must leave the {s1} first."),
