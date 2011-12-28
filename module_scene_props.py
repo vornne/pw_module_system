@@ -291,7 +291,7 @@ def spr_hit_plant_triggers(resource_item, full_hp=1000, resource_hp=200, hardnes
     (ti_on_scene_prop_hit,
      [(store_trigger_param_1, ":instance_id"),
       (store_trigger_param_2, ":hit_damage"),
-      (call_script, "script_cf_hit_regrowing_resource", ":instance_id", ":hit_damage", resource_hp, resource_item, hardness, tool_class, skill, attack_range, spawn_on_ground, regrow_interval, effect_script),
+      (call_script, "script_cf_hit_regrowing_resource", ":instance_id", ":hit_damage", resource_hp, resource_item, hardness, tool_class, skill, attack_range, spawn_on_ground, regrow_interval, effect_script, 0),
       ]),
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_animation_finished,
