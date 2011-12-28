@@ -1790,6 +1790,7 @@ scripts = [
     (troop_set_slot, "trp_ship_array", slot_ship_array_count, 0),
     (troop_set_slot, "trp_ship_array", slot_ship_array_collision_props_count, 0),
     (troop_set_slot, "trp_cart_array", slot_array_count, 0),
+    (troop_set_slot, "trp_removed_scene_props", slot_array_count, 0),
     (assign, "$g_loop_ship_to_check", 0),
     (assign, "$g_loop_ship_check_time", 0),
     (assign, "$g_ambient_sound_instance_no", 0),
