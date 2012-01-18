@@ -16,6 +16,7 @@ class pw_name_server_config
   const name_used_error = 1;
   const clan_tag_error = 2;
   const name_invalid_error = 3;
+  const not_registered_error = 4;
 
   public $connection;
 
