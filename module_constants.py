@@ -52,6 +52,7 @@ slot_player_equip_item_2_ammo         = 32
 slot_player_equip_item_3_ammo         = 33
 
 slot_player_spawn_food_amount         = 34
+slot_player_faction_chat_muted        = 35
 
 slot_player_admin_no_panel            = 40
 slot_player_admin_no_gold             = 41
