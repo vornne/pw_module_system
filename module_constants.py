@@ -349,6 +349,7 @@ base_export_multiplier                = 100
 
 winch_type_drawbridge                 = 0
 winch_type_portcullis                 = 1
+winch_type_platform                   = 2
 
 repairable_hit                        = 0
 repairable_destroyed                  = 1

@@ -235,6 +235,17 @@ def spr_portcullis_winch_triggers(target_scene_prop, move_steps=5, step_size=100
     [link_scene_prop, target_scene_prop],
     [init_scene_prop, "script_cf_init_winch", move_steps, step_size, winch_type_portcullis]]
 
+def spr_lift_platform_winch_triggers(step_size=100, animation_time=100):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_winch_lower"),
+      ]),
+    spr_call_script_use_trigger("script_cf_use_winch", -1, step_size, animation_time, winch_type_platform)]
+
+def spr_lift_platform_triggers(winch_scene_prop):
+  return [[link_scene_prop, winch_scene_prop, winch_scene_prop],
+    [init_scene_prop, "script_cf_init_lift_platform"]]
+
 def spr_cart_triggers(horse=0, detach_offset=0, detach_rotation=0, inventory_count=0, max_item_length=100, access_distance=100, use_string="str_attach"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -2583,6 +2594,8 @@ scene_props = [
   ("pw_drawbridge_b",sokf_moveable,"castle_drawbridges_open","bo_castle_drawbridges_open", []),
   ("pw_trapdoor_winch_a",spr_use_time(1),"winch","bo_winch_fixed", spr_drawbridge_winch_triggers("pw_trapdoor_a", rotation_steps=2, step_size=45, animation_time=50)),
   ("pw_trapdoor_a",sokf_moveable,"belfry_b_platform_a","bo_belfry_b_platform_a", []),
+  ("pw_lift_platform_winch",spr_use_time(1),"winch_b","bo_winch_fixed", spr_lift_platform_winch_triggers()),
+  ("pw_lift_platform",sokf_moveable,"pw_lift_platform","bo_pw_lift_platform", spr_lift_platform_triggers("pw_lift_platform_winch")),
 
   ("pw_cart_a",sokf_moveable|spr_use_time(1),"pw_cart_a","bo_pw_cart_a", spr_cart_triggers(horse="itm_cart_horse", detach_offset=60, detach_rotation=-20, inventory_count=48, max_item_length=250, access_distance=150)),
   ("pw_cart_b",sokf_moveable|spr_use_time(1),"pw_cart_b","bo_pw_cart_b", spr_cart_triggers(horse="itm_cart_horse", detach_offset=110, detach_rotation=-6, inventory_count=42, max_item_length=250, access_distance=120)),

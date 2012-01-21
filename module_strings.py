@@ -616,6 +616,7 @@ As admin, holding down right shift while voting overrides the poll. The selected
 * The scene props starting with code_ should not be placed manually in your scene: they are spawned by the scripts as needed.^\
 * Fish schools should be placed somewhere in water, and will move randomly to nearby shallow parts.^\
 * The maximum number of lights in a scene that will be visible is 10: a limitation of the game engine.^\
+* The lift platform must be linked with two corresponding winches, which will determine the vertical movement range: the plaform will be able to move between 1 unit below the upper winch to 1 unit below the lower one.^\
 ^-- Edit scene mode keys^\
 F1 = this information^\
 F2 = scene prop editor value information^\
@@ -623,7 +624,7 @@ F8 = move agent to the positions of all scene props that can't find the other pr
 F9 = spawn new random player agent^\
 F10 = move agent to the positions of all scene props added to the ship collision list when the scene was loaded^\
 F11 = spawn test horse at agent position^\
-F12 = measure distance to the first spr_pointer_arrow"),
+F12 = measure distance to the first pointer_arrow prop"),
   ("pw_editor_values_info", "Scene prop editor values 1 and 2^^\
 pw_buy_*, pw_stockpile_*:^value 1 = faction + multiplier^value 2 = initial stockpile count^^\
 pw_export_*:^value 1 = faction + multiplier^value 2 = faction tax multiplier^^\
@@ -632,9 +633,10 @@ pw_change_troop_*:^value 1 = faction + multiplier^^\
 pw_door_rotate_*:^value 1 = faction + multiplier^value 2 = options bitfield (0x1 = start open, 0x2 = bolted, 0x4 = not pickable)^^\
 pw_door_teleport_*:^value 1 = faction + multiplier^value 2 = linking id with x^^\
 pw iron mines:^value 1 = initial hit points / 1000^^\
-pw bridges:^value 2 = linking id with x_footing^^\
+pw bridges:^value 2 = linking id with two x_footing props^^\
 pw walls, ladders:^value 2 = linking id with x_build^^\
 pw portcullises, drawbridges, trapdoors:^value 1 = options bitfield (0x1 = start closed)^value 2 = linking id with x_winch^^\
+pw_lift_platform:^value 2 = linking id with two x_winch props^^\
 pw ships:^value 1 = initial ramp position (0 = center, 1 = left, 2 = right)^Only place the hull, the other parts are spawned at mission start.^^\
 pw_castle_capture_point:^value 1 = faction / castle id^^\
 pw_castle_sign:^value 1 = faction / castle id^value 2 = number of the name, listed at the end of strings.txt (name can't be one used by another castle)^^\
