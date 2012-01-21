@@ -87,7 +87,7 @@ troops = [
    str_15|agi_14|pw_attr,wpex(100,100,130,10,25,80),knows_pw|knows_ironflesh_10|knows_power_strike_4|knows_power_throw_2|knows_athletics_5|knows_riding_2|knows_sailing_3,default_face_1,default_face_2],
   ["archer","Archer","an archer",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_common_hood","itm_padded_coif","itm_linen_tunic","itm_tunic_with_green_cape","itm_ankle_boots","itm_crude_bow","itm_bent_arrows"],
-   str_14|agi_14|pw_attr,wpex(90,70,60,150,30,50),knows_pw|knows_ironflesh_9|knows_power_strike_2|knows_power_draw_4|knows_athletics_4|knows_riding_2|knows_sailing_3,default_face_1,default_face_2],
+   str_14|agi_14|pw_attr,wpex(90,60,70,150,30,50),knows_pw|knows_ironflesh_9|knows_power_strike_2|knows_power_draw_4|knows_athletics_4|knows_riding_2|knows_sailing_3,default_face_1,default_face_2],
   ["crossbowman","Crossbowman","a crossbowman",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_padded_coif","itm_arming_cap","itm_leather_vest","itm_tabard","itm_nomad_boots","itm_ankle_boots","itm_hide_boots","itm_flimsy_crossbow","itm_crude_bolts"],
    str_14|agi_14|pw_attr,wpex(90,60,60,50,150,50),knows_pw|knows_ironflesh_8|knows_power_strike_3|knows_athletics_4|knows_riding_2|knows_sailing_3,default_face_1,default_face_2],
