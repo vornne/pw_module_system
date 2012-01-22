@@ -2250,6 +2250,7 @@ scene_props = [
   ("pw_buy_lady_dress_ruby",spr_buy_item_flags(1),"lady_dress_r","bo_armor_body", spr_buy_item_triggers("itm_lady_dress_ruby", resources=[], skill_required=1)),
   ("pw_buy_lady_dress_green",spr_buy_item_flags(1),"lady_dress_g","bo_armor_body", spr_buy_item_triggers("itm_lady_dress_green", resources=[], skill_required=1)),
   ("pw_buy_lady_dress_blue",spr_buy_item_flags(1),"lady_dress_b","bo_armor_body", spr_buy_item_triggers("itm_lady_dress_blue", resources=[], skill_required=1)),
+  ("pw_buy_court_dress",spr_buy_item_flags(1),"court_dress","bo_armor_body", spr_buy_item_triggers("itm_court_dress", resources=[], skill_required=1)),
   ("pw_buy_red_dress",spr_buy_item_flags(1),"red_dress","bo_armor_body", spr_buy_item_triggers("itm_red_dress", resources=[], skill_required=1)),
   ("pw_buy_brown_dress",spr_buy_item_flags(1),"brown_dress","bo_armor_body", spr_buy_item_triggers("itm_brown_dress", resources=[], skill_required=1)),
   ("pw_buy_green_dress",spr_buy_item_flags(1),"green_dress","bo_armor_body", spr_buy_item_triggers("itm_green_dress", resources=[], skill_required=1)),

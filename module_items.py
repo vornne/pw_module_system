@@ -261,6 +261,8 @@ items = [
  200, weight(3)|body_armor(10)|leg_armor(10)|difficulty(0), imodbits_cloth|imodbit_female],
 ["lady_dress_blue", "Blue Dress", [("lady_dress_b",0)], itp_type_body_armor|itp_covers_legs, 0,
  200, weight(3)|body_armor(10)|leg_armor(10)|difficulty(0), imodbits_cloth|imodbit_female],
+["court_dress", "Red Pattern Dress", [("court_dress",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 200, weight(3)|body_armor(10)|leg_armor(10)|difficulty(0), imodbits_cloth|imodbit_female],
 ["red_dress", "Red Dress", [("red_dress",0)], itp_type_body_armor|itp_covers_legs, 0,
  200, weight(3)|body_armor(10)|leg_armor(10)|difficulty(0), imodbits_cloth|imodbit_female],
 ["brown_dress", "Brown Dress", [("brown_dress",0)], itp_type_body_armor|itp_covers_legs, 0,
