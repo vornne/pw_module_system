@@ -67,8 +67,8 @@ def itm_castle_banner(faction, suffix):
   return ["pw_banner_castle_" + faction + suffix, "Castle Banner", [("pw_banner_castle",0)], itp_no_pick_up_from_ground, 0,
    0, 0, imodbits_none, [(ti_on_init_item, [(cur_item_set_tableau_material, "tableau_castle_banner_" + suffix, faction)])]]
 
-def itm_throw_wheat_trigger(item_id):
- return (ti_on_weapon_attack,
+def itm_throw_wheat_trigger():
+  return (ti_on_weapon_attack,
    [(multiplayer_is_server),
     (position_move_x, pos1, -10),
     (position_move_y, pos1, 50),
@@ -811,7 +811,7 @@ items = [
 ["salted_fish", "Salted Fish", [("pw_fish",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
  70, weight(1)|spd_rtng(70)|weapon_length(45)|swing_damage(1,cut), imodbits_none, [(item_class, item_class_food, 20)]],
 ["wheat_sack", "Wheat Sack", [("pw_throwing_wheat",0),("pw_thrown_wheat",ixmesh_flying_ammo),("pw_wheat_sack",ixmesh_carry),("pw_wheat_sack",ixmesh_inventory)], itp_type_thrown|itp_primary|itp_cant_use_on_horseback, itcf_throw_stone|itcf_carry_quiver_right_vertical|itcf_show_holster_when_drawn,
- 20, weight(0.25)|spd_rtng(90)|weapon_length(20)|shoot_speed(10)|max_ammo(10), imodbits_none, [itm_throw_wheat_trigger("itm_wheat_sack")]],
+ 20, weight(0.25)|spd_rtng(90)|weapon_length(20)|shoot_speed(10)|max_ammo(10), imodbits_none, [itm_throw_wheat_trigger()]],
 ["wheat_sheaf", "Wheat Sheaf", [("pw_wheat_sheaf",0)], itp_type_one_handed_wpn|itp_two_handed|itp_primary|itp_no_parry, itcf_thrust_onehanded|itcf_carry_bow_back,
  35, weight(3)|spd_rtng(20)|weapon_length(45), imodbits_none, [(item_class, item_class_food, 0)]],
 ["flour_sack", "Flour Sack", [("pw_flour_sack",0),("pw_flour_sack_carry",ixmesh_carry)], itp_type_polearm|itp_two_handed|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_carry_quiver_back,
