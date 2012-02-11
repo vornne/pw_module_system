@@ -677,6 +677,9 @@ On scene load, the props are linked by searching for the nearest prop in the sce
   ("scene_name_7", "Scene 7"),
   ("scene_name_8", "Scene 8"),
   ("scene_name_9", "Scene 9"),
+  ("scene_name_10", "Basin of Ice"),
+  ("scene_name_11", "Across the River"),
+  ("scene_name_12", "Game of Thrones"),
   ("scene_names_end", "scene_names_end"),
 
   ("castle_name_0", "Laszloburg Castle"),
