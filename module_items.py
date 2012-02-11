@@ -67,6 +67,10 @@ def itm_castle_banner(faction, suffix):
   return ["pw_banner_castle_" + faction + suffix, "Castle Banner", [("pw_banner_castle",0)], itp_no_pick_up_from_ground, 0,
    0, 0, imodbits_none, [(ti_on_init_item, [(cur_item_set_tableau_material, "tableau_castle_banner_" + suffix, faction)])]]
 
+def itm_wall_banner(faction, suffix):
+  return ["pw_banner_wall_" + faction + suffix, "Wall Banner", [("pw_banner_wall",0)], itp_no_pick_up_from_ground, 0,
+   0, 0, imodbits_none, [(ti_on_init_item, [(cur_item_set_tableau_material, "tableau_castle_banner_" + suffix, faction)])]]
+
 def itm_throw_wheat_trigger():
   return (ti_on_weapon_attack,
    [(multiplayer_is_server),
@@ -1081,6 +1085,22 @@ itm_castle_banner("fac_5", "b"),
 itm_castle_banner("fac_6", "b"),
 itm_castle_banner("fac_7", "b"),
 itm_castle_banner("fac_8", "b"),
+itm_wall_banner("fac_1", "a"),
+itm_wall_banner("fac_2", "a"),
+itm_wall_banner("fac_3", "a"),
+itm_wall_banner("fac_4", "a"),
+itm_wall_banner("fac_5", "a"),
+itm_wall_banner("fac_6", "a"),
+itm_wall_banner("fac_7", "a"),
+itm_wall_banner("fac_8", "a"),
+itm_wall_banner("fac_1", "b"),
+itm_wall_banner("fac_2", "b"),
+itm_wall_banner("fac_3", "b"),
+itm_wall_banner("fac_4", "b"),
+itm_wall_banner("fac_5", "b"),
+itm_wall_banner("fac_6", "b"),
+itm_wall_banner("fac_7", "b"),
+itm_wall_banner("fac_8", "b"),
 
 ["admin_horse", "Admin Horse", [("plated_charger_black",0)], itp_type_horse, 0,
  0, hit_points(500)|body_armor(100)|difficulty(0)|horse_speed(400)|horse_maneuver(100)|horse_charge(50)|horse_scale(130), imodbit_spirited],

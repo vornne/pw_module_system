@@ -197,7 +197,7 @@ slot_faction_name_is_custom           = 1
 slot_faction_is_active                = 2
 slot_faction_lord_player_uid          = 3
 slot_faction_lord_last_seen_time      = 4
-slot_faction_castle_banner_item_begin = 5
+slot_faction_castle_banner_variant    = 5
 slot_faction_list_button_id           = 6
 
 slot_faction_poll_end_time            = 20
@@ -273,6 +273,7 @@ player_array_gold_value               = 3
 player_array_outlaw_rating            = 4
 player_array_entry_size               = 5
 
+max_castle_count = 8
 slot_mission_data_castle_owner_faction_begin    = 0
 slot_mission_data_castle_owner_faction_end      = 8
 slot_mission_data_castle_is_active_begin        = 10
@@ -324,7 +325,6 @@ loop_agent_check_interval             = 2
 loop_horse_check_interval             = 30
 loop_health_check_interval            = 15
 stack_count_check_interval            = 5
-redraw_castle_banners_interval        = 60
 repeat_action_min_interval            = 5
 poll_time_duration                    = 60
 
@@ -395,6 +395,10 @@ outlaw_rating_maximum                 = 30
 change_faction_type_respawn           = 0
 change_faction_type_no_respawn        = 1
 change_faction_type_outlawed          = 2
+
+redraw_all_banners                    = 0
+redraw_castle_banners                 = 1
+redraw_faction_banners                = 2
 
 inventory_slots_per_row               = 6
 inventory_slot_spacing                = 100

@@ -2633,6 +2633,7 @@ scene_props = [
 
   ("pw_castle_sign",0,"tree_house_guard_a","bo_tree_house_guard_a", [(ti_on_scene_prop_use, [])]),
   ("pw_castle_capture_point",spr_use_time(60),"pw_castle_flag_post","bo_pw_castle_flag_post", spr_capture_castle_triggers()),
+  ("pw_castle_wall_banner",0,"pw_banner_wall_rail","bo_pw_banner_wall_rail", []),
   ("pw_castle_money_chest",spr_chest_flags(2),"pw_chest_b","bo_pw_chest_b", spr_castle_money_chest_triggers(hit_points=6000)),
   ("pw_item_chest_a",spr_chest_flags(1),"pw_chest_c","bo_pw_chest_c", spr_item_chest_triggers(hit_points=7000, inventory_count=48, max_item_length=180)),
   ("pw_item_chest_b",spr_chest_flags(1),"pw_chest_b","bo_pw_chest_b", spr_item_chest_triggers(hit_points=5000, inventory_count=32, max_item_length=100)),

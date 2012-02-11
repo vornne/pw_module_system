@@ -220,8 +220,8 @@ tableaus = [
   ("colored_helmets_new_d", 0, "helmets_new_d", 512, 512, 0, 0, 0, 0, tableau_armor_vertex_color("mesh_tableau_mesh_colored_helmets_new_d")),
   ("colored_helmets_new_e", 0, "helmets_new_e", 512, 512, 0, 0, 0, 0, tableau_armor_vertex_color("mesh_tableau_mesh_colored_helmets_new_e")),
 
-  ("castle_banner_a", 0, "tableau_with_transparency", 512, 256, 0, 0, 0, 0, tableau_castle_banner()),
-  ("castle_banner_b", 0, "tableau_with_transparency", 512, 256, 0, 0, 0, 0, tableau_castle_banner()),
+  ("castle_banner_a", 0, "heraldic_banner_pole", 1024, 512, 0, 0, 0, 0, tableau_castle_banner()),
+  ("castle_banner_b", 0, "heraldic_banner_pole", 1024, 512, 0, 0, 0, 0, tableau_castle_banner()),
 
   ("faction_banner_pole", 0, "heraldic_banner_pole", 512, 1024, 0, 0, 0, 0, tableau_banner_pole()),
   ("stats_chart_banner", 0, "heraldic_banner_pole", 512, 1024, 0, 0, 0, 0, tableau_stats_chart_banner()),
