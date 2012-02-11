@@ -109,11 +109,13 @@ slot_scene_prop_linked_scene_prop     = 10
 slot_scene_prop_linked_scene_prop_1   = 10
 slot_scene_prop_linked_scene_prop_2   = 11
 slot_scene_prop_linked_scene_prop_3   = 12
-linked_scene_prop_slot_count          = 3
+slot_scene_prop_linked_scene_prop_4   = 13
+linked_scene_prop_slot_count          = 4
 
 slot_scene_prop_linked_sail           = slot_scene_prop_linked_scene_prop_1
 slot_scene_prop_linked_sail_off       = slot_scene_prop_linked_scene_prop_2
 slot_scene_prop_linked_ramp           = slot_scene_prop_linked_scene_prop_3
+slot_scene_prop_linked_hold           = slot_scene_prop_linked_scene_prop_4
 
 slot_scene_prop_position              = 15
 slot_scene_prop_target_position       = 16

@@ -404,7 +404,7 @@ def spr_stockpile_resource_triggers(item_id, use_string="str_stockpile"):
   return [spr_item_init_trigger(item_id, use_string=use_string, stockpile=True),
     spr_call_script_use_trigger("script_cf_use_resource_stockpile")]
 
-def spr_ship_triggers(hit_points=1000, length=1000, width=200, speed=5, sail=-1, sail_off=-1, ramp=-1, collision="pw_ship_a_cd"):
+def spr_ship_triggers(hit_points=1000, length=1000, width=200, speed=5, sail=-1, sail_off=-1, ramp=-1, hold=-1, collision="pw_ship_a_cd"):
   if speed < 1 or speed > ship_forwards_maximum:
     raise Exception("Ship speed must be between 1 and " + `ship_forwards_maximum`)
   return [(ti_on_scene_prop_init,
@@ -425,7 +425,7 @@ def spr_ship_triggers(hit_points=1000, length=1000, width=200, speed=5, sail=-1,
       (call_script, "script_cf_damage_ship", ":instance_id", ":hit_damage", hit_points, 0),
       ]),
     (ti_on_scene_prop_destroy, []),
-    [init_scene_prop, "script_setup_ship", spr_tag(sail), spr_tag(sail_off), spr_tag(ramp)]]
+    [init_scene_prop, "script_setup_ship", spr_tag(sail), spr_tag(sail_off), spr_tag(ramp), spr_tag(hold)]]
 
 def spr_ship_ramp_triggers():
   return [spr_call_script_use_trigger("script_use_ship_ramp")]
@@ -534,7 +534,7 @@ def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000,
 
 def spr_item_chest_triggers(inventory_count=6, max_item_length=100, use_string="str_access", hit_points=1000, probability=100):
   return [(ti_on_scene_prop_init,
-    [(store_trigger_param_1, ":instance_id"),
+     [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, hit_points),
@@ -550,6 +550,15 @@ def spr_item_chest_triggers(inventory_count=6, max_item_length=100, use_string="
     (ti_on_scene_prop_destroy, []),
     spr_call_script_cancel_use_trigger("script_cf_pick_chest_lock", 0),
     spr_call_script_use_trigger("script_cf_use_inventory", probability)]
+
+def spr_item_storage_triggers(inventory_count=6, max_item_length=100, use_string="str_access"):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_inventory_count, spr_check_inventory_count(inventory_count)),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, max_item_length),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
+      ]),
+    spr_call_script_use_trigger("script_cf_use_inventory", 0)]
 
 def spr_fire_place_triggers():
   return [(ti_on_scene_prop_init,
@@ -2610,13 +2619,15 @@ scene_props = [
   ("pw_ship_a_sail",sokf_moveable,"pw_ship_a_sail","bo_pw_ship_a_sail", []),
   ("pw_ship_a_sail_off",sokf_moveable,"pw_ship_a_sail_off","bo_pw_ship_a_sail_off", []),
   ("pw_ship_a_cd",sokf_invisible,"0","bo_pw_ship_a_cd", []),
-  ("pw_ship_c",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_c","bo_pw_ship_c", spr_ship_triggers(hit_points=15000, length=1400, width=300, speed=4, sail="pw_ship_c_sail", sail_off="pw_ship_c_sail_off", ramp="pw_ship_c_ramp", collision="pw_ship_c_cd")),
+  ("pw_ship_c",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_c","bo_pw_ship_c", spr_ship_triggers(hit_points=15000, length=1400, width=300, speed=4, sail="pw_ship_c_sail", sail_off="pw_ship_c_sail_off", ramp="pw_ship_c_ramp", hold="pw_ship_c_hold", collision="pw_ship_c_cd")),
   ("pw_ship_c_sail",sokf_moveable,"pw_ship_c_sail","bo_pw_ship_c_sail", []),
   ("pw_ship_c_sail_off",sokf_moveable,"pw_ship_c_sail_off","bo_pw_ship_c_sail_off", []),
   ("pw_ship_c_ramp",sokf_moveable|spr_use_time(1),"pw_ship_c_ramp","bo_pw_ship_c_ramp", spr_ship_ramp_triggers()),
+  ("pw_ship_c_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_c_hold", spr_item_storage_triggers(inventory_count=90, max_item_length=500)),
   ("pw_ship_c_cd",sokf_invisible,"0","bo_pw_ship_c_cd", []),
-  ("pw_ship_d",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_d","bo_pw_ship_d", spr_ship_triggers(hit_points=10000, length=900, width=250, speed=5, sail="pw_ship_d_sail", collision="pw_ship_d_cd")),
+  ("pw_ship_d",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_d","bo_pw_ship_d", spr_ship_triggers(hit_points=10000, length=900, width=250, speed=5, sail="pw_ship_d_sail", hold="pw_ship_d_hold", collision="pw_ship_d_cd")),
   ("pw_ship_d_sail",sokf_moveable,"pw_ship_d_sail","bo_pw_ship_d_sail", []),
+  ("pw_ship_d_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_d_hold", spr_item_storage_triggers(inventory_count=64, max_item_length=500)),
   ("pw_ship_d_cd",sokf_invisible,"0","bo_pw_ship_d_cd", []),
 
   ("pw_castle_sign",0,"tree_house_guard_a","bo_tree_house_guard_a", [(ti_on_scene_prop_use, [])]),
