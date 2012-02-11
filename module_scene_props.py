@@ -404,7 +404,7 @@ def spr_stockpile_resource_triggers(item_id, use_string="str_stockpile"):
   return [spr_item_init_trigger(item_id, use_string=use_string, stockpile=True),
     spr_call_script_use_trigger("script_cf_use_resource_stockpile")]
 
-def spr_ship_triggers(hit_points=1000, length=1000, width=200, speed=5, sail=-1, sail_off=-1, ramp=-1, hold=-1, collision="pw_ship_a_cd"):
+def spr_ship_triggers(hit_points=1000, length=1000, width=200, height=100, speed=5, sail=-1, sail_off=-1, ramp=-1, hold=-1, collision="pw_ship_a_cd"):
   if speed < 1 or speed > ship_forwards_maximum:
     raise Exception("Ship speed must be between 1 and " + `ship_forwards_maximum`)
   return [(ti_on_scene_prop_init,
@@ -414,6 +414,7 @@ def spr_ship_triggers(hit_points=1000, length=1000, width=200, speed=5, sail=-1,
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, length),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_width, width),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_height, height),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_collision_kind, spr_tag(collision)),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_speed_limit, speed + 1),
       (neg|multiplayer_is_server),
@@ -2615,17 +2616,17 @@ scene_props = [
   ("pw_back_box",sokf_moveable|spr_use_time(3),"pw_back_box","bo_pw_back_box", spr_cart_triggers(detach_offset=-13, inventory_count=10, max_item_length=80, access_distance=50)),
   ("pw_horse_pack",sokf_moveable|spr_use_time(2),"pw_horse_pack","bo_pw_horse_pack", spr_cart_triggers(horse=1, detach_offset=49, inventory_count=20, max_item_length=100, access_distance=80)),
 
-  ("pw_ship_a",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_a","bo_pw_ship_a", spr_ship_triggers(hit_points=7000, length=800, width=150, speed=6, sail="pw_ship_a_sail", sail_off="pw_ship_a_sail_off", collision="pw_ship_a_cd")),
+  ("pw_ship_a",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_a","bo_pw_ship_a", spr_ship_triggers(hit_points=7000, length=800, width=150, height=-20, speed=6, sail="pw_ship_a_sail", sail_off="pw_ship_a_sail_off", collision="pw_ship_a_cd")),
   ("pw_ship_a_sail",sokf_moveable,"pw_ship_a_sail","bo_pw_ship_a_sail", []),
   ("pw_ship_a_sail_off",sokf_moveable,"pw_ship_a_sail_off","bo_pw_ship_a_sail_off", []),
   ("pw_ship_a_cd",sokf_invisible,"0","bo_pw_ship_a_cd", []),
-  ("pw_ship_c",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_c","bo_pw_ship_c", spr_ship_triggers(hit_points=15000, length=1400, width=300, speed=4, sail="pw_ship_c_sail", sail_off="pw_ship_c_sail_off", ramp="pw_ship_c_ramp", hold="pw_ship_c_hold", collision="pw_ship_c_cd")),
+  ("pw_ship_c",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_c","bo_pw_ship_c", spr_ship_triggers(hit_points=15000, length=1400, width=300, height=300, speed=4, sail="pw_ship_c_sail", sail_off="pw_ship_c_sail_off", ramp="pw_ship_c_ramp", hold="pw_ship_c_hold", collision="pw_ship_c_cd")),
   ("pw_ship_c_sail",sokf_moveable,"pw_ship_c_sail","bo_pw_ship_c_sail", []),
   ("pw_ship_c_sail_off",sokf_moveable,"pw_ship_c_sail_off","bo_pw_ship_c_sail_off", []),
   ("pw_ship_c_ramp",sokf_moveable|spr_use_time(1),"pw_ship_c_ramp","bo_pw_ship_c_ramp", spr_ship_ramp_triggers()),
   ("pw_ship_c_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_c_hold", spr_item_storage_triggers(inventory_count=90, max_item_length=500)),
   ("pw_ship_c_cd",sokf_invisible,"0","bo_pw_ship_c_cd", []),
-  ("pw_ship_d",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_d","bo_pw_ship_d", spr_ship_triggers(hit_points=10000, length=900, width=250, speed=5, sail="pw_ship_d_sail", hold="pw_ship_d_hold", collision="pw_ship_d_cd")),
+  ("pw_ship_d",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_d","bo_pw_ship_d", spr_ship_triggers(hit_points=10000, length=900, width=250, height=120, speed=5, sail="pw_ship_d_sail", hold="pw_ship_d_hold", collision="pw_ship_d_cd")),
   ("pw_ship_d_sail",sokf_moveable,"pw_ship_d_sail","bo_pw_ship_d_sail", []),
   ("pw_ship_d_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_d_hold", spr_item_storage_triggers(inventory_count=64, max_item_length=500)),
   ("pw_ship_d_cd",sokf_invisible,"0","bo_pw_ship_d_cd", []),
