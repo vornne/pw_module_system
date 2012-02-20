@@ -723,6 +723,7 @@ On scene load, the props are linked by searching for the nearest prop in the sce
   ("castle_name_38", "Riverhigh Mine"),
   ("castle_name_39", "Iron Abbey"),
   ("castle_name_40", "Imperial Prison"),
+  ("castle_name_41", "Rangers Guild"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]
