@@ -2503,6 +2503,12 @@ scene_props = [
   ("pw_buy_torch",spr_use_time(1),"pw_torch","bo_weapon_small", spr_buy_item_triggers("itm_torch", resources=["itm_stick"], skill_required=1)),
   ("pw_buy_banner",spr_use_time(10),"pw_banner_pole_only","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01")),
   ("pw_buy_banner_mercenary",spr_use_time(15),"pw_banner_pole_only","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01", mercenary=True)),
+  ("pw_buy_book_a",spr_buy_item_flags(1),"pw_book_a","bo_weapon_small", spr_buy_item_triggers("itm_book_a")),
+  ("pw_buy_book_b",spr_buy_item_flags(1),"pw_book_b","bo_weapon_small", spr_buy_item_triggers("itm_book_b")),
+  ("pw_buy_book_c",spr_buy_item_flags(1),"pw_book_c","bo_weapon_small", spr_buy_item_triggers("itm_book_c")),
+  ("pw_buy_book_d",spr_buy_item_flags(1),"pw_book_d","bo_weapon_small", spr_buy_item_triggers("itm_book_d")),
+  ("pw_buy_book_e",spr_buy_item_flags(1),"pw_book_e","bo_weapon_small", spr_buy_item_triggers("itm_book_e")),
+  ("pw_buy_book_f",spr_buy_item_flags(1),"pw_book_f","bo_weapon_small", spr_buy_item_triggers("itm_book_f")),
 
   ("pw_destroy_heap",spr_use_time(2),"destroy_heap","bo_destroy_heap", spr_destroy_heap_triggers()),
 

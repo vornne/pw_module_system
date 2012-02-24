@@ -82,6 +82,27 @@ def itm_throw_wheat_trigger():
     (particle_system_burst, "psys_throw_wheat", pos1, 50),
     ])
 
+def itm_read_book_trigger(string_id):
+  return (ti_on_weapon_attack,
+   [(store_trigger_param_1, ":agent_id"),
+    (call_script, "script_cf_read_book", string_id, ":agent_id"),
+    ])
+
+def itm_swap_item_trigger(this_item, other_item):
+  return (ti_on_weapon_attack,
+   [(store_trigger_param_1, ":agent_id"),
+    (assign, ":loop_end", ek_item_3 + 1),
+    (try_for_range, ":equip_slot", ek_item_0, ":loop_end"),
+      (agent_get_item_slot, ":equip_item_id", ":agent_id", ":equip_slot"),
+      (eq, ":equip_item_id", this_item),
+      (assign, ":loop_end", -1),
+      (val_add, ":equip_slot", 1),
+      (agent_unequip_item, ":agent_id", this_item, ":equip_slot"),
+      (agent_equip_item, ":agent_id", other_item, ":equip_slot"),
+      (agent_set_wielded_item, ":agent_id", other_item),
+    (try_end),
+    ])
+
 items = [
 ["no_item", "INVALID ITEM", [("invalid_item", 0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger,
  0, weight(1)|spd_rtng(1)|weapon_length(1)|swing_damage(1, blunt)|thrust_damage(1, blunt), imodbits_none],
@@ -872,6 +893,21 @@ items = [
     (add_point_light, 10, 30),
     ])
   ]],
+
+["book_a", "Book of Clothing", [("pw_book_a",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_scimitar|itcf_carry_revolver_right,
+ 3203, weight(2)|spd_rtng(80)|weapon_length(50), imodbits_none, [itm_read_book_trigger("str_book_of_clothing")]],
+["book_b", "Book of Weapons", [("pw_book_b",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_scimitar|itcf_carry_revolver_right,
+ 7324, weight(2)|spd_rtng(80)|weapon_length(50), imodbits_none, [itm_read_book_trigger("str_book_of_weapons")]],
+["book_c", "Book of Armor", [("pw_book_c",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_scimitar|itcf_carry_revolver_right,
+ 12030, weight(2)|spd_rtng(80)|weapon_length(50), imodbits_none, [itm_read_book_trigger("str_book_of_armor")]],
+["book_d", "Book of Healing", [("pw_book_d",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_scimitar|itcf_carry_revolver_right,
+ 1076, weight(2.5)|spd_rtng(80)|weapon_length(50), imodbits_none, [itm_read_book_trigger("str_book_of_healing")]],
+["book_e", "Book", [("pw_book_e",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_scimitar|itcf_carry_revolver_right,
+ 20634, weight(2.25)|spd_rtng(80)|weapon_length(50), imodbits_none],
+["book_f", "Sacred Book", [("pw_book_f",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry|itp_next_item_as_melee, itcf_slashright_onehanded|itcf_carry_revolver_right,
+ 46400, weight(2)|spd_rtng(80)|weapon_length(50), imodbits_none, [itm_swap_item_trigger(this_item="itm_book_f", other_item="itm_book_f_open")]],
+["book_f_open", "Sacred Book", [("pw_book_f_held",0),("pw_book_f_open",ixmesh_carry),("pw_book_f",ixmesh_inventory)], itp_type_two_handed_wpn|itp_two_handed|itp_primary|itp_no_parry, itcf_thrust_onehanded|itcf_carry_revolver_right,
+ 46400, weight(2)|spd_rtng(80)|weapon_length(50), imodbits_none, [itm_swap_item_trigger(this_item="itm_book_f_open", other_item="itm_book_f")]],
 
 itm_faction_banner("a01"),
 itm_faction_banner("a02"),

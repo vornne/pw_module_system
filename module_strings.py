@@ -656,6 +656,14 @@ These two separate values are combined: for example, 31 = outlaw faction and 60%
 ^The scene props with 'value 2 = linking id with x' mean that they are designed to be linked to another scene prop, x representing the first scene prop's name:^\
 On scene load, the props are linked by searching for the nearest prop in the scene of the specified type, with the same value 2, and that hasn't already been linked; so for example, with a teleport door pair on opposite sides of the scene, you could set the value 2 of both to 53 and not use that number for any of the other props of the same type, so they are linked correctly even when not close together, or if someone else adds more props of the same type in between."),
 
+  ("book_of_clothing", "The Book of Tailoring Clothes^^^"),
+  ("book_of_weapons", "The Book of Crafting Weaponry^^^"),
+  ("book_of_armor", "The Book of Crafting Armor^^^"),
+  ("book_of_healing", "The Book of Healing^^^\
+Healing arts are difficult to master, requiring many hours careful study as a medical doctor for the best results; though certain peasant healers learn unconventional methods passed down from the generations before them, that give limited results. For a dangerously hurt patient, whether man or beast, it is generally required to use a carefully crafted surgeon's scalpel to operate on the wound, but for moderate wounds rest and food is often all that is required for a complete recovery.^^\
+Healing herbs found in certain locations can be cut from the bushes with a knife, then applied to a poisoned wound as an antidote; larger amounts of poison absorbed could require multiple herb leaves. The healing herbs have long green leaves branching off in finger shaped patterns, with bunches of small blue flowers near the top.^\
+Poisonous herbs can also sometimes be found, which are then applied to the blades of certain weapons used for murderous deeds; they have many brown stalks covered in tiny green leaves."),
+
   ("name_server_error_code_reg0", "Name server: error code {reg0}."),
   ("name_server_invalid_response", "Name server: invalid response '{reg0}|{reg1}|{reg2}|{s0}|{reg3}'."),
   ("name_server_log_s10", "Name server: player {s0} ({reg2}): {s10}"),

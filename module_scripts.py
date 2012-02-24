@@ -4272,6 +4272,20 @@ scripts = [
     (call_script, "script_player_adjust_gold", ":player_id", ":gold_value", 1),
     ]),
 
+  ("cf_read_book",
+   [(store_script_param, ":book_string_id", 1),
+    (store_script_param, ":agent_id", 2),
+
+    (try_begin),
+      (multiplayer_is_server),
+      (agent_get_player_id, ":player_id", ":agent_id"),
+      (player_is_active, ":player_id"),
+      (multiplayer_send_2_int_to_player, ":player_id", server_event_preset_message, ":book_string_id", preset_message_read_object),
+    (else_try),
+      (call_script, "script_preset_message", ":book_string_id", preset_message_read_object, 0, 0),
+    (try_end),
+    ]),
+
   ("cf_buy_banner",
    [(store_script_param, ":agent_id", 1),
     (store_script_param, ":instance_id", 2),
