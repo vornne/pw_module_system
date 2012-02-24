@@ -109,10 +109,10 @@ def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_strin
       (store_trigger_param_2, ":instance_id")])
     resource_list = []
     for resource in resources:
-      if type(resource) == type(tuple()):
+      if isinstance(resource, tuple):
         for x in range(0, resource[1]):
           resource_list.append(resource[0])
-      elif type(resource) == type(str()):
+      elif isinstance(resource, str):
         resource_list.append(resource)
       else:
         raise Exception("invalid resource entry", resource)
