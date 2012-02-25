@@ -205,6 +205,7 @@ admin_action_remove_horses                      = 14
 admin_action_remove_stray_horses                = 15
 admin_action_teleport_to_ships                  = 16
 admin_action_reset_ships                        = 17
+admin_action_lock_faction                       = 18
 
 faction_admin_action_change_banner              = 0
 faction_admin_action_kick_player                = 1

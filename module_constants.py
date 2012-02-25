@@ -71,7 +71,8 @@ slot_player_admin_no_override_poll    = 53
 slot_player_admin_no_all_items        = 54
 slot_player_admin_no_mute             = 55
 slot_player_admin_no_animals          = 56
-slot_player_admin_end                 = 57
+slot_player_admin_no_factions         = 57
+slot_player_admin_end                 = 58
 
 ########################################################
 ##  AGENT SLOTS            #############################
@@ -199,6 +200,7 @@ slot_faction_lord_player_uid          = 3
 slot_faction_lord_last_seen_time      = 4
 slot_faction_castle_banner_variant    = 5
 slot_faction_list_button_id           = 6
+slot_faction_is_locked                = 7
 
 slot_faction_poll_end_time            = 20
 slot_faction_poll_voter_count         = 21

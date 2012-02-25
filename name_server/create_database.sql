@@ -64,6 +64,7 @@ CREATE TABLE admin_permissions (
   all_items BOOLEAN DEFAULT FALSE NOT NULL,
   mute BOOLEAN DEFAULT FALSE NOT NULL,
   animals BOOLEAN DEFAULT FALSE NOT NULL,
+  factions BOOLEAN DEFAULT FALSE NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY (server_id, unique_id)
 );

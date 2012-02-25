@@ -270,6 +270,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("remove_stray_horses", "Remove stray horses"),
   ("teleport_to_ships", "Teleport to ships"),
   ("reset_sunken_ships", "Reset sunken ships"),
+  ("lock_current_faction", "Lock current faction"),
+  ("unlock_current_faction", "Unlock current faction"),
   ("quit", "Quit"),
   ("choose_a_player_to_s0", "Choose a player to {s0}:"),
   ("kick", "kick"),
@@ -326,6 +328,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("log_admin_remove_stray_horses", "removed stray horses"),
   ("log_admin_teleport_to_ships", "teleported to the next ship"),
   ("log_admin_reset_ships", "reset sunken ships"),
+  ("log_admin_lock_faction", "{s4}locked faction {s5}"),
   ("log_admin_cheat_money", "took {reg0} gold"),
   ("log_admin_cheat_item", "took item '{s4}'"),
 
@@ -434,6 +437,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("s0", "{!}{s0}"),
   ("enable_s0", "Enable {s0}"),
   ("disable_s0", "Disable {s0}"),
+  ("un", "un"),
 
   ("toggle_name_labels", "Toggle name labels"),
   ("toggle_faction_in_name_labels", "Toggle faction in name labels"),
