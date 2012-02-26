@@ -307,7 +307,7 @@ presentations = [
       (position_set_y, pos1, 600),
       (overlay_set_position, reg1, pos1),
       (overlay_set_text, reg1, s1),
-      (create_button_overlay, "$g_presentation_obj_profile_banner_selection_1", "@Next Page", tf_center_justify),
+      (create_button_overlay, "$g_presentation_obj_profile_banner_selection_1", "str_next", tf_center_justify),
       (position_set_x, pos1, 700),
       (position_set_y, pos1, 50),
       (overlay_set_position, "$g_presentation_obj_profile_banner_selection_1", pos1),
