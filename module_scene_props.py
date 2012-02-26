@@ -1418,7 +1418,7 @@ scene_props = [
   ("arena_block_j",0,"arena_block_j","bo_arena_block_j", []),
   ("arena_block_j_awning",0,"arena_block_j_awning","bo_arena_block_j_awning", []),
 
-  ("arena_palisade_a",0,"arena_palisade_a","bo_arena_palisade_a", []),
+  ("arena_palisade_a",0,"pw_wooden_palisade_a","bo_arena_palisade_a", []),
   ("arena_wall_a",0,"arena_wall_a","bo_arena_wall_ab", []),
   ("arena_wall_b",0,"arena_wall_b","bo_arena_wall_ab", []),
   ("arena_barrier_a",0,"arena_barrier_a","bo_arena_barrier_a", []),
@@ -1930,6 +1930,7 @@ scene_props = [
 
   ("castle_h_battlement_b3",0,"castle_h_battlement_b3","bo_castle_h_battlement_b3", []),
   ("castle_h_gatehouse_a2",0,"castle_h_gatehouse_a2","bo_castle_h_gatehouse_a2", []),
+  ("arena_palisade_b",0,"pw_wooden_palisade_b","bo_pw_wooden_palisade_b", []),
 
   ("interior_castle_a",0,"interior_castle_a","bo_interior_castle_a", []),
   ("interior_castle_b",0,"interior_castle_b","bo_interior_castle_b", []),
@@ -2589,10 +2590,17 @@ scene_props = [
   ("pw_rope_bridge",spr_structure_flags(),"rope_bridge_15m","bo_rope_bridge_15m", spr_bridge_triggers("pw_rope_bridge_footing", hit_points=2000)),
   ("pw_rope_bridge_footing",spr_build_flags(),"castle_f_wall_way_a","bo_castle_f_wall_way_a", spr_bridge_footing_triggers()),
 
-  ("pw_wooden_palisade",spr_structure_flags(),"arena_palisade_a","bo_arena_palisade_a", spr_wall_triggers("pw_wooden_palisade_build", hit_points=15000, height=1600)),
+  ("pw_wooden_palisade",spr_structure_flags(),"pw_wooden_palisade_a","bo_arena_palisade_a", spr_wall_triggers("pw_wooden_palisade_build", hit_points=15000, height=1600)),
+  ("pw_wooden_palisade_b",spr_structure_flags(),"pw_wooden_palisade_b","bo_pw_wooden_palisade_b", spr_wall_triggers("pw_wooden_palisade_build", hit_points=15000, height=1600)),
+  ("pw_wooden_palisade_tower",spr_structure_flags(),"arena_tower_c","bo_arena_tower_c_fixed", spr_wall_triggers("pw_wooden_palisade_build", hit_points=15000, height=2500)),
   ("pw_wooden_palisade_build",spr_build_flags(),"wood_a","bo_wood_a_fixed", spr_build_wall_triggers()),
+  ("pw_siege_stairs_a",spr_structure_flags(),"pw_siege_stairs_a","bo_pw_siege_stairs_a", spr_wall_triggers("pw_siege_stairs_build", hit_points=3000, height=340)),
+  ("pw_siege_stairs_build",spr_build_flags(),"wood_a","bo_wood_a_fixed", spr_build_wall_triggers()),
   ("pw_siege_wall_a",spr_structure_flags(),"siege_wall_a","bo_siege_wall_a_fixed", spr_wall_triggers("pw_siege_wall_a_build", hit_points=5000, height=320)),
   ("pw_siege_wall_a_build",spr_build_flags(),"wood_b","bo_wood_b", spr_build_wall_triggers()),
+  ("pw_siege_wall_b",spr_structure_flags(),"pw_siege_wall_b","bo_pw_siege_wall_b", spr_wall_triggers("pw_siege_wall_b_build", hit_points=6000, height=560)),
+  ("pw_siege_wall_b2",spr_structure_flags(),"pw_siege_wall_b2","bo_pw_siege_wall_b2", spr_wall_triggers("pw_siege_wall_b_build", hit_points=6000, height=560)),
+  ("pw_siege_wall_b_build",spr_build_flags(),"wood_b","bo_wood_b", spr_build_wall_triggers()),
   ("pw_siege_shield_a",spr_structure_flags(),"siege_large_shield_a","bo_siege_large_shield_a_fixed", spr_wall_triggers("pw_siege_shield_a_build", hit_points=2000, height=280)),
   ("pw_siege_shield_a_build",spr_build_flags(),"wood_b","bo_wood_b", spr_build_wall_triggers()),
   ("pw_ladder_6m",spr_ladder_flags(),"siege_ladder_move_6m","bo_siege_ladder_move_6m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=400, height=600, no_move_physics=True)),
