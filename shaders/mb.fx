@@ -3324,6 +3324,8 @@ DEFINE_STANDART_TECHNIQUE_HIGH( standart_skin_bump_nospec_high,					true,  true,
 
 
 ///--------
+DEFINE_STANDART_TECHNIQUE_INSTANCED( standart_noskin_nobump_nospec_Instanced,					false, false, false, false, false, true)
+DEFINE_STANDART_TECHNIQUE_INSTANCED( standart_noskin_nobump_nospec_noterraincolor_Instanced,	false, false, false, false, false, false)
 DEFINE_STANDART_TECHNIQUE_INSTANCED( standart_noskin_bump_nospecmap_Instanced,					true, false, true, false, false, true)
 DEFINE_STANDART_TECHNIQUE_INSTANCED( standart_noskin_nobump_specmap_Instanced,					false, false, true, true , false, true)
 DEFINE_STANDART_TECHNIQUE_INSTANCED( standart_noskin_bump_specmap_Instanced,					true, false, true, true,  false, true)
