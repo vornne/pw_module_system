@@ -440,6 +440,7 @@ change_faction_type_outlawed          = 2
 redraw_all_banners                    = 0
 redraw_castle_banners                 = 1
 redraw_faction_banners                = 2
+redraw_client_banner_positions        = 3
 
 inventory_slots_per_row               = 6
 inventory_slot_spacing                = 100

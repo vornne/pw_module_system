@@ -694,11 +694,6 @@ mission_templates = [
       (start_presentation, "prsnt_money_bag"),
       ]),
 
-    (1, 0, ti_once, [],
-     [(neg|multiplayer_is_server),
-      (assign, "$g_preset_message_display_enabled", 1),
-      ]),
-
     (0, 0, ti_once, [],
      [(neg|multiplayer_is_server),
       (str_store_welcome_message, s10),
