@@ -1994,6 +1994,14 @@ presentations = [
         (overlay_set_position, reg0, pos1),
         (val_add, ":cur_y", escape_menu_item_height),
 
+        (create_button_overlay, reg0, "str_teleport_behind_player"),
+        (assign, "$g_presentation_obj_admin_menu_teleport_behind_player", reg0),
+        (overlay_set_color, reg0, 0xFFFFFF),
+        (overlay_set_size, reg0, pos2),
+        (position_set_y, pos1, ":cur_y"),
+        (overlay_set_position, reg0, pos1),
+        (val_add, ":cur_y", escape_menu_item_height),
+
         (create_button_overlay, reg0, "str_teleport_to_player"),
         (assign, "$g_presentation_obj_admin_menu_teleport_to_player", reg0),
         (overlay_set_color, reg0, 0xFFFFFF),
@@ -2003,6 +2011,7 @@ presentations = [
         (val_add, ":cur_y", escape_menu_item_height),
       (else_try),
         (assign, "$g_presentation_obj_admin_menu_teleport_forwards", -1),
+        (assign, "$g_presentation_obj_admin_menu_teleport_behind_player", -1),
         (assign, "$g_presentation_obj_admin_menu_teleport_to_player", -1),
       (try_end),
 
@@ -2144,6 +2153,10 @@ presentations = [
         (eq, ":object", "$g_presentation_obj_admin_menu_teleport_to_player"),
         (assign, ":action", admin_action_teleport_to_player),
         (assign, "$g_list_players_action_string_id", "str_teleport_to"),
+      (else_try),
+        (eq, ":object", "$g_presentation_obj_admin_menu_teleport_behind_player"),
+        (assign, ":action", admin_action_teleport_behind_player),
+        (assign, "$g_list_players_action_string_id", "str_teleport_behind"),
       (else_try),
         (assign, ":action", -1),
         (eq, ":object", "$g_presentation_obj_admin_menu_teleport_forwards"),
