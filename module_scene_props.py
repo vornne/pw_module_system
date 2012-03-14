@@ -217,22 +217,22 @@ def spr_rotate_door_no_hit_triggers(left=0):
   return [spr_call_script_use_trigger("script_cf_use_rotate_door", left),
     [init_scene_prop, "script_cf_init_rotate_door", left]]
 
-def spr_drawbridge_winch_triggers(target_scene_prop, rotation_steps=10, step_size=-8, animation_time=200):
+def spr_drawbridge_winch_triggers(target, rotation_steps=10, step_size=-8, animation_time=200):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_winch_lower"),
       ]),
     spr_call_script_use_trigger("script_cf_use_winch", rotation_steps+1, step_size, animation_time, winch_type_drawbridge),
-    [link_scene_prop, target_scene_prop],
+    [link_scene_prop, target],
     [init_scene_prop, "script_cf_init_winch", rotation_steps, step_size, winch_type_drawbridge]]
 
-def spr_portcullis_winch_triggers(target_scene_prop, move_steps=5, step_size=100, animation_time=100):
+def spr_portcullis_winch_triggers(target, move_steps=5, step_size=100, animation_time=100):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_winch_drop"),
       ]),
     spr_call_script_use_trigger("script_cf_use_winch", move_steps+1, step_size, animation_time, winch_type_portcullis),
-    [link_scene_prop, target_scene_prop],
+    [link_scene_prop, target],
     [init_scene_prop, "script_cf_init_winch", move_steps, step_size, winch_type_portcullis]]
 
 def spr_lift_platform_winch_triggers(step_size=100, animation_time=100):
@@ -242,8 +242,8 @@ def spr_lift_platform_winch_triggers(step_size=100, animation_time=100):
       ]),
     spr_call_script_use_trigger("script_cf_use_winch", -1, step_size, animation_time, winch_type_platform)]
 
-def spr_lift_platform_triggers(winch_scene_prop):
-  return [[link_scene_prop, winch_scene_prop, winch_scene_prop],
+def spr_lift_platform_triggers(winch):
+  return [[link_scene_prop, winch, winch],
     [init_scene_prop, "script_cf_init_lift_platform"]]
 
 def spr_cart_triggers(horse=0, detach_offset=0, detach_rotation=0, inventory_count=0, max_item_length=100, access_distance=100, use_string="str_attach"):
@@ -434,7 +434,7 @@ def spr_ship_ramp_triggers():
 def spr_structure_flags():
   return sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
 
-def spr_bridge_triggers(footing_spr, hit_points=1000):
+def spr_bridge_triggers(footing, hit_points=1000):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
@@ -447,7 +447,7 @@ def spr_bridge_triggers(footing_spr, hit_points=1000):
       (call_script, "script_cf_hit_bridge", ":instance_id", ":hit_damage", 0),
       ]),
     (ti_on_scene_prop_destroy, []),
-    [link_scene_prop, footing_spr, footing_spr]]
+    [link_scene_prop, footing, footing]]
 
 def spr_build_flags():
   return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
@@ -469,7 +469,7 @@ def spr_bridge_footing_triggers():
 def spr_ladder_flags():
   return sokf_type_ladder|sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
 
-def spr_wall_triggers(build_spr, hit_points=1000, height=1000, no_move_physics=False):
+def spr_wall_triggers(build, hit_points=1000, height=1000, no_move_physics=False):
   triggers = [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
@@ -483,7 +483,7 @@ def spr_wall_triggers(build_spr, hit_points=1000, height=1000, no_move_physics=F
       (call_script, "script_cf_hit_wall", ":instance_id", ":hit_damage", 0),
       ]),
     (ti_on_scene_prop_destroy, []),
-    [link_scene_prop, build_spr],
+    [link_scene_prop, build],
     [init_scene_prop, "script_cf_init_wall"]]
   if no_move_physics:
     triggers.append((ti_on_scene_prop_animation_finished,
