@@ -656,10 +656,10 @@ pw_scene_light:^value 1 = flicker magnitude^value 2 = flicker interval^scale x =
 pw_fish_school:^value 1 = maximum depth (in meters)^value 2 = maximum fish count^^\
 ^The values can be modified in the scene editor panel, scene prop section: the two fields, labelled 'Var No' and 'Var 2 No'. These can each store an integer in the range 0 - 127.^\
 ^The scene props with 'value 1 = faction + multiplier' share the same code for storing a combination of faction id / castle id and gold value multiplier in value 1:^\
-0 is the commoner faction, which normally means the prop is not associated with any faction, 1 for outlaws, and 2 - 9 associate the scene prop with a castle (which defaults to the corresponding faction id from 2 - 5).^\
+0 is the commoner faction, which normally means the prop is not associated with any faction, 1 for outlaws, and 2 - 9 associate the scene prop with a castle (which starts owned by the corresponding faction id).^\
 The other part is a multiple of 10, representing specific gold value multipliers:^\
 0 = 100%, the default value^10 = 20%^20 = 40%^30 = 60%^40 = 80%^50 = 120%^60 = 140%^70 = 160%^80 = 180%^90 = 200%^100 = 350%^110 = 500%^120 = 1000%^\
-These two separate values are combined: for example, 31 = outlaw faction and 60% value, 116 = castle 4 (starts as faction 0 - red faction) and 500% value.^\
+These two separate values are combined: for example, 31 = outlaw faction and 60% value, 116 = castle 5 (starts owned by faction 5, the yellow faction) and 500% value.^\
 ^The scene props with 'value 2 = linking id with x' mean that they are designed to be linked to another scene prop, x representing the first scene prop's name:^\
 On scene load, the props are linked by searching for the nearest prop in the scene of the specified type, with the same value 2, and that hasn't already been linked; so for example, with a teleport door pair on opposite sides of the scene, you could set the value 2 of both to 53 and not use that number for any of the other props of the same type, so they are linked correctly even when not close together, or if someone else adds more props of the same type in between."),
 
