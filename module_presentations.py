@@ -4204,6 +4204,7 @@ presentations = [
       (position_set_y, pos1, ":cur_y"),
       (overlay_set_position, "$g_presentation_obj_action_menu_toggle_confirm", pos1),
       (val_add, ":cur_y", action_menu_item_height),
+      (val_clamp, "$g_action_menu_confirm", -1, 1),
       (assign, "$g_action_menu_confirm_overlay_id", -1),
 
       (try_for_range_backwards, ":string_id", action_menu_strings_begin, action_menu_strings_end),
