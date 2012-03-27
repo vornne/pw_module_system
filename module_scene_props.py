@@ -2449,6 +2449,7 @@ scene_props = [
   ("pw_buy_sniper_crossbow",spr_buy_item_flags(30),"crossbow_c","bo_weapon_small", spr_buy_item_triggers("itm_sniper_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], skill_required=5)),
   ("pw_buy_bolts",spr_buy_item_flags(1),"bolt","bo_weapon_small", spr_buy_item_triggers("itm_bolts", resources=[], skill_required=1)),
   ("pw_buy_steel_bolts",spr_buy_item_flags(2),"bolt","bo_weapon_small", spr_buy_item_triggers("itm_steel_bolts", resources=[], skill_required=1)),
+  ("pw_buy_practice_shield",spr_buy_item_flags(2),"tableau_shield_round_5","bo_shield_round", spr_buy_item_triggers("itm_practice_shield", resources=["itm_board"], skill_required=1, tableau="tableau_round_shield_5")),
   ("pw_buy_tab_shield_round_b",spr_buy_item_flags(8),"tableau_shield_round_3","bo_shield_round", spr_buy_item_triggers("itm_tab_shield_round_b", resources=["itm_board"], skill_required=1, tableau="tableau_round_shield_3")),
   ("pw_buy_tab_shield_round_c",spr_buy_item_flags(11),"tableau_shield_round_2","bo_shield_round", spr_buy_item_triggers("itm_tab_shield_round_c", resources=["itm_board", "itm_iron_piece"], skill_required=2, tableau="tableau_round_shield_2")),
   ("pw_buy_tab_shield_round_d",spr_buy_item_flags(15),"tableau_shield_round_1","bo_shield_round", spr_buy_item_triggers("itm_tab_shield_round_d", resources=["itm_board", ("itm_iron_piece", 2)], skill_required=3, tableau="tableau_round_shield_1")),

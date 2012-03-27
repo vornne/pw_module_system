@@ -688,7 +688,9 @@ items = [
  190,weight(2.5)|weapon_length(63)|thrust_damage(2,pierce)|max_ammo(29), imodbits_missile],
 
 ["old_shield", "Old Shield", [("shield_heater_c",0)], itp_type_shield|itp_wooden_parry, itcf_carry_kite_shield,
- 577, weight(3.5)|hit_points(210)|body_armor(2)|spd_rtng(70)|shield_width(50), imodbits_shield],
+ 157, weight(3.5)|hit_points(210)|body_armor(2)|spd_rtng(70)|shield_width(50), imodbits_shield],
+["practice_shield", "Practice Shield", [("tableau_shield_round_5",0)], itp_type_shield|itp_wooden_parry, itcf_carry_round_shield,
+ 76, weight(4)|hit_points(100)|body_armor(0)|spd_rtng(90)|shield_width(50), imodbits_shield, init_heraldic_item("tableau_round_shield_5")],
 ["tab_shield_round_b", "Plain Round Shield", [("tableau_shield_round_3",0)], itp_type_shield|itp_wooden_parry, itcf_carry_round_shield,
  265, weight(3)|hit_points(260)|body_armor(8)|spd_rtng(90)|shield_width(50), imodbits_shield, init_heraldic_item("tableau_round_shield_3")],
 ["tab_shield_round_c", "Round Shield", [("tableau_shield_round_2",0)], itp_type_shield|itp_wooden_parry, itcf_carry_round_shield,
