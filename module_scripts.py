@@ -666,6 +666,8 @@ scripts = [
         (try_begin),
           (is_between, ":gold_value", 0, max_possible_gold),
           (assign, "$g_overflow_gold_value", ":gold_value"),
+          (multiplayer_get_my_player, ":my_player_id"),
+          (player_set_gold, ":my_player_id", ":gold_value"),
         (try_end),
       (else_try),
         (is_between, ":event_type", server_event_faction_chat, server_event_faction_lord_chat + 1),
