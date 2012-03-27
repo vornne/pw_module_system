@@ -4467,6 +4467,7 @@ scripts = [
           (multiplayer_is_server),
           (call_script, "script_player_adjust_gold", ":player_id", ":gold_value", -1),
           (val_add, ":chest_gold", ":gold_value"),
+          (val_clamp, ":chest_gold", 0, max_possible_gold),
         (try_end),
         (assign, ":fail_message", 0),
       (try_end),
