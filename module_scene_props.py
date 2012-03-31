@@ -1163,7 +1163,7 @@ scene_props = [
   ("skull_c",0,"skull_c","0", []),
   ("skull_d",0,"skull_d","0", []),
   ("skeleton_cow",0,"skeleton_cow","0", []),
-  ("cupboard_a",0,"cupboard_a","bo_cupboard_a", []),
+  ("cupboard_a",0,"cupboard_a","bo_cupboard_a_fixed", []),
   ("box_a",0,"box_a","bo_box_a", []),
   ("bucket_a",0,"bucket_a","bo_bucket_a", []),
   ("straw_a",0,"straw_a","0", []),
