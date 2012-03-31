@@ -48,9 +48,9 @@ def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=Fals
     init_trigger[1].append((cur_scene_prop_set_tableau_material, tableau, 0))
   if stockpile is True:
     init_trigger[1].extend([
-      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count_update_time, -1),
-      (prop_instance_get_variation_id_2, ":initial_stack_count", ":instance_id"),
-      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count, ":initial_stack_count")])
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count_update_time, -1),
+      (prop_instance_get_variation_id_2, ":initial_stock_count", ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count, ":initial_stock_count")])
   if price_multiplier is not None:
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_multiplier, price_multiplier))
   return init_trigger
@@ -388,10 +388,10 @@ def spr_process_resource_triggers(script_name, use_string):
      [(store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":instance_id"),
       (store_mission_timer_a, ":time"),
-      (neg|scene_prop_slot_ge, ":instance_id", slot_scene_prop_stack_count_update_time, ":time"),
+      (neg|scene_prop_slot_ge, ":instance_id", slot_scene_prop_stock_count_update_time, ":time"),
       (call_script, script_name, ":agent_id", ":instance_id", 0),
       (val_add, ":time", 5),
-      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count_update_time, ":time"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count_update_time, ":time"),
       ]),
     (ti_on_scene_prop_use,
      [(store_trigger_param_1, ":agent_id"),
@@ -519,10 +519,10 @@ def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000,
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
-      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count_update_time, -1),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count_update_time, -1),
       (prop_instance_get_variation_id_2, ":initial_gold_value", ":instance_id"),
       (val_mul, ":initial_gold_value", 1000),
-      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stack_count, ":initial_gold_value"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count, ":initial_gold_value"),
       ]),
     (ti_on_scene_prop_hit,
      [(store_trigger_param_1, ":instance_id"),

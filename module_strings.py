@@ -503,7 +503,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("not_enough_money_in_chest", "Not enough money in the chest."),
   ("gold_reg2", "Gold: {reg2}"),
   ("buy_banner_faction", "Buy a banner for the {s1}"),
-  ("stack_count_reg1_s0", "Stack count: {reg1}^{s0}"),
+  ("stock_count_reg1_s0", "Stock count: {reg1}^{s0}"),
   ("womens_clothes", "Women's clothes"),
   ("item_id", "Item ID:"),
   ("spawn_s1", "Spawn {s1}"),
@@ -584,7 +584,7 @@ You can only join another faction as a commoner, or to become a commoner. The ou
 Troop type, faction, gold, and outlaw rating are saved if you crash or disconnect from the game, and when you rejoin your previous stats will be given back. At peasant, ruffian, or brigand training stations, clicking use will switch faction to commoners or outlaws without respawning, keeping your previous class until you die; but after that you will respawn as the targeted troop, unless your previous troop type was peasant or serf. You can also switch factions by just clicking use if you are using the targeted troop type already, or at the mercenary training stations (which are enabled only when the faction owns no castles). \
 For a certain period after a player spawns they will be invulnerable to attack, and also unable to attack others; when this period is over the default weapons will be given.^^\
 To buy items from stockpiles, sheath your weapons and tap the use button (rather than hold it down); to sell, hold the item in your hand and tap use. When bought, items are spawned right on top of the stockpile, so you might have to aim around until the 'Equip' overlay shows. \
-Holding down the use key until the bar finishes is for crafting the item: you need to have the required engineering skill and resources equipped. If the item stockpile has no 'Stack count' line in the stats overlay, it is not craftable, and an unlimited amount of items can be bought there.^^\
+Holding down the use key until the bar finishes is for crafting the item: you need to have the required engineering skill and resources equipped. If the item stockpile has no 'Stock count' line in the stats overlay, it is not craftable, and an unlimited amount of items can be bought there.^^\
 Trees can be cut down for wood and mines hit for iron with the required labouring skill and tools; trees regrow after a while, and mines respawn after a longer period. Characters can mine faster if they have eaten food, as with having higher labouring skill and the correct tool. \
 These resources can be refined with engineering skill at stations in the castles - the carpenter's bench and the forge - and then used for crafting weapons or other items. \
 The forge can be used to combine or split iron bar types into the larger or smaller type: to split, stand on the left side and use the forge, to combine, stand on the right. \
