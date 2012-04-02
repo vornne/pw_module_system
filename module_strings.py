@@ -572,6 +572,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("admin_chat_player_format", "*PLAYER* [{s1}] {s0}"),
   ("admin_chat_to_player_format", "*ADMIN* [{s1}] > [{s2}] {s0}"),
   ("admin_announcement_format", "*ANNOUNCEMENT* [{s1}] {s0}"),
+  ("local_chat_log_format", "*LOCAL* {s0}"),
+  ("faction_chat_log_format", "*FACTION* {s2} {s0}"),
 
   ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12} link id: {reg13}"),
   ("error_unlinked_scene_prop", "Unlinked scene prop instance: {reg10} kind: {reg11} link id: {reg12} - only valid if this prop has not been added since loading the scene."),
