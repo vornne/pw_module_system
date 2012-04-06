@@ -42,6 +42,26 @@ def generate_initialize_item_slots():
     script_body.append((item_set_slot, entry[0], slot_item_class, entry[1]))
     if len(entry) > 2 and entry[2] > 0:
       script_body.append((item_set_slot, entry[0], slot_item_resource_amount, entry[2]))
+  for animal in herd_animal_list:
+    adult_item_id, child_item_id, grow_age, max_in_herd, attack_reaction, death_sound, meat, hide = animal
+    script_body.extend([
+      (item_set_slot, adult_item_id, slot_item_animal_adult_item_id, adult_item_id),
+      (item_set_slot, child_item_id, slot_item_animal_adult_item_id, adult_item_id),
+      (item_set_slot, adult_item_id, slot_item_animal_child_item_id, child_item_id),
+      (item_set_slot, child_item_id, slot_item_animal_child_item_id, child_item_id),
+      (item_set_slot, adult_item_id, slot_item_animal_grow_time, grow_age * 60),
+      (item_set_slot, child_item_id, slot_item_animal_grow_time, grow_age * 60),
+      (item_set_slot, adult_item_id, slot_item_animal_max_in_herd, max_in_herd),
+      (item_set_slot, child_item_id, slot_item_animal_max_in_herd, max_in_herd),
+      (item_set_slot, adult_item_id, slot_item_animal_attack_reaction, attack_reaction),
+      (item_set_slot, child_item_id, slot_item_animal_attack_reaction, animal_reaction_flee),
+      (item_set_slot, adult_item_id, slot_item_animal_death_sound, death_sound),
+      (item_set_slot, child_item_id, slot_item_animal_death_sound, death_sound),
+      (item_set_slot, adult_item_id, slot_item_animal_meat_count, meat),
+      (item_set_slot, child_item_id, slot_item_animal_meat_count, meat / 3),
+      (item_set_slot, adult_item_id, slot_item_animal_hide_count, hide),
+      (item_set_slot, child_item_id, slot_item_animal_hide_count, hide / 4),
+      ])
   return script_body
 
 def generate_setup_all_linked_scene_props():

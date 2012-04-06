@@ -93,6 +93,18 @@ slot_agent_money_bag_2_value          = 11
 slot_agent_money_bag_3_value          = 12
 slot_agent_money_bag_4_value          = 13
 
+slot_agent_hunting_last_carcass       = 14
+
+slot_agent_animal_herd_manager        = 20
+slot_agent_animal_birth_time          = 21
+slot_agent_animal_grow_time           = 22
+slot_agent_animal_move_time           = 23
+slot_agent_animal_last_damage_time    = 24
+slot_agent_animal_meat_count          = 25
+slot_agent_animal_hide_count          = 26
+slot_agent_animal_times_stuck         = 27
+slot_agent_animal_end                 = 28
+
 ########################################################
 ##  SCENE PROP SLOTS       #############################
 ########################################################
@@ -165,6 +177,8 @@ slot_scene_prop_inventory_mod_end     = slot_scene_prop_inventory_obj_begin
 slot_scene_prop_inventory_obj_end     = slot_scene_prop_inventory_mesh_begin
 inventory_count_maximum               = slot_scene_prop_inventory_item_0 - slot_scene_prop_inventory_begin
 
+slot_animal_herd_manager_adult_item_id= 100
+
 ########################################################
 ##  ITEM SLOTS             #############################
 ########################################################
@@ -189,6 +203,21 @@ item_class_food                       = 9
 item_class_grain_harvesting           = 10
 item_class_knife                      = 11
 item_class_cloth                      = 12
+item_class_leather                    = 13
+item_class_herding_calm               = 14
+item_class_herding_rouse              = 15
+
+slot_item_animal_adult_item_id        = 20
+slot_item_animal_child_item_id        = 21
+slot_item_animal_grow_time            = 22
+slot_item_animal_max_in_herd          = 23
+slot_item_animal_attack_reaction      = 24
+slot_item_animal_death_sound          = 25
+slot_item_animal_meat_count           = 26
+slot_item_animal_hide_count           = 27
+
+animal_reaction_flee                  = 0
+animal_reaction_charge                = 1
 
 ########################################################
 ##  FACTION SLOTS          #############################
@@ -329,6 +358,7 @@ loop_horse_check_interval             = 30
 loop_health_check_interval            = 15
 stock_count_check_interval            = 5
 repeat_action_min_interval            = 5
+carcass_search_min_interval           = 5
 poll_time_duration                    = 60
 
 max_distance_to_play_sound            = 10000
@@ -345,6 +375,7 @@ max_distance_to_loot                  = 100
 max_distance_to_catch_fish            = 2000
 fish_school_minimum_depth             = 200
 fish_spawn_time                       = 300
+max_distance_to_include_in_herd       = 5000
 
 sell_item_gold_multiplier             = 80
 castle_tax_gold_multiplier            = 20

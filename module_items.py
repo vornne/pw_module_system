@@ -49,6 +49,7 @@ imodbits_bad    = imodbit_rusty|imodbit_chipped|imodbit_tattered|imodbit_ragged|
 imodbit_female        = imodbit_meek
 
 item_class = -100.0
+item_herd_animal = -101.0
 
 def init_heraldic_item(tableau):
   return [(ti_on_init_item,
@@ -102,6 +103,19 @@ def itm_swap_item_trigger(this_item, other_item):
       (agent_set_wielded_item, ":agent_id", other_item),
     (try_end),
     ])
+
+def itm_butchering_knife():
+  return (ti_on_weapon_attack,
+   [(multiplayer_is_server),
+    (store_trigger_param_1, ":agent_id"),
+    (agent_get_troop_id, ":troop_id", ":agent_id"),
+    (store_skill_level, ":skill", "skl_herding", ":troop_id"),
+    (gt, ":skill", 0),
+    (call_script, "script_cf_use_butchering_knife", ":agent_id"),
+    ])
+
+def itm_herd_animal(child_item=-1, grow_age=10, max_in_herd=20, attack_reaction=animal_reaction_flee, death_sound="snd_cow_slaughter", meat=0, hide=0):
+  return [[item_herd_animal, child_item, grow_age, max_in_herd, attack_reaction, death_sound, meat, hide]]
 
 items = [
 ["no_item", "INVALID ITEM", [("invalid_item", 0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger,
@@ -759,6 +773,17 @@ items = [
 ["plated_charger", "Plated Charger", [("plated_charger",0)], itp_type_horse, 0,
  10340, hit_points(180)|body_armor(65)|difficulty(4)|horse_speed(40)|horse_maneuver(45)|horse_charge(40)|horse_scale(112), imodbits_none],
 
+["deer", "Deer", [("deer",0)], itp_type_horse, 0,
+ 1232, hit_points(120)|body_armor(5)|difficulty(11)|horse_speed(55)|horse_maneuver(75)|horse_charge(30)|horse_scale(100), imodbits_none,
+ itm_herd_animal(child_item="itm_fawn", grow_age=10, max_in_herd=10, attack_reaction=animal_reaction_flee, meat=4, hide=4)],
+["fawn", "Fawn", [("deer",0)], itp_type_horse, 0,
+ 426, hit_points(50)|body_armor(2)|difficulty(11)|horse_speed(45)|horse_maneuver(70)|horse_charge(5)|horse_scale(60), imodbits_none],
+["boar", "Boar", [("boar",0)], itp_type_horse, 0,
+ 859, hit_points(170)|body_armor(20)|difficulty(11)|horse_speed(40)|horse_maneuver(70)|horse_charge(250)|horse_scale(70), imodbits_none,
+ itm_herd_animal(child_item="itm_boarlet", grow_age=7, max_in_herd=20, attack_reaction=animal_reaction_charge, meat=5, hide=2)],
+["boarlet", "Boarlet", [("boar",0)], itp_type_horse, 0,
+ 315, hit_points(80)|body_armor(10)|difficulty(11)|horse_speed(30)|horse_maneuver(65)|horse_charge(10)|horse_scale(40), imodbits_none],
+
 ["stick", "Stick", [("wooden_stick",0),("pw_stick_carry",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_quiver_back,
  53, weight(3)|spd_rtng(90)|swing_damage(5,blunt)|weapon_length(63), imodbits_none, [(item_class, item_class_wood, 100)]],
 ["stick_melee", "Stick", [("wooden_stick",0),("pw_stick_carry",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_quiver_back,
@@ -801,6 +826,8 @@ items = [
  220, weight(5)|spd_rtng(60)|weapon_length(80), imodbits_none, [(item_class, item_class_cloth, 400)]],
 ["linen_cloth_small", "Small Linen Cloth", [("pw_linen_cloth_small",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_axe_back,
  55, weight(1)|spd_rtng(70)|weapon_length(60), imodbits_none, [(item_class, item_class_cloth, 100)]],
+["raw_hide", "Raw Hide", [("pw_raw_hide",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_carry_axe_back,
+ 186, weight(15)|spd_rtng(20)|weapon_length(60), imodbits_none, [(item_class, item_class_leather, 0)]],
 
 ["hatchet", "Hatchet", [("pw_hatchet",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_axe_left_hip,
  40, weight(3)|spd_rtng(75)|weapon_length(50)|swing_damage(10,cut)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_wood_cutting)]],
@@ -833,13 +860,17 @@ items = [
 ["kitchen_knife", "Kitchen Knife", [("pw_kitchen_knife",0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
  68, weight(0.25)|difficulty(0)|spd_rtng(100)|weapon_length(40)|swing_damage(10, cut)|thrust_damage(6, pierce), imodbits_sword, [(item_class, item_class_knife)]],
 ["cleaver", "Butchering Cleaver", [("cleaver_new",0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_cleaver|itcf_carry_dagger_front_right,
- 247, weight(1.5)|difficulty(0)|spd_rtng(103)|weapon_length(48)|swing_damage(26, cut)|thrust_damage(0, pierce), imodbits_sword, [(item_class, item_class_knife)]],
+ 247, weight(1.5)|difficulty(0)|spd_rtng(103)|weapon_length(48)|swing_damage(26, cut)|thrust_damage(0, pierce), imodbits_sword, [(item_class, item_class_knife), itm_butchering_knife()]],
 ["knife", "Knife", [("peasant_knife_new",0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
  306, weight(0.5)|difficulty(0)|spd_rtng(110)|weapon_length(55)|swing_damage(21, cut)|thrust_damage(13, pierce), imodbits_sword, [(item_class, item_class_knife)]],
 ["butchering_knife", "Butchering Knife", [("khyber_knife_new",0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_left,
- 473, weight(0.75)|difficulty(0)|spd_rtng(108)|weapon_length(70)|swing_damage(24, cut)|thrust_damage(17, pierce), imodbits_sword, [(item_class, item_class_knife)]],
+ 473, weight(0.75)|difficulty(0)|spd_rtng(108)|weapon_length(70)|swing_damage(24, cut)|thrust_damage(17, pierce), imodbits_sword, [(item_class, item_class_knife), itm_butchering_knife()]],
 ["broom", "Broom", [("pw_broom",0),("pw_broom_inv",ixmesh_inventory)], itp_type_polearm|itp_primary|itp_two_handed|itp_cant_use_on_horseback|itp_no_parry, itc_staff|itcf_carry_spear,
  39, weight(2.5)|difficulty(0)|spd_rtng(60)|weapon_length(130)|swing_damage(3, blunt)|thrust_damage(1, blunt), imodbits_none],
+["herding_crook", "Herding Crook", [("pw_herding_crook",0)], itp_type_two_handed_wpn|itp_two_handed|itp_primary|itp_wooden_parry|itp_wooden_attack|itp_unbalanced|itp_cant_use_on_horseback|itp_next_item_as_melee, itc_nodachi|itcf_carry_axe_back,
+ 120, weight(1.5)|difficulty(0)|spd_rtng(70)|weapon_length(108)|swing_damage(10, blunt), imodbits_polearm, [(item_class, item_class_herding_rouse)]],
+["herding_crook_alt", "Herding Crook", [("pw_herding_crook",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_wooden_parry|itp_wooden_attack|itp_unbalanced|itp_cant_use_on_horseback, itc_staff|itcf_carry_axe_back,
+ 120, weight(1.5)|difficulty(0)|spd_rtng(60)|weapon_length(108)|swing_damage(10, blunt)|thrust_damage(9, blunt), imodbits_polearm, [(item_class, item_class_herding_calm)]],
 
 ["fish", "Fish", [("pw_fish",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
  23, weight(1)|spd_rtng(72)|weapon_length(45)|swing_damage(2,cut), imodbits_none, [(item_class, item_class_food, 6)]],
@@ -1163,11 +1194,13 @@ itm_wall_banner("fac_8", "b"),
 ["invisible_sword", "Invisible Sword", [("invisible",0)], itp_type_two_handed_wpn|itp_two_handed|itp_primary, itc_greatsword|itcf_carry_sword_back,
  0, weight(1)|difficulty(30)|spd_rtng(120)|weapon_length(120)|swing_damage(255, cut)|thrust_damage(255, pierce), imodbits_sword_high],
 
-["all_items_end", "all_items_end", [("shield_round_a", 0)], 0, 0, 1, 0, 0],
-["pointer_arrow", "pointer_arrow", [("pointer_arrow", 0)], 0, 0, 1, 0, 0],
+["all_items_end", "all_items_end", [("invisible",0)], itp_no_pick_up_from_ground, 0, 0, 0, 0],
+["pointer_arrow", "pointer_arrow", [("pointer_arrow",0)], itp_no_pick_up_from_ground, 0, 0, 0, 0],
+["animal_herd_manager", "animal_herd_manager", [("invisible",0)], itp_no_pick_up_from_ground, 0, 0, 0, 0],
 ]
 
 item_class_list = []
+herd_animal_list = []
 def fill_item_class_list():
   for item_id, item in enumerate(items):
     if len(item) <= 8:
@@ -1186,6 +1219,9 @@ def fill_item_class_list():
             ])
         else:
           triggers_to_pop.append(i)
+      elif trigger[0] == item_herd_animal:
+        herd_animal_list.append([item_id] + trigger[1:])
+        triggers_to_pop.append(i)
     for i in reversed(triggers_to_pop):
       trigger_list.pop(i)
 fill_item_class_list()
