@@ -188,6 +188,7 @@ item_class_precious                   = 8
 item_class_food                       = 9
 item_class_grain_harvesting           = 10
 item_class_knife                      = 11
+item_class_cloth                      = 12
 
 ########################################################
 ##  FACTION SLOTS          #############################

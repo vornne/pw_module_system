@@ -43,7 +43,7 @@ skills = [
   ("prisoner_management", "Prisoner Management",sf_base_att_cha,10,"Every level of this skill increases maximum number of prisoners by %d. (Leader skill)"), 
   ("labouring","Labouring",sf_base_att_str,10,"This skill makes you better at labouring jobs like mining and woodcutting."),
   ("sailing","Sailing",sf_base_att_str,10,"This skill allows you to sail ships faster."),
-  ("reserved_3","Reserved Skill 3",sf_base_att_cha|sf_inactive,10,"This is a reserved skill."),
+  ("tailoring","Tailoring",sf_base_att_agi,10,"This skill allows you to tailor clothes."),
   ("reserved_4","Reserved Skill 4",sf_base_att_cha|sf_inactive,10,"This is a reserved skill."),
   ("persuasion","Persuasion", sf_base_att_int,10, "This skill helps you make other people accept your point of view. It also lowers the minimum level of relationship needed to get NPCs to do what you want. (Personal skill)"),
   ("engineer","Engineer",sf_base_att_int|sf_effects_party,10,"This skill allows you to construct siege equipment and fief improvements more efficiently. (Party skill)"),

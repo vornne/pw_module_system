@@ -793,6 +793,14 @@ items = [
  6000, weight(7)|spd_rtng(70)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [(item_class, item_class_precious, 0)]],
 ["silver_bar", "Silver Bar", [("pw_silver_bar",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_revolver_right,
  40000, weight(15)|spd_rtng(60)|swing_damage(8,blunt)|thrust_damage(8,blunt)|weapon_length(20), imodbits_none, [(item_class, item_class_precious, 0)]],
+["flax_bundle", "Flax Bundle", [("pw_flax_bundle",0)], itp_type_one_handed_wpn|itp_two_handed|itp_primary|itp_no_parry, itcf_carry_bow_back,
+ 50, weight(6)|spd_rtng(20)|weapon_length(45), imodbits_none, [(item_class, item_class_cloth, 0)]],
+["linen_thread", "Linen Thread", [("pw_linen_thread",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
+ 91, weight(2)|spd_rtng(90)|weapon_length(45), imodbits_none, [(item_class, item_class_cloth, 0)]],
+["linen_cloth", "Linen Cloth", [("pw_linen_cloth",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_axe_back,
+ 220, weight(5)|spd_rtng(60)|weapon_length(80), imodbits_none, [(item_class, item_class_cloth, 400)]],
+["linen_cloth_small", "Small Linen Cloth", [("pw_linen_cloth_small",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_axe_back,
+ 55, weight(1)|spd_rtng(70)|weapon_length(60), imodbits_none, [(item_class, item_class_cloth, 100)]],
 
 ["hatchet", "Hatchet", [("pw_hatchet",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_axe_left_hip,
  40, weight(3)|spd_rtng(75)|weapon_length(50)|swing_damage(10,cut)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_wood_cutting)]],
@@ -830,6 +838,8 @@ items = [
  306, weight(0.5)|difficulty(0)|spd_rtng(110)|weapon_length(55)|swing_damage(21, cut)|thrust_damage(13, pierce), imodbits_sword, [(item_class, item_class_knife)]],
 ["butchering_knife", "Butchering Knife", [("khyber_knife_new",0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_left,
  473, weight(0.75)|difficulty(0)|spd_rtng(108)|weapon_length(70)|swing_damage(24, cut)|thrust_damage(17, pierce), imodbits_sword, [(item_class, item_class_knife)]],
+["broom", "Broom", [("pw_broom",0),("pw_broom_inv",ixmesh_inventory)], itp_type_polearm|itp_primary|itp_two_handed|itp_cant_use_on_horseback|itp_no_parry, itc_staff|itcf_carry_spear,
+ 39, weight(2.5)|difficulty(0)|spd_rtng(60)|weapon_length(130)|swing_damage(3, blunt)|thrust_damage(1, blunt), imodbits_none],
 
 ["fish", "Fish", [("pw_fish",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
  23, weight(1)|spd_rtng(72)|weapon_length(45)|swing_damage(2,cut), imodbits_none, [(item_class, item_class_food, 6)]],

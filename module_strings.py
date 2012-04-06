@@ -487,6 +487,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("process_brew", "Brew"),
   ("process_tavern", "Serve"),
   ("process_preserve", "Preserve"),
+  ("process_spin", "Spin"),
+  ("process_weave", "Weave"),
+  ("process_cut", "Cut"),
   ("stockpile", "Stockpile"),
   ("export", "Export"),
   ("import", "Import"),
@@ -594,6 +597,7 @@ Certain destructable items like doors or bridges can be repaired with engineerin
 Fish schools placed will move randomly around the scene, staying near areas of shallow water, and occasionally making a ripple or splash depending on the number of fish in the school; they can be fished with spears or nets. \
 Wheat can be planted in fields by throwing grain and then waiting for it to grow; the ground should be watered for best growth, and harvesting should not be started until the wheat is fully grown to avoid damaging it. Wheat sheaves can be ground into flour and then baked into bread with water; sheaves can also be used with water to brew beer. \
 Vines need to be pruned with knives to grow grapes, which can then be pressed into must and then into wine; the wine and beer barrels need to be taken to a tavern bench to serve into jars or jugs. \
+Flax can be harvested by pulling the plants up by the roots, then spinning and weaving into linen cloth, which can be cut into smaller pieces with shears, and woven back into a larger roll again. \
 Higher labouring skill sometimes means that less resources are required when processing food, because less is spoiled.^^\
 To sail a ship requires two players (or one player moving around a lot): using the up and down arrow keys near the main mast will change the forward or backward movement; using the left and right arrow keys near the rudder will steer the ship, as long as the steering player doesn't move away; up or down keys at the rudder will center it. Your level of sailing skill determines how fast you can sail. \
 When the ramp is resting on the deck, using will move it away from the player, extending over the side, then using once more will move it back to the center; if the ship is not moving the ramp will angle down near ground level. The up arrow key can be used to climb up the side of the ship from close beside the middle section of the hull. \
