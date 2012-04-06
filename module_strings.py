@@ -490,6 +490,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("process_spin", "Spin"),
   ("process_weave", "Weave"),
   ("process_cut", "Cut"),
+  ("process_leather", "Tan leather"),
   ("stockpile", "Stockpile"),
   ("export", "Export"),
   ("import", "Import"),

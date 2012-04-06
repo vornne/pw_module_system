@@ -1904,8 +1904,8 @@ scene_props = [
   ("smithy_forge", 0,"smithy_forge","bo_smithy_forge", []),
   ("smithy_anvil", 0,"smithy_anvil","bo_smithy_anvil", []),
 
-  ("tannery_hide_a", 0,"tannery_hide_a","bo_tannery_hide_a", []),
-  ("tannery_hide_b", 0,"tannery_hide_b","bo_tannery_hide_b", []),
+  ("tannery_hide_a", 0,"pw_tannery_hide_a","0", []),
+  ("tannery_hide_b", 0,"pw_tannery_hide_b","0", []),
   ("tannery_pools_a", 0,"tannery_pools_a","bo_tannery_pools_a", []),
   ("tannery_pools_b", 0,"tannery_pools_b","bo_tannery_pools_b", []),
 
@@ -2171,6 +2171,7 @@ scene_props = [
   ("pw_stockpile_beer_cask",spr_use_time(1),"pw_beer_cask_carry","bo_pw_beer_wine_barrel", spr_stockpile_resource_triggers("itm_beer_cask")),
   ("pw_stockpile_wine_barrel",spr_use_time(1),"pw_wine_barrel_carry","bo_pw_beer_wine_barrel", spr_stockpile_resource_triggers("itm_wine_barrel")),
   ("pw_stockpile_linen_cloth",spr_use_time(1),"pw_linen_cloth","bo_weapon_small", spr_stockpile_resource_triggers("itm_linen_cloth")),
+  ("pw_stockpile_leather_roll",spr_use_time(1),"pw_leather_roll","bo_weapon_small", spr_stockpile_resource_triggers("itm_leather_roll")),
   ("pw_import_wheat_sack",spr_use_time(30),"pw_wheat_sack","bo_weapon_small", spr_import_item_triggers("itm_wheat_sack", pos_offset=(0,0,-20), price_multiplier=3000)),
   ("pw_import_fawn",spr_use_time(20),"sack","bo_sack_fixed", spr_import_item_triggers("itm_fawn", pos_offset=(0,50,50), price_multiplier=1000)),
   ("pw_import_boarlet",spr_use_time(10),"sack","bo_sack_fixed", spr_import_item_triggers("itm_boarlet", pos_offset=(0,50,50), price_multiplier=1000)),
@@ -2194,6 +2195,7 @@ scene_props = [
   ("pw_export_beer_cask",spr_use_time(8),"pw_beer_cask_carry","bo_pw_beer_wine_barrel", spr_export_item_triggers("itm_beer_cask")),
   ("pw_export_wine_barrel",spr_use_time(9),"pw_wine_barrel_carry","bo_pw_beer_wine_barrel", spr_export_item_triggers("itm_wine_barrel")),
   ("pw_export_linen_cloth",spr_use_time(8),"pw_linen_cloth","bo_weapon_small", spr_export_item_triggers("itm_linen_cloth")),
+  ("pw_export_leather_roll",spr_use_time(8),"pw_leather_roll","bo_weapon_small", spr_export_item_triggers("itm_leather_roll")),
   ("pw_process_wood",spr_use_time(6),"bench_tavern_b","bo_bench_tavern_b", spr_process_resource_triggers("script_cf_process_wood", use_string="str_process_wood")),
   ("pw_process_iron",spr_use_time(8),"pw_smithy_forge","bo_pw_smithy_forge", spr_process_resource_triggers("script_cf_process_iron", use_string="str_process_metal")),
   ("pw_process_grind_fast",spr_use_time(5)|sokf_invisible,"pw_invisible_station","bo_pw_invisible_station", spr_process_resource_triggers("script_cf_process_grind", use_string="str_process_grind")),
@@ -2207,6 +2209,7 @@ scene_props = [
   ("pw_process_spin",spr_use_time(5),"pw_spinning_wheel","bo_pw_spinning_wheel", spr_process_resource_triggers("script_cf_process_spin", use_string="str_process_spin")),
   ("pw_process_weave",spr_use_time(6),"pw_weaving_loom","bo_pw_weaving_loom", spr_process_resource_triggers("script_cf_process_weave", use_string="str_process_weave")),
   ("pw_process_cut",spr_use_time(3),"pw_shears","bo_weapon_small", spr_process_resource_triggers("script_cf_process_cut", use_string="str_process_cut")),
+  ("pw_process_leather",spr_use_time(9),"tannery_pools_b","bo_tannery_pools_b", spr_process_resource_triggers("script_cf_process_leather", use_string="str_process_leather")),
 
   ("pw_buy_straw_hat",spr_buy_item_flags(1),"straw_hat_new","bo_armor_head", spr_buy_item_triggers("itm_straw_hat", resources=[], skill_required=1)),
   ("pw_buy_head_wrappings",spr_buy_item_flags(1),"head_wrapping","bo_armor_head", spr_buy_item_triggers("itm_head_wrappings", resources=[], skill_required=1)),
@@ -2516,6 +2519,8 @@ scene_props = [
   ("pw_buy_warhorse_sarranid",spr_buy_item_flags(30),"warhorse_sarranid","bo_horse", spr_buy_item_triggers("itm_warhorse_sarranid")),
   ("pw_buy_charger",spr_buy_item_flags(35),"charger_new","bo_horse", spr_buy_item_triggers("itm_charger")),
   ("pw_buy_plated_charger",spr_buy_item_flags(40),"plated_charger","bo_horse", spr_buy_item_triggers("itm_plated_charger")),
+  ("pw_buy_saddle",spr_buy_item_flags(10),"pw_saddle","bo_pw_saddle", spr_buy_item_triggers("itm_saddle", pos_offset=(0,0,20), resources=["itm_leather_roll", "itm_board"], skill_required=2)),
+  ("pw_buy_horse_armor",spr_buy_item_flags(33),"pw_horse_armor","bo_pw_horse_armor", spr_buy_item_triggers("itm_horse_armor", pos_offset=(0,80,0), resources=[("itm_iron_bar", 4)], skill_required=6)),
 
   ("pw_buy_woodcutter_axe",spr_buy_item_flags(8),"pw_wood_axe","bo_weapon", spr_buy_item_triggers("itm_woodcutter_axe", resources=["itm_iron_bar_short", "itm_wood_pole_short"], skill_required=2)),
   ("pw_buy_mining_pick",spr_buy_item_flags(10),"pw_mining_pick","bo_weapon", spr_buy_item_triggers("itm_mining_pick", resources=["itm_iron_bar", "itm_wood_pole_short"], skill_required=2)),
