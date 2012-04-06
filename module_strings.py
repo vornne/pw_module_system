@@ -560,6 +560,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("no_horse", "You have no horse."),
   ("too_wounded_to_rest", "Too wounded to rest here."),
   ("too_hungry_to_rest", "Too hungry to rest here."),
+  ("horse_too_wounded_to_sell", "Your horse is too wounded to sell."),
+  ("dismount_to_sell", "Dismount to sell your horse."),
   ("item_too_long_for_container", "That item is too long to fit inside the container."),
   ("cant_put_money_bag_in_container", "You can't put money bags inside containers."),
   ("no_bodies_in_range_loot", "No bodies in range to loot."),

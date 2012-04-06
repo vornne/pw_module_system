@@ -87,6 +87,7 @@ slot_agent_freeze_instance_id         = 5
 slot_agent_is_targeted                = 6
 slot_agent_food_amount                = 7
 slot_agent_fishing_last_school        = 8
+slot_agent_last_horse_ridden          = 9
 
 slot_agent_money_bag_1_value          = 10
 slot_agent_money_bag_2_value          = 11
