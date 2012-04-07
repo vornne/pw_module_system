@@ -131,10 +131,16 @@ slot_scene_prop_linked_sail_off       = slot_scene_prop_linked_scene_prop_2
 slot_scene_prop_linked_ramp           = slot_scene_prop_linked_scene_prop_3
 slot_scene_prop_linked_hold           = slot_scene_prop_linked_scene_prop_4
 
+slot_scene_prop_linked_platform_1     = slot_scene_prop_linked_scene_prop_1
+slot_scene_prop_linked_platform_2     = slot_scene_prop_linked_scene_prop_2
+slot_scene_prop_linked_ferry_winch    = slot_scene_prop_linked_scene_prop_3
+
 slot_scene_prop_position              = 15
 slot_scene_prop_target_position       = 16
 slot_scene_prop_rotation              = 17
 slot_scene_prop_target_rotation       = 18
+slot_scene_prop_max_position          = slot_scene_prop_rotation
+slot_scene_prop_max_distance          = slot_scene_prop_target_rotation
 
 slot_scene_prop_attached_to_agent     = 19
 slot_scene_prop_controlling_agent     = 20

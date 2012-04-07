@@ -470,6 +470,19 @@ def spr_ship_triggers(hit_points=1000, length=1000, width=200, height=100, speed
 def spr_ship_ramp_triggers():
   return [spr_call_script_use_trigger("script_use_ship_ramp")]
 
+def spr_ferry_triggers(platform, winch, length, winch_height, move_distance=500):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, length),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_height, winch_height),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_speed_limit, move_distance),
+      ]),
+    [init_scene_prop, "script_setup_ferry", spr_tag(winch)],
+    [link_scene_prop, platform, platform]]
+
+def spr_ferry_winch_triggers(is_platform=0):
+  return [spr_call_script_use_trigger("script_cf_use_ferry_winch", is_platform)]
+
 def spr_structure_flags():
   return sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
 
@@ -2702,6 +2715,12 @@ scene_props = [
   ("pw_ship_d_sail",sokf_moveable,"pw_ship_d_sail","bo_pw_ship_d_sail", []),
   ("pw_ship_d_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_d_hold", spr_item_storage_triggers(inventory_count=64, max_item_length=500)),
   ("pw_ship_d_cd",sokf_invisible,"0","bo_pw_ship_d_cd", []),
+  ("pw_ferry_boat",sokf_moveable,"pw_ferry_boat","bo_pw_ferry_boat", spr_ferry_triggers(platform="pw_ferry_platform", winch="code_ferry_winch", length=500, winch_height=70)),
+  ("code_ferry_winch",sokf_moveable|spr_use_time(2),"pw_ferry_winch","bo_pw_ferry_winch", spr_ferry_winch_triggers()),
+  ("pw_ferry_platform",spr_use_time(2),"pw_ferry_platform","bo_pw_ferry_platform", spr_ferry_winch_triggers(is_platform=1)),
+  ("pw_ferry_chain_10m",0,"pw_ferry_chain_10m","0", []),
+  ("pw_ferry_chain_20m",0,"pw_ferry_chain_20m","0", []),
+  ("pw_ferry_chain_30m",0,"pw_ferry_chain_30m","0", []),
 
   ("pw_castle_sign",0,"tree_house_guard_a","bo_tree_house_guard_a", [(ti_on_scene_prop_use, [])]),
   ("pw_castle_capture_point",spr_use_time(60),"pw_castle_flag_post","bo_pw_castle_flag_post", spr_capture_castle_triggers()),

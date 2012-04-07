@@ -657,6 +657,7 @@ pw walls, ladders:^value 2 = linking id with x_build^^\
 pw portcullises, drawbridges, trapdoors:^value 1 = options bitfield (0x1 = start closed)^value 2 = linking id with x_winch^^\
 pw_lift_platform:^value 2 = linking id with two x_winch props^^\
 pw ships:^value 1 = initial ramp position (0 = center, 1 = left, 2 = right)^Only place the hull, the other parts are spawned at mission start.^^\
+pw_ferry_boat:^value 2 = linking id with two pw_ferry_platform props^^\
 pw_castle_capture_point:^value 1 = faction / castle id^^\
 pw_castle_sign:^value 1 = faction / castle id^value 2 = number of the name, listed at the end of strings.txt (name can't be one used by another castle)^^\
 pw_castle_money_chest:^value 1 = faction / castle id^value 2 = initial gold^^\
