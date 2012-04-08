@@ -368,6 +368,9 @@ repeat_action_min_interval            = 5
 carcass_search_min_interval           = 5
 poll_time_duration                    = 60
 
+def sq(distance):
+  return distance * distance / 100 # get_sq_distance_between_positions always uses fixed point multiplier 100
+
 max_distance_to_play_sound            = 10000
 max_distance_to_see_labels            = 1500
 max_distance_horse_rider              = 5000
