@@ -2020,8 +2020,7 @@ game_menus = [
    "{s1}",
    "none",
    [
-     (call_script, "script_get_player_party_morale_values"),
-     #(party_set_morale, "p_main_party", reg0),
+     (call_script, "script_get_player_party_morale_values"),     
 
      (assign, ":target_morale", reg0),
      (assign, reg1, "$g_player_party_morale_modifier_party_size"),
@@ -3875,6 +3874,7 @@ game_menus = [
           
           (this_or_next|eq,  ":friends_finished",1),
           (eq,"$g_player_surrenders",1),
+
           (assign, "$g_next_menu", "mnu_captivity_start_wilderness"),
           (jump_to_menu, "mnu_total_defeat"),
         (try_end),
@@ -4059,18 +4059,19 @@ game_menus = [
      (try_end),
      ],
     [
-      ("leave_behind",[],"Go on. The sacrifice of these men will save the rest.",[
-          (assign, ":num_casualties", reg4),
-          (try_for_range, ":unused", 0, ":num_casualties"),
-            (call_script, "script_cf_party_remove_random_regular_troop", "p_main_party"),
-            (assign, ":lost_troop", reg0),
-            (store_random_in_range, ":random_no", 0, 100),
-            (ge, ":random_no", 30),
-            (party_add_prisoners, "$g_encountered_party", ":lost_troop", 1),
-           (try_end),
-           (call_script, "script_change_player_party_morale", -20),
-           (jump_to_menu, "mnu_encounter_retreat"),
-          ]),
+      ("leave_behind",[],"Go on. The sacrifice of these men will save the rest.",
+	  [
+	    (assign, ":num_casualties", reg4),
+		(try_for_range, ":unused", 0, ":num_casualties"),
+		  (call_script, "script_cf_party_remove_random_regular_troop", "p_main_party"),
+		  (assign, ":lost_troop", reg0),
+		  (store_random_in_range, ":random_no", 0, 100),
+		  (ge, ":random_no", 30),
+		  (party_add_prisoners, "$g_encountered_party", ":lost_troop", 1),
+		(try_end),
+		(call_script, "script_change_player_party_morale", -20),
+		(jump_to_menu, "mnu_encounter_retreat"),
+      ]),
       ("dont_leave_behind",[],"No. We leave no one behind.",[(jump_to_menu, "mnu_simple_encounter"),]),
     ]
   ),
@@ -4081,21 +4082,23 @@ game_menus = [
     [
      ],
     [
-      ("continue",[],"Continue...",[
-###Troop commentary changes begin
-          (call_script, "script_objectionable_action", tmt_aristocratic, "str_flee_battle"),
-          (party_get_num_companion_stacks, ":num_stacks", "p_encountered_party_backup"),
-          (try_for_range, ":stack_no", 0, ":num_stacks"),
-              (party_stack_get_troop_id,   ":stack_troop","p_encountered_party_backup",":stack_no"),
-              (is_between, ":stack_troop", active_npcs_begin, active_npcs_end),
-              (troop_slot_eq, ":stack_troop", slot_troop_occupation, slto_kingdom_hero),
-
-              (store_troop_faction, ":victorious_faction", ":stack_troop"),
-              (call_script, "script_add_log_entry", logent_player_retreated_from_lord_cowardly, "trp_player",  -1, ":stack_troop", ":victorious_faction"),
-          (try_end),
-###Troop commentary changes end
-          (party_ignore_player, "$g_encountered_party", 1),
-          (leave_encounter),(change_screen_return)]),
+      ("continue",[],"Continue...",
+	  [
+        ###Troop commentary changes begin
+        (call_script, "script_objectionable_action", tmt_aristocratic, "str_flee_battle"),
+        (party_get_num_companion_stacks, ":num_stacks", "p_encountered_party_backup"),
+        (try_for_range, ":stack_no", 0, ":num_stacks"),
+          (party_stack_get_troop_id,   ":stack_troop","p_encountered_party_backup",":stack_no"),
+          (is_between, ":stack_troop", active_npcs_begin, active_npcs_end),
+          (troop_slot_eq, ":stack_troop", slot_troop_occupation, slto_kingdom_hero),
+          (store_troop_faction, ":victorious_faction", ":stack_troop"),
+          (call_script, "script_add_log_entry", logent_player_retreated_from_lord_cowardly, "trp_player",  -1, ":stack_troop", ":victorious_faction"),
+        (try_end),
+        ###Troop commentary changes end
+        (party_ignore_player, "$g_encountered_party", 1),
+        (leave_encounter),
+		(change_screen_return)
+      ]),
     ]
   ),
   (
@@ -11537,17 +11540,15 @@ game_menus = [
     [
       ("ransom_accept",[],"Accept the offer.",
        [(troop_add_gold, "trp_player", reg12),
-        (party_remove_prisoners, "$g_ransom_offer_party", "$g_ransom_offer_troop", 1),
-        #(troop_set_slot, "$g_ransom_offer_troop", slot_troop_is_prisoner, 0),
-        (call_script, "script_remove_troop_from_prison", "$g_ransom_offer_troop"),
-
+        (party_remove_prisoners, "$g_ransom_offer_party", "$g_ransom_offer_troop", 1),        
+        (call_script, "script_remove_troop_from_prison", "$g_ransom_offer_troop"),		
         (try_begin),
             (troop_get_type, ":is_female", "trp_player"),
-            (eq, ":is_female", 1),
+            (eq, ":is_female", 1),						
 
-            (get_achievement_stat, ":number_of_lords_sold", ACHIEVEMENT_MEN_HANDLER, 1),
+            (get_achievement_stat, ":number_of_lords_sold", ACHIEVEMENT_MEN_HANDLER, 0),
             (val_add, ":number_of_lords_sold", 1),
-            (set_achievement_stat, ACHIEVEMENT_MEN_HANDLER, 1, ":number_of_lords_sold"),
+            (set_achievement_stat, ACHIEVEMENT_MEN_HANDLER, 0, ":number_of_lords_sold"),			
 
             (eq, ":number_of_lords_sold", 3),
             (unlock_achievement, ACHIEVEMENT_MEN_HANDLER),
@@ -12116,30 +12117,34 @@ game_menus = [
     [
       ("continue",[],"Continue...",
        [
-         (try_for_range, ":npc", companions_begin, companions_end),
-           (main_party_has_troop, ":npc"),
-           (store_random_in_range, ":rand", 0, 100),
-           (lt, ":rand", 30),
-           (remove_member_from_party, ":npc", "p_main_party"),
-           (troop_set_slot, ":npc", slot_troop_occupation, 0),
-           (troop_set_slot, ":npc", slot_troop_playerparty_history, pp_history_scattered),
-           (assign, "$last_lost_companion", ":npc"),
-           (store_faction_of_party, ":victorious_faction", "$g_encountered_party"),
-           (troop_set_slot, ":npc", slot_troop_playerparty_history_string, ":victorious_faction"),
-           (troop_set_health, ":npc", 100),
-           (store_random_in_range, ":rand_town", towns_begin, towns_end),
-           (troop_set_slot, ":npc", slot_troop_cur_center, ":rand_town"),
-           (assign, ":nearest_town_dist", 1000),
-           (try_for_range, ":town_no", towns_begin, towns_end),
-             (store_faction_of_party, ":town_fac", ":town_no"),
-             (store_relation, ":reln", ":town_fac", "fac_player_faction"),
-             (ge, ":reln", 0),
-             (store_distance_to_party_from_party, ":dist", ":town_no", "p_main_party"),
-             (lt, ":dist", ":nearest_town_dist"),
-             (assign, ":nearest_town_dist", ":dist"),
-             (troop_set_slot, ":npc", slot_troop_cur_center, ":town_no"),
-           (try_end),
-         (try_end),
+	     # Explanation of removing below code : heros are already being removed with 50% (was 75%, I decreased it) probability in mnu_total_defeat, why here there is additionally 30% removing of heros?
+		 # See codes linked to "mnu_captivity_start_wilderness_surrender" and "mnu_captivity_start_wilderness_defeat" which is connected with here they all also enter 
+		 # "mnu_total_defeat" and inside the "mnu_total_defeat" there is script_party_remove_all_companions which removes 50% (was 75%, I decreased it) of compainons from player party.		
+
+         #(try_for_range, ":npc", companions_begin, companions_end),
+         #  (main_party_has_troop, ":npc"),
+         #  (store_random_in_range, ":rand", 0, 100),
+         #  (lt, ":rand", 30),
+         #  (remove_member_from_party, ":npc", "p_main_party"),
+         #  (troop_set_slot, ":npc", slot_troop_occupation, 0),
+         #  (troop_set_slot, ":npc", slot_troop_playerparty_history, pp_history_scattered),
+         #  (assign, "$last_lost_companion", ":npc"),
+         #  (store_faction_of_party, ":victorious_faction", "$g_encountered_party"),
+         #  (troop_set_slot, ":npc", slot_troop_playerparty_history_string, ":victorious_faction"),
+         #  (troop_set_health, ":npc", 100),
+         #  (store_random_in_range, ":rand_town", towns_begin, towns_end),
+         #  (troop_set_slot, ":npc", slot_troop_cur_center, ":rand_town"),
+         #  (assign, ":nearest_town_dist", 1000),
+         #  (try_for_range, ":town_no", towns_begin, towns_end),
+         #    (store_faction_of_party, ":town_fac", ":town_no"),
+         #    (store_relation, ":reln", ":town_fac", "fac_player_faction"),
+         #    (ge, ":reln", 0),
+         #    (store_distance_to_party_from_party, ":dist", ":town_no", "p_main_party"),
+         #    (lt, ":dist", ":nearest_town_dist"),
+         #    (assign, ":nearest_town_dist", ":dist"),
+         #    (troop_set_slot, ":npc", slot_troop_cur_center, ":town_no"),
+         #  (try_end),
+         #(try_end),
 
          (set_camera_follow_party, "$capturer_party"),
          (assign, "$g_player_is_captive", 1),
@@ -12180,7 +12185,7 @@ game_menus = [
              (party_is_active, "$capturer_party"),
              (party_relocate_near_party, "p_main_party", "$capturer_party", 2),
            (try_end),
-           (call_script, "script_set_parties_around_player_ignore_player", 2, 4),
+           (call_script, "script_set_parties_around_player_ignore_player", 8, 12), #it was radius:2 and hours:4, but players make lots of complains about consequent battle losses after releases from captivity then I changed this.
            (assign, "$g_player_icon_state", pis_normal),
            (set_camera_follow_party, "p_main_party"),
            (rest_for_hours, 0, 0, 0), #stop resting
@@ -12288,7 +12293,7 @@ game_menus = [
              (party_is_active, "$capturer_party"),
              (party_relocate_near_party, "p_main_party", "$capturer_party", 2),
            (try_end),
-           (call_script, "script_set_parties_around_player_ignore_player", 2, 12),
+           (call_script, "script_set_parties_around_player_ignore_player", 8, 12), #it was radius:2 and hours:12, but players make lots of complains about consequent battle losses after releases from captivity then I changed this.
            (assign, "$g_player_icon_state", pis_normal),
            (set_camera_follow_party, "p_main_party"),
            (rest_for_hours, 0, 0, 0), #stop resting
@@ -12319,7 +12324,7 @@ game_menus = [
           (party_is_active, "$capturer_party"),
           (party_relocate_near_party, "p_main_party", "$capturer_party", 1),
         (try_end),
-        (call_script, "script_set_parties_around_player_ignore_player", 2, 6),
+        (call_script, "script_set_parties_around_player_ignore_player", 8, 12), #it was radius:2 and hours:6, but players make lots of complains about consequent battle losses after releases from captivity then I changed this.
         (assign, "$g_player_icon_state", pis_normal),
         (set_camera_follow_party, "p_main_party"),
         (rest_for_hours, 0, 0, 0), #stop resting

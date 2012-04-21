@@ -34,11 +34,23 @@ mordr_fall_back			= 6
 mordr_stand_closer		= 7
 mordr_spread_out		= 8
 mordr_use_blunt_weapons = 9
-mordr_use_any_weapon	= 10
-mordr_stand_ground		= 11
-mordr_hold_fire			= 12
-mordr_fire_at_will		= 13
+mordr_use_any_weapon    = 10
+mordr_stand_ground      = 11
+mordr_hold_fire         = 12
+mordr_fire_at_will      = 13
 mordr_retreat           = 14
+mordr_use_melee_weapons	= 15
+mordr_use_ranged_weapons= 16
+mordr_fire_at_my_command= 17
+mordr_all_fire_now		= 18
+mordr_left_fire_now		= 19
+mordr_middle_fire_now	= 20
+mordr_right_fire_now	= 21
+mordr_form_1_row		= 22
+mordr_form_2_row		= 23
+mordr_form_3_row		= 24
+mordr_form_4_row		= 25
+mordr_form_5_row		= 26
 
 rordr_free				= 0
 rordr_mount				= 1
@@ -46,6 +58,8 @@ rordr_dismount			= 2
 
 wordr_use_any_weapon	= 0
 wordr_use_blunt_weapons	= 1
+wordr_use_melee_weapons	= 2
+wordr_use_ranged_weapons= 3
 
 aordr_fire_at_will      = 0
 aordr_hold_your_fire    = 1

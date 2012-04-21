@@ -456,6 +456,8 @@ def save_statement_block(ofile,statement_name,can_fail_statement,statement_block
     if (local_var_uses[i] == 0 and not(local_vars[i].startswith("unused"))):
       print "WARNING: Local variable never used: " + local_vars[i] + ", at: " + str(statement_name)
     i = i + 1
+  if (len(local_vars) > 128):
+	  print "WARNING: Script uses more than 128 local wariables: " + str(statement_name) + "variables count:" + str(len(local_vars))
 
 def compile_global_vars(statement_block,variable_list, variable_uses):
   for statement in statement_block:

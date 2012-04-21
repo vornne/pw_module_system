@@ -7977,6 +7977,19 @@ mission_templates = [
          (store_trigger_param_2, ":killer_agent_no"),
          (call_script, "script_multiplayer_server_on_agent_killed_or_wounded_common", ":dead_agent_no", ":killer_agent_no"),
          ]),
+         
+      #  Tests for set_shader_param_ operations
+      #   (1, 0, 0, [],
+      # [
+      #  (str_store_string, s0, "@user_value_int"),
+      #  (assign, ":int_param", 100),
+      #  (assign, ":float_param", 100),
+      #  (set_fixed_point_multiplier, 100),
+      #  (set_shader_param_int, s0, ":int_param"),
+      #  (set_shader_param_float, "@user_value_float", ":float_param"),
+      #  (set_shader_param_float4, "@user_value_float4", 10, 20, 30, 40),
+      #  (set_shader_param_float4x4, "@user_value_float4x4", 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120),
+      #   ]),
       
       (1, 0, 0, [],
        [

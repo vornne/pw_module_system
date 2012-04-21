@@ -110,6 +110,9 @@ ti_on_presentation_mouse_press        = -64.0 #can only be used in module_presen
 # Trigger Param 2: 0: left mouse button, 1 right mouse button, 2 middle mouse button
 ti_on_init_map_icon                   = -70.0 #can only be used in module_map_icons triggers
 # Trigger Param 1: id of the owner party
+ti_on_order_issued					  = -71.0 #can only be used in module_mission_templates triggers
+# Trigger Param 1: order no
+# Trigger Param 2: agent id
 
 
 ti_once        = 100000000.0
@@ -224,6 +227,22 @@ key_mouse_button_7      = 0xe6
 key_mouse_button_8      = 0xe7
 key_mouse_scroll_up     = 0xee
 key_mouse_scroll_down   = 0xef
+key_xbox_a              = 0xf0
+key_xbox_b              = 0xf1
+key_xbox_x              = 0xf2
+key_xbox_y              = 0xf3
+key_xbox_dpad_up        = 0xf4
+key_xbox_dpad_down      = 0xf5
+key_xbox_dpad_right     = 0xf6
+key_xbox_dpad_left      = 0xf7
+key_xbox_start          = 0xf8
+key_xbox_back           = 0xf9
+key_xbox_rbumber        = 0xfa
+key_xbox_lbumber        = 0xfb
+key_xbox_ltrigger       = 0xfc
+key_xbox_rtrigger       = 0xfd
+key_xbox_rstick         = 0xfe      
+key_xbox_lstick         = 0xff
 
 
 # Game keys that can be checked by game_key_is_down and game_key_clicked
@@ -291,7 +310,9 @@ gk_party_window = 45
 gk_quests_window = 46
 gk_game_log_window = 47
 gk_quick_save = 48
-
+gk_crouch = 49
+gk_order_7 = 50
+gk_order_8 = 51
 
 #trigger positions
 #------------------------------------------------------

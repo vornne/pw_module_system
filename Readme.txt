@@ -1,4 +1,4 @@
-Mount&Blade Module System version 1.010.0
+Mount&Blade Module System
 
 For getting documentation and the latest version of the module system check out:
 

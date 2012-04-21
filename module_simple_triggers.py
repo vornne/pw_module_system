@@ -572,36 +572,32 @@ simple_triggers = [
      #this is moved up from below , from a 24 x 15 slot to a 24 slot
      (try_for_range, ":center_no", centers_begin, centers_end),
        (neg|is_between, ":center_no", castles_begin, castles_end),
+
+	   (store_random_in_range, ":random", 0, 30),
+	   (le, ":random", 10),
+	   
        (call_script, "script_get_center_ideal_prosperity", ":center_no"),
        (assign, ":ideal_prosperity", reg0),
-       (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
+       (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),       
        (try_begin),
-         (gt, ":prosperity", ":ideal_prosperity"),
+	     (eq, ":random", 0), #with 3% probability it will gain 15 prosperity even it has higher prosperity than its ideal prosperity.
+         (call_script, "script_change_center_prosperity", ":center_no", 15),
+         (val_add, "$newglob_total_prosperity_from_convergence", 15),
+	   (else_try),
+         (gt, ":prosperity", ":ideal_prosperity"),		 
          (call_script, "script_change_center_prosperity", ":center_no", -1),
          (val_add, "$newglob_total_prosperity_from_convergence", -1),
        (else_try),
-         (lt, ":prosperity", ":ideal_prosperity"),
+         (lt, ":prosperity", ":ideal_prosperity"),		 
          (call_script, "script_change_center_prosperity", ":center_no", 1),
          (val_add, "$newglob_total_prosperity_from_convergence", 1),
-       (try_end),
+	   (try_end),
      (try_end),	   	   	   
     ]),
 
   #Converging center prosperity to ideal prosperity once in every 15 days
   (24*15,
-   [#(try_for_range, ":center_no", centers_begin, centers_end),
-    #  (call_script, "script_get_center_ideal_prosperity", ":center_no"),
-    #  (assign, ":ideal_prosperity", reg0),
-    #  (party_get_slot, ":prosperity", ":center_no", slot_town_prosperity),
-    #  (try_begin),
-    #    (gt, ":prosperity", ":ideal_prosperity"),
-    #    (call_script, "script_change_center_prosperity", ":center_no", -1),
-    #  (else_try),
-    #    (lt, ":prosperity", ":ideal_prosperity"),
-    #    (call_script, "script_change_center_prosperity", ":center_no", 1),
-    #  (try_end),
-    #(try_end),
-    ]),
+   []),
 
   #Checking if the troops are resting at a half payment point
   (6,
@@ -1019,9 +1015,25 @@ simple_triggers = [
           #I don't know why these are necessary, but they appear to be
           (neg|is_between, ":troop_no", "trp_kingdom_1_lord", "trp_knight_1_1"),
           (neg|is_between, ":troop_no", pretenders_begin, pretenders_end),
+		  
+		  (assign, ":num_centers", 0),		  
+		  (try_for_range,":cur_center", walled_centers_begin, walled_centers_end),		    
+		    (store_faction_of_party, ":faction_of_center", ":cur_center"),
+			(eq, ":faction_of_center", ":faction"),			
+			(val_add, ":num_centers", 1),
+		  (try_end),
+
+		  #we are counting num_centers to allow defection although there is high relation between faction leader and troop. 
+		  #but this rule should not applied for player's faction and player_supporters_faction so thats why here 1 is added to num_centers in that case.
+		  (try_begin), 
+		    (this_or_next|eq, ":faction", "$players_kingdom"),
+			(eq, ":faction", "fac_player_supporters_faction"),
+			(val_add, ":num_centers", 1),
+		  (try_end),
 			
           (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":faction_leader"),
-          (le, reg0, -50), #was -75
+          (this_or_next|le, reg0, -50), #was -75
+		  (eq, ":num_centers", 0), #if there is no walled centers that faction has defection happens 100%.
 
           (call_script, "script_cf_troop_can_intrigue", ":troop_no", 0), #Should include battle, prisoner, in a castle with others 
           (store_random_in_range, ":who_moves_first", 0, 2),
@@ -1062,7 +1074,7 @@ simple_triggers = [
           (else_try),	
             (neq, ":faction_leader", "trp_player"),
 			(call_script, "script_troop_get_relation_with_troop", ":troop_no", ":faction_leader"),
-			(le, reg0, -75),
+			(le, reg0, -50), #was -75
             (call_script, "script_indict_lord_for_treason", ":troop_no", ":faction"),
           (try_end),		  
         (else_try),  #Take a stand on an issue
@@ -2770,18 +2782,18 @@ simple_triggers = [
       (store_faction_of_party, ":party_faction", ":cur_party"),
       (is_between, ":party_faction", kingdoms_begin, kingdoms_end),
       (this_or_next|is_between, ":cur_party", centers_begin, centers_end),
-		(party_slot_eq, ":cur_party", slot_party_type, spt_kingdom_hero_party),
+	  (party_slot_eq, ":cur_party", slot_party_type, spt_kingdom_hero_party),
       (faction_get_slot, ":kingdom_num_parties", ":party_faction", slot_faction_number_of_parties),
       (val_add, ":kingdom_num_parties", 1),
       (faction_set_slot, ":party_faction", slot_faction_number_of_parties, ":kingdom_num_parties"), 
     (try_end),
     (try_for_range, ":cur_kingdom", kingdoms_begin, kingdoms_end),
-##      (try_begin),
-##        (eq, "$cheat_mode", 1),
-##        (str_store_faction_name, s1, ":cur_kingdom"),
-##        (faction_get_slot, reg1, ":cur_kingdom", slot_faction_number_of_parties),
-##        (display_message, "@{!}Number of parties belonging to {s1}: {reg1}"),
-##      (try_end),
+      #(try_begin),
+        #(eq, "$cheat_mode", 1),
+        #(str_store_faction_name, s1, ":cur_kingdom"),
+        #(faction_get_slot, reg1, ":cur_kingdom", slot_faction_number_of_parties),        
+        #(display_message, "@{!}Number of parties belonging to {s1}: {reg1}"),
+      #(try_end),
       (faction_slot_eq, ":cur_kingdom", slot_faction_state, sfs_active),
       (val_add, ":num_active_factions", 1),
       (faction_slot_eq, ":cur_kingdom", slot_faction_number_of_parties, 0),
@@ -3974,7 +3986,37 @@ simple_triggers = [
    (try_end),
     ]),
   (24,
-   []),
+   [
+	  # Setting food bonuses in every 6 hours again and again because of a bug (we could not find its reason) which decreases especially slot_item_food_bonus slots of items to 0.
+	  #Staples
+      (item_set_slot, "itm_bread", slot_item_food_bonus, 8), #brought up from 4
+      (item_set_slot, "itm_grain", slot_item_food_bonus, 2), #new - can be boiled as porridge
+	  
+	  #Fat sources - preserved
+      (item_set_slot, "itm_smoked_fish", slot_item_food_bonus, 4),
+      (item_set_slot, "itm_dried_meat", slot_item_food_bonus, 5),
+      (item_set_slot, "itm_cheese", slot_item_food_bonus, 5),
+      (item_set_slot, "itm_sausages", slot_item_food_bonus, 5),
+      (item_set_slot, "itm_butter", slot_item_food_bonus, 4), #brought down from 8
+
+	  #Fat sources - perishable
+      (item_set_slot, "itm_chicken", slot_item_food_bonus, 8), #brought up from 7
+      (item_set_slot, "itm_cattle_meat", slot_item_food_bonus, 7), #brought down from 7
+      (item_set_slot, "itm_pork", slot_item_food_bonus, 6), #brought down from 6
+	  
+	  #Produce
+      (item_set_slot, "itm_raw_olives", slot_item_food_bonus, 1),
+      (item_set_slot, "itm_cabbages", slot_item_food_bonus, 2),
+      (item_set_slot, "itm_raw_grapes", slot_item_food_bonus, 3),
+      (item_set_slot, "itm_apples", slot_item_food_bonus, 4), #brought down from 5
+
+	  #Sweet items
+      (item_set_slot, "itm_raw_date_fruit", slot_item_food_bonus, 4), #brought down from 8
+      (item_set_slot, "itm_honey", slot_item_food_bonus, 6), #brought down from 12
+      
+      (item_set_slot, "itm_wine", slot_item_food_bonus, 5),
+      (item_set_slot, "itm_ale", slot_item_food_bonus, 4),
+   ]),
   (24,
    []),
   (24,
