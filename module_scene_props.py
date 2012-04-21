@@ -667,8 +667,6 @@ scene_props = [
       (particle_system_add_new, "psys_torch_smoke"),
       (particle_system_add_new, "psys_torch_fire_sparks"),
 
-      (play_sound, "snd_torch_loop", 0),
-
       (set_position_delta,0,-35,56),
       (particle_system_add_new, "psys_fire_glow_1"),
 
@@ -690,7 +688,6 @@ scene_props = [
       (set_position_delta,0,-35,56),
       (particle_system_add_new, "psys_fire_glow_1"),
       (particle_system_emit, "psys_fire_glow_1",9000000),
-      (play_sound, "snd_torch_loop", 0),
       ]),
     ]),
   ("barrier_20m",sokf_invisible|sokf_type_barrier,"barrier_20m","bo_barrier_20m", []),
@@ -1670,7 +1667,6 @@ scene_props = [
       (set_position_delta,70,0,-5),
       (particle_system_add_new, "psys_fire_glow_1"),
       (particle_system_emit, "psys_fire_glow_1",9000000),
-      (play_sound, "snd_fire_loop", 0),
       ]),
     ]),
   ("hook_a",0,"hook_a","0", []),
@@ -2615,7 +2611,6 @@ scene_props = [
       (prop_instance_get_variation_id, ":sound_id", ":instance_id"),
       (val_add, ":sound_id", ambient_sounds_begin),
       (is_between, ":sound_id", ambient_sounds_begin, ambient_sounds_end),
-      (play_sound, ":sound_id", sf_looping),
       ]),
     ]),
   ("pw_scene_light",sokf_invisible,"light_sphere","0",
@@ -2641,7 +2636,6 @@ scene_props = [
       (particle_system_add_new, "psys_wood_heap_fire_sparks"),
       (set_position_delta,0,0,100),
       (particle_system_add_new, "psys_wood_heap_fire_smoke"),
-      (play_sound, "snd_fire_loop", 0),
       ]),
     ]),
 
