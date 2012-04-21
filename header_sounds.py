@@ -8,6 +8,11 @@ sf_2d             = 0x00000001
 sf_looping        = 0x00000002
 sf_start_at_random_pos = 0x00000004
 
+sf_priority_15    = 0x000000f0
+sf_priority_14    = 0x000000e0
+sf_priority_13    = 0x000000d0
+sf_priority_12    = 0x000000c0
+sf_priority_11    = 0x000000b0
 sf_priority_10    = 0x000000a0
 sf_priority_9     = 0x00000090
 sf_priority_8     = 0x00000080

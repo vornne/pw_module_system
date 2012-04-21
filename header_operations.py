@@ -857,6 +857,8 @@ prop_instance_receive_damage                      = 1877 # (prop_instance_receiv
 
 prop_instance_intersects_with_prop_instance       = 1880 # (prop_instance_intersects_with_prop_instance, <scene_prop_id>, <scene_prop_id>), give second scene_prop_id as -1 to check all scene props.
                                                          # cannot check polygon-to-polygon physics models, but can check any other combinations between sphere, capsule and polygon physics models.
+prop_instance_play_sound                          = 1881 # (prop_instance_play_sound, <scene_prop_id>, <sound_id>, [flags]), # sound flags can be given
+
 replace_prop_instance                             = 1889 # (replace_prop_instance, <scene_prop_id>, <new_scene_prop_id>),
 replace_scene_props                               = 1890 # (replace_scene_props, <old_scene_prop_id>,<new_scene_prop_id>),
 replace_scene_items_with_scene_props              = 1891 # (replace_scene_items_with_scene_props, <old_item_id>,<new_scene_prop_id>),
