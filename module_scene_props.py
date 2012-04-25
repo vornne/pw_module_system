@@ -35,7 +35,7 @@ def spr_tag(name):
 
 def spr_check_value(value, low, high, name):
   if value < low or value > high:
-    raise Exception(`name` + " value must be between " + `low` + " and " + `high`)
+    raise Exception("%s value must be between %d and %d" % (name, low, high))
   return value
 
 def spr_check_hit_points(hp, low_hp=min_scene_prop_hit_points):
@@ -445,7 +445,7 @@ def spr_stockpile_resource_triggers(item_id, use_string="str_stockpile"):
 
 def spr_ship_triggers(hit_points=1000, length=1000, width=200, height=100, speed=5, sail=-1, sail_off=-1, ramp=-1, hold=-1, collision="pw_ship_a_cd"):
   if speed < 1 or speed > ship_forwards_maximum:
-    raise Exception("Ship speed must be between 1 and " + `ship_forwards_maximum`)
+    raise Exception("Ship speed must be between 1 and %d" % ship_forwards_maximum)
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
