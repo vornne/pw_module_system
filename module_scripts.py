@@ -201,8 +201,10 @@ scripts = [
    [
     (assign, "$g_game_ended", 1),
     (assign, "$g_stats_chart_opened_manually", 0),
-    (neg|is_presentation_active, "prsnt_tabbed_stats_chart"),
-    (start_presentation, "prsnt_tabbed_stats_chart"),
+    (try_begin),
+      (neg|is_presentation_active, "prsnt_tabbed_stats_chart"),
+      (start_presentation, "prsnt_tabbed_stats_chart"),
+    (try_end),
     ]),
 
   ("game_enable_cheat_menu", []),
