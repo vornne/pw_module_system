@@ -1830,7 +1830,8 @@ scripts = [
       (troop_set_name, ":chat_overlay_troop_id", s0),
       (troop_set_plural_name, ":chat_overlay_troop_id", s0),
     (try_end),
-    (assign, "$g_chat_overlay_ring_buffer_stored", chat_overlay_ring_buffer_begin),
+    (assign, "$g_chat_overlay_local_buffer_stored", chat_overlay_ring_buffer_begin),
+    (assign, "$g_chat_overlay_faction_buffer_stored", chat_overlay_ring_buffer_begin),
     ]),
 
   ("preset_message",
