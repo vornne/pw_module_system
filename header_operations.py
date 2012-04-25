@@ -979,6 +979,8 @@ store_trigger_param_2                             = 2072 # (store_trigger_param_
 store_trigger_param_3                             = 2073 # (store_trigger_param_3,<destination>),
 set_trigger_result                                = 2075 # (set_trigger_result, <value>),
 
+agent_set_max_hit_points                          = 2090 # (agent_set_max_hit_points,<agent_id>,<value>,[absolute]), # set absolute to 1 if value is absolute, otherwise value will be treated as relative number in range [0..100]
+
 val_lshift                                        = 2100 # (val_lshift, <destination>, <value>), shifts the bits of destination to left by value amount.
 val_rshift                                        = 2101 # (val_rshift, <destination>, <value>), shifts the bits of destination to right by value amount.
 

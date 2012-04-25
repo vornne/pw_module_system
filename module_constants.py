@@ -12,7 +12,7 @@
 slot_player_faction_id                = 0
 slot_player_spawn_state               = 1
 slot_player_spawn_invulnerable_time   = 2
-slot_player_spawn_hit_points          = 3
+slot_player_spawn_health_percent      = 3
 slot_player_spawn_entry_point         = 4
 
 player_spawn_state_dead               = 0
@@ -459,6 +459,7 @@ presentation_max_y                    = 750
 max_scene_prop_instance_id            = 10000
 
 max_food_amount                       = 100
+max_hit_points_percent                = 200
 
 all_items_begin = "itm_straw_hat"
 all_items_end = "itm_all_items_end"
