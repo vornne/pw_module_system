@@ -208,7 +208,7 @@ class Processor:
         current_indent += 1
       elif opcode == try_end:
         current_indent -= 1
-      if check_can_fail and current_indent == 0 and ((opcode in can_fail_operations or
+      if check_can_fail and current_indent == 0 and (((opcode & 0xfffffff) in can_fail_operations or
           ((opcode == call_script and statement[1].startswith("cf_", 7)))) and (not name.startswith("cf_"))):
         pc.WARNING("script can fail: use cf_ at the beginning of its name", entry=name, opcode=opcode)
     self.local_variables.warn_unused(name)
