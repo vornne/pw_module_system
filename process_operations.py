@@ -149,16 +149,16 @@ class Processor:
       param = self.identifier_map.get_id(tag_name[0], tag_name[2], opmask=False)
     return param
 
-  def process_param(self, param, opcode=None):
+  def process_param(self, param, opcode, is_lhs_param=False):
     result = None
     if isinstance(param, str):
       if param[0] == ':':
-        if opcode and opcode in lhs_operations:
+        if is_lhs_param and opcode in lhs_operations:
           result = self.local_variables.add_id(param[1:])
         else:
           result = self.local_variables.get_id(param[1:])
       elif param[0] == '$':
-        uses = 1 if opcode and opcode in global_lhs_operations else 0
+        uses = 0 if is_lhs_param and opcode in global_lhs_operations else 1
         result = self.global_variables.add_id(param[1:], uses)
       elif param[0] == '@':
         result = self.quick_strings.add_str(param[1:])
@@ -183,9 +183,9 @@ class Processor:
     except TypeError:
       raise pc.ModuleSystemError("invalid operation %s" % repr(statement))
     if param_count > 0:
-      check_opcode = opcode
+      is_lhs_param = True
       for param in statement[1:]:
-        param_no = self.process_param(param, check_opcode)
+        param_no = self.process_param(param, opcode, is_lhs_param)
         try:
           result.append("%d " % param_no)
         except TypeError:
@@ -193,7 +193,7 @@ class Processor:
         except pc.ModuleSystemError as e:
           e.opcode = opcode
           raise
-        check_opcode = None
+        is_lhs_param = False
     return result, opcode
 
   def process_block(self, block, name, check_can_fail=False):
