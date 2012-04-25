@@ -177,6 +177,8 @@ class Processor:
       else:
         opcode = statement[0]
         param_count = len(statement) - 1
+        if param_count > 16:
+          raise pc.ModuleSystemError("%d parameters exceeds the maximum count of 16" % param_count, opcode=opcode)
       result = ["%d %d " % (opcode, param_count)]
     except TypeError:
       raise pc.ModuleSystemError("invalid operation %s" % repr(statement))
