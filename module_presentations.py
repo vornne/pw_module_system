@@ -2062,7 +2062,7 @@ presentations = [
       (position_set_y, pos1, ":cur_y"),
       (overlay_set_position, reg0, pos1),
 
-      (create_number_box_overlay, "$g_presentation_obj_admin_panel_21", 2, 65),
+      (create_number_box_overlay, "$g_presentation_obj_admin_panel_21", 2, 201),
       (position_set_x, pos1, 390),
       (position_set_y, pos1, ":cur_y"),
       (overlay_set_position, "$g_presentation_obj_admin_panel_21", pos1),

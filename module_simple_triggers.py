@@ -1039,11 +1039,17 @@ simple_triggers = [
           (store_random_in_range, ":who_moves_first", 0, 2),
 			
           (try_begin),
+            (this_or_next|eq, ":num_centers", 0), #Thanks Caba`drin & Osviux
             (neq, ":who_moves_first", 0),
             (neq, ":troop_no", "trp_player"),
 				
-            #do a defection
-			(assign, "$g_give_advantage_to_original_faction", 1),            
+                        #do a defection
+                        (try_begin), 
+                          (neq, ":num_centers", 0), 
+                          (assign, "$g_give_advantage_to_original_faction", 1), 
+                        (try_end),
+			#(assign, "$g_give_advantage_to_original_faction", 1),
+        
 			(store_faction_of_troop, ":orig_faction", ":troop_no"),
 			(call_script, "script_lord_find_alternative_faction", ":troop_no"),
 			(assign, ":new_faction", reg0),			

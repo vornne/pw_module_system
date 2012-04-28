@@ -760,7 +760,6 @@ scripts = [
 	  
 	  (try_for_range, ":kingdom", kingdoms_begin, kingdoms_end),
 		(call_script, "script_evaluate_realm_stability", ":kingdom"),
-		#(faction_set_slot, ":kingdom", slot_faction_last_feast_time, -264),
 	  (try_end),
 	  #Warband changes end
 	  
@@ -9120,7 +9119,7 @@ scripts = [
         (try_begin),
           #validity check
           (player_is_admin, ":player_no"),
-          (is_between, ":value", 2, 65),
+          (is_between, ":value", 2, 201),
           #condition checks are done
           (server_set_max_num_players, ":value"),      
         (try_end),
@@ -23451,7 +23450,7 @@ scripts = [
              (store_faction_of_troop, ":screen_leader_faction", ":screen_leader"),
              (eq, ":screen_leader_faction", ":faction_no"),
 			 
-             (troop_get_slot, ":screening_party", ":screen_leader_faction", slot_troop_leaded_party), 
+             (troop_get_slot, ":screening_party", ":screen_leader", slot_troop_leaded_party),
              (party_is_active, ":screening_party"),			
              (party_slot_eq, ":screening_party", slot_party_ai_state, spai_accompanying_army),
              (party_slot_eq, ":screening_party", slot_party_ai_object, ":faction_marshal_party"),
@@ -24214,15 +24213,14 @@ scripts = [
 	  (assign, ":diplomatic_status", reg0),
 	  
 	  (try_begin),
-	    (eq, ":attacker_faction", "fac_player_supporters_faction"),
+	        (eq, ":attacker_faction", "fac_player_supporters_faction"),
 		(neg|faction_slot_eq, "fac_player_supporters_faction", slot_faction_state, sfs_active),
 		#player faction inactive, no effect
 	  (else_try),
 		(eq, ":diplomatic_status", -2),
-	    #war, no effect
-	  (else_try),
-	  
-	    (eq, ":attacker_faction", "fac_player_supporters_faction"),
+	         #war, no effect
+	  (else_try),	  
+	        (eq, ":attacker_faction", "fac_player_supporters_faction"),
 		(faction_slot_eq, ":attacker_faction", slot_faction_leader, "trp_player"),
 		(call_script, "script_faction_follows_controversial_policy", "fac_player_supporters_faction",logent_policy_ruler_attacks_without_provocation),
 	  (else_try),	
@@ -24263,7 +24261,7 @@ scripts = [
 	  (store_add, ":slot_provocation_days", ":attacker_faction", slot_faction_provocation_days_with_factions_begin),
 	  (val_sub, ":slot_provocation_days", kingdoms_begin),
 	  (try_begin),
-	    (neq, ":diplomatic_status", -2),
+	        (neq, ":diplomatic_status", -2),
 		(faction_slot_eq, ":defender_faction", ":slot_provocation_days", 0),
 		(faction_set_slot, ":defender_faction", ":slot_provocation_days", 30),
 	  (try_end),	  
@@ -24655,6 +24653,7 @@ scripts = [
 			    (assign, ":hostility", reg0),
 
 			    (call_script, "script_diplomacy_faction_get_diplomatic_status_with_faction", ":cur_kingdom", ":cur_kingdom_2"),
+    
 			    (le, reg0, 0), #no truce
 
 				(val_add, ":hostility", reg0), #increase hostility if there is a provocation
@@ -24664,6 +24663,7 @@ scripts = [
 				
 				(store_mul, ":hostility_squared", ":hostility", ":hostility"),
 				(store_random_in_range, ":random", 0, 50),
+    
 			    (lt, ":random", ":hostility_squared"),
 				
 				(try_begin),
@@ -31547,8 +31547,7 @@ scripts = [
      ]),
 
   ("update_faction_political_notes",
-    [(store_script_param, ":faction_no", 1),
-	 
+    [(store_script_param, ":faction_no", 1),	 
 	(call_script, "script_evaluate_realm_stability", ":faction_no"),
     (add_faction_note_from_sreg, ":faction_no", 2, "str_instability_reg0_of_lords_are_disgruntled_reg1_are_restless", 0),
 	]), 
@@ -35692,96 +35691,93 @@ scripts = [
 #       (troop_get_slot, ":banner", "trp_player", slot_troop_custom_banner_flag_type),
        (store_random_in_range, ":renown_check", 100, 200),
        (try_begin),
-          (eq, ":reputation", lrep_none),
-          (gt, "$players_kingdom", 0),
-          (assign, ":comment", "str_comment_intro_liege_affiliated"),
-		  (try_begin),
-			(faction_slot_eq, "$players_kingdom", slot_faction_leader, "trp_player"),
-			(assign, ":comment", "str_comment_intro_liege_affiliated_to_player"),
-		  (try_end),
-	   (else_try),
-		  (eq, "$character_gender",tf_female),
+         (eq, ":reputation", lrep_none),
+         (gt, "$players_kingdom", 0),
+         (assign, ":comment", "str_comment_intro_liege_affiliated"),
+         (try_begin),
+	   (faction_slot_eq, "$players_kingdom", slot_faction_leader, "trp_player"),
+	   (assign, ":comment", "str_comment_intro_liege_affiliated_to_player"),
+	 (try_end),
+       (else_try),
+         (eq, "$character_gender",tf_female),
 		  
-		  (call_script, "script_troop_get_romantic_chemistry_with_troop", "$g_talk_troop", "trp_player"),
-		  (assign, ":attraction", reg0),
-		  (store_random_in_range, ":random", 0, 2),
-		  (this_or_next|eq, ":random", 0),
-			  (gt, ":attraction", 10),
+         (call_script, "script_troop_get_romantic_chemistry_with_troop", "$g_talk_troop", "trp_player"),
+	 (assign, ":attraction", reg0),
+	 (store_random_in_range, ":random", 0, 2),
+	 (this_or_next|eq, ":random", 0),
+	 (gt, ":attraction", 10),
 		  
-		  (try_begin),
-            (this_or_next|gt, ":plyr_renown", ":renown_check"), 
-				(eq, "$g_disable_condescending_comments", 1),
-            (assign, ":comment", "str_comment_intro_female_famous_liege"),
-            (val_add, ":comment", ":reputation"),
-		  (else_try),
-		    (ge, ":attraction", 9),
-			(assign, ":comment", "str_comment_intro_female_admiring_liege"),
-			(val_add, ":comment", ":reputation"),
-		  (else_try),	
-            (gt, ":banner", 0), 
-			(assign, ":comment", "str_comment_intro_female_noble_liege"),
-			(val_add, ":comment", ":reputation"),
-		  (else_try),
-			(assign, ":comment", "str_comment_intro_female_common_liege"),
-			(val_add, ":comment", ":reputation"),
-		  (try_end),
-		  
-		  #Rejoinders for comments
-		  (try_begin),
-			(eq, ":comment", "str_comment_intro_female_common_badtempered"),
-			(assign, ":rejoinder", "str_rejoinder_intro_female_common_badtempered"),
-		  (else_try),
-			(eq, ":comment", "str_comment_intro_female_noble_pitiless"),
-			(assign, ":rejoinder", "str_rejoinder_intro_female_noble_pitiless"),
-		  (else_try),
-			(eq, ":comment", "str_comment_intro_female_common_pitiless"),
-			(assign, ":rejoinder", "str_rejoinder_intro_female_common_pitiless"),
-		  (else_try),
-			(eq, ":comment", "str_comment_intro_female_noble_sadistic"),
-			(assign, ":rejoinder", "str_rejoinder_intro_female_noble_sadistic"),
-		  (else_try),
-			(eq, ":comment", "str_comment_intro_female_common_sadistic"),
-			(assign, ":rejoinder", "str_rejoinder_intro_female_common_sadistic"),			
-		  (else_try),
-			(eq, ":comment", "str_comment_intro_female_common_upstanding"),
-			(assign, ":rejoinder", "str_rejoinder_intro_female_common_upstanding"),
-		  (else_try),
-			(eq, ":comment", "str_comment_intro_female_noble_upstanding"),
-			(assign, ":rejoinder", "str_rejoinder_intro_female_noble_upstanding"),
-		  (else_try),
-			(eq, ":comment", "str_comment_intro_female_common_martial"),
-			(assign, ":rejoinder", "str_rejoinder_intro_female_common_martial"),
-		  (else_try),
-			(eq, ":comment", "str_comment_intro_female_sadistic_admiring"),
-			(assign, ":rejoinder", "str_rejoinder_intro_female_sadistic_admiring"),
-		  (else_try),
-			(eq, ":comment", "str_comment_intro_female_badtempered_admiring"),
-			(assign, ":rejoinder", "str_rejoinder_intro_female_badtempered_admiring"),
-		  (else_try),
-			(eq, ":comment", "str_comment_intro_female_pitiless_admiring"),
-			(assign, ":rejoinder", "str_rejoinder_intro_female_pitiless_admiring"),
-		  (try_end),
-		  
-	   (else_try),
-		  #Male character or non-gendered comment
-		  (try_begin),
-			(gt, ":plyr_renown", ":renown_check"),
-            (assign, ":comment", "str_comment_intro_famous_liege"),
-            (val_add, ":comment", ":reputation"),
-		  (else_try),	
-            (gt, ":banner", 0), 
-			(assign, ":comment", "str_comment_intro_noble_liege"),
-			(val_add, ":comment", ":reputation"),
-			
-			(try_begin),
-				(eq, ":comment", "str_comment_intro_noble_sadistic"),
-				(assign, ":rejoinder", "str_rejoinder_intro_noble_sadistic"),
-			(try_end),
-			
-          (else_try),
-            (assign, ":comment", "str_comment_intro_common_liege"),
-            (val_add, ":comment", ":reputation"),									
-		  (try_end),
+	 (try_begin),
+           (this_or_next|gt, ":plyr_renown", ":renown_check"), 
+	   (eq, "$g_disable_condescending_comments", 1),
+           (assign, ":comment", "str_comment_intro_female_famous_liege"),
+           (val_add, ":comment", ":reputation"),
+	 (else_try),
+	   (ge, ":attraction", 9),
+	   (assign, ":comment", "str_comment_intro_female_admiring_liege"),
+	   (val_add, ":comment", ":reputation"),
+	 (else_try),	
+           (gt, ":banner", 0), 
+	   (assign, ":comment", "str_comment_intro_female_noble_liege"),
+	   (val_add, ":comment", ":reputation"),
+	 (else_try),
+	   (assign, ":comment", "str_comment_intro_female_common_liege"),
+	   (val_add, ":comment", ":reputation"),
+	 (try_end),		  
+           #Rejoinders for comments
+
+         (try_begin),
+	   (eq, ":comment", "str_comment_intro_female_common_badtempered"),
+	   (assign, ":rejoinder", "str_rejoinder_intro_female_common_badtempered"),
+	 (else_try),
+	   (eq, ":comment", "str_comment_intro_female_noble_pitiless"),
+	   (assign, ":rejoinder", "str_rejoinder_intro_female_noble_pitiless"),
+	 (else_try),
+	   (eq, ":comment", "str_comment_intro_female_common_pitiless"),
+	   (assign, ":rejoinder", "str_rejoinder_intro_female_common_pitiless"),
+	 (else_try),
+	   (eq, ":comment", "str_comment_intro_female_noble_sadistic"),
+	   (assign, ":rejoinder", "str_rejoinder_intro_female_noble_sadistic"),
+	 (else_try),
+	   (eq, ":comment", "str_comment_intro_female_common_sadistic"),
+	   (assign, ":rejoinder", "str_rejoinder_intro_female_common_sadistic"),			
+	 (else_try),
+	   (eq, ":comment", "str_comment_intro_female_common_upstanding"),
+	   (assign, ":rejoinder", "str_rejoinder_intro_female_common_upstanding"),
+	 (else_try),
+           (eq, ":comment", "str_comment_intro_female_noble_upstanding"),
+	   (assign, ":rejoinder", "str_rejoinder_intro_female_noble_upstanding"),
+	 (else_try),
+	   (eq, ":comment", "str_comment_intro_female_common_martial"),
+	   (assign, ":rejoinder", "str_rejoinder_intro_female_common_martial"),
+	 (else_try),
+	   (eq, ":comment", "str_comment_intro_female_sadistic_admiring"),
+	   (assign, ":rejoinder", "str_rejoinder_intro_female_sadistic_admiring"),
+	 (else_try),
+	   (eq, ":comment", "str_comment_intro_female_badtempered_admiring"),
+	   (assign, ":rejoinder", "str_rejoinder_intro_female_badtempered_admiring"),
+	 (else_try),
+	   (eq, ":comment", "str_comment_intro_female_pitiless_admiring"),
+	   (assign, ":rejoinder", "str_rejoinder_intro_female_pitiless_admiring"),
+	 (try_end),
+       (else_try),
+       #Male character or non-gendered comment
+         (try_begin),
+           (gt, ":plyr_renown", ":renown_check"),
+           (assign, ":comment", "str_comment_intro_famous_liege"),
+           (val_add, ":comment", ":reputation"),
+         (else_try),	
+           (gt, ":banner", 0), 
+           (assign, ":comment", "str_comment_intro_noble_liege"),
+  	   (val_add, ":comment", ":reputation"),			
+           (try_begin),
+             (eq, ":comment", "str_comment_intro_noble_sadistic"),
+             (assign, ":rejoinder", "str_rejoinder_intro_noble_sadistic"),
+           (try_end),			
+         (else_try),
+           (assign, ":comment", "str_comment_intro_common_liege"),
+           (val_add, ":comment", ":reputation"),									
+         (try_end),
        (try_end),
 #Post 0907 changes end
 
@@ -36936,7 +36932,7 @@ scripts = [
        (eq, ":entry_type", logent_troop_feels_cheated_by_troop_over_land),
  	   (eq, ":actor", "$g_talk_troop"),
 
-	   (str_store_troop_name, s51, ":center_object"),  
+	   (str_store_party_name, s51, ":center_object"),  
 	   (str_store_troop_name, s54, ":troop_object"),  
 	   (str_store_troop_name, s56, ":faction_object"), #faction object is unusual in this circumstance
 	   
@@ -37087,7 +37083,7 @@ scripts = [
 
      (try_begin),
        (gt, ":best_comment_so_far", 0),
-       (assign, ":comment_found", 1), #comment found print it to s61 now. 
+       (assign, ":comment_found", 1), #comment found print it to s61 now.         
        (troop_get_slot, ":actor",                 "trp_log_array_actor",                 ":best_log_entry"),
        (troop_get_slot, ":center_object",         "trp_log_array_center_object",         ":best_log_entry"),
        (troop_get_slot, ":center_object_lord",    "trp_log_array_center_object_lord",    ":best_log_entry"),
@@ -38997,7 +38993,7 @@ scripts = [
 				(party_is_active, ":defeated_lord_party"),
 
 				#is party under suggestion?
-				(call_script, "script_cf_party_under_player_suggestion", ":winner_lord_party"),
+				(call_script, "script_cf_party_under_player_suggestion", ":defeated_lord_party"),
 				(call_script, "script_add_log_entry", logent_player_suggestion_failed, "trp_player", -1, ":cur_troop_id", -1),		
 			(try_end),
 
@@ -39754,8 +39750,7 @@ scripts = [
     (faction_get_slot, ":old_marshall", ":faction_no", slot_faction_marshall),
 
     (faction_set_slot, ":faction_no", slot_faction_marshall, ":faction_marshall"),
-
-    (faction_get_slot, ":old_marshall", ":faction_no", slot_faction_marshall),
+    
     (try_begin),
 		(ge, ":old_marshall", 0),
 		(troop_get_slot, ":old_marshall_party", ":old_marshall", slot_troop_leaded_party),
@@ -43268,7 +43263,7 @@ scripts = [
           (else_try),
             (try_begin),
               (lt, ":power_ratio", 200), #changes between 5..25
-              (val_div, ":threat_importance", 10),
+              (store_div, ":threat_importance", ":power_ratio", 10),    #MOTO correction (thanks MOTO:) (mexxico))
               (val_add, ":threat_importance", 6 ),
             (else_try),  
               (assign, ":threat_importance", 26),
@@ -43652,7 +43647,7 @@ scripts = [
 		
 		(this_or_next|eq, ":war_peace_truce_status", -1), #either a war is just beginning, or there is a provocation 
 			(le, ":war_damage_inflicted", 1),
-			
+        
 		(lt, ":strength_ratio", 150),
 		(eq, ":num_third_party_wars", 0),
 		
@@ -46326,6 +46321,8 @@ scripts = [
 			(eq, ":at_peace_with_everyone", 0),
             
             (is_between, ":most_threatened_center", centers_begin, centers_end),
+            (this_or_next|eq, ":current_ai_state", sfai_default),    #MOTO not going to attack anyway 
+            (this_or_next|eq, ":current_ai_state", sfai_feast),    #MOTO not going to attack anyway (THIS is the emergency to stop feast) 
             (gt, ":threat_danger_level", ":target_value_level"),
                         
             (assign, ":continue_gathering", 0),
@@ -46478,6 +46475,8 @@ scripts = [
 		(else_try),
 			(party_is_active, ":marshal_party"),
 			(is_between, ":most_threatened_center", walled_centers_begin, walled_centers_end),
+                        (this_or_next|eq, ":current_ai_state", sfai_default),    #MOTO not going to attack anyway 
+                        (this_or_next|eq, ":current_ai_state", sfai_feast),    #MOTO not going to attack anyway (THIS is the emergency to stop feast)
 			(ge, ":threat_danger_level", ":target_value_level"),
 			(party_slot_ge, ":most_threatened_center", slot_center_is_besieged_by, 0),
 
@@ -46490,6 +46489,8 @@ scripts = [
 		#3b - DEFEAT ENEMIES NEAR CENTER - similar to above, but a different string
 		(else_try),
 			(party_is_active, ":marshal_party"),
+                        (this_or_next|eq, ":current_ai_state", sfai_default),    #MOTO not going to attack anyway 
+                        (this_or_next|eq, ":current_ai_state", sfai_feast),    #MOTO not going to attack anyway (THIS is the emergency to stop feast)                
 			(ge, ":threat_danger_level", ":target_value_level"),
 			(is_between, ":most_threatened_center", villages_begin, villages_end),
 		
