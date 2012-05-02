@@ -752,6 +752,12 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("castle_name_39", "Iron Abbey"),
   ("castle_name_40", "Imperial Prison"),
   ("castle_name_41", "Rangers Guild"),
+  ("castle_name_42", "Helheim Hold"),
+  ("castle_name_43", "Springvale Hold"),
+  ("castle_name_44", "Hollow Bastion Hold"),
+  ("castle_name_45", "Hellwood Hold"),
+  ("castle_name_46", "Fjorgyn Hold"),
+  ("castle_name_47", "Sessrumnir Hold"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]
