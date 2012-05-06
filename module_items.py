@@ -539,6 +539,8 @@ items = [
 ["crude_spear", "Crude Spear", [("spear_g_1-9m",0)], itp_type_polearm|itp_primary|itp_wooden_parry, itc_staff|itcf_carry_spear,
  374, weight(2.0)|difficulty(6)|spd_rtng(92)|weapon_length(120)|swing_damage(6, cut)|thrust_damage(18, pierce), imodbits_polearm],
 ["blunt_falchion", "Blunt Falchion", [("falchion",0)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_sword_left_hip,
+ 217, weight(1.0)|difficulty(5)|spd_rtng(91)|weapon_length(72)|swing_damage(12, cut)|thrust_damage(0, pierce), imodbits_sword],
+["chipped_falchion", "Chipped Falchion", [("falchion",0)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_sword_left_hip,
  314, weight(2.5)|difficulty(5)|spd_rtng(95)|weapon_length(72)|swing_damage(16, cut)|thrust_damage(0, pierce), imodbits_sword],
 ["rusty_sword", "Rusty Sword", [("sword_rusty_a",0),("sword_rusty_a_scabbard",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary, itc_longsword|itcf_carry_sword_left_hip|itcf_show_holster_when_drawn,
  321, weight(1.5)|difficulty(5)|spd_rtng(97)|weapon_length(95)|swing_damage(15, cut)|thrust_damage(12, pierce), imodbits_sword],
