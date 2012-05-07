@@ -143,14 +143,17 @@ def spr_export_item_triggers(item_id, use_string="str_export", price_multiplier=
   return [spr_item_init_trigger(item_id, use_string=use_string, price_multiplier=price_multiplier),
     spr_call_script_use_trigger("script_cf_export_item")]
 
-def spr_import_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_string="str_import", price_multiplier=500):
+def spr_import_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_string="str_import", price_multiplier=500, check_script=None):
   buy_trigger = (ti_on_scene_prop_use,
      [(store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":instance_id"),
       (prop_instance_get_position, pos1, ":instance_id")])
   spr_apply_pos_offset(buy_trigger[1], pos_offset, rotate)
   buy_trigger[1].append((call_script, "script_cf_buy_item", ":agent_id", ":instance_id"))
-  return [spr_item_init_trigger(item_id, use_string=use_string, price_multiplier=price_multiplier), buy_trigger]
+  triggers = [spr_item_init_trigger(item_id, use_string=use_string, price_multiplier=price_multiplier), buy_trigger]
+  if check_script is not None:
+    triggers.append(spr_call_script_trigger(check_script, ti_on_scene_prop_start_use))
+  return triggers
 
 def spr_gain_gold_triggers(gold_value, use_string="str_collect_reg1_gold"):
   return [(ti_on_scene_prop_init,
@@ -2205,8 +2208,8 @@ scene_props = [
   ("pw_stockpile_linen_cloth",spr_use_time(1),"pw_linen_cloth","bo_weapon_small", spr_stockpile_resource_triggers("itm_linen_cloth")),
   ("pw_stockpile_leather_roll",spr_use_time(1),"pw_leather_roll","bo_weapon_small", spr_stockpile_resource_triggers("itm_leather_roll")),
   ("pw_import_wheat_sack",spr_use_time(30),"pw_wheat_sack","bo_weapon_small", spr_import_item_triggers("itm_wheat_sack", pos_offset=(0,0,-20), price_multiplier=3000)),
-  ("pw_import_fawn",spr_use_time(20),"sack","bo_sack_fixed", spr_import_item_triggers("itm_fawn", pos_offset=(0,50,50), price_multiplier=1000)),
-  ("pw_import_boarlet",spr_use_time(10),"sack","bo_sack_fixed", spr_import_item_triggers("itm_boarlet", pos_offset=(0,50,50), price_multiplier=1000)),
+  ("pw_import_fawn",spr_use_time(20),"sack","bo_sack_fixed", spr_import_item_triggers("itm_fawn", pos_offset=(0,50,50), price_multiplier=1000, check_script="script_cf_can_spawn_herd_animal")),
+  ("pw_import_boarlet",spr_use_time(10),"sack","bo_sack_fixed", spr_import_item_triggers("itm_boarlet", pos_offset=(0,50,50), price_multiplier=1000, check_script="script_cf_can_spawn_herd_animal")),
   ("pw_export_wood_stick",spr_use_time(2),"pw_wood_box","bo_pw_wood_box", spr_export_item_triggers("itm_stick")),
   ("pw_export_wood_branch",spr_use_time(5),"wood_heap_b","bo_wood_heap_b", spr_export_item_triggers("itm_branch")),
   ("pw_export_wood_pole",spr_use_time(6),"pw_wood_pole","bo_weapon_big", spr_export_item_triggers("itm_wood_pole")),

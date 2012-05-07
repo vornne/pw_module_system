@@ -437,7 +437,7 @@ presentations = [
       (position_set_y, pos1, 1002),
       (overlay_set_size, reg0, pos1),
 
-      (assign, ":cur_y", 20 + (19 * admin_panel_item_height)),
+      (assign, ":cur_y", 20 + (20 * admin_panel_item_height)),
 
       (str_clear, s0),
       (create_text_overlay, reg0, s0, tf_scrollable),
@@ -739,6 +739,18 @@ presentations = [
       (overlay_set_val, "$g_presentation_obj_admin_panel_victory_condition", "$g_victory_condition"),
 
       (val_sub, ":cur_y", admin_panel_item_height),
+      (create_text_overlay, reg0, "str_num_bots_voteable", 0),
+      (position_set_x, pos1, 0),
+      (position_set_y, pos1, ":cur_y"),
+      (overlay_set_position, reg0, pos1),
+
+      (create_number_box_overlay, "$g_presentation_obj_admin_panel_max_herd_animals", 0, 1001),
+      (position_set_x, pos1, 390),
+      (position_set_y, pos1, ":cur_y"),
+      (overlay_set_position, "$g_presentation_obj_admin_panel_max_herd_animals", pos1),
+      (overlay_set_val, "$g_presentation_obj_admin_panel_max_herd_animals", "$g_max_herd_animal_count"),
+
+      (val_sub, ":cur_y", admin_panel_item_height),
       (create_text_overlay, reg0, "str_bot_count", 0),
       (position_set_x, pos1, 0),
       (position_set_y, pos1, ":cur_y"),
@@ -853,6 +865,9 @@ presentations = [
       (else_try),
         (eq, ":object", "$g_presentation_obj_admin_panel_victory_condition"),
         (multiplayer_send_2_int_to_server, client_event_admin_set_game_rule, command_set_team_point_limit, ":value"),
+      (else_try),
+        (eq, ":object", "$g_presentation_obj_admin_panel_max_herd_animals"),
+        (multiplayer_send_2_int_to_server, client_event_admin_set_game_rule, command_set_num_bots_voteable, ":value"),
       (else_try),
         (eq, ":object", "$g_presentation_obj_admin_panel_bot_count"),
         (multiplayer_send_2_int_to_server, client_event_admin_set_game_rule, command_set_bot_count, ":value"),
