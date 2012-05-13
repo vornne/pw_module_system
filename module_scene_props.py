@@ -2789,6 +2789,7 @@ scene_props = [
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_collision_kind, -1),
       ]),
     ]),
+  ("pw_herd_animal_spawn",sokf_invisible,"ground_arrow","0", []),
 
   ("code_freeze_agent",sokf_moveable,"0","bo_freeze_agent", []),
   ("code_freeze_horse_agent",sokf_moveable,"0","bo_freeze_horse_agent", []),

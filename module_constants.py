@@ -470,6 +470,9 @@ wielded_items_end = "itm_all_items_end"
 scripted_items_begin = "itm_surgeon_scalpel"
 scripted_items_end = "itm_money_bag"
 
+herd_animal_items_begin = "itm_deer"
+herd_animal_items_end = "itm_stick"
+
 playable_troops_begin = "trp_peasant"
 playable_troops_end = "trp_playable_troops_end"
 

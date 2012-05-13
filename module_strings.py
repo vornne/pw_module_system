@@ -669,6 +669,7 @@ pw_scene_cloud_haze:^value 1 = global cloud (adjusts skybox)^value 2 = global ha
 pw_scene_ambient_sound:^value 1 = sound id offset from snd_fire_loop^value 2 = probability the sound will be played (0 - 100) or 127 = looping^^\
 pw_scene_light:^value 1 = flicker magnitude^value 2 = flicker interval^scale x = red, 1.00 = 100^scale y = green, 1.00 = 100^scale z = blue, 1.00 = 100^^\
 pw_fish_school:^value 1 = maximum depth (in meters)^value 2 = maximum fish count^^\
+pw_herd_animal_spawn:^value 1 = animal item offset starting with 1 for deer, 0 or invalid for a random animal^value 2 = approximate time between spawns in hours, minimum 1^^\
 ^The values can be modified in the scene editor panel, scene prop section: the two fields, labelled 'Var No' and 'Var 2 No'. These can each store an integer in the range 0 - 127.^\
 ^The scene props with 'value 1 = faction + multiplier' share the same code for storing a combination of faction id / castle id and gold value multiplier in value 1:^\
 0 is the commoner faction, which normally means the prop is not associated with any faction, 1 for outlaws, and 2 - 9 associate the scene prop with a castle (which starts owned by the corresponding faction id).^\
