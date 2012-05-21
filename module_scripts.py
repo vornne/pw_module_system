@@ -1723,7 +1723,7 @@ scripts = [
     (assign, "$g_valid_vote_ratio", 51),
     (assign, "$g_starting_gold_multiplier", 100),
     (assign, "$g_combat_gold_multiplier", 100),
-    (assign, "$g_commoner_outlaw_loot", 0),
+    (assign, "$g_commoner_outlaw_loot", 2),
     (assign, "$g_game_time_limit", 1440),
     (assign, "$g_victory_condition", 0),
     (assign, "$g_name_server_enabled", 0),
