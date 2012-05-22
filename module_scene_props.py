@@ -2335,11 +2335,6 @@ scene_props = [
  ("arabian_castle_keep_a",0,"arabian_castle_keep_a","bo_arabian_castle_keep_a", []),
 
 
- 
-
-
-
-
  ("arabian_house_a2",0,"arabian_house_a2","bo_arabian_house_a2", []),
  ("arabian_village_house_a",0,"arabian_village_house_a","bo_arabian_village_house_a", []),
  ("arabian_village_house_b",0,"arabian_village_house_b","bo_arabian_village_house_b", []),
@@ -2997,4 +2992,8 @@ scene_props = [
      (particle_system_add_new, "psys_fall_leafs_a"),
     ]),
    ]),
+   
+ ("rock_bridge_a",0,"rock_bridge_a","bo_rock_bridge_a", []),
+ ("suspension_bridge_a",0,"suspension_bridge_a","bo_suspension_bridge_a", []),
+ ("mine_a",0,"mine_a","bo_mine_a", []),
 ]

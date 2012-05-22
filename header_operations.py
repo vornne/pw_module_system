@@ -336,7 +336,7 @@ position_get_screen_projection  = 750 # (position_get_screen_projection, <positi
 
 position_set_z_to_ground_level  = 791 # (position_set_z_to_ground_level, <position_no>), #only works during a mission
 position_get_distance_to_terrain= 792 # (position_get_distance_to_terrain, <destination>, <position_no>), #only works during a mission
-position_get_distance_to_ground_level = 793 # (position_get_distance_to_ground_level, <position_no>), #only works during a mission
+position_get_distance_to_ground_level = 793 # (position_get_distance_to_ground_level, <destination>, <position_no>), #only works during a mission
 
 start_presentation		                      = 900 # (start_presentation, <presentation_id>),
 start_background_presentation	            = 901 # (start_background_presentation, <presentation_id>), #can only be used in game menus
@@ -784,13 +784,13 @@ agent_set_stand_animation              = 1741   # (agent_set_stand_action, <agen
 agent_set_walk_forward_animation       = 1742   # (agent_set_walk_forward_action, <agent_id>, <anim_id>),
 agent_set_animation_progress           = 1743   # (agent_set_animation_progress, <agent_id>, <value_fixed_point>), #value should be between 0-1 (as fixed point)
 agent_set_look_target_position         = 1744   # (agent_set_look_target_position, <agent_id>, <position_no>),
-agent_set_attack_action                = 1745   # (agent_set_attack_action, <agent_id>, <value>, <value>), #value: 0 = thrust, 1 = slashright, 2 = slashleft, 3 = overswing - second value 0 = ready and release, 1 = ready and hold
-agent_set_defend_action                = 1746   # (agent_set_defend_action, <agent_id>, <value>, <duration-in-1/1000-seconds>), #value_1: 0 = defend_down, 1 = defend_right, 2 = defend_left, 3 = defend_up
+agent_set_attack_action                = 1745   # (agent_set_attack_action, <agent_id>, <value>, <value>), #value: -2 = clear any attack action, 0 = thrust, 1 = slashright, 2 = slashleft, 3 = overswing - second value 0 = ready and release, 1 = ready and hold
+agent_set_defend_action                = 1746   # (agent_set_defend_action, <agent_id>, <value>, <duration-in-1/1000-seconds>), #value_1: -2 = clear any defend action, 0 = defend_down, 1 = defend_right, 2 = defend_left, 3 = defend_up
 agent_set_wielded_item                 = 1747   # (agent_set_wielded_item, <agent_id>, <item_id>),
 agent_set_scripted_destination_no_attack = 1748	# (agent_set_scripted_destination_no_attack,<agent_id>,<position_no>,<auto_set_z_to_ground_level>), #auto_set_z_to_ground_level can be 0 (false) or 1 (true)
 agent_fade_out                         = 1749   # (agent_fade_out, <agent_id>),
 agent_play_sound                       = 1750   # (agent_play_sound, <agent_id>, <sound_id>),
-agent_start_running_away               = 1751   # (agent_start_running_away, <agent_id>),
+agent_start_running_away               = 1751   # (agent_start_running_away, <agent_id>, [position_no]), # if position no is entered, agent will run away to that location. pos0 is not allowed (will be ignored).
 agent_stop_running_away                = 1752   # (agent_stop_run_away, <agent_id>),
 agent_ai_set_aggressiveness            = 1753   # (agent_ai_set_aggressiveness, <agent_id>, <value>), #100 is the default aggressiveness. higher the value, less likely to run back
 agent_set_kick_allowed                 = 1754   # (agent_set_kick_allowed, <agent_id>, <value>), #0 for disable, 1 for allow
@@ -1075,6 +1075,7 @@ set_trigger_result     = 2075  # (set_trigger_result, <value>),
 agent_ai_get_look_target               = 2080 # (agent_ai_get_look_target, <destination>, <agent_id>),
 agent_ai_get_move_target               = 2081 # (agent_ai_get_move_target, <destination>, <agent_id>),
 agent_ai_get_behavior_target           = 2082 # (agent_ai_get_behavior_target, <destination>, <agent_id>),
+agent_ai_set_can_crouch                = 2083 # (agent_ai_set_can_crouch, <agent_id>, <value>), # 0 for false, 1 for true.
 
 agent_set_max_hit_points               = 2090	# set absolute to 1 if value is absolute, otherwise value will be treated as relative number in range [0..100]
 						# (agent_set_max_hit_points,<agent_id>,<value>,[absolute]),
@@ -1084,6 +1085,8 @@ agent_set_speed_modifier               = 2093   # (agent_set_speed_modifier, <ag
 agent_set_reload_speed_modifier        = 2094   # (agent_set_reload_speed_modifier, <agent_id>, <value>), # value is in percentage, 100 is default, value can be between [0..1000]
 agent_set_use_speed_modifier           = 2095   # (agent_set_use_speed_modifier, <agent_id>, <value>), # value is in percentage, 100 is default, value can be between [0..1000]
 agent_set_visibility                   = 2096   # (agent_set_visibility, <agent_id>, <value>), # 0 for invisible, 1 for visible.
+agent_get_crouch_mode                  = 2097   # (agent_ai_get_crouch_mode, <destination>, <agent_id>),
+agent_set_crouch_mode                  = 2098   # (agent_ai_set_crouch_mode, <agent_id>, <value>), # 0-1
 
 val_lshift             = 2100 # (val_lshift, <destination>, <value>), # shifts the bits of destination to left by value amount.
 val_rshift             = 2101 # (val_rshift, <destination>, <value>), # shifts the bits of destination to right by value amount.
@@ -1199,6 +1202,7 @@ store_current_scene             = 2211 # (store_current_scene,<destination>),
 
 store_zoom_amount               = 2220 # (store_zoom_amount, <destination_fixed_point>),
 set_zoom_amount                 = 2221 # (set_zoom_amount, <value_fixed_point>),
+is_zoom_disabled                = 2222 # (is_zoom_disabled),
 
 store_item_value                = 2230 # (store_item_value,<destination>,<item_id>),
 store_troop_value               = 2231 # (store_troop_value,<destination>,<troop_id>),
@@ -1422,6 +1426,7 @@ lhs_operations = [try_for_range,
                   troop_get_xp,
                   troop_get_class,
                   troop_inventory_slot_get_item_amount,
+                  troop_inventory_slot_get_item_max_amount,
                   troop_get_inventory_capacity,
                   troop_get_inventory_slot,
                   troop_get_inventory_slot_modifier,
@@ -1513,6 +1518,7 @@ lhs_operations = [try_for_range,
                   prop_instance_get_animation_target_position,
                   agent_get_item_cur_ammo,
                   mission_get_time_speed,
+                  mission_cam_get_aperture,
                   store_trigger_param,
                   store_trigger_param_1,
                   store_trigger_param_2,
@@ -1520,6 +1526,7 @@ lhs_operations = [try_for_range,
                   agent_ai_get_look_target,
                   agent_ai_get_move_target,
                   agent_ai_get_behavior_target,
+                  agent_get_crouch_mode,
                   store_or,
                   store_and,
                   store_mod,
@@ -1718,6 +1725,7 @@ can_fail_operations = [ge,
                        agent_has_item_equipped,
                        map_get_land_position_around_position,
                        map_get_water_position_around_position,
+                       is_zoom_disabled,
                        is_currently_night,
                        store_random_party_of_template,
                        str_is_empty

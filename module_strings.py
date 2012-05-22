@@ -2412,6 +2412,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("multi_scene_20", "Jameyyed Castle"), #Castle 6
   ("multi_scene_21", "The Arena"),
   ("multi_scene_22", "Forest Hideout"),
+  ("multi_scene_23", "Canyon"),
+  ("multi_scene_24", "Desert Town"),
   ("multi_scene_12", "Random Plains (Medium)"),
   ("multi_scene_13", "Random Plains (Large)"),
   ("multi_scene_14", "Random Steppe (Medium)"),

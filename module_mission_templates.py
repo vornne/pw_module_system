@@ -676,7 +676,7 @@ common_custom_battle_tab_press = (
       (finish_mission),
     (else_try),
       (question_box,"str_give_up_fight"),
-    (try_end),
+      (try_end),
     ])
 
 custom_battle_check_victory_condition = (
