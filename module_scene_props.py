@@ -1987,6 +1987,10 @@ scene_props = [
   ("tree_shelter_a",0,"tree_shelter_a","bo_tree_shelter_a", []),
   ("yellow_fall_leafs_a",0,"0","0", [(ti_on_scene_prop_init, [(particle_system_add_new, "psys_fall_leafs_a")])]),
 
+  ("rock_bridge_a",0,"rock_bridge_a","bo_rock_bridge_a", []),
+  ("suspension_bridge_a",0,"suspension_bridge_a","bo_suspension_bridge_a", []),
+  ("mine_a",0,"mine_a","bo_mine_a", []),
+
   ("castle_h_battlement_b3",0,"castle_h_battlement_b3","bo_castle_h_battlement_b3", []),
   ("castle_h_gatehouse_a2",0,"castle_h_gatehouse_a2","bo_castle_h_gatehouse_a2", []),
   ("arena_palisade_b",0,"pw_wooden_palisade_b","bo_pw_wooden_palisade_b", []),
