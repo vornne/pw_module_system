@@ -210,7 +210,7 @@ def spr_teleport_door_triggers(pos_offset=(0,0,0)):
     [link_scene_prop, link_scene_prop_self]]
 
 def spr_rotate_door_flags(use_time=1):
-  return sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|spr_use_time(use_time)|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible|sokf_show_hit_point_bar|spr_use_time(use_time)|sokf_missiles_not_attached
 
 def spr_rotate_door_triggers(hit_points=1000, resource_class=item_class_wood, left=0):
   return [(ti_on_scene_prop_init,
@@ -229,7 +229,7 @@ def spr_rotate_door_triggers(hit_points=1000, resource_class=item_class_wood, le
     [init_scene_prop, "script_cf_init_rotate_door", left]]
 
 def spr_rotate_door_no_hit_flags(use_time=1):
-  return sokf_moveable|spr_use_time(use_time)
+  return sokf_static_movement|spr_use_time(use_time)
 
 def spr_rotate_door_no_hit_triggers(left=0):
   return [spr_call_script_use_trigger("script_cf_use_rotate_door", left),
@@ -287,7 +287,7 @@ def spr_cart_triggers(horse=0, detach_offset=0, detach_rotation=0, inventory_cou
     ]
 
 def spr_tree_flags():
-  return sokf_destructible|sokf_show_hit_point_bar|sokf_moveable|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
 
 def spr_tree_triggers(full_hp=1000, fell_hp=500, resource_hp=100, hardness=1, resource_imod=0, regrow_interval=3600, use_string="str_cut_down"):
   return [(ti_on_scene_prop_init,
@@ -354,7 +354,7 @@ def spr_use_plant_triggers(resource_item, full_hp=1000, resource_hp=200, regrow_
     ]
 
 def spr_resource_flags():
-  return sokf_destructible|sokf_show_hit_point_bar|sokf_moveable|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
 
 def spr_field_flags():
   return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
@@ -2688,15 +2688,15 @@ scene_props = [
 
   ("pw_winch_frame",0,"winch_stabilizer_a","bo_winch_stabilizer_a", []),
   ("pw_portcullis_winch",spr_use_time(1),"winch","bo_winch_fixed", spr_portcullis_winch_triggers("pw_portcullis")),
-  ("pw_portcullis",sokf_moveable,"portculis_new","bo_portculis_new", []),
+  ("pw_portcullis",sokf_static_movement,"portculis_new","bo_portculis_new", []),
   ("pw_portcullis_winch_a",spr_use_time(1),"winch","bo_winch_fixed", spr_portcullis_winch_triggers("pw_portcullis_a")),
-  ("pw_portcullis_a",sokf_moveable,"portcullis_a","bo_portcullis_a", []),
+  ("pw_portcullis_a",sokf_static_movement,"portcullis_a","bo_portcullis_a", []),
   ("pw_drawbridge_winch_a",spr_use_time(2),"winch_b","bo_winch_fixed", spr_drawbridge_winch_triggers("pw_drawbridge_a")),
   ("pw_drawbridge_a",sokf_moveable,"drawbridge","bo_drawbridge", []),
   ("pw_drawbridge_winch_b",spr_use_time(2),"winch_b","bo_winch_fixed", spr_drawbridge_winch_triggers("pw_drawbridge_b")),
   ("pw_drawbridge_b",sokf_moveable,"castle_drawbridges_open","bo_castle_drawbridges_open", []),
   ("pw_trapdoor_winch_a",spr_use_time(1),"winch","bo_winch_fixed", spr_drawbridge_winch_triggers("pw_trapdoor_a", rotation_steps=2, step_size=45, animation_time=50)),
-  ("pw_trapdoor_a",sokf_moveable,"belfry_b_platform_a","bo_belfry_b_platform_a", []),
+  ("pw_trapdoor_a",sokf_static_movement,"belfry_b_platform_a","bo_belfry_b_platform_a", []),
   ("pw_lift_platform_winch",spr_use_time(1),"winch_b","bo_winch_fixed", spr_lift_platform_winch_triggers()),
   ("pw_lift_platform",sokf_moveable,"pw_lift_platform","bo_pw_lift_platform", spr_lift_platform_triggers("pw_lift_platform_winch")),
 
