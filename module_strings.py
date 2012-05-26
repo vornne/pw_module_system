@@ -457,6 +457,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("loot_body", "Loot body armor"),
   ("loot_foot", "Loot foot armor"),
   ("loot_hand", "Loot hand armor"),
+  ("toggle_automatic_shadow_recalculation", "Toggle automatic shadow recalculation"),
   ("action_menu_end", "action_menu_end"),
   ("s0_are_you_sure", "{s0} - are you sure?"),
   ("confirmation", "confirmation"),

@@ -1152,6 +1152,7 @@ store_normalized_team_count                       = 2385 # (store_normalized_tea
                                                          # counts the number of agents belonging to a team and normalizes the result regarding battle_size and advantage.
 set_postfx                                        = 2386 # (set_postfx,<value>),
 set_river_shader_to_mud                           = 2387 # (set_river_shader_to_mud), changes river material for muddy env
+rebuild_shadow_map                                = 2393 # (rebuild_shadow_map),
 
 opcode_names = dict((opcode, name) for name, opcode in globals().iteritems() if isinstance(opcode, int))
 

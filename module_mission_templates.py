@@ -754,6 +754,15 @@ mission_templates = [
       (call_script, "script_cf_play_scene_ambient_sound", ":instance_id"),
       ], []),
 
+    (15, 1, 0,
+     [(neg|multiplayer_is_server),
+      (eq, "$g_disable_automatic_shadow_recalculation", 0),
+      (call_script, "script_cf_client_agent_is_inactive"),
+      ],
+     [(call_script, "script_cf_client_agent_is_inactive"),
+      (rebuild_shadow_map),
+      ]),
+
     ]),
 
   ("edit_scene", 0, -1, "edit_scene", [(0,mtef_visitor_source,0,aif_start_alarmed,1,[])],
