@@ -252,6 +252,7 @@ scripts = [
   ("game_get_scene_name",
    [(store_script_param, ":scene_no", 1),
     (try_begin),
+      (multiplayer_is_dedicated_server),
       (is_between, ":scene_no", scenes_begin, scenes_end),
       (store_sub, ":string_id", ":scene_no", scenes_begin),
       (val_add, ":string_id", scene_names_begin),
