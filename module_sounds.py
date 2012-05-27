@@ -210,7 +210,7 @@ sounds = [
  ("damage_ship", sf_priority_9|sf_vol_10, ["shield_broken.ogg"]),
  ("lock", sf_priority_10|sf_vol_10, ["hit_wood_metal_6.ogg"]),
  ("pick_lock_fail", sf_priority_10|sf_vol_10, ["hit_wood_wood_1.ogg"]),
- ("fire", sf_priority_6|sf_vol_15, ["Fire_Torch_Loop3.ogg"]),
+ ("fire", sf_priority_6|sf_vol_10, ["Fire_Small_Crackle_Slick_op.ogg"]),
  ("horse_neigh", sf_priority_8|sf_vol_10, ["horse_exterior_whinny_01.ogg","horse_exterior_whinny_02.ogg","horse_exterior_whinny_03.ogg","horse_exterior_whinny_04.ogg","horse_exterior_whinny_05.ogg","horse_whinny.ogg"]),
  ("sounds_end", 0, []),
 ]

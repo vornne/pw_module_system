@@ -5991,7 +5991,7 @@ scripts = [
       (call_script, "script_spawn_processed_resources", ":agent_id", ":processed_item_id", ":processed_item_count"),
     (else_try),
       (eq, ":finished", 0),
-      (agent_play_sound, ":agent_id", "snd_fire"),
+      (call_script, "script_scene_prop_play_sound", ":instance_id", "snd_fire"),
       (prop_instance_get_position, pos1, ":instance_id"),
       (copy_position, pos2, pos1),
       (position_move_z, pos1, 100),
