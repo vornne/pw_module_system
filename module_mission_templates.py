@@ -576,6 +576,15 @@ mission_templates = [
       (try_end),
       ]),
 
+    (300, 0, 0, [],
+     [(multiplayer_is_server),
+      (assign, "$g_herd_animal_count", 0),
+      (try_for_agents, ":agent_id"),
+        (agent_slot_ge, ":agent_id", slot_agent_animal_birth_time, 1),
+        (val_add, "$g_herd_animal_count", 1),
+      (try_end),
+      ]),
+
     (60, 0, 0, [],
      [(multiplayer_is_server),
       (try_begin),
