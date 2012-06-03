@@ -329,7 +329,7 @@ def spr_hit_plant_triggers(resource_item, full_hp=1000, resource_hp=200, hardnes
       ]),
     (ti_on_scene_prop_use, [])]
 
-def spr_use_plant_triggers(resource_item, full_hp=1000, resource_hp=200, regrow_interval=600, use_string="str_harvest"):
+def spr_use_plant_triggers(resource_item, full_hp=1000, resource_hp=200, regrow_interval=600, use_string="str_harvest", sound=-1):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(full_hp)),
@@ -349,7 +349,7 @@ def spr_use_plant_triggers(resource_item, full_hp=1000, resource_hp=200, regrow_
     (ti_on_scene_prop_use,
      [(store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":instance_id"),
-      (call_script, "script_cf_use_resource", ":agent_id", ":instance_id", resource_item, resource_hp, regrow_interval),
+      (call_script, "script_cf_use_resource", ":agent_id", ":instance_id", resource_item, resource_hp, regrow_interval, sound),
       ]),
     ]
 
@@ -2188,7 +2188,7 @@ scene_props = [
   ("code_wheat",0,"pw_wheat","0", spr_field_plant_triggers(seeds=4, water=2)),
   ("pw_grape_vine",spr_resource_flags(),"pw_grape_vine","bo_pw_grape_vine", spr_hit_vine_triggers("itm_grapes", resources=10, full_hp=300, length=350, height=100, tool_class=item_class_knife, regrow_interval=300)),
   ("pw_grape_vine_stake",0,"pw_grape_vine_stake","bo_pw_grape_vine_stake", []),
-  ("pw_flax_plants",spr_field_flags()|spr_use_time(3),"pw_flax_plants","bo_pw_flax_plants", spr_use_plant_triggers("itm_flax_bundle", full_hp=300, resource_hp=50, regrow_interval=300)),
+  ("pw_flax_plants",spr_field_flags()|spr_use_time(3),"pw_flax_plants","bo_pw_flax_plants", spr_use_plant_triggers("itm_flax_bundle", full_hp=300, resource_hp=50, regrow_interval=300, sound="snd_pull_flax")),
 
   ("pw_iron_mine",spr_resource_flags(),"pw_iron_mine","bo_pw_iron_mine", spr_hit_mine_triggers("itm_iron_ore", resource_hp=60, hardness=4)),
   ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_iron_ore", resource_hp=70, hardness=4)),

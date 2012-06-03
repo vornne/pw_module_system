@@ -212,5 +212,6 @@ sounds = [
  ("pick_lock_fail", sf_priority_10|sf_vol_10, ["hit_wood_wood_1.ogg"]),
  ("fire", sf_priority_6|sf_vol_10, ["Fire_Small_Crackle_Slick_op.ogg"]),
  ("horse_neigh", sf_priority_8|sf_vol_10, ["horse_exterior_whinny_01.ogg","horse_exterior_whinny_02.ogg","horse_exterior_whinny_03.ogg","horse_exterior_whinny_04.ogg","horse_exterior_whinny_05.ogg","horse_whinny.ogg"]),
+ ("pull_flax", sf_priority_6|sf_vol_3, ["draw_other.ogg"]),
  ("sounds_end", 0, []),
 ]

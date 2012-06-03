@@ -5208,6 +5208,7 @@ scripts = [
     (store_script_param, ":resource_item_id", 3),
     (store_script_param, ":resource_hit_points", 4),
     (store_script_param, ":regrow_interval", 5),
+    (store_script_param, ":sound_id", 6),
 
     (agent_get_troop_id, ":troop_id", ":agent_id"),
     (store_skill_level, ":labouring", "skl_labouring", ":troop_id"),
@@ -5227,6 +5228,10 @@ scripts = [
       (call_script, "script_set_random_spawn_position", 50),
       (spawn_item, ":resource_item_id", 0, "$g_spawn_item_prune_time"),
       (particle_system_burst, "psys_dummy_smoke", pos10, 5),
+      (try_begin),
+        (is_between, ":sound_id", 0, "snd_sounds_end"),
+        (agent_play_sound, ":agent_id", ":sound_id"),
+      (try_end),
     (else_try),
       (assign, ":resulting_hit_points", min_scene_prop_hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_hidden),
