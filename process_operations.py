@@ -13,6 +13,7 @@ class LocalVariables:
   def __init__(self):
     self.variables = {}
     self.number = 0
+    self.limit = 128
 
   def add_id(self, name, uses=0):
     id_uses = self.variables.setdefault(name, [self.number, 0])
@@ -20,6 +21,8 @@ class LocalVariables:
       self.number += 1
     if uses > 0:
       id_uses[1] += uses
+    if self.limit is not None and self.number >= self.limit:
+      pc.ERROR("new local variable '%s' exceeds the maximum count of %d per operations block" % (name, self.limit))
     return self.opmask|id_uses[0]
 
   def get_id(self, name):
@@ -43,6 +46,7 @@ class GlobalVariables(LocalVariables):
   def __init__(self):
     LocalVariables.__init__(self)
     self.variables = collections.OrderedDict()
+    self.limit = None
 
   def load_old(self):
     try:
