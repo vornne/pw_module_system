@@ -7,6 +7,8 @@
 sf_2d             = 0x00000001
 sf_looping        = 0x00000002
 sf_start_at_random_pos = 0x00000004
+sf_stream_from_hd      = 0x00000008
+sf_always_send_via_network = 0x00100000
 
 sf_priority_15    = 0x000000f0
 sf_priority_14    = 0x000000e0

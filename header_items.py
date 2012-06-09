@@ -74,6 +74,14 @@ itp_has_bayonet              = 0x0000200000000000
 itp_cant_reload_while_moving = 0x0000400000000000
 itp_ignore_gravity           = 0x0000800000000000
 itp_ignore_friction          = 0x0001000000000000
+itp_is_pike                  = 0x0002000000000000
+itp_offset_musket            = 0x0004000000000000
+itp_no_blur                  = 0x0008000000000000
+
+itp_cant_reload_while_moving_mounted = 0x0010000000000000
+itp_has_upper_stab           = 0x0020000000000000
+itp_kill_info_mask           = 0x0700000000000000
+itp_kill_info_bits           = 56
 
 # equipment slots
 ek_item_0 = 0
@@ -234,6 +242,9 @@ def get_abundance(y):
 def accuracy(x):
   return leg_armor(x)
 
+def custom_kill_info(x): # you have to add ico_custom_x (where x is a number between 1 and 7) mesh in order to display it correctly.
+  return (((bignum | x) & (itp_kill_info_mask >> itp_kill_info_bits)) << itp_kill_info_bits)
+
 # Item capabilities:
 itcf_thrust_onehanded                                = 0x0000000000000001
 itcf_overswing_onehanded                             = 0x0000000000000002
@@ -319,6 +330,9 @@ itcf_parry_right_polearm                             = 0x0004000000000000
 itcf_parry_left_polearm                              = 0x0008000000000000
 
 itcf_horseback_slash_polearm                         = 0x0010000000000000
+itcf_overswing_spear                                 = 0x0020000000000000
+itcf_overswing_musket                                = 0x0040000000000000
+itcf_thrust_musket                                   = 0x0080000000000000
 
 itcf_force_64_bits                                   = 0x8000000000000000
 
@@ -347,6 +361,7 @@ itc_pike            = itcf_thrust_onehanded_lance|itcf_thrust_onehanded_lance_ho
 itc_guandao         = itc_parry_polearm|itcf_overswing_polearm|itcf_thrust_polearm|itcf_slashright_polearm|itcf_slashleft_polearm|itcf_horseback_slashright_onehanded|itcf_horseback_slashleft_onehanded|itcf_horseback_slash_polearm
 
 itc_greatlance      = itcf_thrust_onehanded_lance|itcf_thrust_onehanded_lance_horseback|itcf_thrust_polearm
+itc_musket_melee    = itc_parry_polearm|itcf_overswing_musket|itcf_thrust_musket|itcf_slashright_twohanded|itcf_slashleft_twohanded
 
 # Extra Mesh IDs
 ixmesh_inventory   = 0x1000000000000000
