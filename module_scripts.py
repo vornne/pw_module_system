@@ -9417,7 +9417,7 @@ scripts = [
       (store_div, ":max_position", ":max_distance", ":move_distance"),
       (store_mod, ":remainder", ":max_distance", ":move_distance"),
       (try_begin),
-        (gt, ":remainder", 100),
+        (gt, ":remainder", 20),
         (val_add, ":max_position", 1),
       (try_end),
       (val_add, ":max_position", 1),

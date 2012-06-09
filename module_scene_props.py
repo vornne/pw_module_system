@@ -2726,7 +2726,7 @@ scene_props = [
   ("pw_ship_d_sail",sokf_moveable,"pw_ship_d_sail","bo_pw_ship_d_sail", []),
   ("pw_ship_d_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_d_hold", spr_item_storage_triggers(inventory_count=64, max_item_length=500)),
   ("pw_ship_d_cd",sokf_invisible,"0","bo_pw_ship_d_cd", []),
-  ("pw_ferry_boat",sokf_moveable,"pw_ferry_boat","bo_pw_ferry_boat", spr_ferry_triggers(platform="pw_ferry_platform", winch="code_ferry_winch", length=500, winch_height=70)),
+  ("pw_ferry_boat",sokf_moveable,"pw_ferry_boat","bo_pw_ferry_boat", spr_ferry_triggers(platform="pw_ferry_platform", winch="code_ferry_winch", length=470, winch_height=70)),
   ("code_ferry_winch",sokf_moveable|spr_use_time(2),"pw_ferry_winch","bo_pw_ferry_winch", spr_ferry_winch_triggers()),
   ("pw_ferry_platform",spr_use_time(2),"pw_ferry_platform","bo_pw_ferry_platform", spr_ferry_winch_triggers(is_platform=1)),
   ("pw_ferry_chain_10m",0,"pw_ferry_chain_10m","0", []),
