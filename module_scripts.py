@@ -1348,6 +1348,26 @@ scripts = [
   ("game_check_party_sees_party", []),
   ("game_get_party_speed_multiplier", []),
 
+  ("game_missile_launch",
+   [#(store_script_param, ":agent_id", 1),
+    #(store_script_param, ":agent_weapon_item_id", 2),
+    #(store_script_param, ":missile_weapon_item_id", 3),
+    #(store_script_param, ":missile_item_id", 4),
+
+    ]),
+
+  ("game_missile_dives_into_water",
+   [#(store_script_param, ":missile_item_id", 1),
+    #(store_script_param, ":unknown", 2),
+
+    (try_begin),
+      (neg|multiplayer_is_server),
+      (init_position, pos2),
+      (position_copy_origin, pos2, pos1),
+      (particle_system_burst_no_sync, "psys_game_water_splash_2", pos2, 10),
+    (try_end),
+    ]),
+
   ("get_random_equipment",
    [(store_script_param, ":begin_item_id", 1),
     (store_script_param, ":end_item_id", 2),

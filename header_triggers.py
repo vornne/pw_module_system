@@ -102,6 +102,7 @@ ti_on_weapon_attack                               = -51.0
 
 ti_on_missile_hit                                 = -52.0
 # trigger param 1: shooter agent id
+# trigger param 2: collision_type: 0 = world, 1 = agent, 2 = dynamic prop, 3 = world, 4 = mission object, 8 = friend, 9 = neutral agent, 10 = under water
 # pos1: missile position
 
 #-----------------------------------------------------------------------------
