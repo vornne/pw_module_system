@@ -5451,6 +5451,7 @@ scripts = [
       (assign, ":hit_points", reg2),
       (agent_get_wielded_item, ":wielded_item", ":agent_id", 0),
       (try_begin),
+        (gt, ":wielded_item", -1),
         (neg|item_slot_eq, ":wielded_item", slot_item_class, ":tool_class"),
         (scene_prop_get_slot, ":damaged_hit_points", ":instance_id", slot_scene_prop_next_resource_hp),
         (val_sub, ":damaged_hit_points", ":hit_damage"),
