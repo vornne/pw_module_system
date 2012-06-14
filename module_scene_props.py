@@ -2744,6 +2744,7 @@ scene_props = [
   ("pw_castle_money_chest",spr_chest_flags(2),"pw_chest_b","bo_pw_chest_b", spr_castle_money_chest_triggers(hit_points=6000)),
   ("pw_item_chest_a",spr_chest_flags(1),"pw_chest_c","bo_pw_chest_c", spr_item_chest_triggers(hit_points=7000, inventory_count=48, max_item_length=180)),
   ("pw_item_chest_b",spr_chest_flags(1),"pw_chest_b","bo_pw_chest_b", spr_item_chest_triggers(hit_points=5000, inventory_count=32, max_item_length=100)),
+  ("pw_item_chest_invisible",sokf_invisible|spr_chest_flags(1),"pw_invisible_chest","bo_pw_invisible_chest", spr_item_chest_triggers(hit_points=2000, inventory_count=12, max_item_length=120)),
 
   ("pw_signpost_castle",0,"pw_signpost_castle","bo_pw_signpost", []),
   ("pw_signpost_docks",0,"pw_signpost_docks","bo_pw_signpost", []),
