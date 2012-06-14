@@ -763,6 +763,9 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("castle_name_45", "Hellwood Hold"),
   ("castle_name_46", "Fjorgyn Hold"),
   ("castle_name_47", "Sessrumnir Hold"),
+  ("castle_name_48", "New Zendar"),
+  ("castle_name_49", "Glunmar Village"),
+  ("castle_name_50", "Town Watch Headquarters"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]
