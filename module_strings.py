@@ -509,7 +509,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("not_enough_money_in_chest", "Not enough money in the chest."),
   ("gold_reg2", "Gold: {reg2}"),
   ("buy_banner_faction", "Buy a banner for the {s1}"),
-  ("stock_count_reg1_s0", "Stock count: {reg1}^{s0}"),
+  ("stock_count_reg0", "Stock count: {reg0}"),
+  ("crafting_reward_reg0", "Crafting reward: {reg0}"),
   ("womens_clothes", "Women's clothes"),
   ("item_id", "Item ID:"),
   ("spawn_s1", "Spawn {s1}"),
@@ -648,7 +649,8 @@ F10 = move agent to the positions of all scene props added to the ship collision
 F11 = spawn test horse at agent position^\
 F12 = measure distance to the first pointer_arrow prop"),
   ("pw_editor_values_info", "Scene prop editor values 1 and 2^^\
-pw_buy_*, pw_stockpile_*:^value 1 = faction + multiplier^value 2 = initial stockpile count^^\
+pw_buy_*:^value 1 = faction + multiplier^value 2 = design target stock count^^\
+pw_stockpile_*:^value 1 = faction + multiplier^value 2 = initial stock count^^\
 pw_export_*:^value 1 = faction + multiplier^value 2 = faction tax multiplier^^\
 pw_import_*:^value 1 = faction + multiplier^^\
 pw_change_troop_*:^value 1 = faction + multiplier^^\
