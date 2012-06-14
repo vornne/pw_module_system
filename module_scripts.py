@@ -5049,6 +5049,9 @@ scripts = [
     (store_script_param, ":regrow_interval", 2),
 
     (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_hidden),
+    (prop_instance_get_variation_id_2, ":regrow_interval_multiplier", ":instance_id"),
+    (val_max, ":regrow_interval_multiplier", 1),
+    (val_mul, ":regrow_interval", ":regrow_interval_multiplier"),
     (store_mission_timer_a, ":time"),
     (val_add, ":time", ":regrow_interval"),
     (scene_prop_set_slot, ":instance_id", slot_scene_prop_state_time, ":time"),
