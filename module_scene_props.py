@@ -2598,6 +2598,7 @@ scene_props = [
   ("pw_buy_lyre",spr_buy_item_flags(42),"pw_lyre_carry","bo_weapon_small", spr_buy_item_triggers("itm_lyre", pos_offset=(0,0,7), resources=["itm_board"], engineer=2)),
   ("pw_buy_lute",spr_buy_item_flags(50),"pw_lute_carry","bo_weapon_small", spr_buy_item_triggers("itm_lute", pos_offset=(0,0,15), resources=[("itm_board", 2), "itm_stick"], engineer=3)),
   ("pw_buy_dart",spr_buy_item_flags(5),"pw_dart","bo_weapon_small", spr_buy_item_triggers("itm_dart")),
+  ("pw_buy_die",spr_buy_item_flags(6),"pw_die","bo_weapon_small", spr_buy_item_triggers("itm_die", pos_offset=(7,7,0), resources=["itm_stick"], engineer=2)),
 
   ("pw_destroy_heap",spr_use_time(2),"destroy_heap","bo_destroy_heap", spr_destroy_heap_triggers()),
 

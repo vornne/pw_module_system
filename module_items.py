@@ -999,6 +999,8 @@ items = [
  850, weight(2.5)|weapon_length(85), imodbits_none],
 ["dart", "Dart", [("pw_dart",0)], itp_type_thrown|itp_primary, itcf_throw_javelin|itcf_carry_quiver_right_vertical,
  35, weight(1)|difficulty(0)|spd_rtng(90)|shoot_speed(21)|thrust_damage(0, blunt)|max_ammo(3)|weapon_length(32), imodbits_thrown],
+["die", "Die", [("pw_die",0),("pw_die_inv",ixmesh_inventory)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_carry_pistol_front_left,
+ 120, weight(0.25)|weapon_length(30), imodbits_none],
 
 itm_faction_banner("a01"),
 itm_faction_banner("a02"),
