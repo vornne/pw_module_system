@@ -997,6 +997,8 @@ items = [
  659, weight(1.75)|weapon_length(80), imodbits_none],
 ["lute", "Lute", [("pw_lute",0),("pw_lute_carry",ixmesh_carry)], itp_type_polearm|itp_two_handed|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_carry_axe_back,
  850, weight(2.5)|weapon_length(85), imodbits_none],
+["dart", "Dart", [("pw_dart",0)], itp_type_thrown|itp_primary, itcf_throw_javelin|itcf_carry_quiver_right_vertical,
+ 35, weight(1)|difficulty(0)|spd_rtng(90)|shoot_speed(21)|thrust_damage(0, blunt)|max_ammo(3)|weapon_length(32), imodbits_thrown],
 
 itm_faction_banner("a01"),
 itm_faction_banner("a02"),
