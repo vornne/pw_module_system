@@ -993,6 +993,11 @@ items = [
 ["book_f_open", "Sacred Book", [("pw_book_f_held",0),("pw_book_f_open",ixmesh_carry),("pw_book_f",ixmesh_inventory)], itp_type_two_handed_wpn|itp_two_handed|itp_primary|itp_no_parry, itcf_thrust_onehanded|itcf_carry_revolver_right,
  46400, weight(2)|spd_rtng(80)|weapon_length(50), imodbits_none, [itm_swap_item_trigger(this_item="itm_book_f_open", other_item="itm_book_f")]],
 
+["lyre", "Lyre", [("pw_lyre",0),("pw_lyre_carry",ixmesh_carry)], itp_type_polearm|itp_two_handed|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_carry_axe_back,
+ 659, weight(1.75)|weapon_length(80), imodbits_none],
+["lute", "Lute", [("pw_lute",0),("pw_lute_carry",ixmesh_carry)], itp_type_polearm|itp_two_handed|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_carry_axe_back,
+ 850, weight(2.5)|weapon_length(85), imodbits_none],
+
 itm_faction_banner("a01"),
 itm_faction_banner("a02"),
 itm_faction_banner("a03"),

@@ -2595,6 +2595,9 @@ scene_props = [
   ("pw_buy_book_e",spr_buy_item_flags(10),"pw_book_e","bo_weapon_small", spr_buy_item_triggers("itm_book_e", resources=["itm_linen_cloth_small","itm_leather_piece"], engineer=2)),
   ("pw_buy_book_f",spr_buy_item_flags(90),"pw_book_f","bo_weapon_small", spr_buy_item_triggers("itm_book_f", resources=["itm_linen_cloth_small","itm_leather_piece"], engineer=2)),
 
+  ("pw_buy_lyre",spr_buy_item_flags(42),"pw_lyre_carry","bo_weapon_small", spr_buy_item_triggers("itm_lyre", pos_offset=(0,0,7), resources=["itm_board"], engineer=2)),
+  ("pw_buy_lute",spr_buy_item_flags(50),"pw_lute_carry","bo_weapon_small", spr_buy_item_triggers("itm_lute", pos_offset=(0,0,15), resources=[("itm_board", 2), "itm_stick"], engineer=3)),
+
   ("pw_destroy_heap",spr_use_time(2),"destroy_heap","bo_destroy_heap", spr_destroy_heap_triggers()),
 
   ("pw_rest_bed_a",spr_use_time(40),"bed_a","bo_bed_a", spr_rest_triggers(40, min_health_pct=35)),
