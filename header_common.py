@@ -32,6 +32,7 @@ server_event_admin_chat_shout                   = 24
 server_event_admin_set_permissions              = 25
 server_event_set_attached_scene_prop            = 26
 
+client_event_reveal_money_pouch                 = 96
 client_event_agent_loot_armor                   = 97
 client_event_toggle_drop_armor                  = 98
 client_event_admin_equip_item                   = 99
@@ -74,6 +75,7 @@ preset_message_color_mask                       = 0xF0
 preset_message_small                            = 0x000
 preset_message_big                              = 0x100
 preset_message_read_object                      = 0x200
+preset_message_chat_only                        = 0x300
 preset_message_type_mask                        = 0xF00
 
 preset_message_log                              = 0x1000
@@ -81,6 +83,7 @@ preset_message_fail_sound                       = 0x2000
 
 preset_message_error                            = preset_message_red|preset_message_fail_sound
 preset_message_info                             = preset_message_yellow
+preset_message_chat_log                         = preset_message_chat_only|preset_message_log
 
 # Module system commands
 command_get_bot_count                           = 1
