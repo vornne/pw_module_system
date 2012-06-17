@@ -32,6 +32,7 @@ scripts = [
       (assign, ":stock_count_update_time", 0),
     (else_try),
       (multiplayer_get_my_player, ":my_player_id"),
+      (player_is_active, ":my_player_id"),
       (player_get_agent_id, ":my_agent_id", ":my_player_id"),
       (scene_prop_get_slot, ":stock_count_update_time", ":instance_id", slot_scene_prop_stock_count_update_time),
       (neq, ":stock_count_update_time", 0),
