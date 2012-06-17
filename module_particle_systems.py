@@ -941,7 +941,7 @@ particle_systems = [
  100.0,
  0.5,
 ),
-("target_agent", psf_global_emit_dir, "target_agent",
+("target_agent", psf_global_emit_dir, "pw_target_agent",
  5.0, 0.5, 0.5, -0.1, 0.0, 0.0,
  (0.8, 1.0), (1.0, 0.0),
  (0.2, 1.0), (1.0, 0.5),
