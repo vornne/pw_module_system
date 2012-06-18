@@ -594,6 +594,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 
   ("error_unable_to_find_link_scene_prop", "Unable to find link for scene prop - instance: {reg10} kind: {reg11} link kind: {reg12} link id: {reg13}"),
   ("error_unlinked_scene_prop", "Unlinked scene prop instance: {reg10} kind: {reg11} link id: {reg12} - only valid if this prop has not been added since loading the scene."),
+  ("error_edit_mode_not_enabled", "Edit mode is not enabled in the Warband launcher: you will not be able to edit this scene."),
   ("no_more_unlinked_scene_props", "No more unlinked scene props."),
   ("error_scene_prop_0_pw", "Error: scene prop instance id 0 (kind {reg0}) is scripted (pw), so it might not work correctly."),
   ("pw_welcome", "{s10}^^\
