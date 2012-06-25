@@ -1,0 +1,25 @@
+* { font-size: x-small; }
+.stats_box
+{
+  font-size: xx-small;
+  border: 1px solid #606060;
+  border-spacing: 1em;
+  border-collapse: collapse;
+  width: 50em;
+  margin: 1em;
+  table-layout: fixed;
+}
+.stats_box td { border: none; padding: 0.2em; }
+.stats_box td:first-child { width: 15em; }
+.stats_box tr.name { background-color: #FFDDAA; }
+.stats_box tr.r0 { background-color: #FFFFFF; }
+.stats_box tr.r1 { background-color: #EEEEEE; }
+.stats_list
+{
+  border: 1px solid #606060;
+  border-collapse: collapse;
+  border-spacing: 1ex;
+  margin: 1ex;
+  table-layout: auto;
+}
+.stats_list td { border-bottom: 1px solid #606060; padding: 0.2em 0.5em; }
