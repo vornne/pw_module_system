@@ -53,6 +53,7 @@ slot_player_equip_item_3_ammo         = 33
 
 slot_player_spawn_food_amount         = 34
 slot_player_faction_chat_muted        = 35
+slot_player_kick_at_time              = 36
 
 slot_player_admin_no_panel            = 40
 slot_player_admin_no_gold             = 41
@@ -368,6 +369,7 @@ stock_count_check_interval            = 5
 repeat_action_min_interval            = 5
 carcass_search_min_interval           = 5
 poll_time_duration                    = 60
+name_server_kick_delay_interval       = 5
 
 def sq(distance):
   return distance * distance / 100 # get_sq_distance_between_positions always uses fixed point multiplier 100
