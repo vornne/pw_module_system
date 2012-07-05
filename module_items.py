@@ -770,6 +770,10 @@ items = [
  595, weight(2.5)|hit_points(200)|body_armor(14)|spd_rtng(103)|shield_width(40), imodbits_shield, init_heraldic_item("tableau_small_round_shield_1")],
 ["tab_shield_small_round_c", "Elite Cavalry Shield", [("tableau_shield_small_round_2",0)], itp_type_shield, itcf_carry_round_shield,
  870, weight(3)|hit_points(250)|body_armor(22)|spd_rtng(100)|shield_width(40), imodbits_shield, init_heraldic_item("tableau_small_round_shield_2")],
+["hide_covered_round_shield", "Hide Covered Round Shield", [("shield_round_f",0)], itp_type_shield|itp_wooden_parry, itcf_carry_round_shield,
+ 140, weight(3.5)|hit_points(260)|body_armor(3)|spd_rtng(100)|shield_width(40), imodbits_shield],
+["hide_covered_kite_shield",  "Hide Covered Kite Shield", [("shield_kite_m",0)], itp_type_shield|itp_wooden_parry, itcf_carry_kite_shield,
+ 327, weight(5.5)|hit_points(600)|body_armor(1)|spd_rtng(76)|shield_width(38)|shield_height(71), imodbits_shield],
 ["steel_shield", "Steel Shield", [("shield_dragon", 0)], itp_type_shield, itcf_carry_round_shield,
  2120, weight(4)|hit_points(700)|body_armor(17)|spd_rtng(61)|shield_width(40), imodbits_shield],
 

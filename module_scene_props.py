@@ -2548,6 +2548,8 @@ scene_props = [
   ("pw_buy_tab_shield_small_round_a",spr_buy_item_flags(5),"tableau_shield_small_round_3","bo_pw_shield_round_small", spr_buy_item_triggers("itm_tab_shield_small_round_a", resources=["itm_board"], engineer=2, tableau="tableau_small_round_shield_3")),
   ("pw_buy_tab_shield_small_round_b",spr_buy_item_flags(7),"tableau_shield_small_round_1","bo_pw_shield_round_small", spr_buy_item_triggers("itm_tab_shield_small_round_b", resources=["itm_board", "itm_iron_piece"], engineer=2, tableau="tableau_small_round_shield_1")),
   ("pw_buy_tab_shield_small_round_c",spr_buy_item_flags(15),"tableau_shield_small_round_2","bo_pw_shield_round_small", spr_buy_item_triggers("itm_tab_shield_small_round_c", resources=["itm_board", "itm_iron_piece"], engineer=3, tableau="tableau_small_round_shield_2")),
+  ("pw_buy_hide_covered_round_shield",spr_buy_item_flags(4),"shield_round_f","bo_pw_shield_round", spr_buy_item_triggers("itm_hide_covered_round_shield", resources=["itm_board", "itm_raw_hide"], engineer=2)),
+  ("pw_buy_hide_covered_kite_shield",spr_buy_item_flags(6),"shield_kite_m","bo_pw_shield_round", spr_buy_item_triggers("itm_hide_covered_kite_shield", resources=[("itm_board", 2), "itm_raw_hide"], engineer=2)),
   ("pw_buy_steel_shield",spr_buy_item_flags(30),"shield_dragon","bo_pw_shield_round", spr_buy_item_triggers("itm_steel_shield", resources=["itm_iron_bar"], engineer=6)),
 
   ("pw_buy_sumpter_horse",spr_buy_item_flags(5),"sumpter_horse","bo_pw_horse", spr_buy_item_triggers("itm_sumpter_horse", resources=["itm_board", "itm_wheat_sheaf"], herding=1)),
