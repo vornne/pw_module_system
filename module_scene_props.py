@@ -2254,6 +2254,7 @@ scene_props = [
   ("pw_process_weave",spr_use_time(6),"pw_weaving_loom","bo_pw_weaving_loom", spr_process_resource_triggers("script_cf_process_weave", use_string="str_process_weave")),
   ("pw_process_cut",spr_use_time(3),"pw_shears","bo_pw_weapon_small", spr_process_resource_triggers("script_cf_process_cut", use_string="str_process_cut")),
   ("pw_process_leather",spr_use_time(9),"tannery_pools_b","bo_tannery_pools_b", spr_process_resource_triggers("script_cf_process_leather", use_string="str_process_leather")),
+  ("pw_process_leather_alt",spr_use_time(12),"leatherwork_frame","bo_leatherwork_frame", spr_process_resource_triggers("script_cf_process_leather", use_string="str_process_leather")),
 
   ("pw_buy_straw_hat",spr_buy_item_flags(3),"straw_hat_new","bo_pw_armor_head", spr_buy_item_triggers("itm_straw_hat", resources=["itm_wheat_sheaf"], tailoring=1)),
   ("pw_buy_head_wrappings",spr_buy_item_flags(1),"head_wrapping","bo_pw_armor_head", spr_buy_item_triggers("itm_head_wrappings", resources=["itm_linen_cloth_small"], tailoring=1)),
