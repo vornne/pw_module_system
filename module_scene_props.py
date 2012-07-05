@@ -1949,7 +1949,7 @@ scene_props = [
   ("tannery_pools_a", 0,"tannery_pools_a","bo_tannery_pools_a", []),
   ("tannery_pools_b", 0,"tannery_pools_b","bo_tannery_pools_b", []),
 
-  ("fountain", 0, "fountain", "bo_fountain", []),
+  ("fountain", spr_use_time(10), "fountain", "bo_fountain", spr_well_triggers()),
 
   ("rhodok_houses_a",0,"rhodok_houses_a","bo_rhodok_houses_a", []),
   ("rhodok_houses_b",0,"rhodok_houses_b","bo_rhodok_houses_b", []),
