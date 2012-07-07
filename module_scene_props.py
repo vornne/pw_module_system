@@ -1686,8 +1686,8 @@ scene_props = [
   ("squash_plant",0,"marrow_c","0", []),
 
   ("gatehouse_new_a",sokf_type_ladder,"gatehouse_new_a","bo_gatehouse_new_a", []),
-  ("gatehouse_new_b",sokf_type_ladder,"gatehouse_new_b","bo_gatehouse_new_b", []),
-  ("gatehouse_new_snowy_a",0,"gatehouse_new_snowy_a","bo_gatehouse_new_b", []),
+  ("gatehouse_new_b",sokf_type_ladder,"gatehouse_new_b","bo_gatehouse_new_b_fixed", []),
+  ("gatehouse_new_snowy_a",0,"gatehouse_new_snowy_a","bo_gatehouse_new_b_fixed", []),
 
   ("winch",sokf_moveable,"winch","bo_winch", []),
   ("winch_b",sokf_moveable|spr_use_time(5),"winch_b","bo_winch", []),
