@@ -507,7 +507,7 @@ banner_items_begin = "itm_pw_banner_pole_a01"
 banner_items_end = "itm_admin_horse"
 
 commands_module_system_names_begin = "str_bot_count"
-
+commands_napoleonic_wars_names_begin = "str_use_class_limits"
 admin_action_log_strings_begin = "str_log_admin_kick"
 
 ambient_sounds_begin = "snd_fire_loop"
