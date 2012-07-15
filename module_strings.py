@@ -776,6 +776,7 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("castle_name_48", "New Zendar"),
   ("castle_name_49", "Glunmar Village"),
   ("castle_name_50", "Town Watch Headquarters"),
+  ("castle_name_51", "Bluvard Bank"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]
