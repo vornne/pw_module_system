@@ -524,6 +524,7 @@ pw_skills = [
   "power_strike",
   "power_draw",
   "power_throw",
+  "shield",
   "athletics",
   "riding",
   "horse_archery",
