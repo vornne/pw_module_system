@@ -640,7 +640,7 @@ items = [
 ["bardiche", "Bardiche", [("two_handed_battle_axe_d",0)], itp_type_two_handed_wpn|itp_two_handed|itp_primary|itp_bonus_against_shield|itp_wooden_parry|itp_unbalanced, itc_nodachi|itcf_carry_axe_back,
  2901, weight(5.5)|difficulty(15)|spd_rtng(91)|weapon_length(101)|swing_damage(47, cut)|thrust_damage(0, pierce), imodbits_axe],
 ["shortened_military_scythe", "Shortened Military Scythe", [("two_handed_battle_scythe_a",0)], itp_type_two_handed_wpn|itp_two_handed|itp_primary, itc_nodachi|itcf_carry_sword_back,
- 2640, weight(2.0)|difficulty(14)|spd_rtng(90)|weapon_length(114)|swing_damage(38, cut)|thrust_damage(0, pierce), imodbits_sword_high],
+ 1640, weight(2.0)|difficulty(14)|spd_rtng(90)|weapon_length(114)|swing_damage(38, cut)|thrust_damage(0, pierce), imodbits_sword_high],
 ["sarranid_two_handed_axe_a", "Two Handed Iron Axe", [("two_handed_battle_axe_g",0)], itp_type_two_handed_wpn|itp_two_handed|itp_primary|itp_bonus_against_shield|itp_unbalanced, itc_nodachi|itcf_carry_axe_back,
  2350, weight(5.0)|difficulty(15)|spd_rtng(89)|weapon_length(95)|swing_damage(45, cut)|thrust_damage(0, pierce), imodbits_axe],
 ["sarranid_two_handed_axe_b", "Two Handed Iron Axe", [("two_handed_battle_axe_h",0)], itp_type_two_handed_wpn|itp_two_handed|itp_primary|itp_bonus_against_shield|itp_unbalanced, itc_nodachi|itcf_carry_axe_back,
