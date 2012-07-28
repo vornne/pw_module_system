@@ -692,7 +692,7 @@ items = [
  47, weight(2.25)|weapon_length(55)|max_ammo(8), imodbits_missile],
 
 ["hunting_bow", "Hunting Bow", [("hunting_bow", 0), ("hunting_bow_carry",ixmesh_carry)], itp_type_bow|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_shoot_bow|itcf_carry_bow_back,
- 260, weight(1)|difficulty(1)|spd_rtng(170)|shoot_speed(52)|thrust_damage(15, pierce), imodbits_bow],
+ 260, weight(1)|difficulty(1)|weapon_length(170)|spd_rtng(100)|shoot_speed(52)|thrust_damage(15, pierce), imodbits_bow],
 ["short_bow", "Short Bow", [("short_bow",0),("short_bow_carry",ixmesh_carry)], itp_type_bow|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_shoot_bow|itcf_carry_bow_back,
  304, weight(1)|difficulty(1)|weapon_length(145)|spd_rtng(97)|shoot_speed(55)|thrust_damage(18, pierce), imodbits_bow],
 ["nomad_bow", "Nomad Bow", [("nomad_bow",0),("nomad_bow_case",ixmesh_carry)], itp_type_bow|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_shoot_bow|itcf_carry_bowcase_left|itcf_show_holster_when_drawn,
