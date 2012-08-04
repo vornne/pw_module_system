@@ -26,17 +26,17 @@ def generate_store_troop_skills_description():
 def generate_initialize_item_slots():
   script_body = []
   for item_id, item in enumerate(items):
-    difficulty = get_difficulty(item[6])
-    if difficulty > 0:
-      script_body.append((item_set_slot, item_id, slot_item_difficulty, difficulty))
-    length = get_weapon_length(item[6])
-    if length > 0:
-      script_body.append((item_set_slot, item_id, slot_item_length, length))
+    item_difficulty = get_difficulty(item[6])
+    if item_difficulty > 0:
+      script_body.append((item_set_slot, item_id, slot_item_difficulty, item_difficulty))
+    item_length = item_lengths_list[item_id]
+    if item_length > 0:
+      script_body.append((item_set_slot, item_id, slot_item_length, item_length))
     if (item[7] & imodbit_female == imodbit_female):
       script_body.append((item_set_slot, item_id, slot_item_gender, tf_female))
     item_type = item[3] & 0xff
     item_max_ammo = get_max_ammo(item[6])
-    if (item_type == itp_type_arrows or item_type == itp_type_bolts or item_type == itp_type_thrown) and item_max_ammo > 0:
+    if item_type in (itp_type_arrows, itp_type_bolts, itp_type_thrown) and item_max_ammo > 0:
       script_body.append((item_set_slot, item_id, slot_item_max_ammo, item_max_ammo))
   for entry in item_class_list:
     script_body.append((item_set_slot, entry[0], slot_item_class, entry[1]))

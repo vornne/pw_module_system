@@ -1261,11 +1261,17 @@ itm_wall_banner("fac_8", "b"),
 ["animal_herd_manager", "animal_herd_manager", [("invisible",0)], itp_no_pick_up_from_ground, 0, 0, 0, 0],
 ]
 
+item_lengths_list = []
 item_class_list = []
 herd_animal_list = []
 
 def pre_process_items():
   for item_id, item in enumerate(items):
+    item_length = get_weapon_length(item[6])
+    item_lengths_list.append(item_length)
+    item_type = item[3] & 0xff
+    if item_type in (itp_type_bow, itp_type_crossbow):
+      item[6] &= ~(ibf_10bit_mask << iwf_weapon_length_bits)
     if len(item) <= 8:
       continue
     trigger_list = item[8]
