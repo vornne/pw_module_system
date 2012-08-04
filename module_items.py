@@ -26,30 +26,36 @@ import header_debug as dbg
 # Some constants for ease of use.
 imodbits_none = 0
 imodbits_horse_basic = imodbit_swaybacked|imodbit_lame|imodbit_spirited|imodbit_heavy|imodbit_stubborn
-imodbits_cloth  = imodbit_tattered|imodbit_ragged|imodbit_sturdy|imodbit_thick|imodbit_hardened
-imodbits_armor  = imodbit_rusty|imodbit_battered|imodbit_crude|imodbit_thick|imodbit_reinforced|imodbit_lordly
-imodbits_plate  = imodbit_cracked|imodbit_rusty|imodbit_battered|imodbit_crude|imodbit_thick|imodbit_reinforced|imodbit_lordly
+imodbits_cloth = imodbit_tattered|imodbit_ragged|imodbit_sturdy|imodbit_thick|imodbit_hardened
+imodbits_armor = imodbit_rusty|imodbit_battered|imodbit_crude|imodbit_thick|imodbit_reinforced|imodbit_lordly
+imodbits_plate = imodbit_cracked|imodbit_rusty|imodbit_battered|imodbit_crude|imodbit_thick|imodbit_reinforced|imodbit_lordly
 imodbits_polearm = imodbit_cracked|imodbit_bent|imodbit_balanced
-imodbits_shield  = imodbit_cracked|imodbit_battered|imodbit_thick|imodbit_reinforced
-imodbits_sword   = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_tempered
-imodbits_sword_high   = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_tempered|imodbit_masterwork
-imodbits_axe   = imodbit_rusty|imodbit_chipped|imodbit_heavy
-imodbits_mace   = imodbit_rusty|imodbit_chipped|imodbit_heavy
-imodbits_pick   = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_heavy
+imodbits_shield = imodbit_cracked|imodbit_battered|imodbit_thick|imodbit_reinforced
+imodbits_sword = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_tempered
+imodbits_sword_high = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_tempered|imodbit_masterwork
+imodbits_axe = imodbit_rusty|imodbit_chipped|imodbit_heavy
+imodbits_mace = imodbit_rusty|imodbit_chipped|imodbit_heavy
+imodbits_pick = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_heavy
 imodbits_bow = imodbit_cracked|imodbit_bent|imodbit_strong|imodbit_masterwork
 imodbits_crossbow = imodbit_cracked|imodbit_bent|imodbit_masterwork
-imodbits_missile   = imodbit_bent|imodbit_large_bag
-imodbits_thrown   = imodbit_bent|imodbit_heavy|imodbit_balanced|imodbit_large_bag
+imodbits_missile = imodbit_bent|imodbit_large_bag
+imodbits_thrown = imodbit_bent|imodbit_heavy|imodbit_balanced|imodbit_large_bag
 imodbits_thrown_minus_heavy = imodbit_bent|imodbit_balanced|imodbit_large_bag
 
 imodbits_horse_good = imodbit_spirited|imodbit_heavy
-imodbits_good   = imodbit_sturdy|imodbit_thick|imodbit_hardened|imodbit_reinforced
-imodbits_bad    = imodbit_rusty|imodbit_chipped|imodbit_tattered|imodbit_ragged|imodbit_cracked|imodbit_bent
+imodbits_good = imodbit_sturdy|imodbit_thick|imodbit_hardened|imodbit_reinforced
+imodbits_bad = imodbit_rusty|imodbit_chipped|imodbit_tattered|imodbit_ragged|imodbit_cracked|imodbit_bent
 
-imodbit_female        = imodbit_meek
+imodbit_female = imodbit_meek
 
-item_class = -100.0
-item_herd_animal = -101.0
+tag_item_class = -100.0
+tag_item_herd_animal = -101.0
+
+def itm_class(class_id, value=0):
+  return (tag_item_class, class_id, value)
+
+def itm_herd_animal(child_item=-1, grow_age=10, max_in_herd=20, attack_reaction=animal_reaction_flee, death_sound="snd_cow_slaughter", meat=0, hide=0):
+  return [[tag_item_herd_animal, child_item, grow_age, max_in_herd, attack_reaction, death_sound, meat, hide]]
 
 def init_heraldic_item(tableau):
   return [(ti_on_init_item,
@@ -57,7 +63,7 @@ def init_heraldic_item(tableau):
     (store_trigger_param_2, ":troop_id"),
     (call_script, "script_item_set_banner", tableau, ":agent_id", ":troop_id"),
     ]),
-  (item_class, item_class_heraldic)]
+  itm_class(item_class_heraldic)]
 
 def itm_faction_banner(banner_id):
   return ["pw_banner_pole_" + banner_id, "Banner", [("pw_banner_pole",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_wooden_parry, itc_parry_polearm|itcf_carry_spear,
@@ -113,9 +119,6 @@ def itm_butchering_knife():
     (gt, ":skill", 0),
     (call_script, "script_cf_use_butchering_knife", ":agent_id"),
     ])
-
-def itm_herd_animal(child_item=-1, grow_age=10, max_in_herd=20, attack_reaction=animal_reaction_flee, death_sound="snd_cow_slaughter", meat=0, hide=0):
-  return [[item_herd_animal, child_item, grow_age, max_in_herd, attack_reaction, death_sound, meat, hide]]
 
 items = [
 ["no_item", "INVALID ITEM", [("invalid_item", 0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger,
@@ -535,7 +538,7 @@ items = [
 ["spiked_club", "Spiked Club", [("spiked_club",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_parry, itc_longsword|itcf_carry_mace_left_hip,
  383, weight(3.0)|difficulty(10)|spd_rtng(90)|weapon_length(80)|swing_damage(15, pierce)|thrust_damage(17, pierce), imodbits_mace],
 ["old_knife", "Old Knife", [("peasant_knife",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_left,
- 78, weight(0.5)|difficulty(0)|spd_rtng(100)|weapon_length(43)|swing_damage(11, cut)|thrust_damage(7, pierce), imodbits_sword, [(item_class, item_class_knife)]],
+ 78, weight(0.5)|difficulty(0)|spd_rtng(100)|weapon_length(43)|swing_damage(11, cut)|thrust_damage(7, pierce), imodbits_sword, [itm_class(item_class_knife)]],
 ["crude_spear", "Crude Spear", [("spear_g_1-9m",0)], itp_type_polearm|itp_primary|itp_wooden_parry, itc_staff|itcf_carry_spear,
  374, weight(2.0)|difficulty(6)|spd_rtng(92)|weapon_length(120)|swing_damage(6, cut)|thrust_damage(18, pierce), imodbits_polearm],
 ["blunt_falchion", "Blunt Falchion", [("falchion",0)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_sword_left_hip,
@@ -816,72 +819,72 @@ items = [
  315, hit_points(80)|body_armor(10)|difficulty(11)|horse_speed(30)|horse_maneuver(65)|horse_charge(10)|horse_scale(40), imodbits_none],
 
 ["stick", "Stick", [("wooden_stick",0),("pw_stick_carry",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_quiver_back,
- 53, weight(3)|spd_rtng(90)|swing_damage(5,blunt)|weapon_length(63), imodbits_none, [(item_class, item_class_wood, 100)]],
+ 53, weight(3)|spd_rtng(90)|swing_damage(5,blunt)|weapon_length(63), imodbits_none, [itm_class(item_class_wood, 100)]],
 ["stick_melee", "Stick", [("wooden_stick",0),("pw_stick_carry",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_quiver_back,
- 53, weight(3)|spd_rtng(90)|swing_damage(5,blunt)|weapon_length(63), imodbits_none, [(item_class, item_class_wood, 100)]],
+ 53, weight(3)|spd_rtng(90)|swing_damage(5,blunt)|weapon_length(63), imodbits_none, [itm_class(item_class_wood, 100)]],
 ["branch", "Branch", [("pw_branch_a",0),("pw_branch_b",imodbit_heavy),("pw_branch_c",imodbit_battered)], itp_type_polearm|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_thrust_polearm|itcf_overswing_polearm|itcf_carry_spear,
- 124, weight(25)|spd_rtng(30)|weapon_length(250)|swing_damage(20,blunt)|thrust_damage(10,blunt), imodbit_cracked|imodbit_bent, [(item_class, item_class_wood, 500)]],
+ 124, weight(25)|spd_rtng(30)|weapon_length(250)|swing_damage(20,blunt)|thrust_damage(10,blunt), imodbit_cracked|imodbit_bent, [itm_class(item_class_wood, 500)]],
 ["wood_pole_short", "Short Wooden Pole", [("pw_wood_pole_short",0)], itp_type_polearm|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itc_poleaxe|itcf_carry_spear,
- 108, weight(7)|spd_rtng(75)|weapon_length(92)|swing_damage(15,blunt)|thrust_damage(10,blunt), imodbits_none, [(item_class, item_class_wood, 200)]],
+ 108, weight(7)|spd_rtng(75)|weapon_length(92)|swing_damage(15,blunt)|thrust_damage(10,blunt), imodbits_none, [itm_class(item_class_wood, 200)]],
 ["wood_pole", "Wooden Pole", [("pw_wood_pole",0)], itp_type_polearm|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_thrust_polearm|itcf_overswing_polearm|itc_parry_polearm|itcf_carry_spear,
- 221, weight(15)|spd_rtng(70)|weapon_length(150)|swing_damage(20,blunt)|thrust_damage(10,blunt), imodbits_none, [(item_class, item_class_wood, 400)]],
+ 221, weight(15)|spd_rtng(70)|weapon_length(150)|swing_damage(20,blunt)|thrust_damage(10,blunt), imodbits_none, [itm_class(item_class_wood, 400)]],
 ["wood_block", "Wood Block", [("pw_wood_block_a",0),("pw_wood_block_b",imodbit_heavy),("pw_wood_block_c",imodbit_battered)], itp_type_polearm|itp_two_handed|itp_primary, itcf_thrust_onehanded|itcf_carry_bow_back,
- 142, weight(30)|spd_rtng(50)|weapon_length(32)|swing_damage(5,blunt)|thrust_damage(5,blunt), imodbits_none, [(item_class, item_class_wood, 800)]],
+ 142, weight(30)|spd_rtng(50)|weapon_length(32)|swing_damage(5,blunt)|thrust_damage(5,blunt), imodbits_none, [itm_class(item_class_wood, 800)]],
 ["board", "Board", [("pw_board",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_axe_back,
- 210, weight(10)|spd_rtng(60)|weapon_length(50)|swing_damage(10,blunt)|thrust_damage(10,blunt), imodbits_none, [(item_class, item_class_wood, 200)]],
+ 210, weight(10)|spd_rtng(60)|weapon_length(50)|swing_damage(10,blunt)|thrust_damage(10,blunt), imodbits_none, [itm_class(item_class_wood, 200)]],
 ["iron_ore_small", "Small Iron Ore", [("pw_iron_ore_small",0)], itp_type_polearm|itp_two_handed|itp_primary, itcf_carry_bow_back,
- 400, weight(30)|spd_rtng(60)|swing_damage(7,blunt)|thrust_damage(7,blunt)|weapon_length(50), imodbits_none, [(item_class, item_class_iron, 0)]],
+ 400, weight(30)|spd_rtng(60)|swing_damage(7,blunt)|thrust_damage(7,blunt)|weapon_length(50), imodbits_none, [itm_class(item_class_iron, 0)]],
 ["iron_ore", "Iron Ore", [("pw_iron_ore",0)], itp_type_polearm|itp_two_handed|itp_primary, itcf_carry_bow_back,
- 850, weight(60)|spd_rtng(50)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(50), imodbits_none, [(item_class, item_class_iron, 0)]],
+ 850, weight(60)|spd_rtng(50)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(50), imodbits_none, [itm_class(item_class_iron, 0)]],
 ["iron_piece", "Iron Piece", [("pw_iron_piece",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_bow_back,
- 100, weight(5)|spd_rtng(80)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [(item_class, item_class_iron, 50)]],
+ 100, weight(5)|spd_rtng(80)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [itm_class(item_class_iron, 50)]],
 ["iron_bar_short", "Short Iron Bar", [("pw_iron_bar_short",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_bow_back,
- 220, weight(10)|spd_rtng(70)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(25), imodbits_none, [(item_class, item_class_iron, 100)]],
+ 220, weight(10)|spd_rtng(70)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(25), imodbits_none, [itm_class(item_class_iron, 100)]],
 ["iron_bar", "Iron Bar", [("pw_iron_bar",0)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_bow_back,
- 450, weight(20)|spd_rtng(60)|swing_damage(15,blunt)|thrust_damage(10,blunt)|weapon_length(60), imodbits_none, [(item_class, item_class_iron, 200)]],
+ 450, weight(20)|spd_rtng(60)|swing_damage(15,blunt)|thrust_damage(10,blunt)|weapon_length(60), imodbits_none, [itm_class(item_class_iron, 200)]],
 ["iron_bar_long", "Long Iron Bar", [("pw_iron_bar_long",0)], itp_type_polearm|itp_two_handed|itp_primary, itc_parry_polearm|itcf_carry_bow_back,
- 1000, weight(40)|spd_rtng(50)|swing_damage(20,blunt)|thrust_damage(10,blunt)|weapon_length(100), imodbits_none, [(item_class, item_class_iron, 400)]],
+ 1000, weight(40)|spd_rtng(50)|swing_damage(20,blunt)|thrust_damage(10,blunt)|weapon_length(100), imodbits_none, [itm_class(item_class_iron, 400)]],
 ["gold_nugget", "Gold Nugget", [("pw_gold_nugget",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_pistol_front_left,
- 11000, weight(10)|spd_rtng(70)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [(item_class, item_class_precious, 0)]],
+ 11000, weight(10)|spd_rtng(70)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [itm_class(item_class_precious, 0)]],
 ["gold_bar", "Gold Bar", [("pw_gold_bar",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_revolver_right,
- 70000, weight(30)|spd_rtng(60)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(20), imodbits_none, [(item_class, item_class_precious, 0)]],
+ 70000, weight(30)|spd_rtng(60)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(20), imodbits_none, [itm_class(item_class_precious, 0)]],
 ["silver_nugget", "Silver Nugget", [("pw_silver_nugget",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_pistol_front_left,
- 6000, weight(7)|spd_rtng(70)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [(item_class, item_class_precious, 0)]],
+ 6000, weight(7)|spd_rtng(70)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [itm_class(item_class_precious, 0)]],
 ["silver_bar", "Silver Bar", [("pw_silver_bar",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_revolver_right,
- 40000, weight(15)|spd_rtng(60)|swing_damage(8,blunt)|thrust_damage(8,blunt)|weapon_length(20), imodbits_none, [(item_class, item_class_precious, 0)]],
+ 40000, weight(15)|spd_rtng(60)|swing_damage(8,blunt)|thrust_damage(8,blunt)|weapon_length(20), imodbits_none, [itm_class(item_class_precious, 0)]],
 ["flax_bundle", "Flax Bundle", [("pw_flax_bundle",0)], itp_type_one_handed_wpn|itp_two_handed|itp_primary|itp_no_parry, itcf_carry_bow_back,
- 50, weight(6)|spd_rtng(20)|weapon_length(45), imodbits_none, [(item_class, item_class_cloth, 0)]],
+ 50, weight(6)|spd_rtng(20)|weapon_length(45), imodbits_none, [itm_class(item_class_cloth, 0)]],
 ["linen_thread", "Linen Thread", [("pw_linen_thread",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
- 91, weight(2)|spd_rtng(90)|weapon_length(45), imodbits_none, [(item_class, item_class_cloth, 0)]],
+ 91, weight(2)|spd_rtng(90)|weapon_length(45), imodbits_none, [itm_class(item_class_cloth, 0)]],
 ["linen_cloth", "Linen Cloth", [("pw_linen_cloth",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_axe_back,
- 220, weight(5)|spd_rtng(60)|weapon_length(80), imodbits_none, [(item_class, item_class_cloth, 400)]],
+ 220, weight(5)|spd_rtng(60)|weapon_length(80), imodbits_none, [itm_class(item_class_cloth, 400)]],
 ["linen_cloth_small", "Small Linen Cloth", [("pw_linen_cloth_small",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_axe_back,
- 55, weight(1)|spd_rtng(70)|weapon_length(60), imodbits_none, [(item_class, item_class_cloth, 100)]],
+ 55, weight(1)|spd_rtng(70)|weapon_length(60), imodbits_none, [itm_class(item_class_cloth, 100)]],
 ["raw_hide", "Raw Hide", [("pw_raw_hide",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_carry_axe_back,
- 186, weight(15)|spd_rtng(20)|weapon_length(60), imodbits_none, [(item_class, item_class_leather, 0)]],
+ 186, weight(15)|spd_rtng(20)|weapon_length(60), imodbits_none, [itm_class(item_class_leather, 0)]],
 ["leather_roll", "Leather Roll", [("pw_leather_roll",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_bow_back,
- 269, weight(5)|spd_rtng(20)|weapon_length(50)|swing_damage(4,blunt)|thrust_damage(4,blunt), imodbits_none, [(item_class, item_class_leather, 400)]],
+ 269, weight(5)|spd_rtng(20)|weapon_length(50)|swing_damage(4,blunt)|thrust_damage(4,blunt), imodbits_none, [itm_class(item_class_leather, 400)]],
 ["leather_piece", "Leather Piece", [("pw_leather_piece",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_axe_back,
- 66, weight(1)|spd_rtng(20)|weapon_length(50)|swing_damage(2,blunt)|thrust_damage(2,blunt), imodbits_none, [(item_class, item_class_leather, 100)]],
+ 66, weight(1)|spd_rtng(20)|weapon_length(50)|swing_damage(2,blunt)|thrust_damage(2,blunt), imodbits_none, [itm_class(item_class_leather, 100)]],
 ["saddle", "Saddle", [("pw_saddle",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_no_parry, itcf_carry_axe_back,
  459, weight(30)|weapon_length(100), imodbits_none],
 ["horse_armor", "Horse Armor", [("pw_horse_armor",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_no_parry, itcf_carry_axe_back,
  2103, weight(50)|weapon_length(120), imodbits_none],
 
 ["hatchet", "Hatchet", [("pw_hatchet",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_axe_left_hip,
- 40, weight(3)|spd_rtng(75)|weapon_length(50)|swing_damage(10,cut)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_wood_cutting)]],
+ 40, weight(3)|spd_rtng(75)|weapon_length(50)|swing_damage(10,cut)|thrust_damage(0,pierce), imodbits_none, [itm_class(item_class_wood_cutting)]],
 ["small_mining_pick", "Small Mining Pick", [("pw_small_mining_pick",0),("pw_small_mining_pick_inv",ixmesh_inventory)], itp_type_one_handed_wpn|itp_primary|itp_unbalanced|itp_wooden_parry, itc_parry_polearm|itcf_overswing_polearm|itcf_carry_axe_back,
- 80, weight(3)|spd_rtng(70)|weapon_length(70)|swing_damage(15,pierce)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_mining)]],
+ 80, weight(3)|spd_rtng(70)|weapon_length(70)|swing_damage(15,pierce)|thrust_damage(0,pierce), imodbits_none, [itm_class(item_class_mining)]],
 ["woodcutter_axe", "Woodcutter's Axe", [("pw_wood_axe",0)], itp_type_two_handed_wpn|itp_two_handed|itp_bonus_against_shield|itp_primary|itp_wooden_parry|itp_unbalanced|itp_cant_use_on_horseback, itc_nodachi|itcf_carry_axe_back,
- 245, weight(4)|spd_rtng(80)|weapon_length(72)|swing_damage(20,cut)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_wood_cutting)]],
+ 245, weight(4)|spd_rtng(80)|weapon_length(72)|swing_damage(20,cut)|thrust_damage(0,pierce), imodbits_none, [itm_class(item_class_wood_cutting)]],
 ["mining_pick", "Mining Pick", [("pw_mining_pick",0),("pw_mining_pick_inv",ixmesh_inventory)], itp_type_polearm|itp_two_handed|itp_primary|itp_unbalanced|itp_cant_use_on_horseback, itc_parry_polearm|itcf_overswing_polearm|itcf_carry_axe_back,
- 423, weight(5)|spd_rtng(70)|weapon_length(93)|swing_damage(30,pierce)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_mining)]],
+ 423, weight(5)|spd_rtng(70)|weapon_length(93)|swing_damage(30,pierce)|thrust_damage(0,pierce), imodbits_none, [itm_class(item_class_mining)]],
 ["repair_hammer", "Repair Hammer", [("pw_repair_hammer",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_bow_back,
- 634, weight(3)|spd_rtng(92)|weapon_length(120)|swing_damage(5,blunt)|thrust_damage(0,pierce), imodbits_none, [(item_class, item_class_repair)]],
+ 634, weight(3)|spd_rtng(92)|weapon_length(120)|swing_damage(5,blunt)|thrust_damage(0,pierce), imodbits_none, [itm_class(item_class_repair)]],
 ["lock_pick", "Lock Pick", [("pw_lock_pick",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger,
- 1260, weight(0.25)|spd_rtng(100)|weapon_length(23)|swing_damage(1,blunt)|thrust_damage(5,pierce), imodbits_none, [(item_class, item_class_lock_pick)]],
+ 1260, weight(0.25)|spd_rtng(100)|weapon_length(23)|swing_damage(1,blunt)|thrust_damage(5,pierce), imodbits_none, [itm_class(item_class_lock_pick)]],
 ["admin_lock_pick", "Admin Lock Pick", [("pw_lock_pick",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger,
- 0, weight(0.25)|difficulty(30)|spd_rtng(100)|weapon_length(23)|swing_damage(20,blunt)|thrust_damage(25,pierce), imodbits_none, [(item_class, item_class_lock_pick)]],
+ 0, weight(0.25)|difficulty(30)|spd_rtng(100)|weapon_length(23)|swing_damage(20,blunt)|thrust_damage(25,pierce), imodbits_none, [itm_class(item_class_lock_pick)]],
 ["bucket", "Bucket", [("pw_bucket",0),("pw_bucket_ground",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_slashright_onehanded,
  240, weight(5)|spd_rtng(70)|weapon_length(100)|swing_damage(5,blunt), imodbits_none, [(ti_on_weapon_attack, [(store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_bucket", ":agent_id")])]],
 ["water_bucket", "Water Bucket", [("pw_bucket_water",0),("pw_bucket_water_ground",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_slashright_onehanded,
@@ -893,66 +896,66 @@ items = [
  823, weight(5)|spd_rtng(40)|weapon_length(50)|swing_damage(0, cut)|thrust_damage(0, cut), imodbits_none,
  [(ti_on_weapon_attack, [(position_move_y, pos1, -50), (position_move_z, pos1, -200), (store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_fishing_tool", ":agent_id")])]],
 ["sickle", "Sickle", [("pw_sickle",0)], itp_type_one_handed_wpn|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_slashright_onehanded|itcf_carry_dagger_front_right,
- 136, weight(0.5)|difficulty(0)|spd_rtng(80)|weapon_length(100)|swing_damage(10, cut)|thrust_damage(0, cut), imodbits_none, [(item_class, item_class_grain_harvesting)]],
+ 136, weight(0.5)|difficulty(0)|spd_rtng(80)|weapon_length(100)|swing_damage(10, cut)|thrust_damage(0, cut), imodbits_none, [itm_class(item_class_grain_harvesting)]],
 ["scythe", "Scythe", [("pw_scythe",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_no_parry|itp_unbalanced|itp_cant_use_on_horseback, itcf_slashleft_polearm|itcf_carry_spear,
- 549, weight(2)|difficulty(0)|spd_rtng(70)|weapon_length(160)|swing_damage(25, cut)|thrust_damage(0, cut), imodbits_polearm, [(item_class, item_class_grain_harvesting)]],
+ 549, weight(2)|difficulty(0)|spd_rtng(70)|weapon_length(160)|swing_damage(25, cut)|thrust_damage(0, cut), imodbits_polearm, [itm_class(item_class_grain_harvesting)]],
 ["kitchen_knife", "Kitchen Knife", [("pw_kitchen_knife",0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
- 68, weight(0.25)|difficulty(0)|spd_rtng(100)|weapon_length(40)|swing_damage(10, cut)|thrust_damage(6, pierce), imodbits_sword, [(item_class, item_class_knife)]],
+ 68, weight(0.25)|difficulty(0)|spd_rtng(100)|weapon_length(40)|swing_damage(10, cut)|thrust_damage(6, pierce), imodbits_sword, [itm_class(item_class_knife)]],
 ["cleaver", "Butchering Cleaver", [("cleaver_new",0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_cleaver|itcf_carry_dagger_front_right,
- 247, weight(1.5)|difficulty(0)|spd_rtng(103)|weapon_length(48)|swing_damage(26, cut)|thrust_damage(0, pierce), imodbits_sword, [(item_class, item_class_knife), itm_butchering_knife()]],
+ 247, weight(1.5)|difficulty(0)|spd_rtng(103)|weapon_length(48)|swing_damage(26, cut)|thrust_damage(0, pierce), imodbits_sword, [itm_class(item_class_knife), itm_butchering_knife()]],
 ["knife", "Knife", [("peasant_knife_new",0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
- 306, weight(0.5)|difficulty(0)|spd_rtng(110)|weapon_length(55)|swing_damage(21, cut)|thrust_damage(13, pierce), imodbits_sword, [(item_class, item_class_knife)]],
+ 306, weight(0.5)|difficulty(0)|spd_rtng(110)|weapon_length(55)|swing_damage(21, cut)|thrust_damage(13, pierce), imodbits_sword, [itm_class(item_class_knife)]],
 ["butchering_knife", "Butchering Knife", [("khyber_knife_new",0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_left,
- 473, weight(0.75)|difficulty(0)|spd_rtng(108)|weapon_length(70)|swing_damage(24, cut)|thrust_damage(17, pierce), imodbits_sword, [(item_class, item_class_knife), itm_butchering_knife()]],
+ 473, weight(0.75)|difficulty(0)|spd_rtng(108)|weapon_length(70)|swing_damage(24, cut)|thrust_damage(17, pierce), imodbits_sword, [itm_class(item_class_knife), itm_butchering_knife()]],
 ["broom", "Broom", [("pw_broom",0),("pw_broom_inv",ixmesh_inventory)], itp_type_polearm|itp_primary|itp_two_handed|itp_cant_use_on_horseback|itp_no_parry, itc_staff|itcf_carry_spear,
  39, weight(2.5)|difficulty(0)|spd_rtng(60)|weapon_length(130)|swing_damage(3, blunt)|thrust_damage(1, blunt), imodbits_none],
 ["herding_crook", "Herding Crook", [("pw_herding_crook",0)], itp_type_two_handed_wpn|itp_two_handed|itp_primary|itp_wooden_parry|itp_wooden_attack|itp_unbalanced|itp_cant_use_on_horseback|itp_next_item_as_melee, itc_nodachi|itcf_carry_axe_back,
- 120, weight(1.5)|difficulty(0)|spd_rtng(70)|weapon_length(108)|swing_damage(10, blunt), imodbits_polearm, [(item_class, item_class_herding_rouse)]],
+ 120, weight(1.5)|difficulty(0)|spd_rtng(70)|weapon_length(108)|swing_damage(10, blunt), imodbits_polearm, [itm_class(item_class_herding_rouse)]],
 ["herding_crook_alt", "Herding Crook", [("pw_herding_crook",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_wooden_parry|itp_wooden_attack|itp_unbalanced|itp_cant_use_on_horseback, itc_staff|itcf_carry_axe_back,
- 120, weight(1.5)|difficulty(0)|spd_rtng(60)|weapon_length(108)|swing_damage(10, blunt)|thrust_damage(9, blunt), imodbits_polearm, [(item_class, item_class_herding_calm)]],
+ 120, weight(1.5)|difficulty(0)|spd_rtng(60)|weapon_length(108)|swing_damage(10, blunt)|thrust_damage(9, blunt), imodbits_polearm, [itm_class(item_class_herding_calm)]],
 
 ["fish", "Fish", [("pw_fish",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
- 23, weight(1)|spd_rtng(72)|weapon_length(45)|swing_damage(2,cut), imodbits_none, [(item_class, item_class_food, 6)]],
+ 23, weight(1)|spd_rtng(72)|weapon_length(45)|swing_damage(2,cut), imodbits_none, [itm_class(item_class_food, 6)]],
 ["cooked_fish", "Cooked Fish", [("pw_fish_cooked",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
- 57, weight(1)|spd_rtng(70)|weapon_length(45)|swing_damage(1,cut), imodbits_none, [(item_class, item_class_food, 40)]],
+ 57, weight(1)|spd_rtng(70)|weapon_length(45)|swing_damage(1,cut), imodbits_none, [itm_class(item_class_food, 40)]],
 ["salted_fish", "Salted Fish", [("pw_fish",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
- 70, weight(1)|spd_rtng(70)|weapon_length(45)|swing_damage(1,cut), imodbits_none, [(item_class, item_class_food, 20)]],
+ 70, weight(1)|spd_rtng(70)|weapon_length(45)|swing_damage(1,cut), imodbits_none, [itm_class(item_class_food, 20)]],
 ["wheat_sack", "Wheat Sack", [("pw_throwing_wheat",0),("pw_thrown_wheat",ixmesh_flying_ammo),("pw_wheat_sack",ixmesh_carry),("pw_wheat_sack",ixmesh_inventory)], itp_type_thrown|itp_primary|itp_cant_use_on_horseback, itcf_throw_stone|itcf_carry_quiver_right_vertical|itcf_show_holster_when_drawn,
  20, weight(0.25)|spd_rtng(90)|weapon_length(20)|shoot_speed(10)|max_ammo(10), imodbits_none, [itm_throw_wheat_trigger()]],
 ["wheat_sheaf", "Wheat Sheaf", [("pw_wheat_sheaf",0)], itp_type_one_handed_wpn|itp_two_handed|itp_primary|itp_no_parry, itcf_slashleft_onehanded|itcf_slashright_onehanded|itcf_carry_bow_back,
- 35, weight(3)|spd_rtng(60)|weapon_length(45), imodbits_none, [(item_class, item_class_food, 0)]],
+ 35, weight(3)|spd_rtng(60)|weapon_length(45), imodbits_none, [itm_class(item_class_food, 0)]],
 ["flour_sack", "Flour Sack", [("pw_flour_sack",0),("pw_flour_sack_carry",ixmesh_carry)], itp_type_polearm|itp_two_handed|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_carry_quiver_back,
- 162, weight(25)|weapon_length(100), imodbits_none, [(item_class, item_class_food, 0)]],
+ 162, weight(25)|weapon_length(100), imodbits_none, [itm_class(item_class_food, 0)]],
 ["bread", "Bread", [("pw_bread_a",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_bowcase_left,
- 68, weight(1)|spd_rtng(65)|weapon_length(20)|swing_damage(1,cut), imodbits_none, [(item_class, item_class_food, 50)]],
+ 68, weight(1)|spd_rtng(65)|weapon_length(20)|swing_damage(1,cut), imodbits_none, [itm_class(item_class_food, 50)]],
 ["beer_cask", "Beer Cask", [("pw_beer_cask",0),("pw_beer_cask_carry",ixmesh_carry)], itp_type_polearm|itp_two_handed|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_carry_bow_back,
- 180, weight(18)|spd_rtng(20)|weapon_length(100), imodbits_none, [(item_class, item_class_food, 112)]],
+ 180, weight(18)|spd_rtng(20)|weapon_length(100), imodbits_none, [itm_class(item_class_food, 112)]],
 ["beer_jug", "Beer Jug", [("pw_beer_jug",0)], itp_type_one_handed_wpn|itp_two_handed|itp_primary|itp_no_parry, itc_dagger|itcf_carry_bowcase_left,
- 45, weight(3)|spd_rtng(70)|weapon_length(40)|swing_damage(4,cut), imodbits_none, [(item_class, item_class_food, 28)]],
+ 45, weight(3)|spd_rtng(70)|weapon_length(40)|swing_damage(4,cut), imodbits_none, [itm_class(item_class_food, 28)]],
 ["grapes", "Grapes", [("pw_grape_bunch",0),("pw_grape_a",imodbit_old),("pw_grape_b",imodbit_fine)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
- 17, weight(0.25)|spd_rtng(90)|weapon_length(25)|swing_damage(0,cut), imodbits_none, [(item_class, item_class_food, 4)]],
+ 17, weight(0.25)|spd_rtng(90)|weapon_length(25)|swing_damage(0,cut), imodbits_none, [itm_class(item_class_food, 4)]],
 ["must_barrel", "Must Barrel", [("pw_must_barrel",0),("pw_must_barrel_carry",ixmesh_carry)], itp_type_polearm|itp_two_handed|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_carry_bow_back,
- 80, weight(3)|spd_rtng(20)|weapon_length(100), imodbits_none, [(item_class, item_class_food, 44)]],
+ 80, weight(3)|spd_rtng(20)|weapon_length(100), imodbits_none, [itm_class(item_class_food, 44)]],
 ["wine_barrel", "Wine Barrel", [("pw_wine_barrel",0),("pw_wine_barrel_carry",ixmesh_carry)], itp_type_polearm|itp_two_handed|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_carry_bow_back,
- 408, weight(20)|spd_rtng(20)|weapon_length(100), imodbits_none, [(item_class, item_class_food, 144)]],
+ 408, weight(20)|spd_rtng(20)|weapon_length(100), imodbits_none, [itm_class(item_class_food, 144)]],
 ["wine_jar", "Wine Jar", [("pw_wine_jar",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_bowcase_left,
- 102, weight(5)|spd_rtng(65)|weapon_length(50)|swing_damage(4,cut), imodbits_none, [(item_class, item_class_food, 36)]],
+ 102, weight(5)|spd_rtng(65)|weapon_length(50)|swing_damage(4,cut), imodbits_none, [itm_class(item_class_food, 36)]],
 ["raw_meat", "Raw Meat", [("pw_meat_raw",0)], itp_type_polearm|itp_two_handed|itp_cant_use_on_horseback|itp_primary, itc_dagger|itcf_carry_bow_back,
- 56, weight(25)|spd_rtng(65)|weapon_length(53)|swing_damage(10,blunt), imodbits_none, [(item_class, item_class_food, 10)]],
+ 56, weight(25)|spd_rtng(65)|weapon_length(53)|swing_damage(10,blunt), imodbits_none, [itm_class(item_class_food, 10)]],
 ["cooked_meat", "Cooked Meat", [("pw_meat_cooked",0)], itp_type_polearm|itp_two_handed|itp_cant_use_on_horseback|itp_primary, itc_dagger|itcf_carry_bow_back,
- 158, weight(25)|spd_rtng(60)|weapon_length(53)|swing_damage(8,blunt), imodbits_none, [(item_class, item_class_food, 65)]],
+ 158, weight(25)|spd_rtng(60)|weapon_length(53)|swing_damage(8,blunt), imodbits_none, [itm_class(item_class_food, 65)]],
 ["salted_meat", "Salted Meat", [("pw_meat_salted",0)], itp_type_polearm|itp_two_handed|itp_cant_use_on_horseback|itp_primary, itc_dagger|itcf_carry_bow_back,
- 193, weight(25)|spd_rtng(60)|weapon_length(53)|swing_damage(8,blunt), imodbits_none, [(item_class, item_class_food, 40)]],
+ 193, weight(25)|spd_rtng(60)|weapon_length(53)|swing_damage(8,blunt), imodbits_none, [itm_class(item_class_food, 40)]],
 ["meat_pie", "Meat Pie", [("pw_meat_pie",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_bowcase_left,
- 140, weight(4)|spd_rtng(65)|weapon_length(20)|swing_damage(1,cut), imodbits_none, [(item_class, item_class_food, 75)]],
+ 140, weight(4)|spd_rtng(65)|weapon_length(20)|swing_damage(1,cut), imodbits_none, [itm_class(item_class_food, 75)]],
 ["apple_pie", "Apple Pie", [("pw_apple_pie",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_bowcase_left,
- 95, weight(4)|spd_rtng(65)|weapon_length(20)|swing_damage(1,cut), imodbits_none, [(item_class, item_class_food, 57)]],
+ 95, weight(4)|spd_rtng(65)|weapon_length(20)|swing_damage(1,cut), imodbits_none, [itm_class(item_class_food, 57)]],
 ["carrot", "Carrot", [("pw_carrot",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
- 15, weight(0.25)|spd_rtng(90)|weapon_length(25)|swing_damage(0,cut), imodbits_none, [(item_class, item_class_food, 8)]],
+ 15, weight(0.25)|spd_rtng(90)|weapon_length(25)|swing_damage(0,cut), imodbits_none, [itm_class(item_class_food, 8)]],
 ["salt_sack", "Salt Sack", [("pw_salt_sack",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_quiver_right_vertical,
- 400, weight(1.5)|spd_rtng(60)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [(item_class, item_class_food, 0)]],
+ 400, weight(1.5)|spd_rtng(60)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [itm_class(item_class_food, 0)]],
 ["salt", "Salt", [("pw_salt",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger,
- 100, weight(0.25)|spd_rtng(70)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [(item_class, item_class_food, 0)]],
+ 100, weight(0.25)|spd_rtng(70)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [itm_class(item_class_food, 0)]],
 
 ["surgeon_scalpel", "Surgeon's Scalpel", [("dagger_b",0),("dagger_b_scabbard",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_thrust_onehanded|itcf_carry_dagger_front_left|itcf_show_holster_when_drawn,
  3560, weight(0.75)|difficulty(0)|spd_rtng(50)|weapon_length(36)|thrust_damage(15, pierce), imodbits_sword],
@@ -1260,14 +1263,15 @@ itm_wall_banner("fac_8", "b"),
 
 item_class_list = []
 herd_animal_list = []
-def fill_item_class_list():
+
+def pre_process_items():
   for item_id, item in enumerate(items):
     if len(item) <= 8:
       continue
     trigger_list = item[8]
     triggers_to_pop = []
     for i, trigger in enumerate(trigger_list):
-      if trigger[0] == item_class:
+      if trigger[0] == tag_item_class:
         list_entry = [item_id]
         list_entry.extend(trigger[1:])
         item_class_list.append(list_entry)
@@ -1278,9 +1282,9 @@ def fill_item_class_list():
             ])
         else:
           triggers_to_pop.append(i)
-      elif trigger[0] == item_herd_animal:
+      elif trigger[0] == tag_item_herd_animal:
         herd_animal_list.append([item_id] + trigger[1:])
         triggers_to_pop.append(i)
     for i in reversed(triggers_to_pop):
       trigger_list.pop(i)
-fill_item_class_list()
+pre_process_items()
