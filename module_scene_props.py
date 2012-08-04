@@ -2219,6 +2219,7 @@ scene_props = [
   ("pw_import_wheat_sack",spr_use_time(30),"pw_wheat_sack","bo_pw_weapon_small", spr_import_item_triggers("itm_wheat_sack", pos_offset=(0,0,-20), price_multiplier=3000)),
   ("pw_import_fawn",spr_use_time(20),"sack","bo_sack_fixed", spr_import_item_triggers("itm_fawn", pos_offset=(0,50,50), price_multiplier=1000, check_script="script_cf_can_spawn_herd_animal")),
   ("pw_import_boarlet",spr_use_time(10),"sack","bo_sack_fixed", spr_import_item_triggers("itm_boarlet", pos_offset=(0,50,50), price_multiplier=1000, check_script="script_cf_can_spawn_herd_animal")),
+  ("pw_import_calf",spr_use_time(25),"sack","bo_sack_fixed", spr_import_item_triggers("itm_calf", pos_offset=(0,50,50), price_multiplier=1000, check_script="script_cf_can_spawn_herd_animal")),
   ("pw_export_wood_stick",spr_use_time(2),"pw_wood_box","bo_pw_wood_box", spr_export_item_triggers("itm_stick")),
   ("pw_export_wood_branch",spr_use_time(5),"wood_heap_b","bo_wood_heap_b", spr_export_item_triggers("itm_branch")),
   ("pw_export_wood_pole",spr_use_time(6),"pw_wood_pole","bo_pw_weapon_big", spr_export_item_triggers("itm_wood_pole")),

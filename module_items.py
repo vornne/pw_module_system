@@ -817,6 +817,11 @@ items = [
  itm_herd_animal(child_item="itm_boarlet", grow_age=7, max_in_herd=20, attack_reaction=animal_reaction_charge, meat=5, hide=2)],
 ["boarlet", "Boarlet", [("pw_boar",0)], itp_type_horse, 0,
  315, hit_points(80)|body_armor(10)|difficulty(11)|horse_speed(30)|horse_maneuver(65)|horse_charge(10)|horse_scale(40), imodbits_none],
+["cow", "Cow", [("pw_cow",0)], itp_type_horse, 0,
+ 1718, hit_points(150)|body_armor(15)|difficulty(11)|horse_speed(35)|horse_maneuver(65)|horse_charge(100)|horse_scale(100), imodbits_none,
+ itm_herd_animal(child_item="itm_calf", grow_age=12, max_in_herd=16, attack_reaction=animal_reaction_flee, meat=8, hide=6)],
+["calf", "Calf", [("pw_cow",0)], itp_type_horse, 0,
+ 723, hit_points(90)|body_armor(8)|difficulty(11)|horse_speed(37)|horse_maneuver(60)|horse_charge(30)|horse_scale(60), imodbits_none],
 
 ["stick", "Stick", [("wooden_stick",0),("pw_stick_carry",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_quiver_back,
  53, weight(3)|spd_rtng(90)|swing_damage(5,blunt)|weapon_length(63), imodbits_none, [itm_class(item_class_wood, 100)]],
