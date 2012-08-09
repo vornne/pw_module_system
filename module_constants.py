@@ -96,6 +96,7 @@ slot_agent_money_bag_3_value          = 12
 slot_agent_money_bag_4_value          = 13
 
 slot_agent_hunting_last_carcass       = 14
+slot_agent_died_normally              = 15
 
 slot_agent_animal_herd_manager        = 20
 slot_agent_animal_birth_time          = 21
