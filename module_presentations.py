@@ -4051,6 +4051,7 @@ presentations = [
         (player_is_active, ":player_id"),
         (player_get_gold, reg0, ":player_id"),
         (overlay_set_text, 0, "str_reg0"),
+        (assign, "$g_presentation_gold_current_value", reg0),
       (else_try),
         (neq, "$g_presentation_gold_current_value", "$g_overflow_gold_value"),
         (assign, "$g_presentation_gold_current_value", "$g_overflow_gold_value"),
