@@ -38,6 +38,8 @@ def generate_initialize_item_slots():
     item_max_ammo = get_max_ammo(item[6])
     if item_type in (itp_type_arrows, itp_type_bolts, itp_type_thrown) and item_max_ammo > 0:
       script_body.append((item_set_slot, item_id, slot_item_max_ammo, item_max_ammo))
+    if item[3] & itp_bonus_against_shield:
+      script_body.append((item_set_slot, item_id, slot_item_bonus_against_wood, 1))
   for entry in item_class_list:
     script_body.append((item_set_slot, entry[0], slot_item_class, entry[1]))
     if len(entry) > 2 and entry[2] > 0:

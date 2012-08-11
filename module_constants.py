@@ -199,6 +199,7 @@ slot_item_class                       = 2
 slot_item_resource_amount             = 3
 slot_item_gender                      = 4
 slot_item_max_ammo                    = 5
+slot_item_bonus_against_wood          = 6
 
 item_class_none                       = 0
 item_class_repair                     = 1
