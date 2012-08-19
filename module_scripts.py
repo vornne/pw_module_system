@@ -7337,6 +7337,7 @@ scripts = [
       (assign, ":fail", 1),
     (try_end),
     (eq, ":fail", 0),
+    (agent_set_animation, ":agent_id", "anim_access_inventory"),
     (scene_prop_get_slot, ":inventory_slot_end", ":instance_id", slot_scene_prop_inventory_count),
     (gt, ":inventory_slot_end", 0),
     (val_add, ":inventory_slot_end", slot_scene_prop_inventory_begin),
