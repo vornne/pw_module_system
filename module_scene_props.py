@@ -2212,6 +2212,7 @@ scene_props = [
   ("pw_stockpile_salt_sack",spr_use_time(1),"pw_salt_sack","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_salt_sack")),
   ("pw_stockpile_salted_fish",spr_use_time(1),"pw_fish","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_salted_fish")),
   ("pw_stockpile_salted_meat",spr_use_time(1),"pw_meat_salted","bo_pw_weapon", spr_stockpile_resource_triggers("itm_salted_meat")),
+  ("pw_stockpile_wheat_sheaf",spr_use_time(1),"pw_wheat_sheaf","bo_pw_weapon", spr_stockpile_resource_triggers("itm_wheat_sheaf")),
   ("pw_stockpile_beer_cask",spr_use_time(1),"pw_beer_cask_carry","bo_pw_beer_wine_barrel", spr_stockpile_resource_triggers("itm_beer_cask")),
   ("pw_stockpile_wine_barrel",spr_use_time(1),"pw_wine_barrel_carry","bo_pw_beer_wine_barrel", spr_stockpile_resource_triggers("itm_wine_barrel")),
   ("pw_stockpile_linen_cloth",spr_use_time(1),"pw_linen_cloth","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_linen_cloth")),
