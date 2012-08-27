@@ -121,6 +121,7 @@ slot_scene_prop_full_hit_points       = 5
 slot_scene_prop_is_mercenary          = 6
 slot_scene_prop_required_horse        = 7
 slot_scene_prop_average_craft_skill   = 8
+slot_scene_prop_is_resource_stockpile = 9
 
 slot_scene_prop_linked_scene_prop     = 10
 slot_scene_prop_linked_scene_prop_1   = 10
@@ -392,7 +393,6 @@ fish_school_minimum_depth             = 200
 fish_spawn_time                       = 300
 max_distance_to_include_in_herd       = 5000
 
-sell_item_gold_multiplier             = 80
 castle_tax_gold_multiplier            = 20
 castle_training_gold_multiplier       = 50
 craft_price_gold_reward_multiplier    = 20

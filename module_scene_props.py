@@ -44,7 +44,7 @@ def spr_check_hit_points(hp, low_hp=min_scene_prop_hit_points):
 def spr_check_inventory_count(count):
   return spr_check_value(count, 1, inventory_count_maximum, "Inventory count")
 
-def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=False, price_multiplier=None):
+def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=False, price_multiplier=None, resource_stock_count=False):
   init_trigger = (ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_item_id, item_id),
@@ -56,8 +56,12 @@ def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=Fals
   if stockpile is True:
     init_trigger[1].extend([
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count_update_time, -1),
-      (prop_instance_get_variation_id_2, ":initial_stock_count", ":instance_id"),
-      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count, ":initial_stock_count")])
+      (prop_instance_get_variation_id_2, ":initial_stock_count", ":instance_id")])
+    if resource_stock_count is True:
+      init_trigger[1].extend([(val_mod, ":initial_stock_count", 10),
+        (val_mul, ":initial_stock_count", 10),
+        (scene_prop_set_slot, ":instance_id", slot_scene_prop_is_resource_stockpile, 1)])
+    init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count, ":initial_stock_count"))
   if price_multiplier is not None:
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_multiplier, price_multiplier))
   return init_trigger
@@ -159,6 +163,10 @@ def spr_import_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_st
   if check_script is not None:
     triggers.append(spr_call_script_trigger(check_script, ti_on_scene_prop_start_use))
   return triggers
+
+def spr_stockpile_resource_triggers(item_id, use_string="str_stockpile"):
+  return [spr_item_init_trigger(item_id, use_string=use_string, stockpile=True, resource_stock_count=True),
+    spr_call_script_use_trigger("script_cf_use_resource_stockpile")]
 
 def spr_gain_gold_triggers(gold_value, use_string="str_collect_reg1_gold"):
   return [(ti_on_scene_prop_init,
@@ -446,10 +454,6 @@ def spr_process_resource_triggers(script_name, use_string):
       (call_script, script_name, ":agent_id", ":instance_id", 1),
       ]),
     ]
-
-def spr_stockpile_resource_triggers(item_id, use_string="str_stockpile"):
-  return [spr_item_init_trigger(item_id, use_string=use_string, stockpile=True),
-    spr_call_script_use_trigger("script_cf_use_resource_stockpile")]
 
 def spr_ship_triggers(hit_points=1000, length=1000, width=200, height=100, speed=5, sail=-1, sail_off=-1, ramp=-1, hold=-1, collision="pw_ship_a_cd"):
   if speed < 1 or speed > ship_forwards_maximum:
