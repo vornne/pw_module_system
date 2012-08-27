@@ -11,7 +11,9 @@ from header_animations import *
 #  4.2) Name of the animation resource.
 #  4.3) Beginning frame of the sequence within the animation resource.
 #  4.4) Ending frame of the sequence within the animation resource.
-#  4.5) Sequence flags: could be anything beginning with arf_ defined in header_animations.py
+#  4.5) Sequence flags: could be anything beginning with arf_ defined in header_animations.py.
+#  4.6) Sound timings: packed values to specify when hard coded sounds are played.
+#  4.7) Displacement vector: used with acf_displace_position.
 ####################################################################################################################
 
 #plan :
