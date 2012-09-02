@@ -698,7 +698,7 @@ pw_stockpile_*:^value 1 = faction + multiplier^value 2 = 01 - 09: initial and ta
 pw_export_*:^value 1 = faction + multiplier^value 2 = faction tax multiplier^^\
 pw_import_*:^value 1 = faction + multiplier^^\
 pw_change_troop_*:^value 1 = faction + multiplier^^\
-pw_door_rotate_*:^value 1 = faction + multiplier^value 2 = options bitfield (0x1 = start open, 0x2 = bolted, 0x4 = not pickable)^^\
+pw_door_rotate_*:^value 1 = faction + multiplier^value 2 = options bitfield (0x1 = start open, 0x2 = bolted, 0x4 = not pickable, 0x8 = half hit points)^^\
 pw_door_teleport_*:^value 1 = faction + multiplier^value 2 = linking id with x^^\
 pw mines:^value 1 = initial hit points / 1000^value 2 = respawn time multiplier^^\
 pw trees, bushes, plants, fields, vines:^value 2 = respawn time multiplier^^\
