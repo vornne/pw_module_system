@@ -284,7 +284,7 @@ def spr_lift_platform_triggers(winch):
   return [[link_scene_prop, winch, winch],
     [init_scene_prop, "script_cf_init_lift_platform"]]
 
-def spr_cart_triggers(horse=0, detach_offset=0, detach_rotation=0, inventory_count=0, max_item_length=100, access_distance=100, use_string="str_attach"):
+def spr_cart_triggers(horse=-1, detach_offset=0, detach_rotation=0, inventory_count=0, max_item_length=100, access_distance=100, use_string="str_attach"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_required_horse, horse),

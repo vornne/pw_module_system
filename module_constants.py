@@ -388,6 +388,7 @@ z_position_to_hide_object             = -4999
 z_position_water_level                = -30
 max_distance_to_use                   = 300
 max_distance_to_loot                  = 100
+max_distance_admin_cart               = 2000
 max_distance_to_catch_fish            = 2000
 fish_school_minimum_depth             = 200
 fish_spawn_time                       = 300
