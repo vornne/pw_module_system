@@ -536,6 +536,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("build", "Build"),
   ("access", "Access"),
   ("attach", "Attach"),
+  ("not_close_enough", "Not close enough"),
   ("s0__s1_", "{!}{s0} ({s1})"),
   ("drop_money_bag", "Drop money bag"),
   ("deposit_money_chest", "Deposit in money chest"),
