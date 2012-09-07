@@ -1286,7 +1286,7 @@ def pre_process_items():
         list_entry = [item_id]
         list_entry.extend(trigger[1:])
         item_class_list.append(list_entry)
-        if trigger[1] == item_class_food:
+        if trigger[1] == item_class_food and trigger[2] > 0:
           trigger_list[i] = (ti_on_weapon_attack,
            [(store_trigger_param_1, ":agent_id"),
             (call_script, "script_cf_eat_food", ":agent_id", item_id),
