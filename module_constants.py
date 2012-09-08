@@ -468,7 +468,7 @@ max_scene_prop_instance_id            = 10000
 max_food_amount                       = 100
 max_hit_points_percent                = 200
 
-all_items_begin = "itm_straw_hat"
+all_items_begin = "itm_tattered_headcloth"
 all_items_end = "itm_all_items_end"
 
 wielded_items_begin = "itm_club"
