@@ -7,6 +7,7 @@ from header_music import *
 from header_items import *
 from module_constants import *
 import header_debug as dbg
+import header_lazy_evaluation as lazy
 
 ####################################################################################################################
 #   Each mission-template is a tuple that contains the following fields:

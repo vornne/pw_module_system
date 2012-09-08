@@ -11,6 +11,7 @@ from header_music import *
 from header_map_icons import *
 from header_sounds import *
 import header_debug as dbg
+import header_lazy_evaluation as lazy
 import math
 
 ####################################################################################################################

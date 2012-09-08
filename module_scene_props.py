@@ -5,6 +5,7 @@ from header_triggers import *
 from header_sounds import *
 from module_constants import *
 import header_debug as dbg
+import header_lazy_evaluation as lazy
 
 ####################################################################################################################
 #  Each scene prop record contains the following fields:

@@ -4,6 +4,7 @@ from header_tableau_materials import *
 from header_items import *
 from module_constants import *
 import header_debug as dbg
+import header_lazy_evaluation as lazy
 
 ####################################################################################################################
 #  Each tableau material contains the following fields:

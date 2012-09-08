@@ -3,6 +3,7 @@ from header_common import *
 from header_operations import *
 from header_triggers import *
 import process_common as pc
+import header_lazy_evaluation as lazy
 import module_info
 
 remove_opmask = 0xffffffff
@@ -169,6 +170,8 @@ class Processor:
       else:
         tag_name = param.partition("_")
         result = self.identifier_map.get_id(tag_name[0], tag_name[2], opmask=True)
+    elif isinstance(param, lazy.LazyIdEvaluation):
+      result = param.process(self)
     else:
       result = param
     return result
