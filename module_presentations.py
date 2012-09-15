@@ -16,32 +16,6 @@ import header_lazy_evaluation as lazy
 #  4) Triggers: Simple triggers that are associated with the presentation
 ####################################################################################################################
 
-def prsnt_generate_find_object_slot(handler_operation_list):
-  find_object_slot_list = [(store_trigger_param_1, ":object_id"),
-    (neq, ":object_id", "$g_show_inventory_obj_container"),
-    (neq, ":object_id", "$g_show_inventory_obj_left_border"),
-    (neq, ":object_id", "$g_show_inventory_obj_right_border"),
-    (assign, ":found_obj_slot", -1),
-    (scene_prop_get_slot, ":inventory_count", "$g_show_inventory_instance_id", slot_scene_prop_inventory_count),
-    (store_add, ":inventory_obj_end", ":inventory_count", slot_scene_prop_inventory_obj_begin),
-    (try_for_range, ":inventory_obj_slot", slot_scene_prop_inventory_obj_begin, ":inventory_obj_end"),
-      (scene_prop_slot_eq, "$g_show_inventory_instance_id", ":inventory_obj_slot", ":object_id"),
-      (assign, ":found_obj_slot", ":inventory_obj_slot"),
-      (assign, ":inventory_obj_end", slot_scene_prop_inventory_obj_begin),
-    (try_end),
-    (try_begin),
-      (eq, ":found_obj_slot", -1),
-      (assign, ":inventory_obj_end", slot_scene_prop_inventory_obj_item_0 + ek_gloves + 1),
-      (try_for_range, ":inventory_obj_slot", slot_scene_prop_inventory_obj_begin, ":inventory_obj_end"),
-        (scene_prop_slot_eq, "$g_show_inventory_instance_id", ":inventory_obj_slot", ":object_id"),
-        (assign, ":found_obj_slot", ":inventory_obj_slot"),
-        (assign, ":inventory_obj_end", slot_scene_prop_inventory_obj_item_0),
-      (try_end),
-    (try_end),
-    (gt, ":found_obj_slot", -1),
-    ]
-  return find_object_slot_list + handler_operation_list
-
 presentations = [
   ("game_credits",prsntf_read_only,"mesh_load_window",
    [(ti_on_presentation_load,
@@ -3260,6 +3234,36 @@ presentations = [
       ]),
     ]),
 
+  ]
+
+def prsnt_generate_find_object_slot(handler_operation_list):
+  find_object_slot_list = [(store_trigger_param_1, ":object_id"),
+    (neq, ":object_id", "$g_show_inventory_obj_container"),
+    (neq, ":object_id", "$g_show_inventory_obj_left_border"),
+    (neq, ":object_id", "$g_show_inventory_obj_right_border"),
+    (assign, ":found_obj_slot", -1),
+    (scene_prop_get_slot, ":inventory_count", "$g_show_inventory_instance_id", slot_scene_prop_inventory_count),
+    (store_add, ":inventory_obj_end", ":inventory_count", slot_scene_prop_inventory_obj_begin),
+    (try_for_range, ":inventory_obj_slot", slot_scene_prop_inventory_obj_begin, ":inventory_obj_end"),
+      (scene_prop_slot_eq, "$g_show_inventory_instance_id", ":inventory_obj_slot", ":object_id"),
+      (assign, ":found_obj_slot", ":inventory_obj_slot"),
+      (assign, ":inventory_obj_end", slot_scene_prop_inventory_obj_begin),
+    (try_end),
+    (try_begin),
+      (eq, ":found_obj_slot", -1),
+      (assign, ":inventory_obj_end", slot_scene_prop_inventory_obj_item_0 + ek_gloves + 1),
+      (try_for_range, ":inventory_obj_slot", slot_scene_prop_inventory_obj_begin, ":inventory_obj_end"),
+        (scene_prop_slot_eq, "$g_show_inventory_instance_id", ":inventory_obj_slot", ":object_id"),
+        (assign, ":found_obj_slot", ":inventory_obj_slot"),
+        (assign, ":inventory_obj_end", slot_scene_prop_inventory_obj_item_0),
+      (try_end),
+    (try_end),
+    (gt, ":found_obj_slot", -1),
+    ]
+  return find_object_slot_list + handler_operation_list
+
+presentations.extend([
+
   ("show_inventory", prsntf_manual_end_only, 0,
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
@@ -4521,4 +4525,4 @@ presentations = [
       ]),
     ]),
 
-  ]
+  ])
