@@ -4439,7 +4439,7 @@ presentations.extend([
         (try_end),
       (else_try),
         (eq, ":string_id", "str_toggle_automatic_shadow_recalculation"),
-        (val_add, "$g_disable_automatic_shadow_recalculation"),
+        (val_add, "$g_disable_automatic_shadow_recalculation", 1),
         (val_mod, "$g_disable_automatic_shadow_recalculation", 2),
       (try_end),
       (try_begin),
