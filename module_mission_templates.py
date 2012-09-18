@@ -575,6 +575,7 @@ mission_templates = [
      [(multiplayer_is_server),
       (gt, "$g_loop_animal_herd_begin", 0),
       (try_begin),
+        (agent_is_active, "$g_loop_animal_herd_leader"),
         (scene_spawned_item_get_instance, ":herd_manager", "itm_animal_herd_manager", "$g_loop_animal_herd_to_move"),
         (store_mission_timer_a, ":time"),
         (scene_prop_get_slot, ":adult_item_id", ":herd_manager", slot_animal_herd_manager_adult_item_id),
