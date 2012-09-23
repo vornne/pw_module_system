@@ -761,6 +761,7 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("scene_name_11", "Across the River"),
   ("scene_name_12", "Game of Thrones"),
   ("scene_name_13", "Dominion"),
+  ("scene_name_14", "Titan Isle"),
   ("scene_names_end", "scene_names_end"),
 
   ("castle_name_0", "Laszloburg Castle"),
