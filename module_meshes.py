@@ -376,6 +376,7 @@ meshes = [
   ("mp_ui_host_maps_16", 0, "mp_ui_host_maps_d1", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("mp_ui_host_maps_17", 0, "mp_ui_host_maps_d2", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("mp_ui_host_maps_18", 0, "mp_ui_host_maps_d3", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("mp_ui_order_button", 0, "mp_ui_order_button", 0, 0, 0, 0, 0, 0, 1, 1, 1),
 
   ("tableau_mesh_pw_banner_pole", 0, "tableau_mesh_pw_banner_pole",  0, 0, 0, 0, 0, 0, 1, 1, 1),
 

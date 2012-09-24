@@ -31,7 +31,9 @@ server_event_admin_chat                         = 23
 server_event_admin_chat_shout                   = 24
 server_event_admin_set_permissions              = 25
 server_event_set_attached_scene_prop            = 26
+server_event_local_animation                    = 27
 
+client_event_request_animation                  = 95
 client_event_reveal_money_pouch                 = 96
 client_event_agent_loot_armor                   = 97
 client_event_toggle_drop_armor                  = 98

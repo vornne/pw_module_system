@@ -10,6 +10,7 @@ from header_skills import *
 from header_troops import *
 from module_items import *
 from module_scene_props import *
+from module_animations import *
 
 def generate_store_troop_skills_description():
   script_body = [(store_script_param, ":troop_id", 1)]
@@ -82,4 +83,12 @@ def generate_setup_scene_props_after_mission_start():
         tuple([call_script, link_entry[1], ":instance_id"] + link_entry[2:]),
       (try_end),
       ])
+  return script_body
+
+def generate_initialize_animation_durations():
+  script_body = []
+  for animation_id, animation in enumerate(animations):
+    variant_durations = [variant[0] for variant in animation[3:]]
+    average_duration = int(1000 * sum(variant_durations) / len(variant_durations) + 200)
+    script_body.append((troop_set_slot, "trp_animation_durations", animation_id, average_duration))
   return script_body

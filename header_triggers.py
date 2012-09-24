@@ -362,6 +362,7 @@ gk_admin_chat = gk_view_orders
 gk_money_bag = gk_party_window
 gk_target_agent = gk_quick_save
 gk_action_menu = gk_character_window
+gk_animation_menu = gk_everyone_around_hear
 
 # trigger positions
 trigger_check_pos = 0

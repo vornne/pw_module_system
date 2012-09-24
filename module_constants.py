@@ -97,6 +97,9 @@ slot_agent_money_bag_4_value          = 13
 
 slot_agent_hunting_last_carcass       = 14
 slot_agent_died_normally              = 15
+slot_agent_animation_end_time_ms      = 16
+slot_agent_last_animation_string_id   = 17
+slot_agent_recent_animations_delay_ms = 18
 
 slot_agent_animal_herd_manager        = 20
 slot_agent_animal_birth_time          = 21
@@ -384,6 +387,7 @@ max_distance_local_chat               = 3000
 max_distance_local_chat_shout         = 5000
 ambient_distance_local_chat           = 1000
 ambient_distance_local_chat_shout     = 2000
+max_distance_local_animation          = 2500
 z_position_to_hide_object             = -4999
 z_position_water_level                = -30
 max_distance_to_use                   = 300
@@ -428,12 +432,14 @@ escape_menu_item_height               = 35
 admin_panel_item_height               = 40
 action_menu_item_height               = 23
 faction_menu_item_height              = 120
+animation_menu_item_height            = 32
 chat_overlay_item_height              = 17
 chat_overlay_ring_buffer_begin        = "trp_chat_overlay_ring_buffer_0"
 chat_overlay_ring_buffer_end          = "trp_chat_overlay_ring_buffer_end"
 chat_overlay_ring_buffer_size         = 11
 local_chat_color                      = 0xFFFFDD8A
 local_chat_shout_color                = 0xFFFF8C27
+local_animation_color                 = 0xFFFFBBAA
 admin_chat_color                      = 0xFFFF00FF
 invalid_faction_color                 = 0xFF888888
 
@@ -462,6 +468,8 @@ select_agent_max_x                    = 300
 select_agent_max_y                    = 200
 presentation_max_x                    = 1000
 presentation_max_y                    = 750
+
+animation_menu_end_offset             = 11
 
 max_scene_prop_instance_id            = 10000
 
@@ -518,3 +526,6 @@ ambient_sounds_end = "snd_sounds_end"
 
 action_menu_strings_begin = "str_toggle_name_labels"
 action_menu_strings_end = "str_action_menu_end"
+
+animation_strings_begin = "str_anim_cheer"
+animation_strings_end = "str_log_animation"

@@ -153,4 +153,6 @@ troops = [
   ["ship_array","ship_array","ship_array",0,0,0,0,[],0,0,0,0,0],
   ["cart_array","cart_array","cart_array",0,0,0,0,[],0,0,0,0,0],
   ["removed_scene_props","removed_scene_props","removed_scene_props",0,0,0,0,[],0,0,0,0,0],
+  ["animation_menu_strings","animation_menu_strings","animation_menu_strings",0,0,0,0,[],0,0,0,0,0],
+  ["animation_durations","animation_durations","animation_durations",0,0,0,0,[],0,0,0,0,0],
 ]

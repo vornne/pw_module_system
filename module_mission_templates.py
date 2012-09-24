@@ -765,6 +765,15 @@ mission_templates = [
       (start_presentation, "prsnt_money_bag"),
       ]),
 
+    (0, 0.05, 0, [(game_key_clicked, gk_animation_menu),(call_script, "script_cf_no_input_presentation_active")],
+     [(try_begin),
+        (eq, "$g_animation_menu_no_mouse_grab", 1),
+        (start_presentation, "prsnt_animation_menu_no_mouse_grab"),
+      (else_try),
+        (start_presentation, "prsnt_animation_menu"),
+      (try_end),
+      ]),
+
     (0, 0, ti_once, [],
      [(neg|multiplayer_is_server),
       (str_store_welcome_message, s10),
