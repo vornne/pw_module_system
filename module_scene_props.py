@@ -2227,6 +2227,7 @@ scene_props = [
   ("pw_stockpile_wheat_sheaf",spr_use_time(1),"pw_wheat_sheaf","bo_pw_weapon", spr_stockpile_resource_triggers("itm_wheat_sheaf")),
   ("pw_stockpile_beer_cask",spr_use_time(1),"pw_beer_cask_carry","bo_pw_beer_wine_barrel", spr_stockpile_resource_triggers("itm_beer_cask")),
   ("pw_stockpile_wine_barrel",spr_use_time(1),"pw_wine_barrel_carry","bo_pw_beer_wine_barrel", spr_stockpile_resource_triggers("itm_wine_barrel")),
+  ("pw_stockpile_linen_thread",spr_use_time(1),"pw_linen_thread","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_linen_thread")),
   ("pw_stockpile_linen_cloth",spr_use_time(1),"pw_linen_cloth","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_linen_cloth")),
   ("pw_stockpile_leather_roll",spr_use_time(1),"pw_leather_roll","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_leather_roll")),
   ("pw_import_wheat_sack",spr_use_time(30),"pw_wheat_sack","bo_pw_weapon_small", spr_import_item_triggers("itm_wheat_sack", pos_offset=(0,0,-20), price_multiplier=3000)),
