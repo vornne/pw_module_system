@@ -10846,6 +10846,24 @@ scripts = [
 
   ("initialize_animation_durations", []),
 
+]
+
+first_animation_menu_entry = True
+def animation_menu_entry(string_id, **kwargs):
+  result = [(else_try), (eq, ":string_id", string_id)]
+  global first_animation_menu_entry
+  if first_animation_menu_entry:
+    result = result[1:]
+    first_animation_menu_entry = False
+  for name in kwargs:
+    value = kwargs[name]
+    if not isinstance(value, basestring):
+      value = int(value)
+    result.append((assign, ":" + name, value))
+  return lazy.block(result)
+
+scripts.extend([
+
   ("cf_try_execute_animation",
    [(store_script_param, ":player_id", 1),
     (store_script_param, ":string_id", 2),
@@ -10884,47 +10902,35 @@ scripts = [
       (assign, ":prevent_if_moving", 0),
       (assign, ":add_to_chat", 0),
       (try_begin),
-        (eq, ":string_id", "str_anim_cheer"),
-        (assign, ":animation", "anim_cheer"),
-        (assign, ":man_sound", "snd_man_victory"),
-      (else_try),
-        (eq, ":string_id", "str_anim_clap"),
-        (assign, ":animation", "anim_man_clap"),
-        (assign, ":woman_alt_animation", "anim_woman_clap"),
-        (assign, ":prevent_if_wielding", 1),
-      (else_try),
-        (eq, ":string_id", "str_anim_raise_sword"),
-        (assign, ":animation", "anim_pose_raise_sword"),
-      (else_try),
-        (eq, ":string_id", "str_anim_hands_on_hips"),
-        (assign, ":animation", "anim_pose_hands_on_hips"),
-        (assign, ":prevent_if_wielding", 1),
-        (assign, ":prevent_if_moving", 1),
-      (else_try),
-        (eq, ":string_id", "str_anim_arms_crossed"),
-        (assign, ":animation", "anim_pose_arms_crossed"),
-        (assign, ":prevent_if_wielding", 1),
-        (assign, ":prevent_if_moving", 1),
-      (else_try),
-        (eq, ":string_id", "str_anim_stand_still"),
-        (assign, ":animation", "anim_stand_lord"),
-        (assign, ":woman_alt_animation", "anim_stand_lady"),
-        (assign, ":prevent_if_moving", 1),
-      (else_try),
-        (assign, ":add_to_chat", 1),
-        (eq, ":string_id", "str_anim_away_vile_beggar"),
-        (assign, ":man_sound", "snd_away_vile_beggar"),
-        (assign, ":duration_ms", 2100),
-      (else_try),
-        (eq, ":string_id", "str_anim_war_cry"),
-        (assign, ":man_sound", "snd_man_warcry"),
-        (assign, ":woman_sound", "snd_woman_yell"),
-        (assign, ":duration_ms", 2100),
-        (assign, ":add_to_chat", 0),
-      (else_try),
-        (eq, ":string_id", "str_anim_stand_and_deliver"),
-        (assign, ":man_sound", "snd_stand_and_deliver"),
-        (assign, ":duration_ms", 1500),
+        animation_menu_entry("str_anim_cheer", animation="anim_cheer", man_sound="snd_man_victory"),
+        animation_menu_entry("str_anim_clap", animation="anim_man_clap", woman_alt_animation="anim_woman_clap", prevent_if_wielding=1),
+        animation_menu_entry("str_anim_raise_sword", animation="anim_pose_raise_sword"),
+        animation_menu_entry("str_anim_hands_on_hips", animation="anim_pose_hands_on_hips", prevent_if_wielding=1, prevent_if_moving=1),
+        animation_menu_entry("str_anim_arms_crossed", animation="anim_pose_arms_crossed", prevent_if_wielding=1, prevent_if_moving=1),
+        animation_menu_entry("str_anim_stand_still", animation="anim_stand_lord", woman_alt_animation="anim_stand_lady", prevent_if_moving=1),
+        animation_menu_entry("str_anim_away_vile_beggar", man_sound="snd_away_vile_beggar", duration_ms=2100, add_to_chat=1),
+        animation_menu_entry("str_anim_my_lord", man_sound="snd_my_lord", duration_ms=700, add_to_chat=1),
+        animation_menu_entry("str_anim_almost_harvesting_season", man_sound="snd_almost_harvesting_season", duration_ms=1900, add_to_chat=1),
+        animation_menu_entry("str_anim_whats_this_then", man_sound="snd_whats_this_then", duration_ms=1300, add_to_chat=1),
+        animation_menu_entry("str_anim_out_for_a_stroll_are_we", man_sound="snd_out_for_a_stroll_are_we", duration_ms=1900, add_to_chat=1),
+        animation_menu_entry("str_anim_we_ride_to_war", man_sound="snd_we_ride_to_war", duration_ms=2600, add_to_chat=1),
+        animation_menu_entry("str_anim_less_talking_more_raiding", man_sound="snd_less_talking_more_raiding", duration_ms=1900, add_to_chat=1),
+        animation_menu_entry("str_anim_you_there_stop", man_sound="snd_you_there_stop", duration_ms=1700, add_to_chat=1),
+        animation_menu_entry("str_anim_war_cry", man_sound="snd_man_warcry", woman_sound="snd_woman_yell", duration_ms=2100),
+        animation_menu_entry("str_anim_tear_you_limb_from_limb", man_sound="snd_tear_you_limb_from_limb", duration_ms=3100, add_to_chat=1),
+        animation_menu_entry("str_anim_better_not_be_a_manhunter", man_sound="snd_better_not_be_a_manhunter", duration_ms=2300, add_to_chat=1),
+        animation_menu_entry("str_anim_drink_from_your_skull", man_sound="snd_drink_from_your_skull", duration_ms=1800, add_to_chat=1),
+        animation_menu_entry("str_anim_gods_will_decide_your_fate", man_sound="snd_gods_will_decide_your_fate", duration_ms=2100, add_to_chat=1),
+        animation_menu_entry("str_anim_nice_head_on_shoulders", man_sound="snd_nice_head_on_shoulders", duration_ms=2400, add_to_chat=1),
+        animation_menu_entry("str_anim_hunt_you_down", man_sound="snd_hunt_you_down", duration_ms=2100, add_to_chat=1),
+        animation_menu_entry("str_anim_dead_men_tell_no_tales", man_sound="snd_dead_men_tell_no_tales", duration_ms=1800, add_to_chat=1),
+        animation_menu_entry("str_anim_stand_and_deliver", man_sound="snd_stand_and_deliver", duration_ms=1500, add_to_chat=1),
+        animation_menu_entry("str_anim_your_money_or_your_life", man_sound="snd_your_money_or_your_life", duration_ms=2100, add_to_chat=1),
+        animation_menu_entry("str_anim_have_our_pay_or_fun", man_sound="snd_have_our_pay_or_fun", duration_ms=3200, add_to_chat=1),
+        animation_menu_entry("str_anim_word_about_purse_belongings", man_sound="snd_word_about_purse_belongings", duration_ms=3800, add_to_chat=1),
+        animation_menu_entry("str_anim_easy_way_or_hard_way", man_sound="snd_easy_way_or_hard_way", duration_ms=3400, add_to_chat=1),
+        animation_menu_entry("str_anim_everything_has_a_price", man_sound="snd_everything_has_a_price", duration_ms=3100, add_to_chat=1),
+        animation_menu_entry("str_anim_slit_your_throat", man_sound="snd_slit_your_throat", duration_ms=2400, add_to_chat=1),
       (else_try),
         (assign, ":string_id", -1),
       (try_end),
@@ -11035,4 +11041,4 @@ scripts = [
     (neq, ":only_test", 0),
     ]),
 
-]
+])
