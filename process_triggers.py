@@ -4,8 +4,8 @@ import module_triggers
 def process_entry(processor, txt_file, entry, index):
   output_list = ["%f %f %f " % entry[0:3]]
   name = "#%d" % index
-  output_list.extend(processor.process_block_name(entry[3], name + " conditions"))
-  output_list.extend(processor.process_block_name(entry[4], name + " consequences"))
+  output_list.extend(processor.process_block(entry[3], name + " conditions"))
+  output_list.extend(processor.process_block(entry[4], name + " consequences"))
   output_list.append("\r\n")
   txt_file.write("".join(output_list))
 

@@ -1,5 +1,6 @@
 from header_common import reg
 from header_operations import assign, display_message, server_add_message_to_log
+import header_lazy_evaluation as lazy
 
 register_begin = 80
 register_end = 100
@@ -50,3 +51,9 @@ def display(message=None, reset=True):
 
 def log(message=None, reset=True):
   return (server_add_message_to_log, generate_string(message, reset))
+
+def vars(*args):
+  return lazy.block([var(arg) for arg in args])
+
+def vars_display(*args):
+  return lazy.block([var(arg) for arg in args] + [display()])

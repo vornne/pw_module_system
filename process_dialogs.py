@@ -67,10 +67,10 @@ def process_entry(processor, txt_file, entry, index):
     speaker |= processor.process_id(trp_pt, "trp")
   speaker |= flags
   output_list = ["%s %d %d " % (name, speaker, start_states[index])]
-  output_list.extend(processor.process_block_name(entry[conditions_pos], "%s conditions" % name))
+  output_list.extend(processor.process_block(entry[conditions_pos], "%s conditions" % name))
   output_list.append("%s " % pc.replace_spaces(entry[text_pos]) if entry[text_pos] else "NO_TEXT ")
   output_list.append(" %d " % end_states[index])
-  output_list.extend(processor.process_block_name(entry[consequences_pos], "%s consequences" % name))
+  output_list.extend(processor.process_block(entry[consequences_pos], "%s consequences" % name))
   output_list.append("%s " % entry[voice_pos] if len(entry) > voice_pos else "NO_VOICEOVER ")
   output_list.append("\r\n")
   txt_file.write("".join(output_list))

@@ -24,3 +24,9 @@ class sub(LazyIdEvaluation):
 
   def process(self, processor):
     return self.recurse(processor, self.a) - self.recurse(processor, self.b)
+
+class block:
+  """Inserts a list of operations inside an exisiting block."""
+
+  def __init__(self, block):
+    self.block = block

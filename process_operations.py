@@ -203,49 +203,54 @@ class Processor:
         is_lhs_param = False
     return result, opcode
 
+  def process_statements(self, statements):
+    for statement in statements:
+      if isinstance(statement, lazy.block):
+        self.process_statements(statement.block)
+      else:
+        statement_result, opcode = self.process_statement(statement)
+        self.current_block_result.extend(statement_result)
+        self.current_statement_count += 1
+        if opcode in try_begin_operations:
+          self.current_indent += 1
+        elif opcode == try_end:
+          self.current_indent -= 1
+        if self.current_block_check_can_fail and self.current_indent == 0 and not self.current_block_name.startswith("cf_"):
+          if opcode & 0xfffffff in can_fail_operations:
+            pc.WARNING("script can fail: use cf_ at the beginning of its name", entry=self.current_block_name, opcode=opcode)
+          elif opcode == call_script and statement[1].startswith("cf_", 7):
+            pc.WARNING("script can fail from calling '%s': use cf_ at the beginning of its name" % statement[1], entry=self.current_block_name, opcode=opcode)
+
   def process_block(self, block, name, check_can_fail=False):
     self.local_variables = LocalVariables()
-    statement_count = block_len(block)
-    result = [" %d " % statement_count]
-    current_indent = 0
-    for statement in block:
-      statement_result, opcode = self.process_statement(statement)
-      result.extend(statement_result)
-      if opcode in try_begin_operations:
-        current_indent += 1
-      elif opcode == try_end:
-        current_indent -= 1
-      if check_can_fail and current_indent == 0 and (((opcode & 0xfffffff) in can_fail_operations or
-          ((opcode == call_script and statement[1].startswith("cf_", 7)))) and (not name.startswith("cf_"))):
-        pc.WARNING("script can fail: use cf_ at the beginning of its name", entry=name, opcode=opcode)
-    self.local_variables.warn_unused(name)
-    if current_indent != 0:
-      if current_indent > 0:
-        missing = "missing"
-      else:
-        missing = "extra"
-        current_indent *= -1
-      pc.ERROR("%d %s try_end" % (current_indent, missing))
-    return result
-
-  def process_block_name(self, block, name):
+    self.current_block_result = [None]
+    self.current_statement_count = 0
+    self.current_indent = 0
+    self.current_block_name = name
+    self.current_block_check_can_fail = check_can_fail
     try:
-      return self.process_block(block, name)
+      self.process_statements(block)
     except pc.ModuleSystemError as e:
       if not e.entry:
         e.entry = name
       raise
+    self.local_variables.warn_unused(name)
+    if self.current_indent != 0:
+      if self.current_indent > 0:
+        missing = "missing"
+      else:
+        missing = "extra"
+        self.current_indent *= -1
+      pc.ERROR("%d %s try_end" % (self.current_indent, missing), entry=name)
+    self.current_block_result[0] = " %d " % self.current_statement_count
+    return self.current_block_result
 
   def process_triggers(self, triggers, name):
     result = ["%d" % block_len(triggers)]
     for trigger in triggers:
       result.append("\r\n%f " % trigger[0])
       trigger_name = "%s: %s" % (name, get_trigger_name(trigger[0]))
-      try:
-        result.extend(self.process_block(trigger[1], trigger_name))
-      except pc.ModuleSystemError as e:
-        e.entry = trigger_name
-        raise
+      result.extend(self.process_block(trigger[1], trigger_name))
     result.append("\r\n")
     return result
 
