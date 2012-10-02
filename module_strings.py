@@ -555,6 +555,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("destroy_all_items_cart", "Destroy all items in cart"),
   ("process_wood", "Process wood"),
   ("process_metal", "Smelt metal"),
+  ("process_hammer_metal", "Hammer metal"),
   ("process_grind", "Grind"),
   ("process_cook", "Cook"),
   ("process_press", "Press"),
