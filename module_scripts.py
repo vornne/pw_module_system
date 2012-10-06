@@ -6061,17 +6061,38 @@ scripts = [
     (try_end),
     ]),
 
-  ("cf_process_wood",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":finished", 3),
+]
 
-    (agent_get_troop_id, ":troop_id", ":agent_id"),
-    (store_skill_level, ":engineer", "skl_engineer", ":troop_id"),
-    (ge, ":engineer", 1),
-    (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
-    (ge, ":resource_item_id", all_items_begin),
-    (item_slot_eq, ":resource_item_id", slot_item_class, item_class_wood),
+def generate_process_init(skill=None, level=1, resource_class=None, start_effect=True, get_relative_pos=False):
+  operations = [(store_script_param, ":agent_id", 1)]
+  if start_effect or get_relative_pos:
+    operations.append((store_script_param, ":instance_id", 2))
+  operations.append((store_script_param, ":finished", 3))
+  if not start_effect:
+    operations.append((eq, ":finished", 1))
+  if skill is not None and level > 0:
+    operations.extend([(agent_get_troop_id, ":troop_id", ":agent_id"),
+      (store_skill_level, ":skill_level", skill, ":troop_id"),
+      (ge, ":skill_level", level)])
+  operations.extend([(agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
+    (ge, ":resource_item_id", all_items_begin)])
+  if resource_class is not None:
+    if isinstance(resource_class, list):
+      operations.extend([(this_or_next|item_slot_eq, ":resource_item_id", slot_item_class, rc) for rc in resource_class[:-1]])
+      resource_class = resource_class[-1]
+    operations.append((item_slot_eq, ":resource_item_id", slot_item_class, resource_class))
+  if get_relative_pos:
+    operations.extend([(prop_instance_get_position, pos1, ":instance_id"),
+      (agent_get_position, pos2, ":agent_id"),
+      (position_transform_position_to_local, pos3, pos1, pos2),
+      (position_get_y, ":relative_y_position", pos3)])
+  return lazy.block(operations)
+
+scripts.extend([
+
+  ("cf_process_wood",
+   [generate_process_init(skill="skl_engineer", level=1, resource_class=item_class_wood),
+
     (assign, ":processed_item_id", -1),
     (assign, ":processed_item_count", 1),
     (try_begin),
@@ -6105,24 +6126,11 @@ scripts = [
     ]),
 
   ("cf_process_iron",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":finished", 3),
+   [generate_process_init(skill="skl_engineer", level=2, resource_class=[item_class_iron, item_class_precious], get_relative_pos=True),
 
-    (agent_get_troop_id, ":troop_id", ":agent_id"),
-    (store_skill_level, ":engineer", "skl_engineer", ":troop_id"),
-    (ge, ":engineer", 2),
-    (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
-    (ge, ":resource_item_id", all_items_begin),
-    (this_or_next|item_slot_eq, ":resource_item_id", slot_item_class, item_class_iron),
-    (item_slot_eq, ":resource_item_id", slot_item_class, item_class_precious),
     (assign, ":processed_item_id", -1),
     (assign, ":processed_item_count", 1),
     (assign, ":resource_item_count", 1),
-    (prop_instance_get_position, pos1, ":instance_id"),
-    (agent_get_position, pos2, ":agent_id"),
-    (position_transform_position_to_local, pos3, pos1, pos2),
-    (position_get_y, ":relative_y_position", pos3),
     (try_begin),
       (eq, ":resource_item_id", "itm_iron_ore"),
       (assign, ":processed_item_count", 2),
@@ -6180,16 +6188,8 @@ scripts = [
     ]),
 
   ("cf_process_iron_divide_only",
-   [(store_script_param, ":agent_id", 1),
-    #(store_script_param, ":instance_id", 2),
-    (store_script_param, ":finished", 3),
+   [generate_process_init(skill="skl_engineer", level=2, resource_class=item_class_iron),
 
-    (agent_get_troop_id, ":troop_id", ":agent_id"),
-    (store_skill_level, ":engineer", "skl_engineer", ":troop_id"),
-    (ge, ":engineer", 2),
-    (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
-    (ge, ":resource_item_id", all_items_begin),
-    (item_slot_eq, ":resource_item_id", slot_item_class, item_class_iron),
     (assign, ":processed_item_id", -1),
     (try_begin),
       (eq, ":resource_item_id", "itm_iron_bar_short"),
@@ -6209,20 +6209,13 @@ scripts = [
     (else_try),
       (eq, ":finished", 0),
       (agent_play_sound, ":agent_id", "snd_blacksmith"),
+      (neq, ":instance_id", 0),
     (try_end),
     ]),
 
   ("cf_process_grind",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":finished", 3),
+   [generate_process_init(skill="skl_labouring", level=1, resource_class=item_class_food),
 
-    (agent_get_troop_id, ":troop_id", ":agent_id"),
-    (store_skill_level, ":labouring", "skl_labouring", ":troop_id"),
-    (ge, ":labouring", 1),
-    (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
-    (ge, ":resource_item_id", all_items_begin),
-    (item_slot_eq, ":resource_item_id", slot_item_class, item_class_food),
     (assign, ":processed_item_id", -1),
     (assign, ":processed_item_count", 1),
     (assign, ":resource_item_count", 1),
@@ -6230,7 +6223,7 @@ scripts = [
       (eq, ":resource_item_id", "itm_wheat_sheaf"),
       (assign, ":processed_item_id", "itm_flour_sack"),
       (try_begin),
-        (ge, ":labouring", 5),
+        (ge, ":skill_level", 5),
         (assign, ":resource_item_count", 3),
       (else_try),
         (assign, ":resource_item_count", 4),
@@ -6250,16 +6243,8 @@ scripts = [
     ]),
 
   ("cf_process_cook",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":finished", 3),
+   [generate_process_init(skill="skl_labouring", level=1, resource_class=item_class_food),
 
-    (agent_get_troop_id, ":troop_id", ":agent_id"),
-    (store_skill_level, ":labouring", "skl_labouring", ":troop_id"),
-    (ge, ":labouring", 1),
-    (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
-    (ge, ":resource_item_id", all_items_begin),
-    (item_slot_eq, ":resource_item_id", slot_item_class, item_class_food),
     (assign, ":processed_item_id", -1),
     (assign, ":processed_item_count", 1),
     (assign, ":resource_item_count", 1),
@@ -6282,7 +6267,7 @@ scripts = [
       (try_begin),
         (eq, ":finished", 1),
         (try_begin),
-          (ge, ":labouring", 5),
+          (ge, ":skill_level", 5),
           (assign, ":processed_item_count", 5),
         (else_try),
           (assign, ":processed_item_count", 4),
@@ -6318,16 +6303,8 @@ scripts = [
     ]),
 
   ("cf_process_press",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":finished", 3),
+   [generate_process_init(skill="skl_labouring", level=1, resource_class=item_class_food),
 
-    (agent_get_troop_id, ":troop_id", ":agent_id"),
-    (store_skill_level, ":labouring", "skl_labouring", ":troop_id"),
-    (ge, ":labouring", 1),
-    (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
-    (ge, ":resource_item_id", all_items_begin),
-    (item_slot_eq, ":resource_item_id", slot_item_class, item_class_food),
     (assign, ":processed_item_id", -1),
     (assign, ":processed_item_count", 1),
     (assign, ":resource_item_count", 1),
@@ -6339,7 +6316,7 @@ scripts = [
       (eq, ":resource_item_id", "itm_must_barrel"),
       (assign, ":processed_item_id", "itm_wine_barrel"),
       (try_begin),
-        (ge, ":labouring", 5),
+        (ge, ":skill_level", 5),
         (assign, ":resource_item_count", 3),
       (else_try),
         (assign, ":resource_item_count", 4),
@@ -6358,16 +6335,8 @@ scripts = [
     ]),
 
   ("cf_process_brew",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":finished", 3),
+   [generate_process_init(skill="skl_labouring", level=1, resource_class=item_class_food),
 
-    (agent_get_troop_id, ":troop_id", ":agent_id"),
-    (store_skill_level, ":labouring", "skl_labouring", ":troop_id"),
-    (ge, ":labouring", 1),
-    (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
-    (ge, ":resource_item_id", all_items_begin),
-    (item_slot_eq, ":resource_item_id", slot_item_class, item_class_food),
     (assign, ":processed_item_id", -1),
     (assign, ":processed_item_count", 1),
     (try_begin),
@@ -6375,7 +6344,7 @@ scripts = [
       (agent_has_item_equipped, ":agent_id", "itm_water_bucket"),
       (assign, ":processed_item_id", "itm_beer_cask"),
       (try_begin),
-        (ge, ":labouring", 5),
+        (ge, ":skill_level", 5),
         (assign, ":resource_item_count", 2),
       (else_try),
         (assign, ":resource_item_count", 3),
@@ -6402,17 +6371,12 @@ scripts = [
     ]),
 
   ("cf_process_tavern",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":finished", 3),
+   [generate_process_init(resource_class=item_class_food, start_effect=False),
 
-    (eq, ":finished", 1),
-    (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
-    (ge, ":resource_item_id", all_items_begin),
-    (item_slot_eq, ":resource_item_id", slot_item_class, item_class_food),
     (assign, ":processed_item_id", -1),
     (assign, ":resource_item_count", 1),
     (assign, ":processed_item_count", 1),
+    (store_script_param, ":instance_id", 2),
     (prop_instance_get_position, pos1, ":instance_id"),
     (try_begin),
       (eq, ":resource_item_id", "itm_wine_barrel"),
@@ -6451,17 +6415,8 @@ scripts = [
     ]),
 
   ("cf_process_preserve",
-   [(store_script_param, ":agent_id", 1),
-    #(store_script_param, ":instance_id", 2),
-    (store_script_param, ":finished", 3),
+   [generate_process_init(skill="skl_labouring", level=1, resource_class=item_class_food, start_effect=False),
 
-    (eq, ":finished", 1),
-    (agent_get_troop_id, ":troop_id", ":agent_id"),
-    (store_skill_level, ":labouring", "skl_labouring", ":troop_id"),
-    (ge, ":labouring", 1),
-    (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
-    (ge, ":resource_item_id", all_items_begin),
-    (item_slot_eq, ":resource_item_id", slot_item_class, item_class_food),
     (assign, ":processed_item_id", -1),
     (try_begin),
       (eq, ":resource_item_id", "itm_fish"),
@@ -6480,17 +6435,8 @@ scripts = [
     ]),
 
   ("cf_process_spin",
-   [(store_script_param, ":agent_id", 1),
-    #(store_script_param, ":instance_id", 2),
-    (store_script_param, ":finished", 3),
+   [generate_process_init(skill="skl_labouring", level=1, resource_class=item_class_cloth, start_effect=False),
 
-    (eq, ":finished", 1),
-    (agent_get_troop_id, ":troop_id", ":agent_id"),
-    (store_skill_level, ":labouring", "skl_labouring", ":troop_id"),
-    (ge, ":labouring", 1),
-    (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
-    (ge, ":resource_item_id", all_items_begin),
-    (item_slot_eq, ":resource_item_id", slot_item_class, item_class_cloth),
     (assign, ":processed_item_id", -1),
     (assign, ":processed_item_count", 1),
     (try_begin),
@@ -6503,17 +6449,8 @@ scripts = [
     ]),
 
   ("cf_process_weave",
-   [(store_script_param, ":agent_id", 1),
-    #(store_script_param, ":instance_id", 2),
-    (store_script_param, ":finished", 3),
+   [generate_process_init(skill="skl_tailoring", level=1, resource_class=item_class_cloth, start_effect=False),
 
-    (eq, ":finished", 1),
-    (agent_get_troop_id, ":troop_id", ":agent_id"),
-    (store_skill_level, ":tailoring", "skl_tailoring", ":troop_id"),
-    (ge, ":tailoring", 1),
-    (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
-    (ge, ":resource_item_id", all_items_begin),
-    (item_slot_eq, ":resource_item_id", slot_item_class, item_class_cloth),
     (assign, ":processed_item_id", -1),
     (assign, ":processed_item_count", 1),
     (assign, ":resource_item_count", 1),
@@ -6532,20 +6469,13 @@ scripts = [
     ]),
 
   ("cf_process_cut",
-   [(store_script_param, ":agent_id", 1),
-    #(store_script_param, ":instance_id", 2),
-    (store_script_param, ":finished", 3),
+   [generate_process_init(resource_class=[item_class_cloth, item_class_leather], start_effect=False),
 
-    (eq, ":finished", 1),
     (agent_get_troop_id, ":troop_id", ":agent_id"),
     (store_skill_level, ":tailoring", "skl_tailoring", ":troop_id"),
     (store_skill_level, ":engineer", "skl_engineer", ":troop_id"),
     (this_or_next|ge, ":tailoring", 1),
     (ge, ":engineer", 1),
-    (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
-    (ge, ":resource_item_id", all_items_begin),
-    (this_or_next|item_slot_eq, ":resource_item_id", slot_item_class, item_class_cloth),
-    (item_slot_eq, ":resource_item_id", slot_item_class, item_class_leather),
     (assign, ":processed_item_id", -1),
     (assign, ":processed_item_count", 4),
     (assign, ":resource_item_count", 1),
@@ -6562,19 +6492,11 @@ scripts = [
     ]),
 
   ("cf_process_leather",
-   [(store_script_param, ":agent_id", 1),
-    #(store_script_param, ":instance_id", 2),
-    (store_script_param, ":finished", 3),
+   [generate_process_init(skill="skl_labouring", level=1, start_effect=False),
 
-    (eq, ":finished", 1),
-    (agent_get_troop_id, ":troop_id", ":agent_id"),
-    (store_skill_level, ":labouring", "skl_labouring", ":troop_id"),
-    (ge, ":labouring", 1),
-    (agent_get_wielded_item, ":resource_item_id", ":agent_id", 0),
     (eq, ":resource_item_id", "itm_raw_hide"),
-    (assign, ":processed_item_id", "itm_leather_roll"),
-    (call_script, "script_cf_agent_consume_item", ":agent_id", ":resource_item_id", 1),
-    (call_script, "script_spawn_processed_resources", ":agent_id", ":processed_item_id", 2),
+    (call_script, "script_cf_agent_consume_item", ":agent_id", "itm_raw_hide", 1),
+    (call_script, "script_spawn_processed_resources", ":agent_id", "itm_leather_roll", 2),
     ]),
 
   ("cf_use_resource_stockpile",
@@ -10886,7 +10808,7 @@ scripts = [
 
   ("initialize_animation_durations", []),
 
-]
+])
 
 first_animation_menu_entry = True
 def animation_menu_entry(string_id, **kwargs):
