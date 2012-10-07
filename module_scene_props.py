@@ -89,7 +89,7 @@ def spr_buy_item_flags(use_time=1):
   use_time = max(use_time, 1)
   return spr_use_time(use_time)
 
-crafting_info = []
+crafting_data = []
 
 def spr_apply_pos_offset(trigger_block, pos_offset, rotate):
   if pos_offset[0] != 0:
@@ -143,12 +143,12 @@ def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_strin
     operation_list.extend(flatten_list(accepted_skills))
     operation_list.extend(resource_list[:4])
     craft_trigger[1].append(tuple(operation_list))
-    crafting_info.append([item_id, accepted_skills, resources])
     average_craft_skill = accepted_skills[0][1]
     if accepted_skills[1][0] != -1 and accepted_skills[1][1] > 0:
       average_craft_skill = (average_craft_skill + accepted_skills[1][1]) / 2
     if average_craft_skill > 0:
       init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_average_craft_skill, min(max(average_craft_skill, 1), 10)))
+    crafting_data.append([item_id, accepted_skills, resources, resource_list, average_craft_skill])
   return [init_trigger, buy_trigger, craft_trigger]
 
 def spr_export_item_triggers(item_id, use_string="str_export", price_multiplier=None):

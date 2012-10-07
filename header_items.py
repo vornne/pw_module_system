@@ -245,6 +245,17 @@ def accuracy(x):
 def custom_kill_info(x): # you have to add ico_custom_x (where x is a number between 1 and 7) mesh in order to display it correctly.
   return (((bignum | x) & (itp_kill_info_mask >> itp_kill_info_bits)) << itp_kill_info_bits)
 
+blunt_min_val = (blunt << iwf_damage_type_bits)
+pierce_min_val = (pierce << iwf_damage_type_bits)
+
+def get_damage_str(x):
+  if (x >= blunt_min_val):
+    return '%db'%(x - blunt_min_val)
+  elif (x >= pierce_min_val):
+    return '%dp'%(x - pierce_min_val)
+  else:
+    return '%dc'%(x)
+
 # Item capabilities:
 itcf_thrust_onehanded                                = 0x0000000000000001
 itcf_overswing_onehanded                             = 0x0000000000000002

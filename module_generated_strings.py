@@ -13,14 +13,14 @@ def process_item(processor, item_str, entry=None):
   except Exception as e:
     if not e.entry:
       if entry:
-        e.entry = "crafting info for %s" % (entry)
+        e.entry = "crafting data for %s" % (entry)
       else:
-        e.entry = "crafting info"
+        e.entry = "crafting data"
     raise
 
 def crafting_book_generator(string, processor, item_type_checker):
   crafting_list = [string]
-  for entry in crafting_info:
+  for entry in crafting_data:
     item = process_item(processor, entry[0])
     if not item_type_checker(item[3] & 0xff, entry[1][0][0]):
       continue
