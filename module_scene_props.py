@@ -2588,6 +2588,7 @@ scene_props = [
   ("pw_buy_horse_armor",spr_buy_item_flags(33),"pw_horse_armor","bo_pw_horse_armor", spr_buy_item_triggers("itm_horse_armor", pos_offset=(0,80,0), resources=[("itm_iron_bar", 4)], engineer=6)),
 
   ("pw_buy_woodcutter_axe",spr_buy_item_flags(8),"pw_wood_axe","bo_pw_weapon", spr_buy_item_triggers("itm_woodcutter_axe", resources=["itm_iron_bar_short", "itm_wood_pole_short"], engineer=2)),
+  ("pw_buy_small_mining_pick",spr_buy_item_flags(7),"pw_small_mining_pick","bo_pw_weapon", spr_buy_item_triggers("itm_small_mining_pick", resources=["itm_iron_bar_short", "itm_wood_pole_short"], engineer=2)),
   ("pw_buy_mining_pick",spr_buy_item_flags(10),"pw_mining_pick","bo_pw_weapon", spr_buy_item_triggers("itm_mining_pick", resources=["itm_iron_bar", "itm_wood_pole_short"], engineer=2)),
   ("pw_buy_repair_hammer",spr_buy_item_flags(7),"pw_repair_hammer","bo_pw_weapon_small", spr_buy_item_triggers("itm_repair_hammer", resources=["itm_iron_piece", "itm_stick"], engineer=2)),
   ("pw_buy_lock_pick",spr_buy_item_flags(24),"pw_lock_pick","bo_pw_weapon_small", spr_buy_item_triggers("itm_lock_pick", resources=["itm_iron_piece"], engineer=3)),

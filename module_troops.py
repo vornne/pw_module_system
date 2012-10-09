@@ -68,7 +68,7 @@ troops = [
    ["itm_old_coarse_tunic","itm_ragged_shirt","itm_old_knife","itm_hatchet"],
    str_8|agi_8|pw_attr,wpex(50,50,50,0,0,30),knows_pw|knows_labouring_2|knows_riding_1,default_face_1,default_face_2],
   ["serf","Serf","a serf",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_ragged_shirt","itm_hatchet","itm_small_mining_pick"],
+   ["itm_ragged_shirt","itm_hatchet","itm_blunt_sickle","itm_old_knife"],
    str_5|agi_5|pw_attr,wpex(30,30,30,0,0,50),knows_pw|knows_labouring_5|knows_engineer_1|knows_tailoring_1|knows_herding_3|knows_riding_1,default_face_1,default_face_2],
   ["militia","Militia","a militia",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_ragged_woolen_cap","itm_old_coarse_tunic","itm_blunt_falchion"],
