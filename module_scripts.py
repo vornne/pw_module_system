@@ -6763,7 +6763,6 @@ scripts.extend([
 
     (scene_prop_get_slot, ":state", ":instance_id", slot_scene_prop_state),
     (try_begin),
-      (gt, ":agent_id", -1),
       (agent_is_active, ":agent_id"),
       (this_or_next|neq, ":state", scene_prop_state_active),
       (eq, ":repair_active", 1),
@@ -6786,6 +6785,7 @@ scripts.extend([
     (else_try),
       (try_begin),
         (eq, ":resource_class", item_class_wood),
+        (agent_is_active, ":agent_id"),
         (agent_get_wielded_item, ":wielded_item_id", ":agent_id", 0),
         (gt, ":wielded_item_id", -1),
         (item_slot_eq, ":wielded_item_id", slot_item_bonus_against_wood, 1),
