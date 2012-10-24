@@ -2283,7 +2283,7 @@ scene_props = [
   ("pw_buy_sarranid_felt_head_cloth_b",spr_buy_item_flags(4),"common_tulbent_b","bo_pw_armor_head_armature", spr_buy_item_triggers("itm_sarranid_felt_head_cloth_b", resources=["itm_linen_cloth_small"], tailoring=1)),
   ("pw_buy_bride_crown",spr_buy_item_flags(7),"bride_crown","bo_pw_armor_head_armature", spr_buy_item_triggers("itm_bride_crown", resources=["itm_linen_cloth_small"], tailoring=2)),
   ("pw_buy_khergit_lady_hat",spr_buy_item_flags(5),"khergit_lady_hat","bo_pw_armor_head", spr_buy_item_triggers("itm_khergit_lady_hat", resources=["itm_linen_cloth_small"], tailoring=2)),
-  ("pw_buy_khergit_lady_hat_b",spr_buy_item_flags(5),"khergit_lady_hat_b","bo_pw_armor_head", spr_buy_item_triggers("itm_khergit_lady_hat_b", resources=["itm_linen_cloth_small"], tailoring=2)),
+  ("pw_buy_khergit_lady_hat_b",spr_buy_item_flags(5),"khergit_lady_hat_b","bo_pw_armor_head", spr_buy_item_triggers("itm_khergit_lady_hat_b", resources=["itm_leather_piece"], tailoring=2)),
   ("pw_buy_sarranid_head_cloth",spr_buy_item_flags(2),"tulbent","bo_pw_armor_head_armature", spr_buy_item_triggers("itm_sarranid_head_cloth", resources=["itm_linen_cloth_small"], tailoring=1)),
   ("pw_buy_sarranid_head_cloth_b",spr_buy_item_flags(2),"tulbent_b","bo_pw_armor_head_armature", spr_buy_item_triggers("itm_sarranid_head_cloth_b", resources=["itm_linen_cloth_small"], tailoring=1)),
   ("pw_buy_wimple_a",spr_buy_item_flags(4),"wimple_a_new","bo_pw_armor_head", spr_buy_item_triggers("itm_wimple_a", resources=["itm_linen_cloth_small"], tailoring=2)),
