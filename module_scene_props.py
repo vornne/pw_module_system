@@ -2369,7 +2369,7 @@ scene_props = [
   ("pw_buy_khergit_lady_dress_b",spr_buy_item_flags(18),"khergit_lady_dress_b","bo_pw_armor_body", spr_buy_item_triggers("itm_khergit_lady_dress_b", resources=["itm_leather_roll"], tailoring=2)),
   ("pw_buy_bride_dress",spr_buy_item_flags(26),"bride_dress","bo_pw_armor_body", spr_buy_item_triggers("itm_bride_dress", resources=["itm_linen_cloth"], tailoring=2)),
   ("pw_buy_tunic_with_green_cape",spr_buy_item_flags(10),"peasant_man_a","bo_pw_armor_body", spr_buy_item_triggers("itm_tunic_with_green_cape", resources=["itm_linen_cloth"], tailoring=1)),
-  ("pw_buy_rough_tunic",spr_buy_item_flags(7),"cvl_costume_a","bo_pw_armor_body", spr_buy_item_triggers("itm_rough_tunic", resources=["itm_linen_cloth"], tailoring=1)),
+  ("pw_buy_rough_tunic",spr_buy_item_flags(7),"pw_rough_tunic","bo_pw_armor_body", spr_buy_item_triggers("itm_rough_tunic", resources=["itm_linen_cloth"], tailoring=1)),
   ("pw_buy_red_shirt",spr_buy_item_flags(9),"rich_tunic_a","bo_pw_armor_body", spr_buy_item_triggers("itm_red_shirt", resources=["itm_linen_cloth"], tailoring=2)),
   ("pw_buy_pelt_coat",spr_buy_item_flags(6),"thick_coat_a","bo_pw_armor_body", spr_buy_item_triggers("itm_pelt_coat", resources=["itm_leather_roll","itm_linen_cloth_small"], tailoring=1)),
   ("pw_buy_sarranid_cloth_robe",spr_buy_item_flags(5),"sar_robe","bo_pw_armor_body", spr_buy_item_triggers("itm_sarranid_cloth_robe", resources=["itm_linen_cloth"], tailoring=1)),

@@ -342,7 +342,7 @@ items = [
  2500, weight(3)|body_armor(3)|leg_armor(1)|difficulty(0), imodbits_cloth|imodbit_female],
 ["tunic_with_green_cape", "Tunic with Green Cape", [("peasant_man_a",0)], itp_type_body_armor|itp_covers_legs, 0,
  220, weight(1)|body_armor(12)|leg_armor(4)|difficulty(6), imodbits_cloth],
-["rough_tunic", "Rough Tunic", [("cvl_costume_a",0)], itp_type_body_armor|itp_covers_legs, 0,
+["rough_tunic", "Rough Tunic", [("pw_rough_tunic",0)], itp_type_body_armor|itp_covers_legs, 0,
  134, weight(1)|body_armor(7)|leg_armor(1)|difficulty(0), imodbits_cloth],
 ["red_shirt", "Red Shirt", [("rich_tunic_a",0)], itp_type_body_armor|itp_covers_legs, 0,
  150, weight(1)|body_armor(7)|leg_armor(1)|difficulty(0), imodbits_cloth],
