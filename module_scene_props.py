@@ -999,7 +999,7 @@ scene_props = [
   ("castle_h_house_c",0,"castle_h_house_c","bo_castle_h_house_b", []),
   ("castle_h_battlement_barrier",0,"castle_h_battlement_barrier","bo_castle_h_battlement_barrier", []),
 
-  ("full_keep_b",sokf_type_ladder,"full_keep_b","bo_full_keep_b", []),
+  ("full_keep_b",0,"full_keep_b","bo_full_keep_b", []),
 
   ("castle_f_keep_a",0,"castle_f_keep_a","bo_castle_f_keep_a", []),
   ("castle_f_battlement_a",0,"castle_f_battlement_a","bo_castle_f_battlement_a", []),
@@ -1017,7 +1017,7 @@ scene_props = [
   ("castle_f_doors_top_a",0,"castle_f_doors_top_a","bo_castle_f_doors_top_a", []),
   ("castle_f_sally_door_a",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"castle_f_sally_door_a","bo_castle_f_sally_door_a", []),
   ("castle_f_stairs_a",sokf_type_ladder,"castle_f_stairs_a","bo_castle_f_stairs_a", []),
-  ("castle_f_tower_a",sokf_type_ladder,"castle_f_tower_a","bo_castle_f_tower_a", []),
+  ("castle_f_tower_a",0,"castle_f_tower_a","bo_castle_f_tower_a", []),
   ("castle_f_wall_stairs_a",sokf_type_ladder,"castle_f_wall_stairs_a","bo_castle_f_wall_stairs_a", []),
   ("castle_f_wall_stairs_b",sokf_type_ladder,"castle_f_wall_stairs_b","bo_castle_f_wall_stairs_b", []),
   ("castle_f_wall_way_a",0,"castle_f_wall_way_a","bo_castle_f_wall_way_a", []),
@@ -1029,7 +1029,7 @@ scene_props = [
   ("castle_g_battlement_c",0,"castle_g_battlement_c","bo_castle_g_battlement_c", []),
   ("castle_g_corner_a",0,"castle_g_corner_a","bo_castle_g_corner_a", []),
   ("castle_g_corner_c",0,"castle_g_corner_c","bo_castle_g_corner_c", []),
-  ("castle_g_tower_a",sokf_type_ladder,"castle_g_tower_a","bo_castle_g_tower_a", []),
+  ("castle_g_tower_a",0,"castle_g_tower_a","bo_castle_g_tower_a", []),
   ("castle_g_gate_house",0,"castle_g_gate_house","bo_castle_g_gate_house", []),
   ("castle_g_gate_house_door_a",0,"castle_g_gate_house_door_a","bo_castle_g_gate_house_door_a", []),
   ("castle_g_gate_house_door_b",0,"castle_g_gate_house_door_b","bo_castle_g_gate_house_door_b", []),
@@ -1040,7 +1040,7 @@ scene_props = [
   ("castle_i_battlement_c",0,"castle_i_battlement_c","bo_castle_i_battlement_c", []),
   ("castle_i_corner_a",0,"castle_i_corner_a","bo_castle_i_corner_a", []),
   ("castle_i_corner_c",0,"castle_i_corner_c","bo_castle_i_corner_c", []),
-  ("castle_i_tower_a",sokf_type_ladder,"castle_i_tower_a","bo_castle_i_tower_a", []),
+  ("castle_i_tower_a",0,"castle_i_tower_a","bo_castle_i_tower_a", []),
   ("castle_i_gate_house",0,"castle_i_gate_house","bo_castle_i_gate_house", []),
   ("castle_i_gate_house_door_a",0,"castle_i_gate_house_door_a","bo_castle_i_gate_house_door_a", []),
   ("castle_i_gate_house_door_b",0,"castle_i_gate_house_door_b","bo_castle_i_gate_house_door_b", []),
@@ -1704,8 +1704,8 @@ scene_props = [
   ("marrow_b",0,"marrow_b","0", []),
   ("squash_plant",0,"marrow_c","0", []),
 
-  ("gatehouse_new_a",sokf_type_ladder,"gatehouse_new_a","bo_gatehouse_new_a", []),
-  ("gatehouse_new_b",sokf_type_ladder,"gatehouse_new_b","bo_gatehouse_new_b_fixed", []),
+  ("gatehouse_new_a",0,"gatehouse_new_a","bo_gatehouse_new_a", []),
+  ("gatehouse_new_b",0,"gatehouse_new_b","bo_gatehouse_new_b_fixed", []),
   ("gatehouse_new_snowy_a",0,"gatehouse_new_snowy_a","bo_gatehouse_new_b_fixed", []),
 
   ("winch",sokf_moveable,"winch","bo_winch", []),
