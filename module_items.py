@@ -744,6 +744,8 @@ items = [
  305, weight(3.5)|hit_points(310)|body_armor(12)|spd_rtng(87)|shield_width(50), imodbits_shield, init_heraldic_item("tableau_round_shield_2")],
 ["tab_shield_round_d", "Heavy Round Shield", [("tableau_shield_round_1",0)], itp_type_shield|itp_wooden_parry, itcf_carry_round_shield,
  410, weight(4)|hit_points(350)|body_armor(15)|spd_rtng(84)|shield_width(50), imodbits_shield, init_heraldic_item("tableau_round_shield_1")],
+["tab_shield_round_e", "Huscarl's Round Shield", [("tableau_shield_round_4",0)], itp_type_shield|itp_cant_use_on_horseback|itp_wooden_parry, itcf_carry_round_shield,
+ 630 , weight(5)|hit_points(380)|body_armor(16)|spd_rtng(81)|shield_width(50), imodbits_shield, init_heraldic_item("tableau_round_shield_4")],
 ["tab_shield_kite_b", "Plain Kite Shield", [("tableau_shield_kite_3" ,0)], itp_type_shield|itp_wooden_parry, itcf_carry_kite_shield,
  270, weight(2.5)|hit_points(215)|body_armor(10)|spd_rtng(93)|shield_width(36)|shield_height(70), imodbits_shield, init_heraldic_item("tableau_kite_shield_3")],
 ["tab_shield_kite_c", "Kite Shield", [("tableau_shield_kite_2" ,0)], itp_type_shield|itp_wooden_parry, itcf_carry_kite_shield,
