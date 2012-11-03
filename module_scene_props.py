@@ -487,6 +487,11 @@ def spr_ship_triggers(hit_points=1000, length=1000, width=200, height=100, speed
       (call_script, "script_cf_damage_ship", ":instance_id", ":hit_damage", hit_points, 0),
       ]),
     (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_animation_finished,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_slot_eq, ":instance_id", slot_scene_prop_state, scene_prop_state_regenerating),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_active),
+      ]),
     [init_scene_prop, "script_setup_ship", spr_tag(sail), spr_tag(sail_off), spr_tag(ramp), spr_tag(hold)]]
 
 def spr_ship_ramp_triggers():
