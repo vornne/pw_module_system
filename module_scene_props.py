@@ -2382,6 +2382,7 @@ scene_props = [
   ("pw_buy_rich_outfit",spr_buy_item_flags(12),"merchant_outf","bo_pw_armor_body", spr_buy_item_triggers("itm_rich_outfit", resources=["itm_linen_cloth"], tailoring=2)),
   ("pw_buy_tabard",spr_buy_item_flags(10),"tabard_b","bo_pw_armor_body", spr_buy_item_triggers("itm_tabard", resources=["itm_linen_cloth"], tailoring=2, tableau="tableau_heraldic_tabard_b")),
   ("pw_buy_khergit_armor",spr_buy_item_flags(9),"khergit_armor_new","bo_pw_armor_body", spr_buy_item_triggers("itm_khergit_armor", resources=["itm_linen_cloth","itm_leather_piece"], tailoring=1)),
+  ("pw_buy_leather_vest_plain",spr_buy_item_flags(12),"leather_vest_a","bo_pw_armor_body", spr_buy_item_triggers("itm_leather_vest", resources=["itm_leather_roll"], tailoring=2)),
   ("pw_buy_leather_vest",spr_buy_item_flags(13),"leather_vest_a","bo_pw_armor_body", spr_buy_item_triggers("itm_leather_vest", resources=["itm_leather_roll"], tailoring=2, tableau="tableau_heraldic_leather_vest_a")),
   ("pw_buy_leather_jacket",spr_buy_item_flags(15),"leather_jacket_new","bo_pw_armor_body", spr_buy_item_triggers("itm_leather_jacket", resources=["itm_leather_roll"], tailoring=2)),
   ("pw_buy_arena_tunic",spr_buy_item_flags(12),"arena_tunicW_new","bo_pw_armor_body", spr_buy_item_triggers("itm_arena_tunic", resources=["itm_linen_cloth"], tailoring=2, tableau="tableau_colored_arena_tunic")),
