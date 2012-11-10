@@ -54,6 +54,7 @@ slot_player_equip_item_3_ammo         = 33
 slot_player_spawn_food_amount         = 34
 slot_player_faction_chat_muted        = 35
 slot_player_kick_at_time              = 36
+slot_player_can_faction_announce      = 37
 
 slot_player_admin_no_panel            = 40
 slot_player_admin_no_gold             = 41
@@ -340,9 +341,9 @@ chat_event_type_local                 = 0
 chat_event_type_local_shout           = 1
 chat_event_type_set_faction_name      = 2
 chat_event_type_faction               = 4
-chat_event_type_faction_lord          = 5
+chat_event_type_faction_announce      = 5
 chat_event_type_admin                 = 6
-chat_event_type_admin_shout           = 7
+chat_event_type_admin_announce        = 7
 
 slot_chat_overlay_local_color         = 0
 slot_chat_overlay_faction_color       = 1
