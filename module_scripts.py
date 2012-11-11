@@ -4086,6 +4086,7 @@ scripts = [
         (str_store_faction_name, s10, ":other_faction_id"),
         (try_begin),
           (multiplayer_is_server),
+          (str_store_faction_name, s1, ":faction_id"),
           (server_add_message_to_log, ":string_id"),
         (else_try),
           (call_script, "script_preset_message", ":string_id", preset_message_faction|preset_message_log|preset_message_big, ":faction_id", 0),
