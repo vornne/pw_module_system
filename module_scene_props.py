@@ -2326,6 +2326,7 @@ scene_props = [
   ("pw_buy_mail_coif",spr_buy_item_flags(12),"mail_coif_new","bo_pw_armor_head", spr_buy_item_triggers("itm_mail_coif", resources=["itm_iron_piece"], engineer=3)),
   ("pw_buy_footman_helmet",spr_buy_item_flags(10),"skull_cap_new","bo_pw_armor_head", spr_buy_item_triggers("itm_footman_helmet", resources=["itm_iron_bar_short","itm_linen_cloth_small"], engineer=2)),
   ("pw_buy_sarranid_horseman_helmet",spr_buy_item_flags(13),"sar_helmet2","bo_pw_armor_head", spr_buy_item_triggers("itm_sarranid_horseman_helmet", resources=["itm_iron_bar_short","itm_linen_cloth"], engineer=3)),
+  ("pw_buy_nasal_helmet",spr_buy_item_flags(10),"nasal_helmet_b","bo_pw_armor_head", spr_buy_item_triggers("itm_nasal_helmet", resources=["itm_iron_bar_short","itm_leather_piece"], engineer=2)),
   ("pw_buy_norman_helmet",spr_buy_item_flags(10),"norman_helmet_a","bo_pw_armor_head", spr_buy_item_triggers("itm_norman_helmet", resources=["itm_iron_bar_short","itm_linen_cloth_small"], engineer=2)),
   ("pw_buy_nordic_footman_helmet",spr_buy_item_flags(14),"Helmet_B_vs2","bo_pw_armor_head", spr_buy_item_triggers("itm_nordic_footman_helmet", resources=["itm_iron_bar_short","itm_leather_piece"], engineer=3)),
   ("pw_buy_khergit_war_helmet",spr_buy_item_flags(15),"tattered_steppe_cap_a_new","bo_pw_armor_head", spr_buy_item_triggers("itm_khergit_war_helmet", resources=["itm_iron_bar_short","itm_iron_piece"], engineer=3)),

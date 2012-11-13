@@ -236,6 +236,8 @@ items = [
  495, weight(1.5)|head_armor(24)|difficulty(9), imodbits_plate],
 ["sarranid_horseman_helmet", "Horseman Helmet", [("sar_helmet2",0)], itp_type_head_armor, 0,
  580, weight(2)|head_armor(25)|difficulty(9), imodbits_plate],
+["nasal_helmet", "Nasal Helmet", [("nasal_helmet_b",0)], itp_type_head_armor, 0,
+ 605, weight(1.25)|head_armor(26)|difficulty(9), imodbits_plate],
 ["norman_helmet", "Helmet with Cap", [("norman_helmet_a",0)], itp_type_head_armor|itp_fit_to_head, 0,
  654, weight(1.25)|head_armor(28)|difficulty(9), imodbits_plate],
 ["nordic_footman_helmet", "Footman Helmet", [("Helmet_B_vs2",0)], itp_type_head_armor|itp_fit_to_head, 0,
