@@ -2175,6 +2175,7 @@ scripts = [
    [(neg|is_presentation_active, "prsnt_chat_box"),
     (neg|is_presentation_active, "prsnt_show_inventory"),
     (neg|is_presentation_active, "prsnt_money_bag"),
+    (neg|is_presentation_active, "prsnt_tabbed_stats_chart"),
     (neg|is_presentation_active, "prsnt_escape_menu"),
     (neg|is_presentation_active, "prsnt_action_menu"),
     (neg|is_presentation_active, "prsnt_animation_menu"),
