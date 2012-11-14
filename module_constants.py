@@ -55,6 +55,7 @@ slot_player_spawn_food_amount         = 34
 slot_player_faction_chat_muted        = 35
 slot_player_kick_at_time              = 36
 slot_player_can_faction_announce      = 37
+slot_player_next_spawn_health_percent = 38
 
 slot_player_admin_no_panel            = 40
 slot_player_admin_no_gold             = 41
