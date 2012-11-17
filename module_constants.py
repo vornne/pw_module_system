@@ -235,6 +235,7 @@ slot_item_animal_attack_reaction      = 24
 slot_item_animal_death_sound          = 25
 slot_item_animal_meat_count           = 26
 slot_item_animal_hide_count           = 27
+slot_item_animal_wildness             = 28
 
 animal_reaction_flee                  = 0
 animal_reaction_charge                = 1

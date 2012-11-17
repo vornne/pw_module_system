@@ -55,8 +55,8 @@ tag_item_herd_animal = -101.0
 def itm_class(class_id, value=0):
   return (tag_item_class, class_id, value)
 
-def itm_herd_animal(child_item=-1, grow_age=10, max_in_herd=20, attack_reaction=animal_reaction_flee, death_sound="snd_cow_slaughter", meat=0, hide=0):
-  return [[tag_item_herd_animal, child_item, grow_age, max_in_herd, attack_reaction, death_sound, meat, hide]]
+def itm_herd_animal(child_item=-1, grow_age=10, max_in_herd=20, attack_reaction=animal_reaction_flee, death_sound="snd_cow_slaughter", meat=0, hide=0, wildness=1):
+  return [[tag_item_herd_animal, child_item, grow_age, max_in_herd, attack_reaction, death_sound, meat, hide, wildness]]
 
 def init_heraldic_item(tableau):
   return [(ti_on_init_item,
@@ -842,17 +842,17 @@ items = [
 
 ["deer", "Deer", [("pw_deer",0)], itp_type_horse, 0,
  1232, hit_points(120)|body_armor(5)|difficulty(11)|horse_speed(55)|horse_maneuver(75)|horse_charge(30)|horse_scale(100), imodbits_none,
- itm_herd_animal(child_item="itm_fawn", grow_age=10, max_in_herd=10, attack_reaction=animal_reaction_flee, meat=4, hide=4)],
+ itm_herd_animal(child_item="itm_fawn", grow_age=10, max_in_herd=10, attack_reaction=animal_reaction_flee, meat=4, hide=4, wildness=5)],
 ["fawn", "Fawn", [("pw_deer",0)], itp_type_horse, 0,
  426, hit_points(50)|body_armor(2)|difficulty(11)|horse_speed(45)|horse_maneuver(70)|horse_charge(5)|horse_scale(60), imodbits_none],
 ["boar", "Boar", [("pw_boar",0)], itp_type_horse, 0,
  859, hit_points(170)|body_armor(20)|difficulty(11)|horse_speed(40)|horse_maneuver(70)|horse_charge(250)|horse_scale(70), imodbits_none,
- itm_herd_animal(child_item="itm_boarlet", grow_age=7, max_in_herd=20, attack_reaction=animal_reaction_charge, meat=5, hide=2)],
+ itm_herd_animal(child_item="itm_boarlet", grow_age=7, max_in_herd=20, attack_reaction=animal_reaction_charge, meat=5, hide=2, wildness=3)],
 ["boarlet", "Boarlet", [("pw_boar",0)], itp_type_horse, 0,
  315, hit_points(80)|body_armor(10)|difficulty(11)|horse_speed(30)|horse_maneuver(65)|horse_charge(10)|horse_scale(40), imodbits_none],
 ["cow", "Cow", [("pw_cow",0)], itp_type_horse, 0,
  1718, hit_points(150)|body_armor(15)|difficulty(11)|horse_speed(35)|horse_maneuver(65)|horse_charge(100)|horse_scale(100), imodbits_none,
- itm_herd_animal(child_item="itm_calf", grow_age=12, max_in_herd=16, attack_reaction=animal_reaction_flee, meat=8, hide=6)],
+ itm_herd_animal(child_item="itm_calf", grow_age=12, max_in_herd=16, attack_reaction=animal_reaction_flee, meat=8, hide=6, wildness=1)],
 ["calf", "Calf", [("pw_cow",0)], itp_type_horse, 0,
  723, hit_points(90)|body_armor(8)|difficulty(11)|horse_speed(37)|horse_maneuver(60)|horse_charge(30)|horse_scale(60), imodbits_none],
 
