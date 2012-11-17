@@ -1312,6 +1312,7 @@ itm_wall_banner("fac_8", "b"),
 ["all_items_end", "all_items_end", [("invisible",0)], itp_no_pick_up_from_ground, 0, 0, 0, 0],
 ["pointer_arrow", "pointer_arrow", [("pointer_arrow",0)], itp_no_pick_up_from_ground, 0, 0, 0, 0],
 ["animal_herd_manager", "animal_herd_manager", [("invisible",0)], itp_no_pick_up_from_ground, 0, 0, 0, 0],
+["animal_carcass", "animal_carcass", [("pw_blood_a",0)], itp_no_pick_up_from_ground, 0, 0, 0, 0],
 ]
 
 item_lengths_list = []

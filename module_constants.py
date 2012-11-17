@@ -108,8 +108,8 @@ slot_agent_animal_birth_time          = 21
 slot_agent_animal_grow_time           = 22
 slot_agent_animal_move_time           = 23
 slot_agent_animal_last_damage_time    = 24
-slot_agent_animal_meat_count          = 25
-slot_agent_animal_hide_count          = 26
+slot_agent_animal_food                = 25
+slot_agent_animal_carcass_instance_id = 26
 slot_agent_animal_times_stuck         = 27
 slot_agent_animal_end                 = 28
 
@@ -194,6 +194,9 @@ slot_scene_prop_inventory_obj_end     = slot_scene_prop_inventory_mesh_begin
 inventory_count_maximum               = slot_scene_prop_inventory_item_0 - slot_scene_prop_inventory_begin
 
 slot_animal_herd_manager_adult_item_id= 100
+
+slot_animal_carcass_meat_count        = 100
+slot_animal_carcass_hide_count        = 101
 
 ########################################################
 ##  ITEM SLOTS             #############################
