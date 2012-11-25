@@ -949,7 +949,7 @@ scene_props = [
   ("dungeon_cell_c",0,"dungeon_cell_c_open","bo_dungeon_cell_c_open", []),
   ("dungeon_corridor_a",0,"dungeon_corridor_a","bo_dungeon_corridor_a", []),
   ("dungeon_corridor_b",0,"dungeon_corridor_b","bo_dungeon_corridor_b", []),
-  ("dungeon_corridor_c",0,"dungeon_corridor_c","bo_dungeon_corridor_b", []),
+  ("dungeon_corridor_c",0,"dungeon_corridor_c","bo_dungeon_corridor_a", []),
   ("dungeon_corridor_d",0,"dungeon_corridor_d","bo_dungeon_corridor_b", []),
   ("dungeon_direction_a",0,"dungeon_direction_a","bo_dungeon_direction_a", []),
   ("dungeon_direction_b",0,"dungeon_direction_b","bo_dungeon_direction_a", []),
