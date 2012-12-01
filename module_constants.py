@@ -194,6 +194,7 @@ slot_scene_prop_inventory_obj_end     = slot_scene_prop_inventory_mesh_begin
 inventory_count_maximum               = slot_scene_prop_inventory_item_0 - slot_scene_prop_inventory_begin
 
 slot_animal_herd_manager_adult_item_id= 100
+slot_animal_herd_manager_starving     = 101
 
 slot_animal_carcass_meat_count        = 100
 slot_animal_carcass_hide_count        = 101
