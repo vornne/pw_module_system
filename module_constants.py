@@ -535,3 +535,18 @@ action_menu_strings_end = "str_action_menu_end"
 
 animation_strings_begin = "str_anim_cheer"
 animation_strings_end = "str_log_animation"
+
+profile_option_strings_begin = "str_display_name_labels"
+
+from header_common import *
+
+profile_options = [
+  "$g_display_agent_labels",
+  "$g_hide_faction_in_name_labels",
+  "$g_display_chat_overlay",
+  "$g_chat_overlay_type_selected",
+  "$g_disable_automatic_shadow_recalculation",
+  "$g_animation_menu_no_mouse_grab",
+  ]
+if len(profile_options) >= profile_banner_id_option_bits_end - profile_banner_id_option_bits_begin:
+  raise Exception("Too many profile options: %d, maximum %d" % (len(profile_options), profile_banner_id_option_bits_end - profile_banner_id_option_bits_begin))

@@ -21,7 +21,9 @@ import math
 # 2) Operation block: This must be a valid operation block. See header_operations.py for reference.
 ####################################################################################################################
 
-scripts = [
+scripts = []
+scripts.extend([
+
   ("game_start", []),
 
   ("game_get_use_string",
@@ -1560,7 +1562,9 @@ scripts = [
     (position_move_x, pos5, 5, 0),
 
     (profile_get_banner_id, ":profile_banner"),
+    (assign, "$g_current_profile_banner_id", ":profile_banner"),
     (try_begin),
+      (val_and, ":profile_banner", profile_banner_id_mask),
       (val_add, ":profile_banner", banner_meshes_begin),
       (is_between, ":profile_banner", banner_meshes_begin, banner_meshes_end),
       (ge, ":profile_banner", 0),
@@ -3482,6 +3486,39 @@ scripts = [
       (player_set_slot, ":player_id", ":slot", 1),
     (try_end),
     ]),
+
+])
+
+def generate_load_profile_options():
+  script_body = [(assign, ":option_bits", "$g_current_profile_banner_id"),
+    (val_rshift, ":option_bits", profile_banner_id_option_bits_begin)]
+  for option in profile_options:
+    script_body.extend([(assign, option, ":option_bits"),
+      (val_and, option, 0x1),
+      (val_rshift, ":option_bits", 1)])
+  script_body.pop()
+  return [lazy.block(script_body)]
+
+def generate_store_profile_options():
+  script_body = [(assign, ":option_bits", 0)]
+  for i, option in enumerate(profile_options):
+    script_body.extend([(assign, ":option_bit", option),
+      (val_clamp, ":option_bit", 0, 2),
+      (val_lshift, ":option_bit", i),
+      (val_or, ":option_bits", ":option_bit")])
+  script_body.extend([(val_lshift, ":option_bits", profile_banner_id_option_bits_begin),
+    (assign, ":profile_banner_id", "$g_current_profile_banner_id"),
+    (val_and, ":profile_banner_id", profile_banner_id_mask),
+    (val_or, ":option_bits", ":profile_banner_id"),
+    (assign, "$g_current_profile_banner_id", ":option_bits"),
+    (profile_set_banner_id, ":option_bits")])
+  return [lazy.block(script_body)]
+
+scripts.extend([
+
+  ("load_profile_options", generate_load_profile_options()),
+
+  ("store_profile_options", generate_store_profile_options()),
 
   ("client_check_show_respawn_time_counter",
    [(store_script_param, ":agent_id", 1),
@@ -6098,7 +6135,7 @@ scripts = [
     (try_end),
     ]),
 
-]
+])
 
 def generate_process_init(skill=None, level=1, resource_class=None, start_effect=True, get_relative_pos=False):
   operations = [(store_script_param, ":agent_id", 1)]

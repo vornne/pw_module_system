@@ -263,6 +263,9 @@ max_possible_gold                               = 1000000000
 max_correctly_displayed_gold                    = 131071
 max_correctly_displayed_hp                      = 15000
 
+profile_banner_id_option_bits_begin             = 9
+profile_banner_id_option_bits_end               = 30
+profile_banner_id_mask                          = (1 << profile_banner_id_option_bits_begin) - 1
 
 bignum = 0x40000000000000000000000000000000
 

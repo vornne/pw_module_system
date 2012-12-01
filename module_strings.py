@@ -500,6 +500,13 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("s0_are_you_sure", "{s0} - are you sure?"),
   ("confirmation", "confirmation"),
 
+  ("display_name_labels", "Display name labels"),
+  ("hide_faction_in_name_labels", "Hide faction in name labels"),
+  ("display_chat_overlay", "Display chat overlay"),
+  ("overlay_shows_faction_chat", "Overlay shows faction chat instead of local"),
+  ("disable_automatic_shadow_recalculation", "Disable automatic shadow recalculation"),
+  ("non_clickable_animation_menu", "Non-clickable animation menu"),
+
   ("reg0__s0", "{!}{reg0}. {s0}"),
   ("menu_guestures", "Guestures"),
   ("menu_neutral", "Neutral"),
