@@ -43,7 +43,7 @@ def convert_item_to_buy_spr():
     else:
       tableau_param = ""
 
-    file.write('  ("pw_buy_{0}",spr_buy_item_flags(1),"{1}","{2}", spr_buy_item_triggers("itm_{0}", resources=[], skill_required=0{3})),\n'.format(
+    file.write('  ("pw_buy_{0}",spr_buy_item_flags(1),"{1}","{2}", spr_buy_item_triggers("itm_{0}", resources=[], engineer=0{3})),\n'.format(
       item[0], item[2][0][0], bo_string, tableau_param))
 
   file.close()
