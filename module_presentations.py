@@ -3482,7 +3482,7 @@ presentations.extend([
           (item_get_slot, ":length", ":item_id", slot_item_length),
           (try_begin),
             (this_or_next|ge, ":target_inventory_slot", slot_scene_prop_inventory_item_0),
-            (scene_prop_slot_ge, "$g_show_inventory_instance_id", slot_scene_prop_length, ":length"),
+            (scene_prop_slot_ge, "$g_show_inventory_instance_id", slot_scene_prop_inventory_max_length, ":length"),
             (assign, ":error_string_id", "str_cant_put_money_bag_in_container"),
             (this_or_next|neq, ":item_id", "itm_money_bag"),
             (ge, ":target_inventory_slot", slot_scene_prop_inventory_item_0),

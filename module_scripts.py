@@ -7625,7 +7625,7 @@ scripts.extend([
           (try_end),
         (else_try),
           (item_get_slot, ":length", ":item_id", slot_item_length),
-          (neg|scene_prop_slot_ge, ":instance_id", slot_scene_prop_length, ":length"),
+          (neg|scene_prop_slot_ge, ":instance_id", slot_scene_prop_inventory_max_length, ":length"),
           (assign, ":item_id", -1),
         (try_end),
         (ge, ":item_id", all_items_begin),

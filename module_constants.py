@@ -177,7 +177,7 @@ scene_prop_state_destroyed            = 1
 scene_prop_state_hidden               = 2
 scene_prop_state_regenerating         = 3
 
-slot_scene_prop_inventory_max_size    = 198
+slot_scene_prop_inventory_max_length  = 198
 slot_scene_prop_inventory_count       = 199
 slot_scene_prop_inventory_begin       = 200
 slot_scene_prop_inventory_item_0      = 290
