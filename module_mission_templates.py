@@ -782,7 +782,7 @@ animation_menu_pressed = (0, 0.05, 0, [(game_key_clicked, gk_animation_menu),(ca
 welcome_message = (0, 0, ti_once, [],
    [(neg|multiplayer_is_server),
     (str_store_welcome_message, s10),
-    (call_script, "script_preset_message", "str_pw_welcome", preset_message_read_object, 0, 0),
+    (call_script, "script_preset_message", "str_pw_welcome", preset_message_read_object, "str_join_game", 0),
     ])
 
 turn_windmill_fans = (0, 0, 4.0, [],
