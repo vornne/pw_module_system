@@ -802,6 +802,11 @@ ambient_sounds_check = (1, 0, 10,
     (call_script, "script_cf_play_scene_ambient_sound", ":instance_id"),
     ], [])
 
+music_situation_check = (25, 0, 0, [],
+   [(neg|multiplayer_is_server),
+    (call_script, "script_music_set_situation"),
+    ])
+
 shadow_recalculation = (15, 1, 0,
    [(neg|multiplayer_is_server),
     (eq, "$g_disable_automatic_shadow_recalculation", 0),
@@ -864,6 +869,7 @@ mission_templates = [
     welcome_message,
     turn_windmill_fans,
     ambient_sounds_check,
+    music_situation_check,
     shadow_recalculation,
     ]),
 
