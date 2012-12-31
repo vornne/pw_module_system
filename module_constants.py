@@ -56,6 +56,7 @@ slot_player_faction_chat_muted        = 35
 slot_player_kick_at_time              = 36
 slot_player_can_faction_announce      = 37
 slot_player_next_spawn_health_percent = 38
+slot_player_accessing_unique_id       = 39
 
 slot_player_admin_no_panel            = 40
 slot_player_admin_no_gold             = 41
@@ -168,6 +169,7 @@ slot_scene_prop_stock_count_update_time = 34
 slot_scene_prop_unlocked              = 35
 slot_scene_prop_regrow_script         = 36
 slot_scene_prop_resource_item_id      = 37
+slot_scene_prop_prune_time            = 38
 
 slot_scene_prop_water                 = 40
 slot_scene_prop_seeds                 = 41
@@ -177,6 +179,8 @@ scene_prop_state_destroyed            = 1
 scene_prop_state_hidden               = 2
 scene_prop_state_regenerating         = 3
 
+slot_scene_prop_inventory_targeted    = 196
+slot_scene_prop_inventory_unique_id   = 197
 slot_scene_prop_inventory_max_length  = 198
 slot_scene_prop_inventory_count       = 199
 slot_scene_prop_inventory_begin       = 200
@@ -192,6 +196,9 @@ slot_scene_prop_inventory_end         = slot_scene_prop_inventory_ammo_begin
 slot_scene_prop_inventory_mod_end     = slot_scene_prop_inventory_obj_begin
 slot_scene_prop_inventory_obj_end     = slot_scene_prop_inventory_mesh_begin
 inventory_count_maximum               = slot_scene_prop_inventory_item_0 - slot_scene_prop_inventory_begin
+
+corpse_inventory_slots                = 5
+corpse_inventory_max_length           = 100
 
 slot_animal_herd_manager_adult_item_id= 100
 slot_animal_herd_manager_starving     = 101
