@@ -35,6 +35,4 @@ from module_constants import *
 ####################################################################################################################
 
 game_menus = [
-  ("start_game_0",mnf_disable_all_keys,"Single player is so lame...","none",[],[("go_back",[],"Go back.",[(change_screen_quit)])]),
-  ("tutorial",mnf_disable_all_keys,"You don't need a tutorial.","none",[],[("go_back",[],"Go back.",[(change_screen_quit)])]),
 ]

@@ -24,11 +24,5 @@ pmf_is_prisoner = 0x0001
 
 
 party_templates = [
-  ("none","none",0,0,0,merchant_personality,[]),
-  ("rescued_prisoners","Rescued Prisoners",0,0,0,merchant_personality,[]),
-  ("enemy","Enemy",0,0,0,merchant_personality,[]),
-  ("hero_party","Hero Party",0,0,0,merchant_personality,[]),
-####################################################################################################################
-# Party templates before this point are hard-wired into the game and should not be changed.
-####################################################################################################################
+  ("none","none",0,0,0,merchant_personality,[]), # hard coded, must not be removed
 ]

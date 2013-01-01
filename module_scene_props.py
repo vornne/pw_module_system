@@ -1297,7 +1297,6 @@ scene_props = [
 
   ("battlement_a_destroyed",0,"battlement_a_destroyed","bo_battlement_a_destroyed", []),
 
-
   ("round_tower_a",0,"round_tower_a","bo_round_tower_a", []),
   ("small_round_tower_a",0,"small_round_tower_a","bo_small_round_tower_a", []),
   ("small_round_tower_roof_a",0,"small_round_tower_roof_a","bo_small_round_tower_roof_a", []),
@@ -1313,7 +1312,6 @@ scene_props = [
   ("small_wall_e",0,"small_wall_e","bo_small_wall_d", []),
   ("small_wall_f",0,"small_wall_f","bo_small_wall_f", []),
   ("small_wall_f2",0,"small_wall_f2","bo_small_wall_f2", []),
-
 
   ("town_house_a",0,"town_house_a","bo_town_house_a", []),
   ("town_house_b",0,"town_house_b","bo_town_house_b", []),

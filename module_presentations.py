@@ -359,7 +359,7 @@ presentations.extend([
       ]),
     ]),
 
-  ("game_custom_battle_designer", prsntf_manual_end_only, "mesh_cb_ui_main", []),
+  ("game_custom_battle_designer", prsntf_manual_end_only, 0, []),
 
   ("game_multiplayer_admin_panel", prsntf_manual_end_only, 0,
    [(ti_on_presentation_load,

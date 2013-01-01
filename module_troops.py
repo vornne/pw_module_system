@@ -5,14 +5,14 @@ from header_skills import *
 
 ####################################################################################################################
 #  Each troop contains the following fields:
-#  1) Troop id (string): used for referencing troops in other files. The prefix trp_ is automatically added before each troop-id .
-#  2) Toop name (string).
-#  3) Plural troop name (string).
+#  1) Troop id (string): used for referencing troops in other files. The prefix trp_ is automatically added before each troop-id
+#  2) Toop name (string)
+#  3) Plural troop name (string)
 #  4) Troop flags (int). See header_troops.py for a list of available flags
-#  5) Scene and entry.
-#   5.1) Scene (only applicable to heroes).
-#   5.2) Entry point using the entry() function: for example, entry(15).
-#  6) Reserved (int). Put constant "reserved" or 0.
+#  5) Scene and entry
+#   5.1) Scene (only applicable to heroes)
+#   5.2) Entry point using the entry() function: for example, entry(15)
+#  6) Reserved (int). Put constant "reserved" or 0
 #  7) Faction (int)
 #  8) Inventory (list): Must be a list of items
 #  9) Attributes (int): Example usage:

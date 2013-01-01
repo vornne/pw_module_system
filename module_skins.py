@@ -49,8 +49,8 @@ face_depth = 24
 face_ratio = 25
 face_width = 26
 
-comp_less_than = -1;
-comp_greater_than = 1;
+comp_less_than = -1
+comp_greater_than = 1
 
 skins = [
   ("man", 0, "man_body", "man_calf_l", "m_handL", "male_head",
