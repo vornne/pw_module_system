@@ -7,7 +7,7 @@ import process_operations as po
 import argparse
 
 parser = argparse.ArgumentParser(description="Dump crafting recipes to a file.")
-parser.add_argument("output_format", choices=["txt", "xml"])
+parser.add_argument("output_format", choices=["txt", "xml", "bal"])
 parser.add_argument("output_file", nargs='?', default="crafting_recipes", help="file name without extension")
 parser.add_argument("--pretty", "-p", action="store_true", help="pretty print xml output with newlines and indentation")
 args = parser.parse_args()
@@ -135,3 +135,16 @@ elif args.output_format == "xml":
   if args.pretty:
     indent(tree.getroot())
   tree.write(args.output_file + ".xml")
+
+elif args.output_format == "bal":
+
+  with open(args.output_file + ".txt","w") as f:
+    for recipe in crafting_recipes:
+      f.write("%30s T %-2d S %1d P %-5s RC %-4d MR %-5d P/MR %5.2f MR/RC %5.2f P/RC %5.2f MR/(RC*T) %5.2f DR %d\n" % (
+        recipe.crafted_item.identifier, recipe.time, recipe.average_skill_level,
+        recipe.crafted_item.price, recipe.resources_default_cost, recipe.max_crafting_reward,
+        recipe.crafted_item.price / float(recipe.max_crafting_reward),
+        recipe.max_crafting_reward / float(recipe.resources_default_cost),
+        recipe.crafted_item.price / float(recipe.resources_default_cost),
+        recipe.max_crafting_reward / float(recipe.resources_default_cost * recipe.time),
+        len(set(recipe.resource_names))))
