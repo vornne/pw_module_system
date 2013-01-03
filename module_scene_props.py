@@ -2223,12 +2223,12 @@ scene_props = [
   ("pw_grape_vine_stake",0,"pw_grape_vine_stake","bo_pw_grape_vine_stake", []),
   ("pw_flax_plants",spr_field_flags()|spr_use_time(3),"pw_flax_plants","bo_pw_flax_plants", spr_use_plant_triggers("itm_flax_bundle", full_hp=300, resource_hp=50, regrow_interval=300, sound="snd_pull_flax")),
 
-  ("pw_iron_mine",spr_resource_flags(),"pw_iron_mine","bo_pw_iron_mine", spr_hit_mine_triggers("itm_iron_ore", resource_hp=60, hardness=4)),
-  ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_iron_ore", resource_hp=70, hardness=4)),
-  ("pw_iron_mine_b",spr_resource_flags(),"pw_iron_mine_b","bo_pw_iron_mine_b", spr_hit_mine_triggers("itm_iron_ore", resource_hp=50, hardness=5)),
-  ("pw_iron_mine_small",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_iron_ore_small", resource_hp=40, hardness=4)),
-  ("pw_gold_mine",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_gold_nugget", resource_hp=200, random_hp=200, hardness=6)),
-  ("pw_silver_mine",spr_resource_flags(),"pw_iron_mine_a","bo_pw_iron_mine_a", spr_hit_mine_triggers("itm_silver_nugget", resource_hp=150, random_hp=100, hardness=5)),
+  ("pw_iron_mine",spr_resource_flags(),"pw_iron_vein_a2","bo_pw_iron_vein_a2", spr_hit_mine_triggers("itm_iron_ore", resource_hp=60, hardness=4)),
+  ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_vein_a1","bo_pw_iron_vein_a1", spr_hit_mine_triggers("itm_iron_ore", resource_hp=70, hardness=4)),
+  ("pw_iron_mine_b",spr_resource_flags(),"pw_iron_vein_b","bo_pw_iron_vein_b", spr_hit_mine_triggers("itm_iron_ore", resource_hp=50, hardness=5)),
+  ("pw_iron_mine_small",spr_resource_flags(),"pw_iron_a1","bo_pw_iron_vein_a1", spr_hit_mine_triggers("itm_iron_ore_small", resource_hp=40, hardness=4)),
+  ("pw_gold_mine",spr_resource_flags(),"pw_gold_vein","bo_pw_gold_vein", spr_hit_mine_triggers("itm_gold_nugget", resource_hp=200, random_hp=200, hardness=6)),
+  ("pw_silver_mine",spr_resource_flags(),"pw_silver_vein","bo_pw_gold_vein", spr_hit_mine_triggers("itm_silver_nugget", resource_hp=150, random_hp=100, hardness=5)),
   ("pw_salt_mine",spr_resource_flags(),"pw_salt_mine","bo_pw_salt_mine", spr_hit_mine_triggers("itm_salt_sack", resource_hp=30, random_hp=20, hardness=5)),
 
   ("pw_stockpile_wood_block",spr_use_time(1),"pw_wood_heap_a","bo_wood_heap_a", spr_stockpile_resource_triggers("itm_wood_block")),
