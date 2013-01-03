@@ -256,6 +256,14 @@ def get_damage_str(x):
   else:
     return '%dc'%(x)
 
+def get_raw_damage(x):
+  if x >= blunt_min_val:
+    return x - blunt_min_val
+  elif x >= pierce_min_val:
+    return x - pierce_min_val
+  else:
+    return x
+
 # Item capabilities:
 itcf_thrust_onehanded                                = 0x0000000000000001
 itcf_overswing_onehanded                             = 0x0000000000000002

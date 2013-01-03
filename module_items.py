@@ -1317,17 +1317,41 @@ itm_wall_banner("fac_8", "b"),
 ]
 
 item_lengths_list = []
+item_difficulties_list = []
 item_class_list = []
 herd_animal_list = []
+
+itm_weapons = frozenset([itp_type_one_handed_wpn, itp_type_two_handed_wpn, itp_type_polearm, itp_type_bow, itp_type_crossbow, itp_type_thrown])
+itc_attack_capable = itcf_thrust_onehanded|itcf_overswing_onehanded|itcf_slashright_onehanded|itcf_slashleft_onehanded|\
+  itcf_thrust_twohanded|itcf_overswing_twohanded|itcf_slashright_twohanded|itcf_slashleft_twohanded|\
+  itcf_thrust_polearm|itcf_overswing_polearm|itcf_slashright_polearm|itcf_slashleft_polearm|\
+  itcf_shoot_bow|itcf_shoot_javelin|itcf_shoot_crossbow|itcf_throw_stone|itcf_throw_knife|itcf_throw_axe|itcf_throw_javelin|itcf_shoot_pistol|itcf_shoot_musket|\
+  itcf_horseback_thrust_onehanded|itcf_horseback_overswing_right_onehanded|itcf_horseback_overswing_left_onehanded|\
+  itcf_horseback_slashright_onehanded|itcf_horseback_slashleft_onehanded|itcf_thrust_onehanded_lance|itcf_thrust_onehanded_lance_horseback|\
+  itcf_horseback_slash_polearm|itcf_overswing_spear|itcf_overswing_musket|itcf_thrust_musket
 
 def pre_process_items():
   for item_id, item in enumerate(items):
     item_length = get_weapon_length(item[6])
     item_lengths_list.append(item_length)
+    item_difficulty = get_difficulty(item[6])
+    item_difficulties_list.append(item_difficulty)
     item_type = item[3] & 0xff
     if item_type in (itp_type_bow, itp_type_crossbow):
       item[6] &= ~(ibf_10bit_mask << iwf_weapon_length_bits)
-    if len(item) <= 8:
+    if not (item_type == itp_type_horse and item_difficulty > 10) and not item_difficulty >= 30:
+      item[6] &= ~(ibf_armor_mask << ibf_difficulty_bits)
+    item_len = len(item)
+    if item_type in itm_weapons and item_difficulty > 0 and item[4] & itc_attack_capable:
+      check_can_attack = (ti_on_weapon_attack,
+       [(store_trigger_param_1, ":agent_id"),
+        (agent_slot_eq, ":agent_id", slot_agent_cannot_attack, 1),
+        (agent_set_wielded_item, ":agent_id", -1)])
+      if item_len <= 8:
+        item.extend([0] * (8 - item_len) + [[check_can_attack]])
+      else:
+        item[8].append(check_can_attack)
+    if item_len <= 8:
       continue
     trigger_list = item[8]
     triggers_to_pop = []

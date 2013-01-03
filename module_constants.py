@@ -114,6 +114,35 @@ slot_agent_animal_carcass_instance_id = 26
 slot_agent_animal_times_stuck         = 27
 slot_agent_animal_end                 = 28
 
+slot_agent_head_damage_factor         = 40
+slot_agent_head_speed_factor          = 41
+slot_agent_head_accuracy_factor       = 42
+slot_agent_head_reload_factor         = 43
+slot_agent_body_damage_factor         = 44
+slot_agent_body_speed_factor          = 45
+slot_agent_body_accuracy_factor       = 46
+slot_agent_body_reload_factor         = 47
+slot_agent_foot_damage_factor         = 48
+slot_agent_foot_speed_factor          = 49
+slot_agent_foot_accuracy_factor       = 50
+slot_agent_foot_reload_factor         = 51
+slot_agent_hand_damage_factor         = 52
+slot_agent_hand_speed_factor          = 53
+slot_agent_hand_accuracy_factor       = 54
+slot_agent_hand_reload_factor         = 55
+slot_agent_armor_damage_factor        = 56
+slot_agent_armor_speed_factor         = 57
+slot_agent_armor_accuracy_factor      = 58
+slot_agent_armor_reload_factor        = 59
+slot_agent_weapon_damage_factor       = 60
+slot_agent_weapon_speed_factor        = 61
+slot_agent_weapon_accuracy_factor     = 62
+slot_agent_weapon_reload_factor       = 63
+slot_agent_cannot_attack              = 64
+slot_agent_difficulty_riding          = 65
+slot_agent_armor_damage_through       = 66
+slot_agent_last_apply_factors_item_id = 67
+
 ########################################################
 ##  SCENE PROP SLOTS       #############################
 ########################################################
@@ -217,6 +246,9 @@ slot_item_resource_amount             = 3
 slot_item_gender                      = 4
 slot_item_max_ammo                    = 5
 slot_item_bonus_against_wood          = 6
+slot_item_couchable                   = 7
+slot_item_has_attack_requirements     = 8
+slot_item_max_raw_damage              = 9
 
 item_class_none                       = 0
 item_class_repair                     = 1
@@ -417,6 +449,31 @@ castle_training_gold_multiplier       = 50
 craft_price_gold_reward_multiplier    = 20
 craft_skill_gold_reward_multiplier    = 100
 base_export_multiplier                = 100
+
+reduction_factor_base                 = 90
+armor_damage_reduction_factor         = 10
+head_armor_speed_reduction_factor     = 10
+head_armor_accuracy_reduction_factor  = 50
+head_armor_reload_reduction_factor    = 20
+body_armor_speed_reduction_factor     = 20
+body_armor_accuracy_reduction_factor  = 30
+body_armor_reload_reduction_factor    = 10
+foot_armor_speed_reduction_factor     = 30
+foot_armor_accuracy_reduction_factor  = 5
+foot_armor_reload_reduction_factor    = 5
+hand_armor_speed_reduction_factor     = 5
+hand_armor_accuracy_reduction_factor  = 30
+hand_armor_reload_reduction_factor    = 10
+melee_damage_reduction_factor         = 25
+melee_speed_reduction_factor          = 5
+crossbow_speed_reduction_factor       = 5
+crossbow_accuracy_reduction_factor    = 30
+crossbow_reload_reduction_factor      = 30
+bow_thrown_speed_reduction_factor     = 5
+bow_thrown_accuracy_reduction_factor  = 40
+melee_max_level_difference            = 3
+crossbow_max_level_difference         = 2
+bow_ranged_max_level_difference       = 1
 
 winch_type_drawbridge                 = 0
 winch_type_portcullis                 = 1

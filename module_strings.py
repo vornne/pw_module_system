@@ -611,6 +611,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("requires_power_throw_reg1", "Requires power throw: {reg1}"),
   ("requires_shield_reg1", "Requires shield: {reg1}"),
   ("requires_riding_reg1", "Requires riding: {reg1}"),
+  ("damage_reg1_speed_reg2", "Damage: {reg1}% Speed {reg2}%"),
+  ("accuracy_reg1_reload_reg2", "Accuracy: {reg1}% Reload: {reg2}%"),
   ("joined_the_s1", "You have joined the {s1}."),
   ("s0_joined_the_s1", "{s0} joined the {s1}."),
   ("must_leave_s1_first", "You must leave the {s1} first."),
