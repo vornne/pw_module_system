@@ -2634,7 +2634,7 @@ scene_props = [
   ("pw_buy_butchering_knife",spr_buy_item_flags(5),"khyber_knife_new","bo_pw_weapon_small", spr_buy_item_triggers("itm_butchering_knife", resources=["itm_iron_bar_short"], engineer=3)),
   ("pw_buy_broom",spr_buy_item_flags(2),"pw_broom","bo_pw_weapon", spr_buy_item_triggers("itm_broom", resources=["itm_wood_pole_short", "itm_flax_bundle"], engineer=0)),
   ("pw_buy_herding_crook",spr_buy_item_flags(4),"pw_herding_crook","bo_pw_weapon_big", spr_buy_item_triggers("itm_herding_crook", resources=["itm_wood_pole", "itm_iron_piece"], engineer=2)),
-  ("pw_buy_surgeon_scalpel",spr_buy_item_flags(30),"dagger_b_scabbard","bo_pw_weapon_small", spr_buy_item_triggers("itm_surgeon_scalpel", resources=["itm_iron_piece"], engineer=4)),
+  ("pw_buy_surgeon_scalpel",spr_buy_item_flags(16),"dagger_b_scabbard","bo_pw_weapon_small", spr_buy_item_triggers("itm_surgeon_scalpel", resources=["itm_iron_piece"], engineer=4)),
   ("pw_buy_dagger",spr_buy_item_flags(7),"scab_dagger","bo_pw_weapon_small", spr_buy_item_triggers("itm_dagger", resources=["itm_iron_bar_short"], engineer=3)),
   ("pw_buy_poisoned_dagger",spr_buy_item_flags(45),"scab_dagger","bo_pw_weapon_small", spr_buy_item_triggers("itm_poisoned_dagger", resources=["itm_dagger", "itm_poison_herb"], engineer=4)),
   ("pw_buy_torch",spr_use_time(1),"pw_torch","bo_pw_weapon_small", spr_buy_item_triggers("itm_torch", resources=["itm_stick"], engineer=1)),
