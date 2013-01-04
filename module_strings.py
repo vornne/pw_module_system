@@ -384,7 +384,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("use_class_limits", "use_class_limits"),
   ("class_limit_player_count", "class_limit_player_count"),
   ("squad_size", "squad_size"),
-  ("scale_squad", "scale_squad"),
+  ("scale_squad", "Initial stockpile multiplier:"),
   ("build_points_team1", "build_points_team1"),
   ("build_points_team2", "build_points_team2"),
   ("allow_multiple_firearms", "allow_multiple_firearms"),
