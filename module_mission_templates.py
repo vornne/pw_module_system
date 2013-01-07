@@ -560,6 +560,7 @@ mission_templates = [
             (try_end),
           (else_try),
             (scene_prop_set_slot, ":herd_manager", ":herd_slot", -1),
+            (agent_is_active, ":herd_agent_id"),
             (le, ":herd_item_id", -1),
             (agent_set_slot, ":herd_agent_id", slot_agent_animal_herd_manager, -1),
           (try_end),
