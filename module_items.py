@@ -891,7 +891,7 @@ items = [
 ["silver_bar", "Silver Bar", [("pw_silver_bar",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_revolver_right,
  40000, weight(15)|spd_rtng(60)|swing_damage(8,blunt)|thrust_damage(8,blunt)|weapon_length(20), imodbits_none, [itm_class(item_class_precious, 0)]],
 ["flax_bundle", "Flax Bundle", [("pw_flax_bundle",0)], itp_type_one_handed_wpn|itp_two_handed|itp_primary|itp_no_parry, itcf_carry_bow_back,
- 50, weight(6)|spd_rtng(20)|weapon_length(45), imodbits_none, [itm_class(item_class_cloth, 0)]],
+ 50, weight(4)|spd_rtng(20)|weapon_length(45), imodbits_none, [itm_class(item_class_cloth, 0)]],
 ["linen_thread", "Linen Thread", [("pw_linen_thread",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
  91, weight(2)|spd_rtng(90)|weapon_length(45), imodbits_none, [itm_class(item_class_cloth, 0)]],
 ["linen_cloth", "Linen Cloth", [("pw_linen_cloth",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_axe_back,

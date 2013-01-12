@@ -2221,7 +2221,7 @@ scene_props = [
   ("code_wheat",0,"pw_wheat","0", spr_field_plant_triggers(seeds=4, water=2)),
   ("pw_grape_vine",spr_resource_flags(),"pw_grape_vine","bo_pw_grape_vine", spr_hit_vine_triggers("itm_grapes", resources=10, full_hp=300, length=350, height=100, tool_class=item_class_knife, regrow_interval=300)),
   ("pw_grape_vine_stake",0,"pw_grape_vine_stake","bo_pw_grape_vine_stake", []),
-  ("pw_flax_plants",spr_field_flags()|spr_use_time(3),"pw_flax_plants","bo_pw_flax_plants", spr_use_plant_triggers("itm_flax_bundle", full_hp=300, resource_hp=50, regrow_interval=300, sound="snd_pull_flax")),
+  ("pw_flax_plants",spr_field_flags()|spr_use_time(1),"pw_flax_plants","bo_pw_flax_plants", spr_use_plant_triggers("itm_flax_bundle", full_hp=300, resource_hp=50, regrow_interval=300, sound="snd_pull_flax")),
 
   ("pw_iron_mine",spr_resource_flags(),"pw_iron_vein_a2","bo_pw_iron_vein_a2", spr_hit_mine_triggers("itm_iron_ore", resource_hp=60, hardness=4)),
   ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_vein_a1","bo_pw_iron_vein_a1", spr_hit_mine_triggers("itm_iron_ore", resource_hp=70, hardness=4)),
