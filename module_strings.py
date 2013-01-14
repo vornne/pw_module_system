@@ -861,6 +861,9 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("castle_name_50", "Town Watch Headquarters"),
   ("castle_name_51", "Bluvard Bank"),
   ("castle_name_52", "Underworld Caverns"),
+  ("castle_name_53", "Whiteforge Harbour"),
+  ("castle_name_54", "Whiteforge Guardhouse"),
+  ("castle_name_55", "Saint Michael Abbey"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]
