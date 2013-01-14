@@ -2226,7 +2226,7 @@ scene_props = [
   ("pw_iron_mine",spr_resource_flags(),"pw_iron_vein_a2","bo_pw_iron_vein_a2", spr_hit_mine_triggers("itm_iron_ore", resource_hp=60, hardness=4)),
   ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_vein_a1","bo_pw_iron_vein_a1", spr_hit_mine_triggers("itm_iron_ore", resource_hp=70, hardness=4)),
   ("pw_iron_mine_b",spr_resource_flags(),"pw_iron_vein_b","bo_pw_iron_vein_b", spr_hit_mine_triggers("itm_iron_ore", resource_hp=50, hardness=5)),
-  ("pw_iron_mine_small",spr_resource_flags(),"pw_iron_a1","bo_pw_iron_vein_a1", spr_hit_mine_triggers("itm_iron_ore_small", resource_hp=40, hardness=4)),
+  ("pw_iron_mine_small",spr_resource_flags(),"pw_iron_vein_a1","bo_pw_iron_vein_a1", spr_hit_mine_triggers("itm_iron_ore_small", resource_hp=40, hardness=4)),
   ("pw_gold_mine",spr_resource_flags(),"pw_gold_vein","bo_pw_gold_vein", spr_hit_mine_triggers("itm_gold_nugget", resource_hp=200, random_hp=200, hardness=6)),
   ("pw_silver_mine",spr_resource_flags(),"pw_silver_vein","bo_pw_gold_vein", spr_hit_mine_triggers("itm_silver_nugget", resource_hp=150, random_hp=100, hardness=5)),
   ("pw_salt_mine",spr_resource_flags(),"pw_salt_mine","bo_pw_salt_mine", spr_hit_mine_triggers("itm_salt_sack", resource_hp=30, random_hp=20, hardness=5)),
