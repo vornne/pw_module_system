@@ -2557,7 +2557,7 @@ scene_props = [
   ("pw_buy_awlpike_long",spr_buy_item_flags(4),"awl_pike_a","bo_pw_weapon_big", spr_buy_item_triggers("itm_awlpike_long", resources=["itm_wood_pole", "itm_iron_bar_short"], engineer=2)),
   ("pw_buy_pike",spr_buy_item_flags(5),"spear_a_3m","bo_pw_weapon_big", spr_buy_item_triggers("itm_pike", resources=["itm_wood_pole", "itm_iron_piece"], engineer=3)),
   ("pw_buy_bec_de_corbin_a",spr_buy_item_flags(9),"bec_de_corbin_a","bo_pw_weapon", spr_buy_item_triggers("itm_bec_de_corbin_a", resources=["itm_wood_pole", "itm_iron_bar_short"], engineer=4)),
-  ("pw_buy_bishop_crosier",spr_buy_item_flags(12),"pw_bishop_crosier","bo_weapon_big", spr_buy_item_triggers("itm_bishop_crosier", resources=["itm_wood_pole","itm_gold_bar"], engineer=6)),
+  ("pw_buy_bishop_crosier",spr_buy_item_flags(12),"pw_bishop_crosier","bo_pw_weapon_big", spr_buy_item_triggers("itm_bishop_crosier", resources=["itm_wood_pole","itm_gold_bar"], engineer=6)),
   ("pw_buy_hunting_bow",spr_buy_item_flags(2),"hunting_bow","bo_pw_weapon", spr_buy_item_triggers("itm_hunting_bow", resources=["itm_wood_pole_short"], engineer=2)),
   ("pw_buy_short_bow",spr_buy_item_flags(3),"short_bow","bo_pw_weapon", spr_buy_item_triggers("itm_short_bow", resources=["itm_wood_pole_short"], engineer=2)),
   ("pw_buy_nomad_bow",spr_buy_item_flags(3),"nomad_bow","bo_pw_weapon", spr_buy_item_triggers("itm_nomad_bow", resources=["itm_wood_pole_short"], engineer=3)),
