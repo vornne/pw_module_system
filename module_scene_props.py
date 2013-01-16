@@ -2273,7 +2273,7 @@ scene_props = [
   ("pw_export_leather_roll",spr_use_time(8),"pw_leather_roll","bo_pw_weapon_small", spr_export_item_triggers("itm_leather_roll")),
   ("pw_process_wood",spr_use_time(4),"bench_tavern_b","bo_bench_tavern_b", spr_process_resource_triggers("script_cf_process_wood", use_string="str_process_wood")),
   ("pw_process_iron",spr_use_time(10),"pw_smithy_forge","bo_pw_smithy_forge", spr_process_resource_triggers("script_cf_process_iron", use_string="str_process_metal")),
-  ("pw_process_iron_divide_only",spr_use_time(8),"smithy_anvil","bo_smithy_anvil", spr_process_resource_triggers("script_cf_process_iron_divide_only", use_string="str_process_hammer_metal")),
+  ("pw_process_iron_divide_only",spr_use_time(5),"smithy_anvil","bo_smithy_anvil", spr_process_resource_triggers("script_cf_process_iron_divide_only", use_string="str_process_hammer_metal")),
   ("pw_process_grind_fast",spr_use_time(3)|sokf_invisible,"pw_invisible_station","bo_pw_invisible_station", spr_process_resource_triggers("script_cf_process_grind", use_string="str_process_grind")),
   ("pw_process_grind_slow",spr_use_time(10),"horse_mill","bo_horse_mill", spr_process_resource_triggers("script_cf_process_grind", use_string="str_process_grind")),
   ("pw_process_cook_fast",spr_use_time(4),"village_oven","bo_village_oven_fixed", spr_process_resource_triggers("script_cf_process_cook", use_string="str_process_cook")),
