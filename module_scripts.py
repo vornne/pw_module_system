@@ -6888,7 +6888,7 @@ scripts.extend([
    [generate_process_init(skill="skl_labouring", level=1, resource_class=item_class_cloth, start_effect=False),
 
     (assign, ":processed_item_id", -1),
-    (assign, ":processed_item_count", 1),
+    (assign, ":processed_item_count", 2),
     (try_begin),
       (eq, ":resource_item_id", "itm_flax_bundle"),
       (assign, ":processed_item_id", "itm_linen_thread"),
