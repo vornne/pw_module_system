@@ -139,9 +139,8 @@ slot_agent_weapon_speed_factor        = 61
 slot_agent_weapon_accuracy_factor     = 62
 slot_agent_weapon_reload_factor       = 63
 slot_agent_cannot_attack              = 64
-slot_agent_difficulty_riding          = 65
-slot_agent_armor_damage_through       = 66
-slot_agent_last_apply_factors_item_id = 67
+slot_agent_armor_damage_through       = 65
+slot_agent_last_apply_factors_item_id = 66
 
 ########################################################
 ##  SCENE PROP SLOTS       #############################

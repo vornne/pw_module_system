@@ -1339,7 +1339,7 @@ def pre_process_items():
     item_type = item[3] & 0xff
     if item_type in (itp_type_bow, itp_type_crossbow):
       item[6] &= ~(ibf_10bit_mask << iwf_weapon_length_bits)
-    if not (item_type == itp_type_horse and item_difficulty > 10) and not item_difficulty >= 30:
+    if not item_type == itp_type_horse and not item_difficulty >= 30:
       item[6] &= ~(ibf_armor_mask << ibf_difficulty_bits)
     item_len = len(item)
     if item_type in itm_weapons and item_difficulty > 0 and item[4] & itc_attack_capable:
