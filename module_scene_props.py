@@ -2233,6 +2233,10 @@ scene_props = [
 
   ("pw_stockpile_wood_block",spr_use_time(1),"pw_wood_heap_a","bo_wood_heap_a", spr_stockpile_resource_triggers("itm_wood_block")),
   ("pw_stockpile_wood_branch",spr_use_time(1),"wood_heap_b","bo_wood_heap_b", spr_stockpile_resource_triggers("itm_branch")),
+  ("pw_stockpile_wood_pole",spr_use_time(1),"pw_wood_pole","bo_pw_weapon_big", spr_stockpile_resource_triggers("itm_wood_pole")),
+  ("pw_stockpile_wood_pole_short",spr_use_time(1),"pw_wood_pole_short","bo_pw_weapon", spr_stockpile_resource_triggers("itm_wood_pole_short")),
+  ("pw_stockpile_stick",spr_use_time(1),"wooden_stick","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_stick")),
+  ("pw_stockpile_board",spr_use_time(1),"pw_board","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_board")),
   ("pw_stockpile_iron_ore_small",spr_use_time(1),"pw_iron_ore_small","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_iron_ore_small")),
   ("pw_stockpile_iron_ore",spr_use_time(1),"pw_iron_ore","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_iron_ore")),
   ("pw_stockpile_iron_bar",spr_use_time(1),"pw_chest_c","bo_pw_chest_c", spr_stockpile_resource_triggers("itm_iron_bar")),
@@ -2246,6 +2250,7 @@ scene_props = [
   ("pw_stockpile_linen_thread",spr_use_time(1),"pw_linen_thread","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_linen_thread")),
   ("pw_stockpile_linen_cloth",spr_use_time(1),"pw_linen_cloth","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_linen_cloth")),
   ("pw_stockpile_leather_roll",spr_use_time(1),"pw_leather_roll","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_leather_roll")),
+  ("pw_stockpile_leather_piece",spr_use_time(1),"pw_leather_piece","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_leather_piece")),
   ("pw_import_wheat_sack",spr_use_time(30),"pw_wheat_sack","bo_pw_weapon_small", spr_import_item_triggers("itm_wheat_sack", pos_offset=(0,0,-20), price_multiplier=3000)),
   ("pw_import_fawn",spr_use_time(20),"sack","bo_sack_fixed", spr_import_item_triggers("itm_fawn", pos_offset=(0,50,50), price_multiplier=300, check_script="script_cf_can_spawn_herd_animal")),
   ("pw_import_boarlet",spr_use_time(10),"sack","bo_sack_fixed", spr_import_item_triggers("itm_boarlet", pos_offset=(0,50,50), price_multiplier=300, check_script="script_cf_can_spawn_herd_animal")),
