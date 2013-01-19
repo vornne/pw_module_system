@@ -237,16 +237,18 @@ item_picked_up = (ti_on_item_picked_up, 0, 0, [],
    [(store_trigger_param_1, ":agent_id"),
     (store_trigger_param_2, ":item_id"),
     (store_trigger_param_3, ":instance_id"),
-    (call_script, "script_check_on_item_picked_up", ":agent_id", ":item_id", ":instance_id"),
     (call_script, "script_agent_calculate_stat_modifiers_for_item", ":agent_id", ":item_id", 1, 1),
+    (multiplayer_is_server),
+    (call_script, "script_check_on_item_picked_up", ":agent_id", ":item_id", ":instance_id"),
     ])
 
 item_dropped = (ti_on_item_dropped, 0, 0, [],
    [(store_trigger_param_1, ":agent_id"),
     (store_trigger_param_2, ":item_id"),
     (store_trigger_param_3, ":instance_id"),
-    (call_script, "script_check_on_item_dropped", ":agent_id", ":item_id", ":instance_id", 0),
     (call_script, "script_agent_calculate_stat_modifiers_for_item", ":agent_id", ":item_id", 0, 1),
+    (multiplayer_is_server),
+    (call_script, "script_check_on_item_dropped", ":agent_id", ":item_id", ":instance_id", 0),
     ])
 
 item_wielded = (ti_on_item_wielded, 0, 0, [],
