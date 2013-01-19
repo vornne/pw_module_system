@@ -9680,7 +9680,7 @@ scripts.extend([
       (try_begin),
         (gt, ":sail_scene_prop_id", -1),
         (copy_position, pos2, pos1),
-        (position_move_z, pos2, -10000),
+        (position_set_z, pos2, z_position_to_hide_object),
         (set_spawn_position, pos2),
         (spawn_scene_prop, ":sail_scene_prop_id"),
         (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_linked_sail, reg0),
