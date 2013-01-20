@@ -6502,6 +6502,7 @@ scripts.extend([
     (try_begin),
       (eq, ":wielded_item_id", ":item_id"),
       (agent_set_wielded_item, ":agent_id", -1),
+      (call_script, "script_agent_calculate_stat_modifiers_for_item", ":agent_id", ":item_id", 0, 1),
     (try_end),
     (assign, reg0, ":offset_slot"),
     ]),
