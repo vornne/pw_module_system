@@ -1,0 +1,17 @@
+The license of the original "Native" module system released by TaleWorlds is
+unknown, but it remains their property. The "3 clause BSD" license in
+LICENSE.txt applies to changes from that base for the "Persistent World"
+module by Steven Schwartfeger (Vornne).
+
+Basically, you can use the module system for your project as long as the
+license is kept and credit is given to Persistent World as the base, but the
+name "Persistent World" or close derivatives is not used without permission
+to name or promote your project, to deceive people into thinking that yours is
+an official version.
+
+Using the same module directory name as an official release on a dedicated
+server would only be permitted for minor bug fixes and enhancements that seem
+certain not to cause compatibility problems with the corresponding official
+module. Server hosters using a module tweaked from an official release should
+assist in fixing related bugs reported while playing on that server, whether
+by fixing the scripts, revealing the changed parts, or reverting the changes.
