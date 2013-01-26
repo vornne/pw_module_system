@@ -25,6 +25,16 @@ class sub(LazyIdEvaluation):
   def process(self, processor):
     return self.recurse(processor, self.a) - self.recurse(processor, self.b)
 
+class price(LazyIdEvaluation):
+  """Gets the price of an item id."""
+
+  def __init__(self, item_id):
+    self.item_id = item_id
+
+  def process(self, processor):
+    import module_items
+    return module_items.items[processor.process_id(self.item_id, "itm")][5]
+
 class block:
   """Inserts a list of operations inside an exisiting block."""
 

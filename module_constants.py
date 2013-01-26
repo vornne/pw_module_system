@@ -198,6 +198,7 @@ slot_scene_prop_unlocked              = 35
 slot_scene_prop_regrow_script         = 36
 slot_scene_prop_resource_item_id      = 37
 slot_scene_prop_prune_time            = 38
+slot_scene_prop_resources_default_cost = 39
 
 slot_scene_prop_water                 = 40
 slot_scene_prop_seeds                 = 41

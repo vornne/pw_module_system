@@ -149,6 +149,8 @@ def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_strin
     if average_craft_skill > 0:
       init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_average_craft_skill, min(max(average_craft_skill, 1), 10)))
     crafting_data.append([item_id, accepted_skills, resources, resource_list, average_craft_skill])
+    init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_resources_default_cost, lazy.add(
+        lazy.price(resource_list[0]), lazy.price(resource_list[1]), lazy.price(resource_list[2]), lazy.price(resource_list[3]))))
   return [init_trigger, buy_trigger, craft_trigger]
 
 def spr_export_item_triggers(item_id, use_string="str_export", price_multiplier=None):

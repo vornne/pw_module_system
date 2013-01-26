@@ -591,7 +591,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("gold_reg2", "Gold: {reg2}"),
   ("buy_banner_faction", "Buy a banner for the {s1}"),
   ("stock_count_reg0", "Stock count: {reg0}"),
-  ("crafting_reward_reg0", "Crafting reward: {reg0}"),
+  ("crafting_refund_reg0_reward_reg1", "Crafting refund: {reg0} reward: {reg1}"),
   ("selling_price_reg0", "Selling price: {reg0}"),
   ("womens_clothes", "Women's clothes"),
   ("item_id", "Item ID:"),
