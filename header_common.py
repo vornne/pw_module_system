@@ -58,13 +58,14 @@ client_event_change_faction_banner              = 124
 client_event_transfer_inventory                 = 125
 client_event_control_scene_prop                 = 126
 client_event_attach_scene_prop                  = 127
+# Network events are limited to numbers between 0 and 127 by the game engine.
 
 preset_message_default                          = 0x0
-preset_message_item                             = 0x2
-preset_message_agent                            = 0x3
-preset_message_player                           = 0x4
-preset_message_faction                          = 0x5
-preset_message_faction_castle                   = 0x6
+preset_message_item                             = 0x2 # converts value 1 from item id into name string
+preset_message_agent                            = 0x3 # converts value 1 from agent id into name string
+preset_message_player                           = 0x4 # converts value 1 from player id into username string
+preset_message_faction                          = 0x5 # converts value 1 from faction id into name string
+preset_message_faction_castle                   = 0x6 # converts value 1 from castle id into name string
 preset_message_params_mask                      = 0xF
 
 preset_message_white                            = 0x00
@@ -76,12 +77,12 @@ preset_message_color_mask                       = 0xF0
 
 preset_message_small                            = 0x000
 preset_message_big                              = 0x100
-preset_message_read_object                      = 0x200
-preset_message_chat_only                        = 0x300
+preset_message_read_object                      = 0x200 # displays the presentation for reading a book
+preset_message_chat_only                        = 0x300 # only displays in the chat log
 preset_message_type_mask                        = 0xF00
 
-preset_message_log                              = 0x1000
-preset_message_fail_sound                       = 0x2000
+preset_message_log                              = 0x1000 # add message to the chat log
+preset_message_fail_sound                       = 0x2000 # play a failure sound
 
 preset_message_error                            = preset_message_red|preset_message_fail_sound
 preset_message_info                             = preset_message_yellow
@@ -203,9 +204,13 @@ commands_hard_coded_begin                       = command_get_max_players
 commands_hard_coded_end                         = command_set_anti_cheat + 1
 
 min_num_players                                 = 2
-max_num_players                                 = 250
+max_num_players                                 = 250 # limited by the game engine
 min_respawn_period                              = 3
-max_respawn_period                              = 31
+max_respawn_period                              = 31 # dead agents are removed after approximately this interval
+
+team_default                                    = 0 # default team, members can attack each other like deathmatch - since multiplayer is hard coded to handle only 2 teams
+team_spawn_invulnerable                         = 1 # team set to be neutral to each other and the default team, so they can't attack or be attacked
+team_spectators                                 = 2 # hard coded spectators team
 
 net_value_upper_bound = 1 << 31
 net_sound_shift = 16
@@ -260,8 +265,9 @@ faction_admin_action_mute_player                = 8
 faction_admin_action_toggle_player_announce     = 9
 
 max_possible_gold                               = 1000000000
-max_correctly_displayed_gold                    = 131071
-max_correctly_displayed_hp                      = 15000
+max_correctly_displayed_gold                    = 131071 # player gold over this value will not be updated correctly by the game engine
+max_correctly_displayed_hp                      = 15000 # scene prop hit points over approximately this value will not be displayed correctly in the engine hit points bar
+min_scene_prop_hit_points                       = 1
 
 profile_banner_id_option_bits_begin             = 9
 profile_banner_id_option_bits_end               = 30
