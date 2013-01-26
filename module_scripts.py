@@ -6924,7 +6924,7 @@ scripts.extend([
     (assign, ":resource_item_count", 1),
     (try_begin),
       (eq, ":resource_item_id", "itm_linen_thread"),
-      (assign, ":resource_item_count", 2),
+      (assign, ":processed_item_count", 2),
       (assign, ":processed_item_id", "itm_linen_cloth"),
     (else_try),
       (eq, ":resource_item_id", "itm_linen_cloth_small"),
