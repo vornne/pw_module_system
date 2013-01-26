@@ -447,7 +447,7 @@ max_distance_to_include_in_herd       = 5000
 castle_tax_gold_percentage            = 20
 castle_training_gold_percentage       = 50
 craft_price_gold_reward_percentage    = 20
-craft_skill_gold_reward_multiplier    = 100
+craft_skill_gold_reward_multiplier    = 300
 base_export_percentage                = 100
 
 reduction_factor_base                 = 90
