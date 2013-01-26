@@ -443,11 +443,11 @@ fish_school_minimum_depth             = 200
 fish_spawn_time                       = 300
 max_distance_to_include_in_herd       = 5000
 
-castle_tax_gold_multiplier            = 20
-castle_training_gold_multiplier       = 50
-craft_price_gold_reward_multiplier    = 20
+castle_tax_gold_percentage            = 20
+castle_training_gold_percentage       = 50
+craft_price_gold_reward_percentage    = 20
 craft_skill_gold_reward_multiplier    = 100
-base_export_multiplier                = 100
+base_export_percentage                = 100
 
 reduction_factor_base                 = 90
 armor_damage_reduction_factor         = 10
