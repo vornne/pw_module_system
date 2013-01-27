@@ -1,0 +1,79 @@
+* Use only two spaces for indentation, never tabs; use a programming text
+  editor to convert the tab key to do this automatically.
+
+* Don't add trailing whitespace to the end of lines.
+
+* All variable names must be lower case with underscores between words.
+
+* Use descriptive variable names; using numbered registers only for simple
+  functions or when formatting strings or returning values - take care that
+  your registers won't be overwritten by intervening operations or scripts.
+
+* Rather than writing specific numbers or identifiers in multiple places
+  throughout the module system, define them as a python variable in
+  module_constants, so they can be changed in one place.
+
+* Never commit commented out code to the repository, remove it instead; if it
+  is ever wanted in the future, just use the repository to get it back.
+  Exceptions to this rule are when small bits of obvious code or parameters
+  passed are intentionally left unused, so other people don't add them in.
+
+* Always increase the indentation level after try_begin, try_for_range,
+  try_for_range_backwards, and try_for_agents operations; decrease it for
+  else_try then increase immediately after, and decrease it for try_end.
+
+* Generally assign variables close before they could be used; assigning
+  before a try_ block to use in multiple branches is fine.
+
+* Generally start a try_ block just before the first operation that can fail.
+
+* Break out of try_for_range loops by using a local variable as the end, then
+  changing it to a value before the beginning value (-1 is conventional).
+  try_for_agents loops can't be broken out of: check and change a variable to
+  skip unnecessary extra iterations of the loop.
+
+* For operations blocks, only indent the opening square bracket '[' by one
+  space, immediately followed by the first operation, then the next line
+  indented to match the operation.
+
+* Don't line up operation comments vertically, just type space-hash-space then
+  the comment; adjusting all nearby comment lines after each change is a waste
+  of time.
+
+* This is the general format of a script entry, similarly for larger operations
+  blocks in other triggers:
+
+  ("script_name_here", # short description if necessary, explaining return values
+   [(store_script_param, ":first", 1), # comments if necessary
+    (store_script_param, ":second", 2), # comments if necessary
+
+    (operation), # first operation after a blank separating from the parameters
+    (try_begin),
+      (operation),
+      (operation),
+    (else_try),
+      (operation),
+      (try_begin),
+        (operation),
+      (try_end),
+    (try_end),
+    (assign, reg0, ":first_return_value"),
+    (assign, reg1, ":second_return_value"),
+    ]), # closing brackets at the same level as first and last operations
+
+* Don't write unnecessary comments: only for information not conveyed by the
+  variable names, or to explain methods not common throughout the code.
+
+* Don't add unnecessary blank lines in operations blocks: only for sections in
+  large scripts. Don't add two or more blank lines in a row.
+
+* Don't manually wrap long lines in operations blocks; permitted in pure python
+  functions.
+
+* Follow obvious formatting conventions specific to each module file.
+
+* By convention copied from M&B, all global variables start with g_ (even
+  though the preceding '$' disambiguates them).
+
+* Add temporary debugging operations with no indentation for easy
+  identification for removal, and don't release those commits publicly.
