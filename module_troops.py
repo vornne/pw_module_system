@@ -75,7 +75,7 @@ troops = [
    str_10|agi_9|pw_attr,wpex(70,40,70,10,40,50),knows_pw|knows_ironflesh_2|knows_power_strike_1|knows_athletics_2|knows_riding_1|knows_labouring_1|knows_herding_2,default_face_1,default_face_2],
   ["huntsman","Huntsman","a huntsman",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_ragged_woolen_cap","itm_old_coarse_tunic","itm_crude_bow","itm_bent_arrows"],
-   str_9|agi_9|pw_attr,wpex(60,35,50,100,30,50),knows_pw|knows_ironflesh_1|knows_power_draw_2|knows_athletics_1|knows_riding_1|knows_labouring_1|knows_herding_3,default_face_1,default_face_2],
+   str_9|agi_9|pw_attr,wpex(60,35,50,100,100,50),knows_pw|knows_ironflesh_1|knows_power_draw_2|knows_athletics_1|knows_riding_1|knows_labouring_1|knows_herding_3,default_face_1,default_face_2],
   ["craftsman","Craftsman","a craftsman",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_stained_felt_hat_b","itm_old_coarse_tunic"],
    str_8|agi_8|pw_attr,wpex(50,30,30,20,20,20),knows_pw|knows_riding_1|knows_engineer_2|knows_labouring_1|knows_tailoring_3,default_face_1,default_face_2],
