@@ -1,7 +1,7 @@
 ####################################################################################################################
 # Generates strings at module system build time.
 #
-# To use, make a function called "generate_" then the string name which returns the string text.
+# To use, make a function called "generate_" then the string name which will be combined with the generated text.
 ####################################################################################################################
 
 from module_items import *

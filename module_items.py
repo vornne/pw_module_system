@@ -52,12 +52,15 @@ imodbit_female = imodbit_meek
 tag_item_class = -100.0
 tag_item_herd_animal = -101.0
 
+# Set a class for this item - listed in module_constants prefixed with item_class_ - with an optional associated value.
 def itm_class(class_id, value=0):
   return (tag_item_class, class_id, value)
 
+# Mark a horse item as a herd animal. Only use for the adult item, not the child.
 def itm_herd_animal(child_item=-1, grow_age=10, max_in_herd=20, attack_reaction=animal_reaction_flee, death_sound="snd_cow_slaughter", meat=0, hide=0, wildness=1):
   return [[tag_item_herd_animal, child_item, grow_age, max_in_herd, attack_reaction, death_sound, meat, hide, wildness]]
 
+# Display the agent's heraldic banner or color on special item meshes, specifying the appropriate entry from module_tableau_materials.
 def init_heraldic_item(tableau):
   return [(ti_on_init_item,
    [(store_trigger_param_1, ":agent_id"),
@@ -66,15 +69,19 @@ def init_heraldic_item(tableau):
     ]),
   itm_class(item_class_heraldic)]
 
+# Template for faction banner items.
+# When adding a new banner texture, remember to add an entry to module_meshes in the correct place, and set an appropriate background color in module_scripts.
 def itm_faction_banner(banner_id):
   return ["pw_banner_pole_" + banner_id, "Banner", [("pw_banner_pole",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_wooden_parry, itc_parry_polearm|itcf_carry_spear,
    1200, weight(7.0)|difficulty(14)|spd_rtng(70)|weapon_length(250)|swing_damage(10, blunt)|thrust_damage(5, blunt), imodbits_none,
    [(ti_on_init_item, [(cur_item_set_tableau_material, "tableau_faction_banner_pole", "mesh_banner_" + banner_id)])]]
 
+# Template for castle capture point banner items (display only, not allowing pickup).
 def itm_castle_banner(faction, suffix):
   return ["pw_banner_castle_" + faction + suffix, "Castle Banner", [("pw_banner_castle",0)], itp_no_pick_up_from_ground, 0,
    0, 0, imodbits_none, [(ti_on_init_item, [(cur_item_set_tableau_material, "tableau_castle_banner_" + suffix, faction)])]]
 
+# Template for castle wall banner items (display only, not allowing pickup).
 def itm_wall_banner(faction, suffix):
   return ["pw_banner_wall_" + faction + suffix, "Wall Banner", [("pw_banner_wall",0)], itp_no_pick_up_from_ground, 0,
    0, 0, imodbits_none, [(ti_on_init_item, [(cur_item_set_tableau_material, "tableau_castle_banner_" + suffix, faction)])]]
@@ -96,6 +103,7 @@ def itm_read_book_trigger(string_id):
     (call_script, "script_cf_read_book", string_id, ":agent_id"),
     ])
 
+# Swap between different items when swinging, to change visual appearance.
 def itm_swap_item_trigger(this_item, other_item):
   return (ti_on_weapon_attack,
    [(store_trigger_param_1, ":agent_id"),
@@ -111,6 +119,7 @@ def itm_swap_item_trigger(this_item, other_item):
     (try_end),
     ])
 
+# Attempt to process a nearby animal when swinging.
 def itm_butchering_knife():
   return (ti_on_weapon_attack,
    [(multiplayer_is_server),

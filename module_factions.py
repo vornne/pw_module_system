@@ -16,6 +16,8 @@ from header_factions import *
 #  7) Faction color (default is gray)
 ####################################################################################################################
 
+# Adding more factions to this list will not work: many scripts are limited to 10 factions by the scene file format.
+
 factions = [
   ("commoners","Commoners", 0, 0, [], [], 0x990099),
   ("outlaws","Outlaws", 0, 0, [], [], 0x775500),

@@ -1,5 +1,8 @@
 from header_sounds import *
 
+# Many of these sound entries are hard coded into the engine, and should not be removed; to disable them, empty the sound file list.
+# Add your own sounds just before the animation sounds group, or before sounds_end.
+
 sounds = [
  ("click", sf_2d|sf_priority_9|sf_vol_3, ["drum_3.ogg"]),
  ("tutorial_1", sf_2d|sf_priority_9|sf_vol_7, ["tutorial_1.ogg"]),

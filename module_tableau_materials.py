@@ -23,6 +23,9 @@ import header_lazy_evaluation as lazy
 
 # banner height = 200, width = 85 with wood, 75 without wood
 
+# Apply a banner to an armor mesh, overlaying 'mesh_tableau' as a sort of stencil on top.
+# 'banner_xyz' and 'banner_scale' adjust the position and scale of the banner relative to the armor (tableau) texture.
+# 'mesh_xyz' can be used to adjust the position of the tableau mesh on the armor; the default should be correct in most cases.
 def tableau_armor_banner(mesh_tableau, banner_xyz=(0,0,0), banner_scale=100, mesh_xyz=(0,0,100)):
   script = [(store_script_param, ":banner_mesh", 1),
     (set_fixed_point_multiplier, 100),
@@ -50,6 +53,7 @@ def tableau_armor_banner(mesh_tableau, banner_xyz=(0,0,0), banner_scale=100, mes
     (cur_tableau_set_camera_parameters, 0, 200, 200, 0, 100000)])
   return script
 
+# Apply just the background color of a banner to an armor mesh, overlaying 'mesh_tableau' on top.
 def tableau_armor_color(mesh_tableau):
   return [(store_script_param, ":banner_mesh", 1),
     (set_fixed_point_multiplier, 100),
@@ -60,6 +64,7 @@ def tableau_armor_color(mesh_tableau):
     (cur_tableau_set_camera_parameters, 0, 200, 200, 0, 100000),
     ]
 
+# Apply the background color of a banner over the entire armor mesh as vertex color.
 def tableau_armor_vertex_color(mesh_tableau):
   return [(store_script_param, ":banner_mesh", 1),
     (set_fixed_point_multiplier, 100),
@@ -69,6 +74,7 @@ def tableau_armor_vertex_color(mesh_tableau):
     (cur_tableau_set_camera_parameters, 0, 200, 200, 0, 100000),
     ]
 
+# Apply a banner to a shield mesh, with 'mesh_tableau' overlaid.
 def tableau_shield_banner(mesh_tableau, banner_xy, banner_scale, camera_width_height):
   return [(store_script_param, ":banner_mesh", 1),
     (set_fixed_point_multiplier, 100),
@@ -88,6 +94,7 @@ def tableau_shield_banner(mesh_tableau, banner_xy, banner_scale, camera_width_he
     (cur_tableau_set_camera_parameters, 0, camera_width_height[0], camera_width_height[1], 0, 100000),
     ]
 
+# Only applies the banner of the passed faction id to the mesh, for castle banners.
 def tableau_castle_banner():
   return [(store_script_param, ":faction_id", 1),
     (set_fixed_point_multiplier, 100),
@@ -99,6 +106,7 @@ def tableau_castle_banner():
     (cur_tableau_set_camera_parameters, 0, 100, 200, 0, 100000),
     ]
 
+# Only applies the banner to the mesh, for hand held banners.
 def tableau_banner_pole():
   return [(store_script_param, ":banner_mesh", 1),
     (set_fixed_point_multiplier, 100),
@@ -112,6 +120,7 @@ def tableau_banner_pole():
     (cur_tableau_set_camera_parameters, 0, 100, 200, 0, 100000),
     ]
 
+# Applies the banner to a shield shape for use in a presentation. If 'war' is True, crossed swords are overlaid.
 def tableau_stats_chart_banner(war=False):
   script = [(store_script_param, ":banner_mesh", 1),
     (set_fixed_point_multiplier, 100),

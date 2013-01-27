@@ -45,6 +45,7 @@ def spr_check_hit_points(hp, low_hp=min_scene_prop_hit_points):
 def spr_check_inventory_count(count):
   return spr_check_value(count, 1, inventory_count_maximum, "Inventory count")
 
+# Helper to set common slots for props related to a particular item, like stockpiles.
 def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=False, price_multiplier=None, resource_stock_count=False):
   init_trigger = (ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -69,6 +70,7 @@ def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=Fals
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_multiplier, price_multiplier))
   return init_trigger
 
+# Helper to generate a trigger that just passes the parameters on to a script.
 def spr_call_script_trigger(script_name, trigger_type, *args):
   use_trigger = (trigger_type,
      [(store_trigger_param_1, ":agent_id"),
@@ -79,9 +81,11 @@ def spr_call_script_trigger(script_name, trigger_type, *args):
   use_trigger[1].append(tuple(call_script_list))
   return use_trigger
 
+# Helper to generate a trigger that calls a script after completely using.
 def spr_call_script_use_trigger(script_name, *args):
   return spr_call_script_trigger(script_name, ti_on_scene_prop_use, *args)
 
+# Helper to generate a trigger that calls a script after canceling usage.
 def spr_call_script_cancel_use_trigger(script_name, *args):
   return spr_call_script_trigger(script_name, ti_on_scene_prop_cancel_use, *args)
 
@@ -91,6 +95,7 @@ def spr_buy_item_flags(use_time=1):
 
 crafting_data = []
 
+# Helper to set a custom position offset and rotation for item spawning props.
 def spr_apply_pos_offset(trigger_block, pos_offset, rotate):
   if pos_offset[0] != 0:
     trigger_block.append((position_move_x, pos1, pos_offset[0]))
@@ -105,6 +110,9 @@ def spr_apply_pos_offset(trigger_block, pos_offset, rotate):
   if rotate[2] != 0:
     trigger_block.append((position_rotate_z, pos1, rotate[2]))
 
+# Buying, selling, and crafting stockpile for 'item_id': if the 'resources' list is blank, the item will only be buyable.
+# 'pos_offset' and 'rotate' are to adjust the position and rotation of the spawned item.
+# 'resources' is a list of the items needed for crafting - only the first 4 will be used (total agent equip slots); multiple of the same item can in a tuple with the count second: ("itm_example", 2).
 def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_string=None, tableau=None, resources=[], engineer=0, herding=0, tailoring=0, price_multiplier=None):
   buy_trigger = (ti_on_scene_prop_cancel_use,
      [(store_trigger_param_1, ":agent_id"),
@@ -153,10 +161,12 @@ def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_strin
         lazy.price(resource_list[0]), lazy.price(resource_list[1]), lazy.price(resource_list[2]), lazy.price(resource_list[3]))))
   return [init_trigger, buy_trigger, craft_trigger]
 
+# Export an item, removing it from the game world in exchange for money.
 def spr_export_item_triggers(item_id, use_string="str_export", price_multiplier=None):
   return [spr_item_init_trigger(item_id, use_string=use_string, price_multiplier=price_multiplier),
     spr_call_script_use_trigger("script_cf_export_item")]
 
+# Import an item from outside the game world, normally for an inflated price.
 def spr_import_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_string="str_import", price_multiplier=500, check_script=None):
   buy_trigger = (ti_on_scene_prop_use,
      [(store_trigger_param_1, ":agent_id"),
@@ -169,10 +179,12 @@ def spr_import_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_st
     triggers.append(spr_call_script_trigger(check_script, ti_on_scene_prop_start_use))
   return triggers
 
+# Stockpile a resource item: only allows buying and selling, with custom pricing rules.
 def spr_stockpile_resource_triggers(item_id, use_string="str_stockpile"):
   return [spr_item_init_trigger(item_id, use_string=use_string, stockpile=True, resource_stock_count=True),
     spr_call_script_use_trigger("script_cf_use_resource_stockpile")]
 
+# Gain gold directly after using.
 def spr_gain_gold_triggers(gold_value, use_string="str_collect_reg1_gold"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -181,6 +193,7 @@ def spr_gain_gold_triggers(gold_value, use_string="str_collect_reg1_gold"):
       ]),
     spr_call_script_use_trigger("script_cf_gain_gold")]
 
+# Regain health in exchange for food points, after using. 'heal_pct' is the percentage healed, and 'min_health_pct' is the minimum health percentage required to rest.
 def spr_rest_triggers(heal_pct, min_health_pct=30, horse=0, use_string="str_rest"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -196,9 +209,13 @@ def spr_rest_triggers(heal_pct, min_health_pct=30, horse=0, use_string="str_rest
       ]),
     ]
 
+# Clean blood from the user if they are not too badly wounded.
 def spr_clean_blood_triggers():
   return [spr_call_script_use_trigger("script_cf_clean_blood")]
 
+# Train as a different troop type, changing faction as well if owned by a different one.
+# The 'mercenary' setting links the training station with the faction which started the mission owning the castle, to allow joining a faction that currently doesn't own any castles.
+# The 'after_respawn' setting allows players to click the use button to change faction only, changing to the troop when after dying if it is judged to be worse.
 def spr_change_troop_triggers(troop_id, cost=0, mercenary=False, after_respawn=False, use_string=None):
   init_trigger = (ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -216,12 +233,15 @@ def spr_change_troop_triggers(troop_id, cost=0, mercenary=False, after_respawn=F
     cancel_trigger = spr_call_script_cancel_use_trigger("script_cf_change_troop", 1)
   return [init_trigger, cancel_trigger, spr_call_script_use_trigger("script_cf_change_troop", 0)]
 
+# Buy a banner with faction heraldry, for capturing castles.
+# The 'mercenary' setting links with the faction which started the mission owning the castle, to allow capturing a castle with none currently owned.
 def spr_buy_banner_triggers(banner_item_begin, mercenary=False, use_string="str_buy_banner_faction"):
   init_trigger = spr_item_init_trigger(banner_item_begin, use_string=use_string)
   if mercenary is True:
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_is_mercenary, 1))
   return [init_trigger, spr_call_script_use_trigger("script_cf_buy_banner")]
 
+# Teleport to a linked door of the same scene prop type. 'pos_offset' specifies the relative position from each door that the character will be moved to.
 def spr_teleport_door_triggers(pos_offset=(0,0,0)):
   return [spr_call_script_cancel_use_trigger("script_cf_lock_teleport_door"),
     spr_call_script_use_trigger("script_cf_use_teleport_door", pos_offset[0], pos_offset[1], pos_offset[2]),
@@ -230,6 +250,7 @@ def spr_teleport_door_triggers(pos_offset=(0,0,0)):
 def spr_rotate_door_flags(use_time=1):
   return sokf_static_movement|sokf_destructible|sokf_show_hit_point_bar|spr_use_time(use_time)|sokf_missiles_not_attached
 
+# A rotating door, destructable and repairable with the resource class specified. The 'left' setting adjusts which way it will rotate, for matched left and right doors.
 def spr_rotate_door_triggers(hit_points=1000, resource_class=item_class_wood, left=0):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -256,10 +277,13 @@ def spr_rotate_door_triggers(hit_points=1000, resource_class=item_class_wood, le
 def spr_rotate_door_no_hit_flags(use_time=1):
   return sokf_static_movement|spr_use_time(use_time)
 
+# A rotating door that cannot be destroyed. The 'left' setting adjusts which way it will rotate, for matched left and right doors.
 def spr_rotate_door_no_hit_triggers(left=0):
   return [spr_call_script_use_trigger("script_cf_use_rotate_door", left),
     [init_scene_prop, "script_cf_init_rotate_door", left]]
 
+# A drawbridge winch, moving a linked scene prop of the 'target' kind.
+# Each movement will rotate by 'step_size' in degrees for 'animation_time' in millseconds, for 'rotation_steps' iterations.
 def spr_drawbridge_winch_triggers(target, rotation_steps=10, step_size=-8, animation_time=200):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -269,6 +293,8 @@ def spr_drawbridge_winch_triggers(target, rotation_steps=10, step_size=-8, anima
     [link_scene_prop, target],
     [init_scene_prop, "script_cf_init_winch", rotation_steps, step_size, winch_type_drawbridge]]
 
+# A drawbridge winch, moving a linked scene prop of the 'target' kind.
+# Each movement will move up by 'step_size' for 'animation_time' in millseconds, for 'rotation_steps' iterations; moving down will happen in one step.
 def spr_portcullis_winch_triggers(target, move_steps=5, step_size=100, animation_time=100):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -278,6 +304,8 @@ def spr_portcullis_winch_triggers(target, move_steps=5, step_size=100, animation
     [link_scene_prop, target],
     [init_scene_prop, "script_cf_init_winch", move_steps, step_size, winch_type_portcullis]]
 
+# Winch for controlling a lift platform; two must be placed at each limit of the platform travel.
+# Each movement will move up or down by 'step_size' for 'animation_time' in millseconds.
 def spr_lift_platform_winch_triggers(step_size=100, animation_time=100):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -285,10 +313,14 @@ def spr_lift_platform_winch_triggers(step_size=100, animation_time=100):
       ]),
     spr_call_script_use_trigger("script_cf_use_winch", -1, step_size, animation_time, winch_type_platform)]
 
+# Lift platform, requiring two linked winch scene props.
 def spr_lift_platform_triggers(winch):
   return [[link_scene_prop, winch, winch],
     [init_scene_prop, "script_cf_init_lift_platform"]]
 
+# Carts attachable to characters or horses. Set 'horse' to 1 to allow attaching to any horse, or the horse item id for restricting to a specific type.
+# The cart mesh should be oriented with the horse or agent position at the origin, and when detached it will be rotated by 'detach_rotation' and moved vertically by 'detach_offset'.
+# The absolute value of 'access_distance' is used for the radius from the origin that will allow attaching, and moved forwards by that value (back if negative) is the center of the radius for accessing.
 def spr_cart_triggers(horse=-1, detach_offset=0, detach_rotation=0, inventory_count=0, max_item_length=100, access_distance=100, use_string="str_attach"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -314,6 +346,8 @@ def spr_cart_triggers(horse=-1, detach_offset=0, detach_rotation=0, inventory_co
 def spr_tree_flags():
   return sokf_static_movement|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
 
+# Tree which will regrow after being cut down for wood. 'resource_imod' sets the mesh variation of branches and blocks.
+# 'fell_hp' is the hit points when the tree will fall over and start producing blocks, and 'resource_hp' is the amount of hit damage needed per resource.
 def spr_tree_triggers(full_hp=1000, fell_hp=500, resource_hp=100, hardness=1, resource_imod=0, regrow_interval=3600, use_string="str_cut_down"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -334,6 +368,9 @@ def spr_tree_triggers(full_hp=1000, fell_hp=500, resource_hp=100, hardness=1, re
       ]),
     (ti_on_scene_prop_use, [])]
 
+# Plant that can be hit to harvest resources, with optional tool class, skill, and attack direction range for optimum damage.
+# The lower digit of 'attack_range' is the beginning direction of agent_get_action_dir, and the upper digit is how many consecutive directions to include. For example, 21 is left and right.
+# If 'effect_script' is set to a script id, it will be called for the effect when a resource is produced.
 def spr_hit_plant_triggers(resource_item, full_hp=1000, resource_hp=200, hardness=1, tool_class=-1, skill=-1, attack_range=21, spawn_on_ground=1, regrow_interval=600, use_string="str_harvest", effect_script=-1):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -354,6 +391,7 @@ def spr_hit_plant_triggers(resource_item, full_hp=1000, resource_hp=200, hardnes
       ]),
     (ti_on_scene_prop_use, [])]
 
+# Plant that can be used by holding that control to harvest, decreasing the hit points by 'resource_hp' each time, and playing 'sound' if set.
 def spr_use_plant_triggers(resource_item, full_hp=1000, resource_hp=200, regrow_interval=600, use_string="str_harvest", sound=-1):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -384,6 +422,7 @@ def spr_resource_flags():
 def spr_field_flags():
   return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
 
+# A field that is planted with 'plant_item' to produce 'resource_item'. 'plant_spr' is the scene prop type for the growing plants; set 'height' to the height of that mesh.
 def spr_hit_field_triggers(resource_item, plant_item, plant_spr, height=200, full_hp=1000, resource_hp=200, tool_class=-1, regrow_interval=600, use_string="str_harvest"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -401,12 +440,15 @@ def spr_hit_field_triggers(resource_item, plant_item, plant_spr, height=200, ful
     (ti_on_scene_prop_use, []),
     [init_scene_prop, "script_cf_setup_field", plant_spr]]
 
+# The growing plants scene prop associated with a field prop, allowing adjustment of the optimum number of seeds and water buckets for the best harvest.
 def spr_field_plant_triggers(seeds=4, water=2):
   return [(ti_on_scene_prop_animation_finished,
      [(store_trigger_param_1, ":instance_id"),
       (call_script, "script_cf_field_animation_finished", ":instance_id", seeds, water),
       ])]
 
+# A vine that needs to be pruned with a knife before producing between 'resources' and half that amount of 'resource_item', if not damaged without the correct tool or skill.
+# 'length' should be set to the length of the vine mesh for spawning resources, and 'height' should be set to the height above the mesh origin to spawn them.
 def spr_hit_vine_triggers(resource_item, resources=1, length=300, height=150, full_hp=1000, tool_class=-1, regrow_interval=60, use_string="str_prune"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -428,6 +470,8 @@ def spr_hit_vine_triggers(resource_item, resources=1, length=300, height=150, fu
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_use, [])]
 
+# A mine that produces 'resource_item' when hit with a mining tool, every 'resource_hp' plus a random extra amount from 0 to 'random_hp'; the maximum hit points is adjustable in the scene editor.
+# The 'hardness' value makes attacks do less damage, making mining resources slower.
 def spr_hit_mine_triggers(resource_item, resource_hp=100, random_hp=0, hardness=1, regrow_interval=14400, use_string="str_mine"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -446,6 +490,7 @@ def spr_hit_mine_triggers(resource_item, resource_hp=100, random_hp=0, hardness=
       ]),
     (ti_on_scene_prop_use, [])]
 
+# Process resources into different items, by calling the script 'script_name'.
 def spr_process_resource_triggers(script_name, use_string):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -467,6 +512,11 @@ def spr_process_resource_triggers(script_name, use_string):
       ]),
     ]
 
+# Moveable ship. 'length' is the distance forwards and backwards from the origin that terrain collisions will be tested at, and the distance back required to use the rudder.
+# 'width' is the range along the sides necessary to be within to climb the ship sides. 'height' is the distance from the origin to the bottom of the hull for terrain collision detection.
+# 'speed' is the maximum forward speed setting the ship sails can be set to with the necessary sailing skill.
+# 'sail' is the sail scene prop when moving, 'sail_off' is the sail scene prop when stopped. 'ramp' and 'hold' are optional linked props.
+# 'collision' is the prop with a very simple collision mesh used for detecting collisions between ships.
 def spr_ship_triggers(hit_points=1000, length=1000, width=200, height=100, speed=5, sail=-1, sail_off=-1, ramp=-1, hold=-1, collision="pw_ship_a_cd"):
   if speed < 1 or speed > ship_forwards_maximum:
     raise Exception("Ship speed must be between 1 and %d" % ship_forwards_maximum)
@@ -499,6 +549,9 @@ def spr_ship_triggers(hit_points=1000, length=1000, width=200, height=100, speed
 def spr_ship_ramp_triggers():
   return [spr_call_script_use_trigger("script_use_ship_ramp")]
 
+# Winchable ferry boat, requiring two 'platform' props at each end of the movement range, and a 'winch' scene prop for movement on the boat.
+# 'length' is the dimension of the boat in the direction of travel, used to move close to the platforms.
+# 'winch_height' is the height above the platform that the winch prop is centred at. 'move distance' is the distance moved each iteration.
 def spr_ferry_triggers(platform, winch, length, winch_height, move_distance=500):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -515,6 +568,7 @@ def spr_ferry_winch_triggers(is_platform=0):
 def spr_structure_flags():
   return sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
 
+# Destructable and rebuildable bridge: requires linking with two 'footing' scene props for rebuilding on either side.
 def spr_bridge_triggers(footing, hit_points=1000):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -533,6 +587,7 @@ def spr_bridge_triggers(footing, hit_points=1000):
 def spr_build_flags():
   return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
 
+# Footings for rebuilding after the bridge is totally destroyed.
 def spr_bridge_footing_triggers():
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -550,6 +605,8 @@ def spr_bridge_footing_triggers():
 def spr_ladder_flags():
   return sokf_type_ladder|sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
 
+# Buildable walls, also used for ladders: requires a 'build' scene prop for construction when totally destroyed. 'height' should be set to the height of the mesh.
+# 'no_move_physics' disables walking on the prop until the construction animation is completed.
 def spr_wall_triggers(build, hit_points=1000, height=1000, no_move_physics=False):
   triggers = [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -573,6 +630,7 @@ def spr_wall_triggers(build, hit_points=1000, height=1000, no_move_physics=False
         ]))
   return triggers
 
+# Building station for walls.
 def spr_build_wall_triggers():
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -587,12 +645,15 @@ def spr_build_wall_triggers():
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_use, [])]
 
+# Point to capture castles using a faction banner.
 def spr_capture_castle_triggers():
   return [spr_call_script_use_trigger("script_cf_capture_castle")]
 
 def spr_chest_flags(use_time=1):
   return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached|spr_use_time(max(use_time, 1))
 
+# Money chest that can be linked with a castle to store tax automatically gathered, and allow the lord to control the access.
+# A 'probability' of the default 100 will give 1% chance of successful lock picking per looting skill level, which can be increased up to 10000 for guaranteed success.
 def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000, probability=100):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -614,6 +675,8 @@ def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000,
     spr_call_script_cancel_use_trigger("script_cf_pick_chest_lock", 0),
     spr_call_script_use_trigger("script_cf_pick_chest_lock", probability)]
 
+# Item storage chest that can be linked with a castle to allow the lord to control the access.
+# A 'probability' of the default 100 will give 1% chance of successful lock picking per looting skill level, which can be increased up to 10000 for guaranteed success.
 def spr_item_chest_triggers(inventory_count=6, max_item_length=100, use_string="str_access", hit_points=1000, probability=100):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -633,6 +696,7 @@ def spr_item_chest_triggers(inventory_count=6, max_item_length=100, use_string="
     spr_call_script_cancel_use_trigger("script_cf_pick_chest_lock", 0),
     spr_call_script_use_trigger("script_cf_use_inventory", probability)]
 
+# Item storage without any lock.
 def spr_item_storage_triggers(inventory_count=6, max_item_length=100, use_string="str_access"):
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -642,6 +706,7 @@ def spr_item_storage_triggers(inventory_count=6, max_item_length=100, use_string
       ]),
     spr_call_script_use_trigger("script_cf_use_inventory", 0)]
 
+# A fire place that can be stocked with wood and visibly lit on fire.
 def spr_fire_place_triggers():
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
@@ -656,6 +721,7 @@ def spr_fire_place_triggers():
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_use, [])]
 
+# A well for gathering water using buckets.
 def spr_well_triggers():
   return [(ti_on_scene_prop_use,
      [(store_trigger_param_1, ":agent_id"),
@@ -666,6 +732,7 @@ def spr_well_triggers():
       (agent_set_wielded_item, ":agent_id", "itm_water_bucket"),
       ])]
 
+# A heap to destroy unwanted items held or in a cart.
 def spr_destroy_heap_triggers():
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),

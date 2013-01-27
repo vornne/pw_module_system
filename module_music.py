@@ -2,12 +2,29 @@ from header_music import *
 ####################################################################################################################
 #  Each track record contains the following fields:
 #  1) Track id: used for referencing tracks.
-#  2) Track file: filename of the track
-#  3) Track flags. See header_music.py for a list of available flags
-#  4) Continue Track flags: Shows in which situations or cultures the track can continue playing. See header_music.py for a list of available flags
+#  2) Track file: filename of the track.
+#  3) Track flags. See header_music.py for a list of available flags.
+#  4) Continue Track flags: Shows in which situations or cultures the track can continue playing. See header_music.py for a list of available flags.
 ####################################################################################################################
 
-# WARNING: You MUST add mtf_module_track flag to the flags of the tracks located under module directory
+# You must add mtf_module_track flag to the flags of the tracks located under module directory.
+
+# Changed meanings of the different flags in PW:
+
+# mtf_sit_victorious: after your faction captured a castle
+# mtf_sit_encounter_hostile: after your faction lost a castle
+# mtf_sit_fight: when many human agents have been recently killed nearby
+# mtf_sit_killed: after the player was killed
+# mtf_sit_ambushed: when in a faction hostile to any other, while near a friendly castle
+# mtf_sit_siege: when in a faction hostile to any other, while near an enemy castle
+# mtf_sit_tavern: when in a faction at peace with everyone, while near a friendly castle; or when near a tavern processing scene prop
+# mtf_sit_town: when in a faction at peace with everyone, while near a castle owned by another faction; or somewhere not directly on terrain (probably a town)
+# mtf_sit_town_infiltrate: after being outlawed, and when in town with a lock pick or poison dagger
+# mtf_sit_travel: for all other situations, mostly when in alone in the countryside
+
+# mtf_culture_1: as a commoner
+# mtf_culture_2: as an outlaw
+# mtf_culture_3: as a member of a faction
 
 tracks = [
  ("ambushed_by_neutral", "ambushed_by_neutral.ogg", mtf_sit_ambushed|mtf_sit_siege, mtf_sit_fight),

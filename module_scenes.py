@@ -22,6 +22,8 @@ from module_constants import *
 #     The chest's variation-no is used with this list for selecting which troop's inventory it will access.
 ####################################################################################################################
 
+# When adding a new scene entry, remember to add a name at the correct place in module_strings.
+
 scenes = [
   ("scene_1",sf_generate,"none","none",(0,0),(300,300),-100,"0x000000033000124c000acab40000280700000c9f00000ab5",[],[],"outer_terrain_pw_1"),
   ("scene_2",sf_generate,"none","none",(0,0),(100,100),-100,"0x00000001300389800003a4ea000058340000637a0000399b",[],[],"outer_terrain_plain"),

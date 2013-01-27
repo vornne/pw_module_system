@@ -3,7 +3,7 @@
 # which needs to be executed once just before writing scripts.txt, rather than every time module_scripts is loaded,
 # to avoid extra or cyclic dependencies.
 #
-# To use, make a function called "generate_" then the script name which returns the script body.
+# To use, make a function called "generate_" then the script name which will contain the generated script body.
 ####################################################################################################################
 
 from header_skills import *
