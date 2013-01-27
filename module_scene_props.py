@@ -145,7 +145,7 @@ def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_strin
     craft_trigger[1].append(tuple(operation_list))
     average_craft_skill = accepted_skills[0][1]
     if accepted_skills[1][0] != -1 and accepted_skills[1][1] > 0:
-      average_craft_skill = (average_craft_skill + accepted_skills[1][1]) / 2
+      average_craft_skill = int(round((average_craft_skill + accepted_skills[1][1]) / 2.0))
     if average_craft_skill > 0:
       init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_average_craft_skill, min(max(average_craft_skill, 1), 10)))
     crafting_data.append([item_id, accepted_skills, resources, resource_list, average_craft_skill])
