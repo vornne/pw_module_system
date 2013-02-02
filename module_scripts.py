@@ -3731,6 +3731,7 @@ scripts.extend([
 
     (player_get_gold, ":player_gold", ":player_id"),
     (try_begin),
+      (neg|multiplayer_is_server),
       (gt, "$g_overflow_gold_value", max_correctly_displayed_gold),
       (neq, ":player_gold", "$g_overflow_gold_value"),
       (player_set_gold, ":player_gold", "$g_overflow_gold_value"),
