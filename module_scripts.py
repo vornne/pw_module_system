@@ -24,16 +24,16 @@ import math
 scripts = []
 scripts.extend([
 
-  ("game_start", []),
+  ("game_start", []), # single player only, not used
 
-  ("game_get_use_string",
+  ("game_get_use_string", # clients: called by the game when the local player is aiming at a usable scene prop
    [(store_script_param, ":instance_id", 1),
 
     (try_begin),
       (multiplayer_is_server),
       (get_player_agent_no, ":my_agent_id"),
       (assign, ":stock_count_update_time", 0),
-    (else_try),
+    (else_try), # if the targeted prop has a stock count and enough time has passed since the last update, request the current count from the server
       (multiplayer_get_my_player, ":my_player_id"),
       (player_is_active, ":my_player_id"),
       (player_get_agent_id, ":my_agent_id", ":my_player_id"),
@@ -48,7 +48,7 @@ scripts.extend([
 
     (scene_prop_get_slot, ":item_id", ":instance_id", slot_scene_prop_item_id),
     (scene_prop_get_slot, ":use_string", ":instance_id", slot_scene_prop_use_string),
-    (try_begin),
+    (try_begin), # if the targeted prop is an item stockpile
       (is_between, ":item_id", all_items_begin, all_items_end),
       (call_script, "script_scene_prop_get_gold_value", ":instance_id", ":item_id", 0),
       (assign, ":gold_value", reg0),
@@ -56,29 +56,29 @@ scripts.extend([
 
       (try_begin),
         (gt, ":use_string", 0),
-        (try_begin),
+        (try_begin), # for banners, get the associated faction name
           (eq, ":use_string", "str_buy_banner_faction"),
           (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
           (str_store_faction_name, s1, reg0),
           (str_store_string, s0, ":use_string"),
-        (else_try),
+        (else_try), # for props with a custom use string set
           (str_store_item_name, s1, ":item_id"),
           (assign, reg1, ":gold_value"),
           (str_store_string, s0, ":use_string"),
         (try_end),
-      (else_try),
+      (else_try), # for props with a stock count
         (neq, ":stock_count_update_time", 0),
         (str_store_string, s0, "str_buy_sell_craft"),
-      (else_try),
+      (else_try), # for unlimited buying stations
         (str_store_string, s0, "str_buy"),
       (try_end),
 
-      (try_begin),
+      (try_begin), # store extra information for script game_get_item_extra_text, called by the show_item_details operation
         (neq, ":stock_count_update_time", 0),
         (scene_prop_get_slot, "$g_extra_item_details_1_value", ":instance_id", slot_scene_prop_stock_count),
         (assign, "$g_extra_item_details_1_string_id", "str_stock_count_reg0"),
         (assign, "$g_extra_item_details_1_color", 0xFF8888DD),
-        (try_begin),
+        (try_begin), # if a crafting stockpile, calculate the extra reward
           (scene_prop_slot_eq, ":instance_id", slot_scene_prop_is_resource_stockpile, 0),
           (call_script, "script_scene_prop_get_item_crafting_refund_reward", ":instance_id"),
           (assign, "$g_extra_item_details_2_value", reg1),
@@ -90,7 +90,7 @@ scripts.extend([
           (else_try),
             (assign, "$g_extra_item_details_2_color", 0xFF888888),
           (try_end),
-        (else_try),
+        (else_try), # otherwise if a resource stockpile, check if full or nearly so
           (prop_instance_get_variation_id_2, ":stock_limit", ":instance_id"),
           (val_div, ":stock_limit", 10),
           (val_mul, ":stock_limit", 100),
@@ -105,7 +105,7 @@ scripts.extend([
             (ge, "$g_extra_item_details_1_value", ":stock_limit"),
             (str_store_string, s0, "str_stockpile_nearly_full"),
           (try_end),
-        (try_end),
+        (try_end), # calculate the selling price
         (call_script, "script_calculate_stockpile_taxed_price", ":instance_id", ":gold_value"),
         (assign, "$g_extra_item_details_3_value", reg0),
         (assign, "$g_extra_item_details_3_string_id", "str_selling_price_reg0"),
@@ -116,7 +116,7 @@ scripts.extend([
       (position_get_screen_projection, pos4, pos3),
       (show_item_details, ":item_id", pos4, ":gold_multiplier"),
 
-    (else_try),
+    (else_try), # if the targeted prop is a training station, display all the stats
       (scene_prop_get_slot, ":troop_id", ":instance_id", slot_scene_prop_troop_id),
       (is_between, ":troop_id", playable_troops_begin, playable_troops_end),
       (str_store_troop_name_plural, s1, ":troop_id"),
@@ -154,13 +154,13 @@ scripts.extend([
       (store_proficiency_level, reg15, ":troop_id", wpt_throwing),
       (str_store_string, s0, "str_troop_weapon_proficiencies"),
 
-    (else_try),
+    (else_try), # for winches, select action string depending on relative position
       (this_or_next|eq, ":use_string", "str_winch_lower"),
       (eq, ":use_string", "str_winch_drop"),
       (call_script, "script_winch_get_direction", ":my_agent_id", ":instance_id"),
       (gt, reg0, 0),
       (str_store_string, s0, "str_winch_raise"),
-    (else_try),
+    (else_try), # for carts, select action string depending on relative position
       (eq, ":use_string", "str_attach"),
       (call_script, "script_cart_choose_action", ":my_agent_id", ":instance_id"),
       (try_begin),
@@ -172,7 +172,7 @@ scripts.extend([
       (else_try),
         (str_store_string, s0, "str_attach"),
       (try_end),
-    (else_try),
+    (else_try), # for item destroying piles, adjust string for attached carts or wielded items
       (eq, ":use_string", "str_destroy_s1"),
       (agent_get_horse, ":attach_agent_id", ":my_agent_id"),
       (try_begin),
@@ -198,15 +198,14 @@ scripts.extend([
         (str_store_string, s0, ":use_string"),
       (try_end),
 
-    (else_try),
+    (else_try), # for custom use strings, store the gold value and stock count slots for insertion into it
       (gt, ":use_string", 0),
       (scene_prop_get_slot, reg1, ":instance_id", slot_scene_prop_gold_value),
       (scene_prop_get_slot, reg2, ":instance_id", slot_scene_prop_stock_count),
       (str_store_string, s0, ":use_string"),
 
-    (else_try),
+    (else_try), # for castle signs, calculate the name to display
       (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),
-
       (eq, ":scene_prop_id", "spr_pw_castle_sign"),
       (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
       (try_begin),
@@ -221,18 +220,18 @@ scripts.extend([
         (str_store_string, s0, ":name_string_id"),
       (try_end),
 
-    (else_try),
+    (else_try), # -1 clears the use string
       (eq, ":use_string", -1),
       (str_clear, s0),
-    (else_try),
+    (else_try), # otherwise fall back to the default string
       (str_store_string, s0, "str_use"),
     (try_end),
     ]),
 
-  ("store_troop_skills_description", []),
-  ("initialize_item_slots", []),
+  ("store_troop_skills_description", []), # dynamically generate a string listing a troop's skills
+  ("initialize_item_slots", []), # save or calculate item attributes into item slots, for use in calculations in scripts while the game is running
 
-  ("game_quick_start",
+  ("game_quick_start", # called by the game when starting multiplayer mode, before connecting to a server; used to setup static module data
    [
     (call_script, "script_initialize_troop_equipment_slots"),
     (call_script, "script_initialize_item_slots"),
@@ -243,7 +242,7 @@ scripts.extend([
     (call_script, "script_store_profile_troop_equipment"),
     ]),
 
-  ("game_set_multiplayer_mission_end",
+  ("game_set_multiplayer_mission_end", # called when the mission ends
    [
     (assign, "$g_game_ended", 1),
     (assign, "$g_stats_chart_opened_manually", 0),
@@ -255,7 +254,7 @@ scripts.extend([
 
   ("game_enable_cheat_menu", []),
 
-  ("game_get_console_command",
+  ("game_get_console_command", # server: called when console commands are entered (other than hard coded ones)
    [(store_script_param, ":command", 1),
     (store_script_param, ":value", 2),
 
@@ -295,10 +294,10 @@ scripts.extend([
   ("game_get_quest_note", []),
   ("game_get_info_page_note", []),
 
-  ("game_get_scene_name",
+  ("game_get_scene_name", # return scene names for display in the server list
    [(store_script_param, ":scene_no", 1),
     (try_begin),
-      (multiplayer_is_dedicated_server),
+      (multiplayer_is_dedicated_server), # on clients return nothing, so the server will always be asked in case of custom names
       (is_between, ":scene_no", scenes_begin, scenes_end),
       (store_sub, ":string_id", ":scene_no", scenes_begin),
       (val_add, ":string_id", scene_names_begin),
@@ -315,7 +314,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("game_receive_url_response",
+  ("game_receive_url_response", # called by the game when a response is received from a web server, if used
    [(store_script_param, ":integer_count", 1),
     (store_script_param, ":string_count", 2),
 
@@ -323,13 +322,13 @@ scripts.extend([
     (try_begin),
       (ge, ":integer_count", 1),
       (assign, ":return_code", reg0),
-      (try_begin),
+      (try_begin), # negative return codes are internal or configuration errors, not requiring action
         (lt, ":return_code", 0),
         (server_add_message_to_log, "str_name_server_error_code_reg0"),
-      (else_try),
+      (else_try), # return code 0 is success, don't kick the player
         (eq, ":return_code", 0),
-        (this_or_next|lt, ":integer_count", 4),
-        (eq, reg3, -1),
+        (this_or_next|lt, ":integer_count", 4), # admin permissions not received
+        (eq, reg3, -1), # admin permissions not set
       (else_try),
         (ge, ":integer_count", 3),
         (ge, ":string_count", 1),
@@ -338,7 +337,7 @@ scripts.extend([
         (player_is_active, ":player_id"),
         (player_get_unique_id, ":player_unique_id", ":player_id"),
         (eq, ":player_unique_id", ":unique_id"),
-        (try_begin),
+        (try_begin), # positive return codes are for rejecting the player
           (gt, ":return_code", 0),
           (try_begin),
             (eq, ":return_code", 4),
@@ -353,13 +352,13 @@ scripts.extend([
             (assign, ":rejection_string_id", "str_kicked_using_other_players_name"),
           (try_end),
           (multiplayer_send_2_int_to_player, ":player_id", server_event_preset_message, ":rejection_string_id", preset_message_error|preset_message_log),
-          (store_mission_timer_a, ":time"),
+          (store_mission_timer_a, ":time"), # kick the player after a short delay to try ensure they see the rejection message
           (val_add, ":time", name_server_kick_delay_interval),
           (player_set_slot, ":player_id", slot_player_kick_at_time, ":time"),
           (str_store_string, s10, ":rejection_string_id"),
           (server_add_message_to_log, "str_name_server_log_s10"),
         (try_end),
-        (try_begin),
+        (try_begin), # admin permissions were received
           (ge, ":integer_count", 4),
           (player_is_admin, ":player_id"),
           (assign, ":admin_permissions", reg3),
@@ -375,43 +374,43 @@ scripts.extend([
 
   ("game_get_cheat_mode", []),
 
-  ("game_receive_network_message",
+  ("game_receive_network_message", # called by the game whenever a custom network message is received, both clients and servers
    [(store_script_param, ":sender_player_id", 1),
     (store_script_param, ":event_type", 2),
 
-    (try_begin),
+    (try_begin), # section of events received by clients from the server
       (neg|multiplayer_is_server),
-      (try_begin),
+      (try_begin), # displays preset messages sent from the server as a module string id, rather than the actual text
         (eq, ":event_type", server_event_preset_message),
         (store_script_param, ":string_id", 3),
         (store_script_param, ":flags", 4),
         (store_script_param, ":value_1", 5),
         (store_script_param, ":value_2", 6),
         (call_script, "script_preset_message", ":string_id", ":flags", ":value_1", ":value_2"),
-      (else_try),
+      (else_try), # play a non 3D interface sound
         (eq, ":event_type", server_event_play_sound),
         (store_script_param, ":sound_id", 3),
         (try_begin),
           (is_between, ":sound_id", 0, "snd_sounds_end"),
           (play_sound, ":sound_id"),
         (try_end),
-      (else_try),
+      (else_try), # play a sound at the location of a scene prop
         (eq, ":event_type", server_event_scene_prop_play_sound),
         (store_script_param, ":instance_id", 3),
         (assign, ":sound_id", ":instance_id"),
-        (val_rshift, ":sound_id", net_sound_shift),
-        (val_and, ":instance_id", net_sound_mask),
+        (val_rshift, ":sound_id", net_sound_shift), # sound id is the higher bits
+        (val_and, ":instance_id", net_sound_mask), # instance id is lower bits
         (try_begin),
           (is_between, ":sound_id", 0, "snd_sounds_end"),
           (prop_instance_is_valid, ":instance_id"),
           (prop_instance_get_position, pos1, ":instance_id"),
           (play_sound_at_position, ":sound_id", pos1),
         (try_end),
-      (else_try),
+      (else_try), # play a sound at a position, the coordinate values packed into one integer for a smaller network message
         (eq, ":event_type", server_event_play_sound_at_position),
         (store_script_param, ":sound_id", 3),
         (store_script_param, ":packed_position", 4),
-        (try_begin),
+        (try_begin), # extract sound id and position x,y,z from one number
           (is_between, ":sound_id", 0, "snd_sounds_end"),
           (assign, ":pos_x", ":packed_position"),
           (val_and, ":pos_x", net_pack_3_mask_1),
@@ -429,7 +428,7 @@ scripts.extend([
           (set_fixed_point_multiplier, 100),
           (play_sound_at_position, ":sound_id", pos1),
         (try_end),
-      (else_try),
+      (else_try), # equip the visual armor mesh on an agent
         (eq, ":event_type", server_event_agent_equip_armor),
         (store_script_param, ":agent_id", 3),
         (store_script_param, ":item_id", 4),
@@ -443,7 +442,7 @@ scripts.extend([
             (call_script, "script_agent_clean_blood", ":agent_id"),
           (try_end),
         (try_end),
-      (else_try),
+      (else_try), # set a player slot on the client, from the server
         (eq, ":event_type", server_event_player_set_slot),
         (store_script_param, ":player_id", 3),
         (store_script_param, ":slot_no", 4),
@@ -452,7 +451,7 @@ scripts.extend([
           (player_is_active, ":player_id"),
           (player_set_slot, ":player_id", ":slot_no", ":value"),
           (multiplayer_get_my_player, ":my_player_id"),
-          (try_begin),
+          (try_begin), # if the player's faction is changed, reset other related slots
             (eq, ":slot_no", slot_player_faction_id),
             (player_set_slot, ":player_id", slot_player_is_lord, 0),
             (player_set_slot, ":player_id", slot_player_has_faction_door_key, 0),
@@ -475,11 +474,11 @@ scripts.extend([
               (eq, ":player_id", ":my_player_id"),
               (call_script, "script_preset_message", "str_joined_the_s1", preset_message_faction|preset_message_log, ":value", 0),
             (try_end),
-            (try_begin),
+            (try_begin), # if changing faction without changing troop (respawning), re-equip armor to trigger redrawing heraldry
               (eq, ":change_faction_type", change_faction_type_no_respawn),
               (call_script, "script_player_redraw_heraldic_items", ":player_id"),
             (try_end),
-            (try_begin),
+            (try_begin), # adjust the music style for commoners, outlaws, factions
               (eq, ":player_id", ":my_player_id"),
               (try_begin),
                 (ge, ":value", castle_factions_begin),
@@ -502,13 +501,13 @@ scripts.extend([
             (eq, ":value", 1),
             (player_get_slot, ":faction_id", ":player_id", slot_player_faction_id),
             (get_max_players, ":max_players"),
-            (try_for_range, ":other_player_id", 1, ":max_players"),
+            (try_for_range, ":other_player_id", 1, ":max_players"), # remove the status of any previous lord of the faction
               (neq, ":other_player_id", ":player_id"),
               (player_is_active, ":other_player_id"),
               (player_slot_eq, ":other_player_id", slot_player_faction_id, ":faction_id"),
               (player_set_slot, ":other_player_id", slot_player_is_lord, 0),
             (try_end),
-            (try_begin),
+            (try_begin), # if the local player is now lord of their faction, set various slots that have already been set on the server
               (eq, ":player_id", ":my_player_id"),
               (call_script, "script_preset_message", "str_you_are_now_lord_of_s1", preset_message_faction|preset_message_log|preset_message_big, ":faction_id", 0),
               (player_set_slot, ":my_player_id", slot_player_has_faction_door_key, 1),
@@ -516,14 +515,14 @@ scripts.extend([
               (player_set_slot, ":player_id", slot_player_has_faction_item_key, 1),
               (player_set_slot, ":player_id", slot_player_can_faction_announce, 1),
               (player_set_slot, ":player_id", slot_player_faction_chat_muted, 0),
-            (else_try),
+            (else_try), # for other players, just display an announcement
               (eq, "$g_preset_message_display_enabled", 1),
               (str_store_player_username, s10, ":player_id"),
               (call_script, "script_preset_message", "str_s10_now_lord_of_s1", preset_message_faction|preset_message_log|preset_message_big, ":faction_id", 0),
             (try_end),
           (try_end),
         (try_end),
-      (else_try),
+      (else_try), # set a troop slot on the client, from the server
         (eq, ":event_type", server_event_troop_set_slot),
         (store_script_param, ":troop_id", 3),
         (store_script_param, ":slot_no", 4),
@@ -546,7 +545,7 @@ scripts.extend([
             (music_set_situation, mtf_sit_encounter_hostile),
           (try_end),
         (try_end),
-      (else_try),
+      (else_try), # set a scene prop slot on the client, from the server
         (eq, ":event_type", server_event_scene_prop_set_slot),
         (store_script_param, ":instance_id", 3),
         (store_script_param, ":slot_no", 4),
@@ -558,25 +557,25 @@ scripts.extend([
             (ge, ":slot_no", 0),
             (scene_prop_set_slot, ":instance_id", ":slot_no", ":value"),
             (is_between, ":slot_range_end", slot_scene_prop_inventory_begin, slot_scene_prop_inventory_end),
-            (store_add, ":slot_range_begin", ":slot_no", 1),
+            (store_add, ":slot_range_begin", ":slot_no", 1), # messages to change inventory slots can be ranges of repeated values, for efficiency
             (ge, ":slot_range_begin", slot_scene_prop_inventory_begin),
             (try_for_range, ":current_slot_no", ":slot_range_begin", ":slot_range_end"),
               (scene_prop_set_slot, ":instance_id", ":current_slot_no", ":value"),
             (try_end),
-          (try_end),
+          (try_end), # if the scene prop updated is the inventory currently being accessed, store the changed slots for refreshing the presentation
           (eq, ":instance_id", "$g_show_inventory_instance_id"),
-          (try_begin),
+          (try_begin), # negative numbers mark removed items
             (le, ":slot_range_end", -1),
             (store_mul, ":slot_moved_from", ":slot_range_end", -1),
             (is_between, ":slot_moved_from", slot_scene_prop_inventory_mod_begin, slot_scene_prop_inventory_mod_end),
             (scene_prop_set_slot, ":instance_id", ":slot_moved_from", -1),
             (assign, "$g_show_inventory_update_needed", 1),
-          (else_try),
+          (else_try), # otherwise the item was added to the inventory
             (is_between, ":slot_no", slot_scene_prop_inventory_mod_begin, slot_scene_prop_inventory_mod_end),
             (assign, "$g_show_inventory_update_needed", 1),
           (try_end),
         (try_end),
-      (else_try),
+      (else_try), # set a faction slot on the client, from the server
         (eq, ":event_type", server_event_faction_set_slot),
         (store_script_param, ":faction_id", 3),
         (store_script_param, ":slot_no", 4),
@@ -597,7 +596,7 @@ scripts.extend([
             (call_script, "script_display_faction_relation_change", ":faction_id", ":other_faction_id", ":previous_value", ":value"),
           (try_end),
         (try_end),
-      (else_try),
+      (else_try), # set an agent slot on the client, from the server
         (eq, ":event_type", server_event_agent_set_slot),
         (store_script_param, ":agent_id", 3),
         (store_script_param, ":slot_no", 4),
@@ -606,7 +605,7 @@ scripts.extend([
           (agent_is_active, ":agent_id"),
           (agent_set_slot, ":agent_id", ":slot_no", ":value"),
         (try_end),
-      (else_try),
+      (else_try), # attach or detach a scene prop to or from an agent (used for carts)
         (eq, ":event_type", server_event_set_attached_scene_prop),
         (store_script_param, ":agent_id", 3),
         (store_script_param, ":instance_id", 4),
@@ -621,25 +620,25 @@ scripts.extend([
           (prop_instance_is_valid, ":instance_id"),
           (scene_prop_set_slot, ":instance_id", slot_scene_prop_attached_to_agent, ":agent_id"),
         (try_end),
-      (else_try),
+      (else_try), # showing the presentation for accessing the inventory of a scene prop
         (eq, ":event_type", server_event_show_inventory),
         (store_script_param, ":instance_id", 3),
-        (try_begin),
+        (try_begin), # showing
           (gt, ":instance_id", 0),
           (prop_instance_is_valid, ":instance_id"),
           (assign, "$g_show_inventory_instance_id", ":instance_id"),
           (try_for_range, ":mod_slot", slot_scene_prop_inventory_mod_begin, slot_scene_prop_inventory_obj_begin),
-            (scene_prop_set_slot, ":instance_id", ":mod_slot", 0),
+            (scene_prop_set_slot, ":instance_id", ":mod_slot", 0), # clear slots that notify modifications
           (try_end),
-          (val_add, "$g_last_inventory_unique_id", 1),
+          (val_add, "$g_last_inventory_unique_id", 1), # this value can be different between server and clients, but is only used locally
           (scene_prop_set_slot, ":instance_id", slot_scene_prop_inventory_unique_id, "$g_last_inventory_unique_id"),
           (start_presentation, "prsnt_show_inventory"),
-        (else_try),
+        (else_try), # hiding, when now out of range or similar
           (eq, ":instance_id", -1),
           (is_presentation_active, "prsnt_show_inventory"),
           (assign, "$g_show_inventory_update_needed", -1),
         (try_end),
-      (else_try),
+      (else_try), # the server replied that a chat message was received, so if matching the latest message, mark as not requring resending
         (eq, ":event_type", server_event_chat_message_recieved),
         (store_script_param, ":chat_event_type", 3),
         (try_begin),
@@ -649,17 +648,17 @@ scripts.extend([
           (eq, ":chat_event_type", ":last_chat_event_type"),
           (troop_set_slot, "trp_last_chat_message", slot_last_chat_message_not_recieved, 0),
         (try_end),
-      (else_try),
+      (else_try), # display normal local chat
         (eq, ":event_type", server_event_local_chat),
         (neg|str_is_empty, s0),
         (display_message, s0, local_chat_color),
         (call_script, "script_chat_overlay_add_to_local_buffer", local_chat_color),
-      (else_try),
+      (else_try), # display shouting in local chat
         (eq, ":event_type", server_event_local_chat_shout),
         (neg|str_is_empty, s0),
         (display_message, s0, local_chat_shout_color),
         (call_script, "script_chat_overlay_add_to_local_buffer", local_chat_shout_color),
-      (else_try),
+      (else_try), # change the name of the faction which has been previously marked
         (eq, ":event_type", server_event_faction_set_name),
         (try_begin),
           (neg|str_is_empty, s0),
@@ -671,20 +670,20 @@ scripts.extend([
           (eq, "$g_preset_message_display_enabled", 1),
           (call_script, "script_preset_message", "str_s10_now_known_as_s1", preset_message_faction|preset_message_log|preset_message_big, ":faction_id", 0),
         (try_end),
-      (else_try),
+      (else_try), # update the global variables for server settings on the client
         (eq, ":event_type", server_event_return_game_rules),
         (store_script_param, ":command", 3),
         (store_script_param, ":value", 4),
         (try_begin),
           (call_script, "script_cf_execute_command", ":command", ":value"),
         (try_end),
-      (else_try),
+      (else_try), # store the server name
         (eq, ":event_type", server_event_return_server_name),
         (server_set_name, s0),
-      (else_try),
+      (else_try), # store the server password
         (eq, ":event_type", server_event_return_password),
         (server_set_password, s0),
-      (else_try),
+      (else_try), # set the stats of existing players when connecting to a server
         (eq, ":event_type", server_event_set_player_score_kill_death),
         (store_script_param, ":player_id", 3),
         (store_script_param, ":score", 4),
@@ -696,14 +695,14 @@ scripts.extend([
           (player_set_kill_count, ":player_id", ":kills"),
           (player_set_death_count, ":player_id", ":deaths"),
         (try_end),
-      (else_try),
+      (else_try), # show the poll presentation
         (eq, ":event_type", server_event_show_poll),
         (store_script_param, ":poll_type", 3),
         (store_script_param, ":requester_player_id", 4),
         (store_script_param, ":value_1", 5),
         (store_script_param, ":value_2", 6),
         (call_script, "script_show_poll", ":poll_type", ":requester_player_id", ":value_1", ":value_2"),
-      (else_try),
+      (else_try), # update the local player's gold amount manually when greater than the game engine limit (13171)
         (eq, ":event_type", server_event_set_overflow_gold),
         (store_script_param, ":gold_value", 3),
         (try_begin),
@@ -714,7 +713,7 @@ scripts.extend([
         (else_try),
           (assign, "$g_overflow_gold_value", 0),
         (try_end),
-      (else_try),
+      (else_try), # display faction chat and announcements
         (is_between, ":event_type", server_event_faction_chat, server_event_faction_chat_announce + 1),
         (try_begin),
           (neg|str_is_empty, s0),
@@ -737,7 +736,7 @@ scripts.extend([
           (troop_set_plural_name, "$g_chat_overlay_faction_buffer_stored", s0),
           (troop_set_slot, "$g_chat_overlay_faction_buffer_stored", slot_chat_overlay_faction_color, ":color"),
         (try_end),
-      (else_try),
+      (else_try), # display admin chat and announcemnts
         (is_between, ":event_type", server_event_admin_chat, server_event_admin_chat_announce + 1),
         (neg|str_is_empty, s0),
         (display_message, s0, admin_chat_color),
@@ -746,13 +745,13 @@ scripts.extend([
           (str_store_string_reg, s12, s0),
           (start_presentation, "prsnt_admin_message"),
         (try_end),
-      (else_try),
+      (else_try), # convert the packed permissions value into player slots, to limit menu items displayed and similar
         (eq, ":event_type", server_event_admin_set_permissions),
         (store_script_param, ":permissions", 3),
         (multiplayer_get_my_player, ":player_id"),
         (player_is_active, ":player_id"),
         (call_script, "script_player_set_admin_permissions", ":player_id", ":permissions"),
-      (else_try),
+      (else_try), # play a local  animation and / or sound
         (eq, ":event_type", server_event_local_animation),
         (store_script_param, ":player_id", 3),
         (store_script_param, ":string_id", 4),
@@ -765,9 +764,9 @@ scripts.extend([
         (try_end),
       (try_end),
 
-    (else_try),
+    (else_try), # section of events received by server from the clients
       (multiplayer_is_server),
-      (try_begin),
+      (try_begin), # handle players requesting to attach a cart to themselves or a horse
         (eq, ":event_type", client_event_attach_scene_prop),
         (store_script_param, ":instance_id", 3),
         (player_get_agent_id, ":agent_id", ":sender_player_id"),
@@ -778,7 +777,7 @@ scripts.extend([
           (eq, ":weapon", -1),
           (agent_get_wielded_item, ":shield", ":agent_id", 1),
           (eq, ":shield", -1),
-          (try_begin),
+          (try_begin), # detach the currently attached scene prop
             (eq, ":instance_id", 0),
             (agent_get_horse, ":horse_agent_id", ":agent_id"),
             (try_begin),
@@ -788,13 +787,13 @@ scripts.extend([
               (assign, ":attach_agent_id", ":horse_agent_id"),
             (try_end),
             (call_script, "script_cf_attach_cart", ":attach_agent_id", -1, ":agent_id"),
-          (else_try),
+          (else_try), # try attach
             (prop_instance_is_valid, ":instance_id"),
             (neg|scene_prop_slot_eq, ":instance_id", slot_scene_prop_required_horse, 0),
             (call_script, "script_cart_choose_action", ":agent_id", ":instance_id"),
-            (try_begin),
+            (try_begin), # cart is in range
               (neq, reg0, 0),
-            (else_try),
+            (else_try), # if admin wearing special armor, allow attaching from a greater range
               (player_is_admin, ":sender_player_id"),
               (agent_get_item_slot, ":body_item_id", ":agent_id", ek_body),
               (this_or_next|eq, ":body_item_id", "itm_invisible_body"),
@@ -812,7 +811,7 @@ scripts.extend([
             (call_script, "script_cf_use_cart", ":agent_id", ":instance_id", -1),
           (try_end),
         (try_end),
-      (else_try),
+      (else_try), # handle players sending control messages for scene props (only ships)
         (eq, ":event_type", client_event_control_scene_prop),
         (store_script_param, ":instance_id", 3),
         (store_script_param, ":forwards", 4),
@@ -821,7 +820,7 @@ scripts.extend([
           (prop_instance_is_valid, ":instance_id"),
           (call_script, "script_cf_control_ship", ":sender_player_id", ":instance_id", ":forwards", ":rotation"),
         (try_end),
-      (else_try),
+      (else_try), # reply with the current stock count of a scene prop
         (eq, ":event_type", client_event_request_stock_count),
         (store_script_param, ":instance_id", 3),
         (try_begin),
@@ -829,43 +828,43 @@ scripts.extend([
           (scene_prop_get_slot, ":stock_count", ":instance_id", slot_scene_prop_stock_count),
           (multiplayer_send_3_int_to_player, ":sender_player_id", server_event_scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count, ":stock_count"),
         (try_end),
-      (else_try),
+      (else_try), # transfer an item within the player's equipment and the scene prop's inventory
         (eq, ":event_type", client_event_transfer_inventory),
         (store_script_param, ":instance_id", 3),
         (store_script_param, ":from_slot", 4),
         (store_script_param, ":to_slot", 5),
         (store_script_param, ":item_id", 6),
         (call_script, "script_transfer_inventory", ":sender_player_id", ":instance_id", ":from_slot", ":to_slot", ":item_id"),
-      (else_try),
+      (else_try), # transfer money between the player and a money chest
         (eq, ":event_type", client_event_transfer_gold),
         (store_script_param, ":instance_id", 3),
         (store_script_param, ":gold_value", 4),
         (call_script, "script_cf_use_castle_money_chest", ":sender_player_id", ":instance_id", ":gold_value"),
-      (else_try),
+      (else_try), # set the type of the next chat message to be received (since string messages can't have additional information)
         (eq, ":event_type", client_event_chat_message_type),
         (store_script_param, ":chat_event_type", 3),
         (try_begin),
-          (player_is_active, ":sender_player_id"),
+          (player_is_active, ":sender_player_id"), # check to ensure the chat event number isn't outdated (from messages received out of order)
           (call_script, "script_cf_chat_event_is_new", ":chat_event_type", ":sender_player_id"),
           (player_set_slot, ":sender_player_id", slot_player_next_chat_event_type, ":chat_event_type"),
         (try_end),
-      (else_try),
+      (else_try), # chat string received from a client, from a range of event numbers to keep them in order
         (is_between, ":event_type", client_event_chat_message_begin, client_event_chat_message_end),
         (try_begin),
           (player_is_active, ":sender_player_id"),
-          (multiplayer_send_int_to_player, ":sender_player_id", server_event_chat_message_recieved, ":event_type"),
+          (multiplayer_send_int_to_player, ":sender_player_id", server_event_chat_message_recieved, ":event_type"), # confirm to the sending client that the message was received
           (call_script, "script_cf_chat_event_is_new", ":event_type", ":sender_player_id"),
           (try_begin),
             (eq, reg0, 1),
             (player_get_slot, ":chat_event_type", ":sender_player_id", slot_player_next_chat_event_type),
-            (assign, ":chat_event_param_1", ":chat_event_type"),
+            (assign, ":chat_event_param_1", ":chat_event_type"), # extract the chat event and extra parameter from on number
             (val_rshift, ":chat_event_param_1", net_chat_param_1_shift),
             (val_rshift, ":chat_event_type", net_chat_type_shift),
             (val_and, ":chat_event_type", net_chat_event_mask),
           (else_try),
             (assign, ":chat_event_type", chat_event_type_local),
           (try_end),
-          (call_script, "script_chat_event_increment", ":event_type"),
+          (call_script, "script_chat_event_increment", ":event_type"), # store the next chat event number expected from the player
           (player_set_slot, ":sender_player_id", slot_player_next_chat_event_type, reg0),
           (neg|str_is_empty, s0),
           (try_begin),
@@ -889,7 +888,7 @@ scripts.extend([
             (set_fixed_point_multiplier, 100),
             (agent_get_position, pos1, ":agent_id"),
             (position_move_z, pos1, 160),
-            (try_for_agents, ":other_agent_id"),
+            (try_for_agents, ":other_agent_id"), # send the chat message to other players whoose agents are close enough
               (agent_is_alive, ":other_agent_id"),
               (neg|agent_is_non_player, ":other_agent_id"),
               (agent_get_player_id, ":other_player_id", ":other_agent_id"),
@@ -902,7 +901,7 @@ scripts.extend([
               (position_has_line_of_sight_to_position, pos1, pos2),
               (multiplayer_send_string_to_player, ":other_player_id", ":server_event", s0),
             (try_end),
-          (else_try),
+          (else_try), # event type to change a faction's name (not really a chat message, but uses the system for more reliability)
             (eq, ":chat_event_type", chat_event_type_set_faction_name),
             (player_get_slot, ":faction_id", ":sender_player_id", slot_player_faction_id),
             (player_get_unique_id, ":unique_id", ":sender_player_id"),
@@ -947,24 +946,24 @@ scripts.extend([
             (is_between, ":chat_event_type", chat_event_type_admin, chat_event_type_admin_announce + 1),
             (assign, ":target_player_id", ":chat_event_param_1"),
             (assign, ":chat_string_id", -1),
-            (try_begin),
+            (try_begin), # admins using admin chat
               (player_is_admin, ":sender_player_id"),
               (try_begin),
                 (eq, ":target_player_id", 0),
-                (try_begin),
+                (try_begin), # announcements, check the admin has permission
                   (eq, ":chat_event_type", chat_event_type_admin_announce),
                   (player_slot_eq, ":sender_player_id", slot_player_admin_no_announce, 0),
                   (assign, ":chat_string_id", "str_admin_announcement_format"),
-                (else_try),
+                (else_try), # admin chat between admins
                   (eq, ":target_player_id", 0),
                   (assign, ":chat_string_id", "str_admin_chat_format"),
                 (try_end),
-              (else_try),
+              (else_try), # from an admin, directly to a specific player
                 (player_is_active, ":target_player_id"),
                 (str_store_player_username, s2, ":target_player_id"),
                 (assign, ":chat_string_id", "str_admin_chat_to_player_format"),
               (try_end),
-            (else_try),
+            (else_try), # for players using admin chat, don't allow targeted messages
               (assign, ":chat_string_id", "str_admin_chat_player_format"),
               (assign, ":target_player_id", 0),
             (try_end),
@@ -976,7 +975,7 @@ scripts.extend([
               (get_max_players, ":max_players"),
               (try_for_range, ":other_player_id", 1, ":max_players"),
                 (player_is_active, ":other_player_id"),
-                (assign, ":server_event", server_event_admin_chat),
+                (assign, ":server_event", server_event_admin_chat), # default to normal messages
                 (assign, ":swapped", 0),
                 (try_begin),
                   (eq, ":chat_string_id", "str_admin_announcement_format"),
@@ -985,7 +984,7 @@ scripts.extend([
                   (eq, ":other_player_id", ":sender_player_id"),
                 (else_try),
                   (player_is_admin, ":other_player_id"),
-                (else_try),
+                (else_try), # if the current player is targeted, swap to a different format
                   (eq, ":other_player_id", ":target_player_id"),
                   (str_store_string_reg, s11, s10),
                   (assign, ":swapped", 1),
@@ -999,7 +998,7 @@ scripts.extend([
                 (try_end),
                 (gt, ":server_event", -1),
                 (multiplayer_send_string_to_player, ":other_player_id", ":server_event", s10),
-                (try_begin),
+                (try_begin), # if the format was swapped, swap it back for other players
                   (eq, ":swapped", 1),
                   (str_store_string_reg, s10, s11),
                 (try_end),
@@ -1007,20 +1006,21 @@ scripts.extend([
             (try_end),
           (try_end),
         (try_end),
-      (else_try),
+      (else_try), # faction administration actions by the lord
         (eq, ":event_type", client_event_faction_admin_action),
         (store_script_param, ":action", 3),
         (store_script_param, ":value_1", 4),
         (try_begin),
           (call_script, "script_cf_faction_admin_action", ":action", ":sender_player_id", ":value_1"),
         (try_end),
-      (else_try),
+      (else_try), # client requesting to drop a money bag
         (eq, ":event_type", client_event_drop_money_bag),
         (store_script_param, ":gold_amount", 3),
-        (try_begin),
+        (try_begin), # for positive amounts, drop a money bag
           (gt, ":gold_amount", 0),
           (call_script, "script_cf_drop_money_bag_item", ":sender_player_id", ":gold_amount"),
-        (else_try),
+        (else_try), # for negative amounts, check the admin has permission then spawn them the absolute money amount
+          (lt, ":gold_amount", 0),
           (player_is_admin, ":sender_player_id"),
           (player_slot_eq, ":sender_player_id", slot_player_admin_no_gold, 0),
           (val_mul, ":gold_amount", -1),
@@ -1031,17 +1031,17 @@ scripts.extend([
           (player_get_unique_id, reg0, ":sender_player_id"),
           (server_add_message_to_log, "str_log_admin_target_self"),
         (try_end),
-      (else_try),
+      (else_try), # requesting a spawn point or switching spectator status
         (eq, ":event_type", client_event_request_spawn_point),
         (store_script_param, ":spawn_point", 3),
-        (try_begin),
+        (try_begin), # positive values are spawn points
           (gt, ":spawn_point", 0),
           (player_set_slot, ":sender_player_id", slot_player_requested_spawn_point, ":spawn_point"),
         (else_try),
-          (try_begin),
+          (try_begin), # if the player hasn't requested to spawn after connecting to the server
             (player_slot_eq, ":sender_player_id", slot_player_requested_spawn_point, -1),
             (player_set_slot, ":sender_player_id", slot_player_requested_spawn_point, 0),
-          (else_try),
+          (else_try), # otherwise, toggle spectator status
             (player_get_team_no, ":player_team", ":sender_player_id"),
             (eq, ":player_team", team_spectators),
             (player_set_team_no, ":sender_player_id", team_default),
@@ -1049,11 +1049,11 @@ scripts.extend([
             (player_set_team_no, ":sender_player_id", team_spectators),
           (try_end),
         (try_end),
-      (else_try),
+      (else_try), # reply with game rules
         (eq, ":event_type", client_event_request_game_rules),
         (store_script_param, ":admin_request", 3),
         (call_script, "script_player_return_game_rules", ":sender_player_id", ":admin_request"),
-      (else_try),
+      (else_try), # handle admins changing game rules (server settings)
         (eq, ":event_type", client_event_admin_set_game_rule),
         (try_begin),
           (player_is_admin, ":sender_player_id"),
@@ -1062,7 +1062,7 @@ scripts.extend([
           (store_script_param, ":value", 4),
           (call_script, "script_cf_execute_command", ":command", ":value"),
         (try_end),
-      (else_try),
+      (else_try), # handle admins changing the server name
         (eq, ":event_type", client_event_admin_set_server_name),
         (try_begin),
           (player_is_admin, ":sender_player_id"),
@@ -1071,38 +1071,38 @@ scripts.extend([
           (eq, ":renaming_allowed", 1),
           (server_set_name, s0),
         (try_end),
-      (else_try),
+      (else_try), # handle admins changing the server password
         (eq, ":event_type", client_event_admin_set_password),
         (try_begin),
           (player_is_admin, ":sender_player_id"),
           (player_slot_eq, ":sender_player_id", slot_player_admin_no_panel, 0),
           (server_set_password, s0),
         (try_end),
-      (else_try),
+      (else_try), # handle admins changing the server welcome message (for newly connecting players)
         (eq, ":event_type", client_event_admin_set_welcome_message),
         (try_begin),
           (player_is_admin, ":sender_player_id"),
           (player_slot_eq, ":sender_player_id", slot_player_admin_no_panel, 0),
           (server_set_welcome_message, s0),
         (try_end),
-      (else_try),
+      (else_try), # handle the use of admin tools
         (eq, ":event_type", client_event_admin_action),
         (store_script_param, ":admin_action", 3),
         (store_script_param, ":target_player_id", 4),
         (try_begin),
           (call_script, "script_cf_admin_action", ":admin_action", ":sender_player_id", ":target_player_id"),
         (try_end),
-      (else_try),
+      (else_try), # handle requests for a poll
         (eq, ":event_type", client_event_request_poll),
         (store_script_param, ":poll_type", 3),
         (store_script_param, ":value_1", 4),
         (store_script_param, ":value_2", 5),
         (call_script, "script_request_poll", ":poll_type", ":sender_player_id", ":value_1", ":value_2"),
-      (else_try),
+      (else_try), # store poll votes from players
         (eq, ":event_type", client_event_poll_vote),
         (store_script_param, ":vote", 3),
         (call_script, "script_poll_vote", ":sender_player_id", ":vote"),
-      (else_try),
+      (else_try), # handle admins spawning items for themselves
         (eq, ":event_type", client_event_admin_equip_item),
         (store_script_param, ":item_id", 3),
         (try_begin),
@@ -1113,7 +1113,7 @@ scripts.extend([
           (agent_is_alive, ":agent_id"),
           (is_between, ":item_id", all_items_begin, all_items_end),
           (item_get_type, ":item_type", ":item_id"),
-          (try_begin),
+          (try_begin), # spawn animals near the admin's position
             (eq, ":item_type", itp_type_horse),
             (agent_get_position, pos1, ":agent_id"),
             (position_move_x, pos1, 50),
@@ -1139,7 +1139,7 @@ scripts.extend([
           (player_get_unique_id, reg0, ":sender_player_id"),
           (server_add_message_to_log, "str_log_admin_target_self"),
         (try_end),
-      (else_try),
+      (else_try), # handle players requesting to drop or toggle armor items
         (eq, ":event_type", client_event_toggle_drop_armor),
         (store_script_param, ":equip_slot", 3),
         (try_begin),
@@ -1147,33 +1147,33 @@ scripts.extend([
           (agent_is_active, ":agent_id"),
           (agent_is_alive, ":agent_id"),
           (is_between, ":equip_slot", ek_head, ek_gloves + 1),
-          (store_sub, ":item_id", ":equip_slot", ek_head),
+          (store_sub, ":item_id", ":equip_slot", ek_head), # calculate the dummy item for messaging clients to remove that slot
           (val_add, ":item_id", "itm_no_head"),
           (store_add, ":player_slot", ":equip_slot", slot_player_equip_head - ek_head),
           (agent_get_item_slot, ":equipped_item_id", ":agent_id", ":equip_slot"),
-          (try_begin),
+          (try_begin), # if nothing is equipped in the slot
             (lt, ":equipped_item_id", all_items_begin),
-            (try_begin),
+            (try_begin), # if not gloves or head armor, do nothing
               (neq, ":equip_slot", ek_head),
               (neq, ":equip_slot", ek_gloves),
               (assign, ":item_id", -1),
-            (else_try),
+            (else_try), # otherwise, get the stored item id to put it back on
               (player_get_slot, ":item_id", ":sender_player_id", ":player_slot"),
               (val_abs, ":item_id"),
               (lt, ":item_id", all_items_begin),
               (assign, ":item_id", -1),
             (try_end),
-          (else_try),
+          (else_try), # if something is equipped in the slot and it is not gloves or head armor, clear the stored item id
             (neq, ":equip_slot", ek_head),
             (neq, ":equip_slot", ek_gloves),
             (player_set_slot, ":sender_player_id", ":player_slot", 0),
           (try_end),
-          (try_begin),
+          (try_begin), # if necessary, equip or remove the armor
             (gt, ":item_id", -1),
             (call_script, "script_change_armor", ":agent_id", ":item_id"),
           (try_end),
         (try_end),
-      (else_try),
+      (else_try), # handle accessing armor to loot from corpses
         (eq, ":event_type", client_event_agent_loot_armor),
         (store_script_param, ":corpse_instance_id", 3),
         (try_begin),
@@ -1190,7 +1190,7 @@ scripts.extend([
           (le, ":sq_distance", sq(max_distance_to_loot)),
           (call_script, "script_cf_use_inventory", ":agent_id", ":corpse_instance_id", 0),
         (try_end),
-      (else_try),
+      (else_try), # handle player requests to reveal their money pouch to another player
         (eq, ":event_type", client_event_reveal_money_pouch),
         (store_script_param, ":target_agent_id", 3),
         (try_begin),
@@ -1201,7 +1201,7 @@ scripts.extend([
           (player_get_agent_id, ":agent_id", ":sender_player_id"),
           (agent_is_active, ":agent_id"),
           (agent_is_alive, ":agent_id"),
-          (store_mission_timer_a, ":time"),
+          (store_mission_timer_a, ":time"), # don't allow spamming pouch reveal messages
           (player_get_slot, ":last_action_time", ":sender_player_id", slot_player_last_action_time),
           (store_sub, ":interval", ":time", ":last_action_time"),
           (ge, ":interval", repeat_action_min_interval),
@@ -1211,7 +1211,7 @@ scripts.extend([
           (get_sq_distance_between_positions, ":sq_distance", pos1, pos2),
           (lt, ":sq_distance", sq(max_distance_to_use)),
           (player_get_gold, ":approximate_gold", ":sender_player_id"),
-          (assign, ":multiplier", 1),
+          (assign, ":multiplier", 1), # repeatedly divide by 10, discarding the remainder, until only the most significant figure remains, then multiply back to the approximate value
           (assign, ":loop_end", int(math.log10(max_possible_gold))),
           (try_for_range, ":unused", 0, ":loop_end"),
             (try_begin),
@@ -1230,7 +1230,7 @@ scripts.extend([
           (assign, reg1, ":approximate_gold"),
           (server_add_message_to_log, "str_s1_revealed_money_pouch_containing_reg1_to_s2"),
         (try_end),
-      (else_try),
+      (else_try), # handle animation requests
         (eq, ":event_type", client_event_request_animation),
         (store_script_param, ":string_id", 3),
         (try_begin),
@@ -1240,7 +1240,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("game_get_multiplayer_server_option_for_mission_template",
+  ("game_get_multiplayer_server_option_for_mission_template", # server option values in the popup over entries in the server list
    [#(store_script_param, ":mission_template_id", 1),
     (store_script_param, ":option_index", 2),
 
@@ -1295,10 +1295,10 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("game_multiplayer_server_option_for_mission_template_to_string",
+  ("game_multiplayer_server_option_for_mission_template_to_string", # server option strings in the popup over entries in the server list
    [#(store_script_param, ":mission_template_id", 1),
     (store_script_param, ":option_index", 2),
-    (store_script_param, ":option_value", 3),
+    (store_script_param, ":option_value", 3), # the corresponding value from the above script
 
     (str_clear, s0),
     (try_begin),
@@ -1410,7 +1410,8 @@ scripts.extend([
   ("game_multiplayer_event_duel_offered", []),
 
   ("game_get_multiplayer_game_type_enum",
-   [(assign, reg0, game_type_mission_templates_begin),
+   [
+    (assign, reg0, game_type_mission_templates_begin),
     (store_sub, reg1, game_type_mission_templates_begin, game_type_mission_templates_end),
     ]),
 
@@ -1426,23 +1427,23 @@ scripts.extend([
 
   ("game_get_party_prisoner_limit", []),
 
-  ("game_get_item_extra_text",
+  ("game_get_item_extra_text", # called by the game when the show_item_details operation is called. set_result_string is for the text displayed, set_trigger result for the color
    [(store_script_param, ":item_id", 1),
-    (store_script_param, ":extra_text_id", 2),
-    #(store_script_param, ":item_modifier", 3),
+    (store_script_param, ":extra_text_id", 2), # repeatedly called with this set to the numbers 0 through 7
+    #(store_script_param, ":item_modifier", 3), # item modifiers are not used for adjusting stats in this mod - they aren't supported by all necessary operations
 
     (try_begin),
       (eq, ":extra_text_id", 0),
       (assign, "$g_extra_item_details_show_modifiers", 0),
       (item_get_slot, reg1, ":item_id", slot_item_difficulty),
       (try_begin),
-        (gt, reg1, 0),
+        (gt, reg1, 0), # skip showing agent modifiers if the item has no skill requirements
         (multiplayer_get_my_player, ":my_player"),
         (player_get_agent_id, ":agent_id", ":my_player"),
         (agent_get_troop_id, ":troop_id", ":agent_id"),
         (assign, "$g_extra_item_details_cannot_use", 0),
         (item_get_type, ":item_type", ":item_id"),
-        (try_begin),
+        (try_begin), # for horses, just show if the required riding skill is met
           (eq, ":item_type", itp_type_horse),
           (try_begin),
             (le, reg1, 10),
@@ -1450,7 +1451,7 @@ scripts.extend([
             (set_result_string, "str_requires_riding_reg1"),
             (store_skill_level, ":troop_level", "skl_riding", ":troop_id"),
           (try_end),
-        (else_try),
+        (else_try), # for other item types, check for stat modifiers
           (try_begin),
             (eq, ":item_type", itp_type_bow),
             (set_result_string, "str_requires_power_draw_reg1"),
@@ -1462,7 +1463,7 @@ scripts.extend([
           (else_try),
             (set_result_string, "str_requires_strength_reg1"),
             (store_attribute_level, ":troop_level", ":troop_id", ca_strength),
-          (try_end),
+          (try_end), # store modifiers for displaying on the next lines
           (call_script, "script_agent_calculate_stat_modifiers_for_item", ":agent_id", ":item_id", 1, 0),
           (assign, "$g_extra_item_details_cannot_use", reg10),
           (assign, "$g_extra_item_details_damage", reg11),
@@ -1481,7 +1482,7 @@ scripts.extend([
           (set_trigger_result, 0xFFFF4422),
         (try_end),
       (try_end),
-    (else_try),
+    (else_try), # show stored damage and speed modifers
       (eq, ":extra_text_id", 1),
       (try_begin),
         (eq, "$g_extra_item_details_show_modifiers", 1),
@@ -1497,7 +1498,7 @@ scripts.extend([
           (set_trigger_result, 0xFFFF4422),
         (try_end),
       (try_end),
-    (else_try),
+    (else_try), # show stored accuracy and reload modifiers
       (eq, ":extra_text_id", 2),
       (try_begin),
         (eq, "$g_extra_item_details_show_modifiers", 1),
@@ -1513,7 +1514,7 @@ scripts.extend([
           (set_trigger_result, 0xFFFF4422),
         (try_end),
       (try_end),
-    (else_try),
+    (else_try), # display whether the item is available to females only
       (eq, ":extra_text_id", 3),
       (item_get_slot, ":item_gender", ":item_id", slot_item_gender),
       (try_begin),
@@ -1529,7 +1530,7 @@ scripts.extend([
           (set_trigger_result, 0xFFFF4422),
         (try_end),
       (try_end),
-    (else_try),
+    (else_try), # custom details set by targeted scene props; the variables are reset after use for the next unrelated item details displayed
       (eq, ":extra_text_id", 4),
       (gt, "$g_extra_item_details_1_string_id", -1),
       (assign, reg0, "$g_extra_item_details_1_value"),
@@ -1561,7 +1562,7 @@ scripts.extend([
   ("game_check_party_sees_party", []),
   ("game_get_party_speed_multiplier", []),
 
-  ("game_missile_launch",
+  ("game_missile_launch", # called by the game whenever a missile is shot or thrown
    [#(store_script_param, ":agent_id", 1),
     #(store_script_param, ":agent_weapon_item_id", 2),
     #(store_script_param, ":missile_weapon_item_id", 3),
@@ -1569,7 +1570,7 @@ scripts.extend([
 
     ]),
 
-  ("game_missile_dives_into_water",
+  ("game_missile_dives_into_water", # called by the game whenever a missle drops below water level
    [#(store_script_param, ":missile_item_id", 1),
     #(store_script_param, ":unknown", 2),
 
@@ -1581,7 +1582,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("get_random_equipment",
+  ("get_random_equipment", # get a random item inside a range of ids, that is not women only clothing; store in reg0
    [(store_script_param, ":begin_item_id", 1),
     (store_script_param, ":end_item_id", 2),
 
@@ -1595,7 +1596,7 @@ scripts.extend([
     (troop_get_slot, reg0, "trp_temp_array", ":random_slot"),
     ]),
 
-  ("store_profile_troop_equipment",
+  ("store_profile_troop_equipment", # store random body and leg armor items for the profile selection presentation
    [
     (call_script, "script_get_random_equipment", "itm_linen_tunic", "itm_tribal_warrior_outfit"),
     (assign, "$g_profile_troop_body_item", reg0),
@@ -1603,7 +1604,7 @@ scripts.extend([
     (assign, "$g_profile_troop_foot_item", reg0),
     ]),
 
-  ("add_troop_to_cur_tableau_for_profile",
+  ("add_troop_to_cur_tableau_for_profile", # setup the tableau for the profile selection presentation
    [(store_script_param, ":troop_no",1),
     (set_fixed_point_multiplier, 100),
 
@@ -1665,9 +1666,9 @@ scripts.extend([
     (cur_tableau_add_sun_light, pos8, 175,150,125),
     ]),
 
-  ("store_command_string",
-   [(store_script_param, ":command", 1),
-    (store_script_param, reg1, 2),
+  ("store_command_string", # store in s0 the appropriate command description and value
+   [(store_script_param, ":command", 1), # the command number
+    (store_script_param, reg1, 2), # the value to be displayed
 
     (try_begin),
       (is_between, ":command", commands_module_system_begin, commands_module_system_end),
@@ -1693,7 +1694,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_execute_command",
+  ("cf_execute_command", # get or set a server setting, on the server or clients, ensuring the value is valid
    [(store_script_param, ":command", 1),
     (store_script_param, ":value", 2),
 
@@ -1902,7 +1903,7 @@ scripts.extend([
     (eq, ":error_string_id", 0),
     ]),
 
-  ("cf_command_should_update_clients",
+  ("cf_command_should_update_clients", # succeeds if the command should be applied on all clients when changed on the server
    [(store_script_param, ":command", 1),
 
     (is_between, ":command", commands_module_system_begin, commands_module_system_end),
@@ -1917,9 +1918,9 @@ scripts.extend([
     (eq, ":command", command_set_disallow_ranged_weapons),
     ]),
 
-  ("player_return_game_rules",
+  ("player_return_game_rules", # return server settings to a player when requested
    [(store_script_param, ":player_id", 1),
-    (store_script_param, ":admin_request", 2),
+    (store_script_param, ":admin_request", 2), # if 1, also return settings private to admins
 
     (try_begin),
       (this_or_next|eq, ":admin_request", 0),
@@ -1964,8 +1965,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("initialize_game_rules",
-   [(assign, "$g_respawn_period", 5),
+  ("initialize_game_rules", # set module default settings before loading the server configuration
+   [
+    (assign, "$g_respawn_period", 5),
     (assign, "$g_scenes_voteable", 0),
     (assign, "$g_kick_voteable", 1),
     (assign, "$g_ban_voteable", 1),
@@ -2028,7 +2030,7 @@ scripts.extend([
     (assign, "$g_extra_item_details_2_string_id", -1),
     ]),
 
-  ("initialize_scene_globals",
+  ("initialize_scene_globals", # reset global values to initial values when starting a mission
    [
     (assign, "$g_game_ended", 0),
     (assign, "$g_victory_condition_time", 0),
@@ -2101,13 +2103,13 @@ scripts.extend([
     (assign, "$g_chat_overlay_faction_buffer_stored", chat_overlay_ring_buffer_begin),
     ]),
 
-  ("preset_message",
+  ("preset_message", # display a message built into the module, using a string id and parameters
    [(store_script_param, "$g_preset_message_string_id", 1),
     (store_script_param, ":flags", 2),
     (store_script_param, "$g_preset_message_value_1", 3),
     (store_script_param, "$g_preset_message_value_2", 4),
 
-    (assign, ":color", ":flags"),
+    (assign, ":color", ":flags"), # unpack the color from the flags parameter
     (val_and, ":color", preset_message_color_mask),
     (try_begin),
       (eq, ":color", preset_message_white),
@@ -2126,7 +2128,7 @@ scripts.extend([
       (assign, "$g_preset_message_color", 0xFFFFEE11),
     (try_end),
 
-    (assign, "$g_preset_message_type", ":flags"),
+    (assign, "$g_preset_message_type", ":flags"), # unpack the type from the flags parameter
     (val_and, "$g_preset_message_type", preset_message_type_mask),
     (try_begin),
       (eq, "$g_preset_message_type", preset_message_read_object),
@@ -2170,7 +2172,7 @@ scripts.extend([
       (try_end),
       # end keep same
 
-      (assign, ":log", ":flags"),
+      (assign, ":log", ":flags"), # check whether to save in the chat log
       (val_and, ":log", preset_message_log),
       (try_begin),
         (eq, ":log", preset_message_log),
@@ -2196,7 +2198,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("chat_event_increment",
+  ("chat_event_increment", # store the next chat event number in reg0, wrapping around from the end back to the start
    [(store_script_param, reg0, 1),
 
     (val_and, reg0, net_chat_event_mask),
@@ -2207,9 +2209,9 @@ scripts.extend([
     (else_try),
       (val_add, reg0, 1),
     (try_end),
-    ]),
+    ]), 
 
-  ("cf_chat_event_is_new",
+  ("cf_chat_event_is_new", # check whether a chat event is probably new or old, depending on the event number
    [(store_script_param, ":event", 1),
     (store_script_param, ":player_id", 2),
 
@@ -2236,8 +2238,8 @@ scripts.extend([
     (eq, ":continue", 1),
     ]),
 
-  ("chat_overlay_add_to_local_buffer",
-   [(store_script_param, ":color", 1),
+  ("chat_overlay_add_to_local_buffer", # add messages to the buffer for the overlay for local and faction chat
+   [(store_script_param, ":color", 1), # the color of the message
 
     (val_add, "$g_chat_overlay_local_buffer_stored", 1),
     (try_begin),
@@ -2248,8 +2250,9 @@ scripts.extend([
     (troop_set_slot, "$g_chat_overlay_local_buffer_stored", slot_chat_overlay_local_color, ":color"),
     ]),
 
-  ("cf_no_input_presentation_active",
-   [(neg|is_presentation_active, "prsnt_chat_box"),
+  ("cf_no_input_presentation_active", # check that no presentation is active that should be grabbing keyboard or mouse input
+   [
+    (neg|is_presentation_active, "prsnt_chat_box"),
     (neg|is_presentation_active, "prsnt_show_inventory"),
     (neg|is_presentation_active, "prsnt_money_bag"),
     (neg|is_presentation_active, "prsnt_tabbed_stats_chart"),
@@ -2267,9 +2270,9 @@ scripts.extend([
     (neg|is_presentation_active, "prsnt_game_multiplayer_admin_panel"),
     (neg|is_presentation_active, "prsnt_game_rules"),
     (neg|is_presentation_active, "prsnt_admin_item_select"),
-    ]),
+    ]), 
 
-  ("initialize_banner_info",
+  ("initialize_banner_info", # store background colors for all the banners in an array
    [
     (troop_set_slot, "trp_banner_background_color_array", 0, 0xFFAAAA99),
     (troop_set_slot, "trp_banner_background_color_array", "mesh_banner_a01", 0xFF8f4531),
@@ -2492,10 +2495,10 @@ scripts.extend([
     (troop_set_slot, "trp_banner_background_color_array", "mesh_banners_default_a", 0xFF242424),
     ]),
 
-  ("item_set_banner",
-   [(store_script_param, ":tableau_id", 1),
+  ("item_set_banner", # called from triggers of heraldic items and scene props
+   [(store_script_param, ":tableau_id", 1), # in module_tableau_materials
     (store_script_param, ":agent_id", 2),
-    #(store_script_param, ":troop_id", 3),
+    #(store_script_param, ":troop_id", 3), # used in Native, but unused in this mod
 
     (try_begin),
       (agent_is_active, ":agent_id"),
@@ -2505,13 +2508,13 @@ scripts.extend([
       (ge, ":player_faction_id", castle_factions_begin),
       (faction_get_slot, ":banner_mesh", ":player_faction_id", slot_faction_banner_mesh),
       (gt, ":banner_mesh", 0),
-    (else_try),
+    (else_try), # banner mesh 0 is for a plain white background
       (assign, ":banner_mesh", 0),
     (try_end),
     (cur_item_set_tableau_material, ":tableau_id", ":banner_mesh"),
     ]),
 
-  ("cf_add_item_to_troop_equipment_slots",
+  ("cf_add_item_to_troop_equipment_slots", # store a troop default item in slots for easy selection by the random equipment scripts
    [(store_script_param, ":troop_id", 1),
     (store_script_param, ":item_id", 2),
 
@@ -2559,7 +2562,7 @@ scripts.extend([
     (troop_set_slot, ":troop_id", ":equipment_slot_begin", ":item_id"),
     ]),
 
-  ("initialize_troop_equipment_slots",
+  ("initialize_troop_equipment_slots", # set troop default item slots from the hard coded inventory, for use with random equipment scripts
    [
     (try_begin),
       (multiplayer_is_server),
@@ -2574,9 +2577,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_troop_get_random_equipment",
+  ("cf_troop_get_random_equipment", # store in reg0 a random item of a certain type from the troop's default equipment
    [(store_script_param, ":troop_id", 1),
-    (store_script_param, ":slot_begin", 2),
+    (store_script_param, ":slot_begin", 2), # the type of item: slot_troop_equipment_*
 
     (troop_get_slot, ":item_count", ":troop_id", ":slot_begin"),
     (gt, ":item_count", 0),
@@ -2586,11 +2589,11 @@ scripts.extend([
     (troop_get_slot, reg0, ":troop_id", ":random_slot"),
     ]),
 
-  ("cf_player_add_default_troop_item",
-   [(store_script_param, ":player_id", 1),
-    (store_script_param, ":player_slot", 2),
+  ("cf_player_add_default_troop_item", # server: check if the player has any existing item saved in a module slot, using a random default item if not
+   [(store_script_param, ":player_id", 1), # must be valid
+    (store_script_param, ":player_slot", 2), # slot_player_equip_*
     (store_script_param, ":troop_id", 3),
-    (store_script_param, ":troop_slot", 4),
+    (store_script_param, ":troop_slot", 4), # the type of item: slot_troop_equipment_*
 
     (player_get_slot, ":existing_item_id", ":player_id", ":player_slot"),
     (lt, ":existing_item_id", all_items_begin),
@@ -2599,11 +2602,11 @@ scripts.extend([
     (player_set_slot, ":player_id", ":player_slot", reg0),
     ]),
 
-  ("player_add_default_troop_items",
-   [(store_script_param, ":player_id", 1),
+  ("player_add_default_troop_items", # server: fill player weapon slots with default items, if there are none equipped already
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":troop_id", 2),
 
-    (assign, ":free_slots", 0),
+    (assign, ":free_slots", 0), # find the first free slot
     (assign, ":free_slots_begin", slot_player_equip_end),
     (try_for_range, ":player_slot", slot_player_equip_item_0, slot_player_equip_head),
       (player_get_slot, ":existing_item_id", ":player_id", ":player_slot"),
@@ -2612,27 +2615,27 @@ scripts.extend([
       (val_add, ":free_slots", 1),
     (try_end),
     (assign, ":ranged_count", 0),
-    (try_begin),
-      (ge, ":free_slots", 2),
+    (try_begin), # try add ranged weapons if in the troop defaults
+      (ge, ":free_slots", 2), # only if there are at least 2 free slots, for weapon and ammo
       (call_script, "script_cf_troop_get_random_equipment", ":troop_id", slot_troop_equipment_ranged_begin),
       (assign, ":ranged_item_id", reg0),
       (item_get_type, ":ranged_item_type", ":ranged_item_id"),
-      (try_begin),
+      (try_begin), # thrown needs no ammo
         (eq, ":ranged_item_type", itp_type_thrown),
         (assign, ":ranged_count", 1),
-      (else_try),
+      (else_try), # otherwise check for the correct ammo
         (call_script, "script_cf_troop_get_random_equipment", ":troop_id", slot_troop_equipment_ammo_begin),
         (assign, ":ammo_item_id", reg0),
         (val_sub, ":ranged_item_type", itp_type_bow - itp_type_arrows),
         (assign, ":ammo_slot_end", slot_troop_equipment_ammo_begin + troop_slot_count_per_equipment_type + 1),
-        (try_for_range, ":ammo_slot", slot_troop_equipment_ammo_begin + 1, ":ammo_slot_end"),
+        (try_for_range, ":ammo_slot", slot_troop_equipment_ammo_begin + 1, ":ammo_slot_end"), # check over all ammo slots for the correct type
           (item_get_type, ":ammo_item_type", ":ammo_item_id"),
           (try_begin),
             (eq, ":ammo_item_type", ":ranged_item_type"),
-            (assign, ":ammo_slot_end", -1),
+            (assign, ":ammo_slot_end", -1), # exit loop if found
             (assign, ":ranged_count", 2),
           (else_try),
-            (troop_get_slot, ":ammo_item_id", ":troop_id", ":ammo_slot"),
+            (troop_get_slot, ":ammo_item_id", ":troop_id", ":ammo_slot"), # otherwise check the next slot
           (try_end),
         (try_end),
       (try_end),
@@ -2644,7 +2647,7 @@ scripts.extend([
     (assign, ":two_hand_item_id", 0),
     (assign, ":ranged_added", 0),
     (assign, ":ammo_added", 0),
-    (try_for_range, ":slot_counter", 0, ":free_slots"),
+    (try_for_range, ":slot_counter", 0, ":free_slots"), # loop over the remaining free slots, adding different types of default weapons if possible
       (try_begin),
         (lt, ":slot_counter", ":free_melee_slots"),
         (eq, ":one_hand_added", 0),
@@ -2676,10 +2679,10 @@ scripts.extend([
         (assign, ":free_slots", -1),
       (try_end),
       (gt, ":free_slots", -1),
-      (val_mul, reg0, -1),
+      (val_mul, reg0, -1), # multiply the item id by -1 to identify it as a default item, just for the module player slots, so it can be overwritten by new default items when changing troop
       (player_set_slot, ":player_id", ":free_slots_begin", reg0),
       (val_add, ":free_slots_begin", 1),
-      (assign, ":free_slots_end", slot_player_equip_head),
+      (assign, ":free_slots_end", slot_player_equip_head), # find the number of the next free slot
       (try_for_range, ":next_free_slot", ":free_slots_begin", ":free_slots_end"),
         (player_get_slot, ":existing_item_id", ":player_id", ":next_free_slot"),
         (lt, ":existing_item_id", all_items_begin),
@@ -2687,7 +2690,7 @@ scripts.extend([
         (assign, ":free_slots_end", -1),
       (try_end),
       (try_begin),
-        (neq, ":free_slots_end", -1),
+        (neq, ":free_slots_end", -1), # if no more free slots found, end the loop
         (assign, ":free_slots", -1),
       (try_end),
     (try_end),
@@ -2696,8 +2699,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("player_add_default_troop_armor",
-   [(store_script_param, ":player_id", 1),
+  ("player_add_default_troop_armor", # server: fill player armor slots with default items, if there are none equipped already
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":troop_id", 2),
 
     (assign, ":troop_slot", slot_troop_equipment_head_begin),
@@ -2705,11 +2708,11 @@ scripts.extend([
       (try_begin),
         (call_script, "script_cf_player_add_default_troop_item", ":player_id", ":player_slot", ":troop_id", ":troop_slot"),
       (try_end),
-      (val_add, ":troop_slot", troop_slot_count_per_equipment_type),
+      (val_add, ":troop_slot", troop_slot_count_per_equipment_type), # jump to the beginning troop equipment slot for the next type
     (try_end),
     ]),
 
-  ("set_random_spawn_position",
+  ("set_random_spawn_position", # set a spawn position at ground level within the specified range of pos1; overwrites pos10
    [(store_script_param, ":range", 1),
 
     (store_mul, ":negative_range", ":range", -1),
@@ -2725,14 +2728,14 @@ scripts.extend([
     (set_spawn_position, pos10),
     ]),
 
-  ("player_add_equipped_items",
-   [(store_script_param, ":player_id", 1),
+  ("player_add_equipped_items", # server: when respawning and possibly changing troop, calculate the combination of usable previously equipped items and new default items
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":troop_id", 2),
 
     (player_get_agent_id, ":agent_id", ":player_id"),
     (try_begin),
       (agent_is_active, ":agent_id"),
-      (agent_is_alive, ":agent_id"),
+      (agent_is_alive, ":agent_id"), # only add previously equipped items if the agent is alive
       (agent_get_position, pos1, ":agent_id"),
       (assign, ":has_bow", 0),
       (assign, ":has_crossbow", 0),
@@ -2841,9 +2844,9 @@ scripts.extend([
     (call_script, "script_player_add_default_troop_armor", ":player_id", ":troop_id"),
     ]),
 
-  ("player_add_spawn_items",
-   [(store_script_param, ":player_id", 1),
-    (store_script_param, ":add_weapons", 2),
+  ("player_add_spawn_items", # server: add the previously calculated and stored equipment to the engine's list of items to spawn with
+   [(store_script_param, ":player_id", 1), # must be valid
+    (store_script_param, ":add_weapons", 2), # 0 = armor and shields only, 1 = weapons also
 
     (assign, ":player_slot", slot_player_equip_item_0),
     (try_for_range, ":equip_slot", ek_item_0, ek_horse + 1),
@@ -2861,8 +2864,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("player_equip_stored_default_items",
-   [(store_script_param, ":player_id", 1),
+  ("player_equip_stored_default_items", # server: after spawning, equip weapons saved in equipment slots
+   [(store_script_param, ":player_id", 1), # must be valid
 
     (player_get_agent_id, ":agent_id", ":player_id"),
     (try_for_range, ":player_slot", slot_player_equip_item_0, slot_player_equip_item_3 + 1),
@@ -2875,8 +2878,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("player_set_stored_ammo_counts",
-   [(store_script_param, ":player_id", 1),
+  ("player_set_stored_ammo_counts", # server: after spawning, try set counts for ammo items to the stored values
+   [(store_script_param, ":player_id", 1), # must be valid
 
     (player_get_agent_id, ":agent_id", ":player_id"),
     (try_for_range, ":player_slot", slot_player_equip_item_0, slot_player_equip_item_3 + 1),
@@ -2889,10 +2892,10 @@ scripts.extend([
       (try_for_range, ":other_player_slot", slot_player_equip_item_0, ":loop_end"),
         (player_slot_eq, ":player_id", ":other_player_slot", ":item_id"),
         (try_begin),
-          (lt, ":other_player_slot", ":player_slot"),
+          (lt, ":other_player_slot", ":player_slot"), # end the sub loop, because this item must have been handled by an earlier iteration of the main loop
           (assign, ":loop_end", -1),
         (else_try),
-          (gt, ":other_player_slot", ":player_slot"),
+          (gt, ":other_player_slot", ":player_slot"), # add the ammo value of all subsequent slots for the same item
           (store_add, ":ammo_slot", ":other_player_slot", slot_player_equip_item_0_ammo - slot_player_equip_item_0),
           (player_get_slot, ":slot_ammo", ":player_id", ":ammo_slot"),
           (gt, ":slot_ammo", 0),
@@ -2901,19 +2904,19 @@ scripts.extend([
       (try_end),
       (neq, ":loop_end", -1),
       (gt, ":item_ammo", 0),
-      (agent_set_ammo, ":agent_id", ":item_id", ":item_ammo"),
+      (agent_set_ammo, ":agent_id", ":item_id", ":item_ammo"), # this operation sets total ammo for all equipped items of that type
     (try_end),
     ]),
 
-  ("player_get_spawn_point",
-   [(store_script_param, ":player_id", 1),
+  ("player_get_spawn_point", # server: store in reg0 an appropriate spawn point for the player: the one requested if valid, otherwise pick randomly
+   [(store_script_param, ":player_id", 1), # must be valid
 
     (player_get_slot, ":faction_id", ":player_id", slot_player_faction_id),
     (player_get_slot, ":spawn_point", ":player_id", slot_player_requested_spawn_point),
     (player_set_slot, ":player_id", slot_player_requested_spawn_point, 0),
     (try_begin),
       (gt, ":spawn_point", 0),
-      (val_sub, ":spawn_point", 1),
+      (val_sub, ":spawn_point", 1), # the requested spawn point numbers are from 1 - 5, but the corresponding entry points are 0 - 4
       (try_begin),
         (is_between, ":faction_id", castle_factions_begin, factions_end),
         (store_mod, ":castle_spawn_no", ":spawn_point", 10),
@@ -2931,11 +2934,11 @@ scripts.extend([
         (assign, ":spawn_point", -1),
       (try_end),
       (gt, ":spawn_point", -1),
-    (else_try),
+    (else_try), # no spawn point requested, or it was invalid
       (try_begin),
         (is_between, ":faction_id", castle_factions_begin, factions_end),
         (assign, ":owned_castles", 0),
-        (assign, ":temp_slot", 0),
+        (assign, ":temp_slot", 0), # add all castles owned by their faction to a temporary list
         (try_for_range, ":castle_no", slot_mission_data_castle_owner_faction_begin, slot_mission_data_castle_owner_faction_end),
           (troop_get_slot, ":owner_faction", "trp_mission_data", ":castle_no"),
           (eq, ":owner_faction", ":faction_id"),
@@ -2945,7 +2948,7 @@ scripts.extend([
           (val_add, ":temp_slot", 1),
         (try_end),
         (gt, ":owned_castles", 0),
-        (store_random_in_range, ":random_slot", 0, ":owned_castles"),
+        (store_random_in_range, ":random_slot", 0, ":owned_castles"), # get a random owned castle
         (troop_get_slot, ":entry_point_begin", "trp_temp_array", ":random_slot"),
         (val_add, ":entry_point_begin", castle_factions_begin),
         (val_mul, ":entry_point_begin", 10),
@@ -2955,14 +2958,14 @@ scripts.extend([
       (else_try),
         (assign, ":entry_point_begin", 0),
       (try_end),
-      (store_add, ":entry_point_end", ":entry_point_begin", 5),
+      (store_add, ":entry_point_end", ":entry_point_begin", 5), # get a random entry point in the calculated section
       (store_random_in_range, ":spawn_point", ":entry_point_begin", ":entry_point_end"),
     (try_end),
     (assign, reg0, ":spawn_point"),
     ]),
 
-  ("player_respawn_in_place",
-   [(store_script_param, ":player_id", 1),
+  ("player_respawn_in_place", # server: save values for respawning a player at the same place; normally for changing troop
+   [(store_script_param, ":player_id", 1), # must be valid
 
     (player_get_agent_id, ":agent_id", ":player_id"),
     (store_agent_hit_points, ":health_percent", ":agent_id", 0),
@@ -2971,7 +2974,7 @@ scripts.extend([
     (player_set_slot, ":player_id", slot_player_spawn_food_amount, ":food_amount"),
     (multiplayer_send_3_int_to_player, ":player_id", server_event_player_set_slot, ":player_id", slot_player_spawn_food_amount, ":food_amount"),
     (agent_get_position, pos1, ":agent_id"),
-    (try_begin),
+    (try_begin), # if there are not enough spawn marker scene props, generate more
       (ge, ":player_id", "$g_spawn_marker_count"),
       (assign, ":start_count", "$g_spawn_marker_count"),
       (server_get_max_num_players, "$g_spawn_marker_count"),
@@ -2985,7 +2988,7 @@ scripts.extend([
         (spawn_scene_prop, "spr_code_spawn_marker"),
       (try_end),
     (try_end),
-    (try_begin),
+    (try_begin), # use the spawn marker prop of the number corresponding to the player id
       (scene_prop_get_instance, ":instance_id", "spr_code_spawn_marker", ":player_id"),
       (prop_instance_set_position, ":instance_id", pos1, 1),
     (try_end),
@@ -2995,8 +2998,8 @@ scripts.extend([
     (player_spawn_new_agent, ":player_id", reg0),
     ]),
 
-  ("cf_player_check_spawn_agent",
-   [(store_script_param, ":player_id", 1),
+  ("cf_player_check_spawn_agent", # server: check if the a new agent should be spawned for a player
+   [(store_script_param, ":player_id", 1), # must be valid
 
     (assign, ":spawn", 0),
     (player_get_slot, ":spawn_state", ":player_id", slot_player_spawn_state),
@@ -3005,7 +3008,7 @@ scripts.extend([
       (player_get_team_no, ":team_no", ":player_id"),
       (try_begin),
         (this_or_next|eq, ":team_no", team_spectators),
-        (player_slot_eq, ":player_id", slot_player_requested_spawn_point, -1),
+        (player_slot_eq, ":player_id", slot_player_requested_spawn_point, -1), # has not selected to join the game yet after client connection
       (else_try),
         (player_get_agent_id, ":agent_id", ":player_id"),
         (neg|agent_is_active, ":agent_id"),
@@ -3014,7 +3017,7 @@ scripts.extend([
         (agent_is_alive, ":agent_id"),
         (player_set_slot, ":player_id", slot_player_spawn_state, player_spawn_state_alive),
       (else_try),
-        (agent_get_time_elapsed_since_removed, ":elapsed_time", ":agent_id"),
+        (agent_get_time_elapsed_since_removed, ":elapsed_time", ":agent_id"), # only works while the previous dead agent is still valid - only for about 30 seconds
         (gt, ":elapsed_time", "$g_respawn_period"),
         (assign, ":spawn", 1),
       (try_end),
@@ -3046,7 +3049,7 @@ scripts.extend([
       (else_try),
         (assign, ":spawn", 0),
       (try_end),
-    (else_try),
+    (else_try), # if the player is currently alive under spawn protection, check if the time is up
       (eq, ":spawn_state", player_spawn_state_invulnerable),
       (player_get_agent_id, ":agent_id", ":player_id"),
       (agent_is_active, ":agent_id"),
@@ -3065,8 +3068,8 @@ scripts.extend([
     (eq, ":spawn", 1),
     ]),
 
-  ("on_agent_spawned",
-   [(store_script_param, ":agent_id", 1),
+  ("on_agent_spawned", # server and clients: set agent slots and attributes after spawning
+   [(store_script_param, ":agent_id", 1), # must be valid
 
     (agent_set_slot, ":agent_id", slot_agent_horse_last_rider, -1),
     (agent_set_slot, ":agent_id", slot_agent_freeze_instance_id, -1),
@@ -3132,7 +3135,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("setup_agent_for_respawn",
+  ("setup_agent_for_respawn", # server: when an agent dies, clean up slots and attached props; set up lootable items
    [(store_script_param, ":agent_id", 1),
 
     (try_begin),
@@ -3144,7 +3147,7 @@ scripts.extend([
         (call_script, "script_cart_set_detached_position", ":instance_id"),
       (try_end),
       (agent_set_slot, ":agent_id", slot_agent_died_normally, 1),
-      (agent_set_slot, ":agent_id", slot_agent_cannot_attack, 0),
+      (agent_set_slot, ":agent_id", slot_agent_cannot_attack, 0), # so the attack restrictons checking loop will skip this agent
       (agent_get_player_id, ":player_id", ":agent_id"),
       (player_is_active, ":player_id"),
       (agent_get_position, pos1, ":agent_id"),
@@ -3167,7 +3170,7 @@ scripts.extend([
         (scene_prop_set_slot, ":corpse_instance_id", ":inventory_slot", ":item_id"),
         (val_add, ":inventory_slot", 1),
       (try_end),
-      (try_begin),
+      (try_begin), # if the only items dropped were rubbish default items, remove the corpse now for performance reasons
         (eq, ":inventory_slot", slot_scene_prop_inventory_begin),
         (scene_prop_set_prune_time, ":corpse_instance_id", 1),
       (try_end),
@@ -3178,7 +3181,7 @@ scripts.extend([
       (agent_get_wielded_item, ":weapon_item_id", ":agent_id", 0),
       (agent_get_wielded_item, ":shield_item_id", ":agent_id", 1),
       (set_fixed_point_multiplier, 100),
-      (position_get_z, ":height", pos1),
+      (position_get_z, ":height", pos1), # the engine only drops the wielded items, only if above water level: drop all equipped items
       (try_for_range, ":equip_slot", ek_item_0, ek_item_3 + 1),
         (agent_get_item_slot, ":item_id", ":agent_id", ":equip_slot"),
         (ge, ":item_id", all_items_begin),
@@ -3189,7 +3192,7 @@ scripts.extend([
           (neq, ":item_id", "itm_money_bag"),
         (else_try),
           (store_add, ":unequip_slot", ":equip_slot", 1),
-          (agent_unequip_item, ":agent_id", ":item_id", ":unequip_slot"),
+          (agent_unequip_item, ":agent_id", ":item_id", ":unequip_slot"), # if spawning an item manually, remove it so the engine definitely won't drop a duplicate
           (call_script, "script_set_random_spawn_position", 50),
           (spawn_item, ":item_id", 0, "$g_spawn_item_prune_time"),
           (call_script, "script_check_on_item_dropped", ":agent_id", ":item_id", reg0, 1),
@@ -3205,7 +3208,7 @@ scripts.extend([
         (agent_set_slot, ":agent_id", slot_agent_freeze_instance_id, -1),
       (try_end),
       (player_get_slot, ":inactive_index", ":player_id", slot_player_inactive_index),
-      (try_begin),
+      (try_begin), # save values to the inactive players array
         (gt, ":inactive_index", 0),
         (player_get_unique_id, ":unique_id", ":player_id"),
         (troop_slot_eq, "trp_inactive_players_array", ":inactive_index", ":unique_id"),
@@ -3215,11 +3218,11 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("setup_player_joined",
-   [(store_script_param, ":player_id", 1),
+  ("setup_player_joined", # server: when a player connects, update necessary data on clients, restore data from previous play sessions in this mission, and set up other attributes
+   [(store_script_param, ":player_id", 1), # must be valid
 
     (player_set_team_no, ":player_id", team_default),
-    (player_set_slot, ":player_id", slot_player_requested_spawn_point, -1),
+    (player_set_slot, ":player_id", slot_player_requested_spawn_point, -1), # setting the initial team to spectator seems to occasionally stop that client loading properly, this is a work around
     (player_set_slot, ":player_id", slot_player_next_chat_event_type, client_event_chat_message_begin),
     (try_for_range, ":castle_owner_slot", slot_mission_data_castle_owner_faction_begin, slot_mission_data_castle_owner_faction_end),
       (troop_get_slot, ":castle_owner", "trp_mission_data", ":castle_owner_slot"),
@@ -3252,7 +3255,7 @@ scripts.extend([
     (get_max_players, ":max_players"),
     (player_get_unique_id, ":player_unique_id", ":player_id"),
     (troop_get_slot, ":inactive_array_size", "trp_inactive_players_array", slot_player_array_size),
-    (try_begin),
+    (try_begin), # try find player data in the inactive array, from a previous play session
       (gt, ":inactive_array_size", 0),
       (store_sub, ":inactive_last_entry_number", ":inactive_array_size", 1),
       (store_mul, ":inactive_index", ":inactive_last_entry_number", player_array_entry_size),
@@ -3292,7 +3295,7 @@ scripts.extend([
           (call_script, "script_player_set_lord", ":player_id", ":faction_id"),
         (try_end),
       (try_end),
-    (else_try),
+    (else_try), # otherwise, set default attributes
       (assign, ":troop_id", playable_troops_begin),
       (assign, ":faction_id", factions_begin),
       (store_random_in_range, ":gold_value", 30, 100),
@@ -3346,14 +3349,14 @@ scripts.extend([
     (multiplayer_send_2_int_to_player, ":player_id", server_event_return_game_rules, command_set_server_mission_timer, ":mission_timer"),
     ]),
 
-  ("after_client_is_setup",
+  ("after_client_is_setup", # clients: called after the server has finished sending the initial module data updates
    [
     (assign, "$g_preset_message_display_enabled", 1),
     (call_script, "script_redraw_castle_banners", redraw_client_banner_positions, -1),
     ]),
 
-  ("cf_save_player_exit",
-   [(store_script_param, ":player_id", 1),
+  ("cf_save_player_exit", # server: when a player disconnects, save attributes to the inactive players list
+   [(store_script_param, ":player_id", 1), # must be valid
 
     (player_get_troop_id, ":troop_id", ":player_id"),
     (is_between, ":troop_id", playable_troops_begin, playable_troops_end),
@@ -3388,8 +3391,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_player_store_inactive",
-   [(store_script_param, ":player_id", 1),
+  ("cf_player_store_inactive", # server: store player attributes starting at a specified index in a list
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":inactive_index", 2),
 
     (player_get_troop_id, ":troop_id", ":player_id"),
@@ -3407,7 +3410,7 @@ scripts.extend([
     (troop_set_slot, "trp_inactive_players_array", ":temp_index", ":outlaw_rating"),
     ]),
 
-  ("apply_consequences_for_agent_death",
+  ("apply_consequences_for_agent_death", # server and clients: when an agent dies, adjust scores, display messages, drop a loot money bag, check outlaw rating
    [(store_script_param, ":dead_agent_id", 1),
     (store_script_param, ":killer_agent_id", 2),
 
@@ -3517,10 +3520,10 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("player_change_check_outlaw_rating",
-   [(store_script_param, ":player_id", 1),
+  ("player_change_check_outlaw_rating", # server: update a player's outlaw rating and change faction if necessary
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":add_rating", 2),
-    (store_script_param, ":force_outlawed", 3),
+    (store_script_param, ":force_outlawed", 3), # change to outlaws even if the rating is not past the threshold
 
     (player_get_slot, ":outlaw_rating", ":player_id", slot_player_outlaw_rating),
     (store_add, ":new_outlaw_rating", ":outlaw_rating", ":add_rating"),
@@ -3539,8 +3542,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("player_drop_loot",
-   [(store_script_param, ":player_id", 1),
+  ("player_drop_loot", # server: drop a loot money bag based on amount carried and server settings
+   [(store_script_param, ":player_id", 1), # must be valid
 
     (assign, ":gold_loot", 0),
     (player_get_gold, ":gold", ":player_id"),
@@ -3562,7 +3565,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("check_name_server",
+  ("check_name_server", # server: send a test message to the name server to check whether it should be enabled
    [
     (try_begin),
       (eq, "$g_name_server_enabled", 0),
@@ -3577,11 +3580,11 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("player_check_name",
-   [(store_script_param, ":player_id", 1),
+  ("player_check_name", # server: check the player name and unique id with the name server, if enabled
+   [(store_script_param, ":player_id", 1), # must be valid
 
     (try_begin),
-      (eq, "$g_name_server_enabled", 1),
+      (eq, "$g_name_server_enabled", 1), # this is set upon reply to a test message sent at server start
       (str_store_string, s1, "str_name_server"),
       (str_store_string, s2, "str_name_server_password"),
       (assign, reg1, ":player_id"),
@@ -3597,8 +3600,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("player_set_admin_permissions",
-   [(store_script_param, ":player_id", 1),
+  ("player_set_admin_permissions", # unpack an admin permissions bitset and apply it to player slots
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":permissions", 2),
 
     (try_for_range, ":slot", slot_player_admin_no_panel, slot_player_admin_end),
@@ -3612,7 +3615,7 @@ scripts.extend([
 
 ])
 
-def generate_load_profile_options():
+def generate_load_profile_options(): # generate operations to load settings stored in the current profile's banner id
   script_body = [(assign, ":option_bits", "$g_current_profile_banner_id"),
     (val_rshift, ":option_bits", profile_banner_id_option_bits_begin)]
   for option in profile_options:
@@ -3622,7 +3625,7 @@ def generate_load_profile_options():
   script_body.pop()
   return [lazy.block(script_body)]
 
-def generate_store_profile_options():
+def generate_store_profile_options(): # generate operations to store on/off settings in the current profile's banner id
   script_body = [(assign, ":option_bits", 0)]
   for i, option in enumerate(profile_options):
     script_body.extend([(assign, ":option_bit", option),
@@ -3657,15 +3660,15 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("scene_prop_play_sound",
+  ("scene_prop_play_sound", # server: send messages to clients to play a sound at the location of a scene prop, if their agent is nearby
    [(store_script_param, ":instance_id", 1),
-    (store_script_param, ":sound_id", 2),
+    (store_script_param, ":sound_id", 2), # must be valid
 
     (try_begin),
       (gt, ":instance_id", -1),
       (prop_instance_is_valid, ":instance_id"),
       (prop_instance_get_position, pos60, ":instance_id"),
-      (val_lshift, ":sound_id", net_sound_shift),
+      (val_lshift, ":sound_id", net_sound_shift), # pack instance id and sound id into one number
       (le, ":instance_id", net_sound_mask),
       (val_or, ":instance_id", ":sound_id"),
       (is_between, ":instance_id", 0, net_value_upper_bound),
@@ -3681,10 +3684,10 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("hit_scene_prop_play_sound",
-   [(store_script_param, ":agent_id", 1),
+  ("hit_scene_prop_play_sound", # server: play a sound at a scene prop if hit with a ranged weapon, but play at the agent if hit in melee
+   [(store_script_param, ":agent_id", 1), # must be valid
     (store_script_param, ":instance_id", 2),
-    (store_script_param, ":sound_id", 3),
+    (store_script_param, ":sound_id", 3), # must be valid
 
     (agent_get_wielded_item, ":item_id", ":agent_id"),
     (try_begin),
@@ -3697,8 +3700,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("play_sound_at_position",
-   [(store_script_param, ":sound_id", 1),
+  ("play_sound_at_position", # server: send messages to clients to play a sound at the position stored in pos0, if their agent is nearby
+   [(store_script_param, ":sound_id", 1), # must be valid
 
     (set_fixed_point_multiplier, 1),
     (position_get_x, ":pos_x", pos0),
@@ -3709,7 +3712,7 @@ scripts.extend([
     (val_clamp, ":pos_x", 0, net_pack_3_value_upper_bound),
     (val_clamp, ":pos_y", 0, net_pack_3_value_upper_bound),
     (val_clamp, ":pos_z", 0, net_pack_3_value_upper_bound),
-    (assign, ":packed_position", ":pos_x"),
+    (assign, ":packed_position", ":pos_x"), # pack position x,y,z into one number
     (val_lshift, ":pos_y", net_pack_3_shift_2),
     (val_or, ":packed_position", ":pos_y"),
     (val_lshift, ":pos_z", net_pack_3_shift_3),
@@ -3725,12 +3728,12 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_check_enough_gold",
-   [(store_script_param, ":player_id", 1),
+  ("cf_check_enough_gold", # check if a player has enough gold before trying to perform whatever action was paid for, sending an error message if not
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":gold_cost", 2),
 
     (player_get_gold, ":player_gold", ":player_id"),
-    (try_begin),
+    (try_begin), # defensive check in case a large gold value has been corrupted by the server
       (neg|multiplayer_is_server),
       (gt, "$g_overflow_gold_value", max_correctly_displayed_gold),
       (neq, ":player_gold", "$g_overflow_gold_value"),
@@ -3744,10 +3747,10 @@ scripts.extend([
     (ge, ":player_gold", ":gold_cost"),
     ]),
 
-  ("player_adjust_gold",
-   [(store_script_param, ":player_id", 1),
-    (store_script_param, ":gold_value", 2),
-    (store_script_param, ":add_abs_sub", 3),
+  ("player_adjust_gold", # server: adjust player gold, sending large values manually that would overflow in the engine code, and playing an appropriate sound
+   [(store_script_param, ":player_id", 1), # must be valid
+    (store_script_param, ":gold_value", 2), # ignored if not positive
+    (store_script_param, ":add_abs_sub", 3), # -1 = subtract, 0 = set, 1 = add
 
     (try_begin),
       (ge, ":gold_value", 0),
@@ -3767,7 +3770,7 @@ scripts.extend([
         (assign, ":sound", -1),
       (try_end),
       (val_clamp, ":player_gold", 0, max_possible_gold),
-      (player_set_gold, ":player_id", ":player_gold"),
+      (player_set_gold, ":player_id", ":player_gold"), # set gold before manually updating clients, so corrupted network messages don't overwrite the update
       (try_begin),
         (gt, ":player_gold", max_correctly_displayed_gold),
         (multiplayer_send_int_to_player, ":player_id", server_event_set_overflow_gold, ":player_gold"),
@@ -3785,13 +3788,13 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("scene_prop_get_gold_value",
-   [(store_script_param, ":instance_id", 1),
-    (store_script_param, ":item_id", 2),
-    (store_script_param, ":base_value_multiplier", 3),
+  ("scene_prop_get_gold_value", # calculate the gold value and multiplier associated with a scene prop, caching for faster use later, storing in reg0 and reg1
+   [(store_script_param, ":instance_id", 1), # must be valid
+    (store_script_param, ":item_id", 2), # if invalid, set the base value below
+    (store_script_param, ":base_value_multiplier", 3), # the base value if the item id is not valid, otherwise an extra multiplier applied from module system code
 
     (scene_prop_get_slot, ":value", ":instance_id", slot_scene_prop_gold_value),
-    (try_begin),
+    (try_begin), # not already cached: calculate the value by applying the multipliers
       (eq, ":value", 0),
       (try_begin),
         (gt, ":item_id", -1),
@@ -3844,14 +3847,14 @@ scripts.extend([
       (try_end),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_value, ":value"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_multiplier, ":multiplier"),
-    (else_try),
+    (else_try), # otherwise used cached values
       (scene_prop_get_slot, ":multiplier", ":instance_id", slot_scene_prop_gold_multiplier),
     (try_end),
     (assign, reg0, ":value"),
     (assign, reg1, ":multiplier"),
     ]),
 
-  ("scene_setup_factions_castles",
+  ("scene_setup_factions_castles", # server: at mission start, for each faction set whether active, and for each castle set owning faction, whether active, and whether it has training stations
    [
     (assign, ":current_faction", castle_factions_begin),
     (try_for_range, ":current_castle_slot", slot_mission_data_castle_owner_faction_begin, slot_mission_data_castle_owner_faction_end),
@@ -3904,7 +3907,7 @@ scripts.extend([
     (troop_slot_eq, "trp_mission_data", ":castle_no", 1),
     ]),
 
-  ("capture_castle",
+  ("capture_castle", # server: perform capture of the castle by the faction, without checking anything
    [(store_script_param, ":faction_id", 1),
     (store_script_param, ":castle_no", 2),
 
@@ -3921,9 +3924,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_capture_castle",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_capture_castle", # server: after an agent uses a capture point scene prop, capture the castle if checks succeed
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -3933,7 +3936,7 @@ scripts.extend([
     (assign, ":castle_no", reg1),
     (gt, ":castle_no", -1),
     (agent_get_wielded_item, ":wielded_item_id", ":agent_id", 0),
-    (try_begin),
+    (try_begin), # capturing a hostile castle with own faction's banner
       (neq, ":faction_id", ":player_faction_id"),
       (call_script, "script_cf_factions_are_hostile", ":faction_id", ":player_faction_id"),
       (faction_get_slot, ":banner_item_id", ":player_faction_id", slot_faction_banner_mesh),
@@ -3945,7 +3948,7 @@ scripts.extend([
       (store_attribute_level, ":strength", ":troop_id", ca_strength),
       (ge, ":strength", ":difficulty"),
       (assign, ":capture_faction_id", ":player_faction_id"),
-    (else_try),
+    (else_try), # as lord, giving away an owned castle using the other faction's banner
       (eq, ":faction_id", ":player_faction_id"),
       (call_script, "script_cf_player_is_lord", ":player_id"),
       (assign, ":loop_end", factions_end),
@@ -3967,7 +3970,7 @@ scripts.extend([
     (call_script, "script_capture_castle", ":capture_faction_id", ":castle_no"),
     ]),
 
-  ("cf_victory_condition_met",
+  ("cf_victory_condition_met", # server: check if a victory condition for the mission has been met; if so, reg0 = victorious faction id
    [
     (ge, "$g_victory_condition", 1),
     (assign, ":last_owner_faction", -1),
@@ -3987,9 +3990,9 @@ scripts.extend([
     (assign, reg0, ":owner_faction"),
     ]),
 
-  ("redraw_castle_banners",
-   [(store_script_param, ":redraw_type", 1),
-    (store_script_param, ":castle_or_faction", 2),
+  ("redraw_castle_banners", # redraw heraldic banner tableaus using various tricks
+   [(store_script_param, ":redraw_type", 1), # constants starting with redraw_
+    (store_script_param, ":castle_or_faction", 2), # castle number or faction id, depending on redraw_type
 
     (try_begin),
       (this_or_next|eq, ":redraw_type", redraw_all_banners),
@@ -4008,7 +4011,7 @@ scripts.extend([
       (try_begin),
         (eq, ":redraw_type", redraw_faction_banners),
         (faction_get_slot, ":banner_variant", ":castle_or_faction", slot_faction_castle_banner_variant),
-        (val_add, ":banner_variant", 1),
+        (val_add, ":banner_variant", 1), # change to the other banner variant to force the engine to redraw the tableaus with the new texture
         (val_mod, ":banner_variant", 2),
         (faction_set_slot, ":castle_or_faction", slot_faction_castle_banner_variant, ":banner_variant"),
       (try_end),
@@ -4017,11 +4020,11 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("redraw_castle_banner_kind",
-   [(store_script_param, ":redraw_type", 1),
-    (store_script_param, ":castle_or_faction", 2),
-    (store_script_param, ":pole_scene_prop_id", 3),
-    (store_script_param, ":begin_item_id", 4),
+  ("redraw_castle_banner_kind", # redraw heraldic banners of a certain scene prop kind
+   [(store_script_param, ":redraw_type", 1), # constants starting with redraw_
+    (store_script_param, ":castle_or_faction", 2), # castle number or faction id, depending on redraw_type
+    (store_script_param, ":pole_scene_prop_id", 3), # scene prop kind of the banner's pole
+    (store_script_param, ":begin_item_id", 4), # beginning item in the range to use for the banners
 
     (set_fixed_point_multiplier, 100),
     (scene_prop_get_num_instances, ":pole_count", ":pole_scene_prop_id"),
@@ -4051,7 +4054,7 @@ scripts.extend([
       (try_begin),
         (neq, ":redraw_type", redraw_client_banner_positions),
         (scene_prop_get_slot, ":old_banner_instance_id", ":pole_instance_id", slot_scene_prop_linked_scene_prop),
-        (gt, ":old_banner_instance_id", 0),
+        (gt, ":old_banner_instance_id", 0), # remove the old banner item, if any
         (prop_instance_is_valid, ":old_banner_instance_id"),
         (prop_instance_get_scene_prop_kind, ":scene_prop_item_id", ":old_banner_instance_id"),
         (store_add, ":end_item_id", ":begin_item_id", max_castle_count * 2),
@@ -4060,7 +4063,7 @@ scripts.extend([
       (else_try),
         (eq, ":redraw_type", redraw_client_banner_positions),
         (position_get_z, ":pole_z", pos2),
-        (assign, ":continue", 2),
+        (assign, ":continue", 2), # check over all banner items to see if any are at the same location with a different height, a glitch caused by the engine after connecting
         (try_for_range, ":unused", 0, ":continue"),
           (scene_spawned_item_get_num_instances, ":banner_count", ":banner_item_id"),
           (try_for_range, ":banner_no", 0, ":banner_count"),
@@ -4075,7 +4078,7 @@ scripts.extend([
           (val_add, ":banner_item_id", max_castle_count),
         (try_end),
       (try_end),
-      (try_begin),
+      (try_begin), # move capture point banners to the top of the pole
         (eq, ":pole_scene_prop_id", "spr_pw_castle_capture_point"),
         (prop_instance_get_scale, pos3, ":pole_instance_id"),
         (position_get_scale_z, ":banner_height", pos3),
@@ -4086,7 +4089,7 @@ scripts.extend([
       (try_begin),
         (neq, ":redraw_type", redraw_client_banner_positions),
         (set_spawn_position, pos2),
-        (spawn_item, ":banner_item_id", 0, 60 * 60 * 24 * 7 + 1),
+        (spawn_item, ":banner_item_id", 0, 60 * 60 * 24 * 7 + 1), # spawn the new banner item for up to a week
         (scene_prop_set_slot, ":pole_instance_id", slot_scene_prop_linked_scene_prop, reg0),
         (prop_instance_set_position, reg0, pos2),
       (else_try),
@@ -4097,7 +4100,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("setup_castle_names",
+  ("setup_castle_names", # check for linked sign posts to name a castle by, caching the string ids
    [
     (try_for_range, ":name_slot", slot_mission_data_castle_name_string_begin, slot_mission_data_castle_name_string_end),
       (troop_set_slot, "trp_mission_data", ":name_slot", 0),
@@ -4127,8 +4130,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("str_store_castle_name",
-   [(store_script_param, ":output_castle_name", 1),
+  ("str_store_castle_name", # store a castle's name in the passed string register
+   [(store_script_param, ":output_castle_name", 1), # the string register to store in
     (store_script_param, ":castle_no", 2),
 
     (try_begin),
@@ -4142,7 +4145,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("setup_castle_money_chests",
+  ("setup_castle_money_chests", # check for linked money chests for each castle, caching the instance ids
    [
     (try_for_range, ":chest_slot", slot_mission_data_castle_money_chest_begin, slot_mission_data_castle_money_chest_end),
       (troop_set_slot, "trp_mission_data", ":chest_slot", 0),
@@ -4158,10 +4161,10 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("castle_receive_gold",
+  ("castle_receive_gold", # server: send money directly into the castle's linked chest
    [(store_script_param, ":castle_slot", 1),
     (store_script_param, ":gold_value", 2),
-    (store_script_param, ":percentage", 3),
+    (store_script_param, ":percentage", 3), # if greater than -1, applied as a percentage to the value
 
     (try_begin),
       (is_between, ":castle_slot", slot_mission_data_castle_owner_faction_begin, slot_mission_data_castle_owner_faction_end),
@@ -4179,7 +4182,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("faction_set_color_from_banner",
+  ("faction_set_color_from_banner", # gets the background color for a banner and lightens it to set as the faction color
    [(store_script_param, ":faction_id", 1),
     (store_script_param, ":banner_mesh", 2),
 
@@ -4203,7 +4206,7 @@ scripts.extend([
     (faction_set_color, ":faction_id", ":color"),
     ]),
 
-  ("faction_redraw_heraldic_items",
+  ("faction_redraw_heraldic_items", # client: redraw heraldic armor worn by all players in a faction
    [(store_script_param, ":faction_id", 1),
 
     (get_max_players, ":max_players"),
@@ -4214,8 +4217,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("player_redraw_heraldic_items",
-   [(store_script_param, ":player_id", 1),
+  ("player_redraw_heraldic_items", # client: redraw heraldic armor worn by a player
+   [(store_script_param, ":player_id", 1), # must be valid
 
     (player_get_agent_id, ":agent_id", ":player_id"),
     (try_begin),
@@ -4244,7 +4247,7 @@ scripts.extend([
     (neg|faction_slot_ge, ":faction_2_id", ":faction_1_slot", 1),
     ]),
 
-  ("display_faction_relation_change",
+  ("display_faction_relation_change", # server and clients: calculate and display changed faction relations
    [(store_script_param, ":faction_id", 1),
     (store_script_param, ":other_faction_id", 2),
     (store_script_param, ":previous_relation", 3),
@@ -4294,11 +4297,11 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("scene_prop_get_owning_faction",
-   [(store_script_param, ":instance_id", 1),
+  ("scene_prop_get_owning_faction", # get the current owning faction and castle number associated with a scene prop, storing in reg0 and reg1
+   [(store_script_param, ":instance_id", 1), # must be valid
 
     (prop_instance_get_variation_id, ":scene_prop_owner_slot", ":instance_id"),
-    (val_mod, ":scene_prop_owner_slot", 10),
+    (val_mod, ":scene_prop_owner_slot", 10), # stored in the first digit of scene prop value 1, set with the scene editor
     (try_begin),
       (neg|scene_prop_slot_eq, ":instance_id", slot_scene_prop_is_mercenary, 1),
       (ge, ":scene_prop_owner_slot", castle_factions_begin),
@@ -4313,8 +4316,8 @@ scripts.extend([
     (val_clamp, reg0, factions_begin, factions_end),
     ]),
 
-  ("cf_can_change_faction",
-   [(store_script_param, ":player_id", 1),
+  ("cf_can_change_faction", # check that a player can change to the selected faction, storing the error message in reg1 if not
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":faction_id", 2),
 
     (try_begin),
@@ -4342,9 +4345,9 @@ scripts.extend([
     (eq, reg1, 0),
     ]),
 
-  ("cf_faction_set_lord",
-   [(store_script_param, ":player_id", 1),
-    (store_script_param, ":unique_id", 2),
+  ("cf_faction_set_lord", # server: try set a faction's lord, failing if the player id and unique id don't match
+   [(store_script_param, ":player_id", 1), # if valid, checked against unique_id
+    (store_script_param, ":unique_id", 2), # if player_id is not valid, store in a faction slot so they are set lord when reconnected
     (store_script_param, ":faction_id", 3),
 
     (assign, ":fail", 0),
@@ -4364,8 +4367,8 @@ scripts.extend([
     (faction_set_slot, ":faction_id", slot_faction_lord_player_uid, ":unique_id"),
     ]),
 
-  ("player_set_lord",
-   [(store_script_param, ":player_id", 1),
+  ("player_set_lord", # server: set a player as lord of a faction, changing all the appropriate slots
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":faction_id", 2),
 
     (get_max_players, ":max_players"),
@@ -4383,7 +4386,7 @@ scripts.extend([
       (multiplayer_send_3_int_to_player, ":player_id", server_event_player_set_slot, ":other_player_id", slot_player_has_faction_money_key, ":has_money_key"),
       (player_get_slot, ":has_item_key", ":other_player_id", slot_player_has_faction_item_key),
       (multiplayer_send_3_int_to_player, ":player_id", server_event_player_set_slot, ":other_player_id", slot_player_has_faction_item_key, ":has_item_key"),
-      (try_begin),
+      (try_begin), # for the previous lord, remove the announcement permission, but leave all other settings unchanged
         (eq, ":was_lord", 1),
         (assign, ":can_announce", 0),
         (player_set_slot, ":other_player_id", slot_player_can_faction_announce, ":can_announce"),
@@ -4407,7 +4410,7 @@ scripts.extend([
     ]),
 
   ("cf_player_is_lord",
-   [(store_script_param, ":player_id", 1),
+   [(store_script_param, ":player_id", 1), # must be valid
 
     (assign, ":fail", 0),
     (try_begin),
@@ -4425,8 +4428,8 @@ scripts.extend([
     (eq, ":fail", 0),
     ]),
 
-  ("cf_player_can_use_troop",
-   [(store_script_param, ":player_id", 1),
+  ("cf_player_can_use_troop", # check if the player meets restrictions for certain troops
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":troop_id", 2),
 
     (assign, ":fail", 0),
@@ -4449,10 +4452,10 @@ scripts.extend([
     (eq, ":fail", 0),
     ]),
 
-  ("change_faction",
-   [(store_script_param, ":player_id", 1),
+  ("change_faction", # server: change a player's faction
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":faction_id", 2),
-    (store_script_param, ":change_faction_type", 3),
+    (store_script_param, ":change_faction_type", 3), # constants starting with change_faction_type_
 
     (try_begin),
       (neg|player_slot_eq, ":player_id", slot_player_faction_id, ":faction_id"),
@@ -4467,7 +4470,7 @@ scripts.extend([
           (multiplayer_send_4_int_to_player, ":other_player_id", server_event_player_set_slot, ":player_id", slot_player_faction_id, ":faction_id", ":change_faction_type"),
         (try_end),
       (try_end),
-      (player_set_slot, ":player_id", slot_player_is_lord, 0),
+      (player_set_slot, ":player_id", slot_player_is_lord, 0), # reset all faction permissions
       (player_get_unique_id, ":unique_id", ":player_id"),
       (try_begin),
         (faction_slot_eq, ":faction_id", slot_faction_lord_player_uid, ":unique_id"),
@@ -4488,21 +4491,20 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_change_faction",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":change_faction_type", 3),
+  ("cf_change_faction", # server: check if a player can join the faction associated with a scene prop, joining if so
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
+    (store_script_param, ":change_faction_type", 3), # constants starting with change_faction_type_
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
     (agent_is_alive, ":agent_id"),
-
     (assign, ":fail", 0),
     (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
     (assign, ":faction_id", reg0),
-    (try_begin),
+    (try_begin), # either a non castle faction or linked to a castle - not a 'mercenary' station to allow resurrecting a faction
       (neg|scene_prop_slot_eq, ":instance_id", slot_scene_prop_is_mercenary, 1),
-    (else_try),
+    (else_try), # otherwise, check to ensure the faction owns no castles (where the player should train at instead)
       (assign, ":loop_end", slot_mission_data_castle_owner_faction_end),
       (try_for_range, ":castle_no", slot_mission_data_castle_owner_faction_begin, ":loop_end"),
         (troop_slot_eq, "trp_mission_data", ":castle_no", ":faction_id"),
@@ -4526,8 +4528,8 @@ scripts.extend([
     (eq, ":fail", 0),
     ]),
 
-  ("player_set_worse_respawn_troop",
-   [(store_script_param, ":player_id", 1),
+  ("player_set_worse_respawn_troop", # server: crude check to try pick whether the players current troop or the target has worse stats
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":troop_id", 2),
 
     (try_begin),
@@ -4544,9 +4546,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_change_faction_worse_respawn_troop",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_change_faction_worse_respawn_troop", # server: try prevent players getting a 'better' troop after dying when clicking use at certain training stations to join instantly for free
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (call_script, "script_cf_change_faction", ":agent_id", ":instance_id", change_faction_type_no_respawn),
     (agent_get_player_id, ":player_id", ":agent_id"),
@@ -4554,10 +4556,10 @@ scripts.extend([
     (call_script, "script_player_set_worse_respawn_troop", ":player_id", ":troop_id"),
     ]),
 
-  ("cf_change_troop",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":cancel", 3),
+  ("cf_change_troop", # server: try change a player's troop and / or faction
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
+    (store_script_param, ":cancel", 3), # 0 = fully train as the troop, 1 = quickly start and cancel the training to just change faction, if already the same troop
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -4603,7 +4605,7 @@ scripts.extend([
     (eq, ":fail", 0),
     ]),
 
-  ("cf_check_troop_can_equip_item",
+  ("cf_check_troop_can_equip_item", # check the item has no hard requirements that prevent the troop or player from equipping it
    [(store_script_param, ":troop_id", 1),
     (store_script_param, ":item_id", 2),
     (store_script_param, ":player_id", 3),
@@ -4613,7 +4615,7 @@ scripts.extend([
       (player_is_active, ":player_id"),
       (player_get_gender, ":player_gender", ":player_id"),
       (item_get_slot, ":item_gender", ":item_id", slot_item_gender),
-      (neq, ":item_gender", 0),
+      (neq, ":item_gender", 0), # male gendered items can be equipped by anyone
       (neq, ":player_gender", ":item_gender"),
       (assign, ":fail", 1),
     (else_try),
@@ -4626,7 +4628,7 @@ scripts.extend([
     (eq, ":fail", 0),
     ]),
 
-  ("cf_change_armor",
+  ("cf_change_armor", # server: check whether the player can equip the armor item, changing if so
    [(store_script_param, ":agent_id", 1),
     (store_script_param, ":item_id", 2),
 
@@ -4654,9 +4656,9 @@ scripts.extend([
     (try_end),
     (eq, ":fail", 0),
     (call_script, "script_change_armor", ":agent_id", ":item_id"),
-    ]), 
+    ]),  
 
-  ("change_armor",
+  ("change_armor", # server: equip an armor item on an agent, sending messages to all clients to update the mesh
    [(store_script_param, ":agent_id", 1),
     (store_script_param, ":item_id", 2),
 
@@ -4668,8 +4670,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("agent_equip_armor",
-   [(store_script_param, ":agent_id", 1),
+  ("agent_equip_armor", # clients and server: equip or unequip an armor item on an agent, the server for combat calculations and the clients for the visual appearance
+   [(store_script_param, ":agent_id", 1), # must be valid
     (store_script_param, ":item_id", 2),
 
     (call_script, "script_agent_calculate_stat_modifiers_for_item", ":agent_id", ":item_id", 1, 1),
@@ -4686,7 +4688,7 @@ scripts.extend([
     (try_end),
     (try_begin),
       (neg|multiplayer_is_server),
-      (try_begin),
+      (try_begin), # for admin armor disable agent visibility as well, to remove shadows
         (is_between, ":item_id", "itm_invisible_head", "itm_invisible_sword"),
         (agent_has_item_equipped, ":agent_id", "itm_invisible_head"),
         (agent_has_item_equipped, ":agent_id", "itm_invisible_body"),
@@ -4699,8 +4701,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("agent_remove_empty_ammo_stacks",
-   [(store_script_param, ":agent_id", 1),
+  ("agent_remove_empty_ammo_stacks", # server: remove empty ammo stacks to free up slots for buying items and inventory transfers
+   [(store_script_param, ":agent_id", 1), # must be valid
 
     (try_for_range, ":equip_slot", ek_item_0, ek_item_3 + 1),
       (agent_get_item_slot, ":item_id", ":agent_id", ":equip_slot"),
@@ -4716,9 +4718,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_buy_item",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_buy_item", # server: handle players trying to buy an item from a stockpile
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -4743,7 +4745,7 @@ scripts.extend([
       (store_mission_timer_a, ":time"),
       (player_get_slot, ":last_action_time", ":player_id", slot_player_last_action_time),
       (store_sub, ":interval", ":time", ":last_action_time"),
-      (try_begin),
+      (try_begin), # prevent players from quickly and repeatedly buying horses to try overload the server
         (ge, ":interval", repeat_action_min_interval),
         (try_begin),
           (neg|item_slot_eq, ":item_id", slot_item_animal_adult_item_id, 0),
@@ -4770,9 +4772,9 @@ scripts.extend([
     (call_script, "script_castle_receive_gold", reg1, ":gold_value", castle_tax_gold_percentage),
     ]),
 
-  ("cf_sell_item",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_sell_item", # server: handle players trying to sell an item to a stockpile
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -4782,7 +4784,7 @@ scripts.extend([
     (item_get_type, ":item_type", ":item_id"),
     (try_begin),
       (is_between, ":item_type", itp_type_head_armor, itp_type_hand_armor + 1),
-      (try_begin),
+      (try_begin), # use a dummy "no_" item id when removing armor
         (agent_has_item_equipped, ":agent_id", ":item_id"),
         (store_sub, ":no_item_id", ":item_type", itp_type_head_armor),
         (val_add, ":no_item_id", "itm_no_head"),
@@ -4802,9 +4804,9 @@ scripts.extend([
     (call_script, "script_player_adjust_gold", ":player_id", reg0, 1),
     ]),
 
-  ("cf_sell_horse",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_sell_horse", # server: handle players trying to sell a horse to a stockpile; if failed, reg0 = 1 if an error message was displayed, 0 otherwise
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (assign, reg0, 0),
     (agent_get_player_id, ":player_id", ":agent_id"),
@@ -4823,7 +4825,7 @@ scripts.extend([
     (agent_slot_eq, ":horse_agent_id", slot_agent_horse_last_rider, ":agent_id"),
     (agent_get_rider, ":rider_agent_id", ":horse_agent_id"),
     (assign, ":error_string_id", "str_dismount_to_sell"),
-    (try_begin),
+    (try_begin), # only allow selling horses that were last ridden by the player, are not badly wounded, and are close enough to the stockpile
       (neq, ":rider_agent_id", ":agent_id"),
       (assign, ":error_string_id", -1),
       (eq, ":rider_agent_id", -1),
@@ -4856,9 +4858,9 @@ scripts.extend([
     (call_script, "script_player_adjust_gold", ":player_id", ":gold_value", 1),
     ]),
 
-  ("cf_export_item",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_export_item", # server: handle players exporting an item out of the game world
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -4873,9 +4875,9 @@ scripts.extend([
     (call_script, "script_castle_receive_gold", reg1, ":gold_value", ":tax_multiplier"),
     ]),
 
-  ("cf_gain_gold",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_gain_gold", # server: give a player gold based on a scene prop's preset value
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -4883,9 +4885,9 @@ scripts.extend([
     (call_script, "script_player_adjust_gold", ":player_id", ":gold_value", 1),
     ]),
 
-  ("cf_read_book",
+  ("cf_read_book", # cause a book to show in a presentation window
    [(store_script_param, ":book_string_id", 1),
-    (store_script_param, ":agent_id", 2),
+    (store_script_param, ":agent_id", 2), # if valid, show on this player's client
 
     (try_begin),
       (multiplayer_is_server),
@@ -4897,9 +4899,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_buy_banner",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_buy_banner", # server: handle players trying to buy a faction banner
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -4929,8 +4931,8 @@ scripts.extend([
     (spawn_item, ":item_id", 0, "$g_spawn_item_prune_time"),
     ]),
 
-  ("cf_use_destroy_heap",
-   [(store_script_param, ":agent_id", 1),
+  ("cf_use_destroy_heap", # server: allow players to permanently destroy wielded items or the contents of an attached cart
+   [(store_script_param, ":agent_id", 1), # must be valid
 
     (assign, ":fail", 1),
     (agent_get_horse, ":attach_agent_id", ":agent_id"),
@@ -4978,7 +4980,7 @@ scripts.extend([
     (eq, ":fail", 0),
     ]),
 
-  ("remove_scene_prop",
+  ("remove_scene_prop", # server: move an unused scene prop to where it is unlikely to be visible
    [(store_script_param, ":instance_id", 1),
 
     (set_fixed_point_multiplier, 100),
@@ -4990,8 +4992,8 @@ scripts.extend([
     (prop_instance_enable_physics, ":instance_id", 0),
     ]),
 
-  ("reuse_or_spawn_scene_prop",
-   [(store_script_param, ":scene_prop_id", 1),
+  ("reuse_or_spawn_scene_prop", # server: search for unused scene props to reuse, otherwise spawn a new instance; reg0 = the instance id; the position should be set afterwards
+   [(store_script_param, ":scene_prop_id", 1), # the desired scene prop kind
 
     (scene_prop_get_num_instances, ":instance_num", ":scene_prop_id"),
     (try_for_range, ":instance_no", 0, ":instance_num"),
@@ -5009,7 +5011,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_can_use_scene_prop",
+  ("cf_can_use_scene_prop", # check whether a prop instance id is the correct scene prop kind and is in range of the agent
    [(store_script_param, ":player_id", 1),
     (store_script_param, ":instance_id", 2),
     (store_script_param, ":required_scene_prop_id", 3),
@@ -5026,9 +5028,9 @@ scripts.extend([
     (le, ":sq_distance", sq(max_distance_to_use)),
     ]),
 
-  ("cf_find_closest_scene_prop",
-   [(store_script_param, ":scene_prop_id", 1),
-    (store_script_param, ":maximum_sq_distance", 2),
+  ("cf_find_closest_scene_prop", # try to find the closest scene prop to pos1 of a specific kind; overwrites pos0; and if found, reg0 = instance id
+   [(store_script_param, ":scene_prop_id", 1), # the desired scene prop kind
+    (store_script_param, ":maximum_sq_distance", 2), # this is the maximum distance to check squared, so use the sq() function for passing preset values
 
     (scene_prop_get_num_instances, ":count", ":scene_prop_id"),
     (gt, ":count", 0),
@@ -5044,10 +5046,10 @@ scripts.extend([
     (lt, ":closest_sq_distance", ":maximum_sq_distance"),
     ]),
 
-  ("cf_use_castle_money_chest",
-   [(store_script_param, ":player_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":gold_value", 3),
+  ("cf_use_castle_money_chest", # server and clients: handle depositing to and withdrawing from a money chest. the client version just does the checks, the server version also applies changes
+   [(store_script_param, ":player_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
+    (store_script_param, ":gold_value", 3), # positive values to deposit, negative to withdraw
 
     (assign, ":fail_message", -1),
     (try_begin),
@@ -5115,8 +5117,8 @@ scripts.extend([
     (eq, ":fail_message", 0),
     ]),
 
-  ("cf_drop_money_bag_item",
-   [(store_script_param, ":player_id", 1),
+  ("cf_drop_money_bag_item", # server: handle players dropping money bags
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":gold_amount", 2),
 
     (player_get_agent_id, ":agent_id", ":player_id"),
@@ -5136,8 +5138,8 @@ scripts.extend([
     (scene_prop_set_slot, reg0, slot_scene_prop_gold_value, ":gold_amount"),
     ]),
 
-  ("cf_pop_agent_money_bag_value",
-   [(store_script_param, ":agent_id", 1),
+  ("cf_pop_agent_money_bag_value", # remove the last added money bag amount from the agent's slots
+   [(store_script_param, ":agent_id", 1), # must be valid
 
     (assign, ":last_value", 0),
     (try_for_range_backwards, ":value_slot", slot_agent_money_bag_1_value, slot_agent_money_bag_4_value + 1),
@@ -5149,8 +5151,8 @@ scripts.extend([
     (gt, ":last_value", 0),
     ]),
 
-  ("cf_use_money_bag_item",
-   [(store_script_param, ":agent_id", 1),
+  ("cf_use_money_bag_item", # server: handle players retrieving the contents of equipped money bags
+   [(store_script_param, ":agent_id", 1), # must be valid
 
     (call_script, "script_cf_agent_consume_item", ":agent_id", "itm_money_bag", 1),
     (call_script, "script_cf_pop_agent_money_bag_value", ":agent_id"),
@@ -5160,13 +5162,13 @@ scripts.extend([
     (call_script, "script_player_adjust_gold", ":player_id", ":gold_value", 1),
     ]),
 
-  ("check_on_item_picked_up",
-   [(store_script_param, ":agent_id", 1),
+  ("check_on_item_picked_up", # server: extra checks when an agent picks up an item
+   [(store_script_param, ":agent_id", 1), # must be valid
     (store_script_param, ":item_id", 2),
-    (store_script_param, ":instance_id", 3),
+    (store_script_param, ":instance_id", 3), # must be the item instance's id
 
     (try_begin),
-      (eq, ":item_id", "itm_money_bag"),
+      (eq, ":item_id", "itm_money_bag"), # since the item instance will be removed immediately aftewards, transfer the contents to an agent slot
       (scene_prop_get_slot, ":value", ":instance_id", slot_scene_prop_gold_value),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_value, 0),
       (try_for_range, ":value_slot", slot_agent_money_bag_1_value, slot_agent_money_bag_4_value + 1),
@@ -5182,31 +5184,31 @@ scripts.extend([
       (neg|player_is_admin, ":player_id"),
       (agent_unequip_item, ":agent_id", ":item_id"),
     (try_end),
-    ]),
+    ]), 
 
-  ("check_on_item_dropped",
-   [(store_script_param, ":agent_id", 1),
+  ("check_on_item_dropped", # server: extra checks when an agent drops an item
+   [(store_script_param, ":agent_id", 1), # must be valid
     (store_script_param, ":item_id", 2),
-    (store_script_param, ":instance_id", 3),
-    (store_script_param, ":agent_died", 4),
+    (store_script_param, ":instance_id", 3), # must be the dropped item instance's id
+    (store_script_param, ":agent_died", 4), # set to 1 for dropping when the agent dies
 
     (set_fixed_point_multiplier, 100),
-    (try_begin),
+    (try_begin), # only check for items over a certain id, near the end of the list
       (le, ":item_id", "itm_lock_pick"),
     (else_try),
       (eq, ":item_id", "itm_money_bag"),
       (try_begin),
-        (call_script, "script_cf_pop_agent_money_bag_value", ":agent_id"),
+        (call_script, "script_cf_pop_agent_money_bag_value", ":agent_id"), # transfer from the agent slot into the new dropped item instance
         (scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_value, reg0),
       (try_end),
     (else_try),
       (is_between, ":item_id", "itm_pw_banner_pole_a01", "itm_pw_banner_castle_fac_1a"),
-      (neq, ":agent_died", 1),
+      (neq, ":agent_died", 1), # if not dropped because the agent died, plant the flag pole upright
       (prop_instance_get_position, pos1, ":instance_id"),
       (position_rotate_x, pos1, 90),
       (prop_instance_set_position, ":instance_id", pos1),
       (assign, ":flag_prune_time", "$g_spawn_item_prune_time"),
-      (val_max, ":flag_prune_time", 3600),
+      (val_max, ":flag_prune_time", 3600), # prevent it disappearing for at least an hour
       (scene_prop_set_prune_time, ":instance_id", ":flag_prune_time"),
     (else_try),
       (eq, ":item_id", "itm_fishing_net"),
@@ -5263,7 +5265,7 @@ scripts.extend([
         (position_rotate_x, pos1, 180),
       (try_end),
       (prop_instance_set_position, ":instance_id", pos1),
-    (else_try),
+    (else_try), # remove admin items dropped on the ground
       (this_or_next|eq, ":item_id", "itm_invisible_sword"),
       (this_or_next|eq, ":item_id", "itm_admin_lock_pick"),
       (eq, ":item_id", "itm_admin_scalpel"),
@@ -5274,16 +5276,16 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("agent_calculate_stat_modifiers_for_item",
-   [(store_script_param, ":agent_id", 1),
+  ("agent_calculate_stat_modifiers_for_item", # clients: return the modifiers in reg10 - reg14; server: apply the modifiers if that parameter is set
+   [(store_script_param, ":agent_id", 1), # must be valid
     (store_script_param, ":item_id", 2),
-    (store_script_param, ":equipped", 3),
-    (store_script_param, ":apply", 4),
+    (store_script_param, ":equipped", 3), # 1 = the item was equipped and wielded so add modifiers, 0 = the item was unwielded, so remove modifiers
+    (store_script_param, ":apply", 4), # server only: 1 = apply the modifiers to the agent rather than returning them
 
     (try_begin),
       (multiplayer_is_server),
       (eq, ":equipped", 1),
-      (eq, ":apply", 1),
+      (eq, ":apply", 1), # if the item is the same as the last calcuated for this agent, skip the redundant calculations
       (agent_slot_eq, ":agent_id", slot_agent_last_apply_factors_item_id, ":item_id"),
     (else_try),
       (assign, ":handled", 1),
@@ -5292,7 +5294,7 @@ scripts.extend([
       (item_get_type, ":item_type", ":item_id"),
       (try_begin),
         (is_between, ":item_type", itp_type_head_armor, itp_type_hand_armor + 1),
-        (try_begin),
+        (try_begin), # if the armor has restrictions, calculate the modifier factors
           (gt, ":difficulty", 0),
           (eq, ":equipped", 1),
           (agent_get_troop_id, ":troop_id", ":agent_id"),
@@ -5333,7 +5335,7 @@ scripts.extend([
         (assign, ":item_reload_factor", ":reload_factor"),
         (assign, ":slot", slot_agent_head_damage_factor),
         (try_for_range, ":current_type", itp_type_head_armor, itp_type_hand_armor + 1),
-          (try_begin),
+          (try_begin), # add cached factors for armor equipped in other slots
             (neq, ":current_type", ":item_type"),
             (agent_get_slot, ":existing_damage_factor", ":agent_id", ":slot"),
             (val_add, ":damage_factor", ":existing_damage_factor"),
@@ -5347,7 +5349,7 @@ scripts.extend([
             (agent_get_slot, ":existing_reload_factor", ":agent_id", ":slot"),
             (val_add, ":reload_factor", ":existing_reload_factor"),
             (val_add, ":slot", 1),
-          (else_try),
+          (else_try), # if applying, cache the factors for the current armor item's slot
             (eq, ":apply", 1),
             (agent_set_slot, ":agent_id", ":slot", ":item_damage_factor"),
             (val_add, ":slot", 1),
@@ -5357,12 +5359,12 @@ scripts.extend([
             (val_add, ":slot", 1),
             (agent_set_slot, ":agent_id", ":slot", ":item_reload_factor"),
             (val_add, ":slot", 1),
-          (else_try),
+          (else_try), # otherwise skip the slots for the current armor item
             (val_add, ":slot", 4),
           (try_end),
         (try_end),
         (try_begin),
-          (eq, ":apply", 1),
+          (eq, ":apply", 1), # if applying, cache the total armor factors
           (agent_set_slot, ":agent_id", slot_agent_armor_damage_factor, ":damage_factor"),
           (agent_set_slot, ":agent_id", slot_agent_armor_speed_factor, ":speed_factor"),
           (agent_set_slot, ":agent_id", slot_agent_armor_accuracy_factor, ":accuracy_factor"),
@@ -5370,7 +5372,7 @@ scripts.extend([
           (assign, ":damage_through", ":speed_factor"),
           (val_min, ":damage_through", 100),
           (agent_set_slot, ":agent_id", slot_agent_armor_damage_through, ":damage_through"),
-        (try_end),
+        (try_end), # add existing weapon factors
         (agent_get_slot, ":weapon_damage_factor", ":agent_id", slot_agent_weapon_damage_factor),
         (val_add, ":damage_factor", ":weapon_damage_factor"),
         (agent_get_slot, ":weapon_speed_factor", ":agent_id", slot_agent_weapon_speed_factor),
@@ -5383,7 +5385,7 @@ scripts.extend([
         (try_begin),
           (assign, ":damage_factor", 0),
           (assign, ":speed_factor", 0),
-          (try_begin),
+          (try_begin), # for crossbows, apply extra accuracy and reload factors based on proficiency
             (eq, ":item_type", itp_type_crossbow),
             (eq, ":equipped", 1),
             (agent_get_troop_id, ":troop_id", ":agent_id"),
@@ -5444,21 +5446,21 @@ scripts.extend([
               (assign, ":cannot_attack", 1),
             (try_end),
           (else_try),
-            (assign, ":handled", 0),
+            (assign, ":handled", 0), # an unhandled item type
           (try_end),
         (else_try),
           (neg|is_between, ":item_type", itp_type_one_handed_wpn, itp_type_polearm + 1),
           (neg|is_between, ":item_type", itp_type_bow, itp_type_thrown + 1),
-          (assign, ":handled", 0),
+          (assign, ":handled", 0), # an unhandled item type
         (try_end),
         (eq, ":handled", 1),
         (try_begin),
-          (eq, ":apply", 1),
+          (eq, ":apply", 1), # if applying, cache the weapon factors
           (agent_set_slot, ":agent_id", slot_agent_weapon_damage_factor, ":damage_factor"),
           (agent_set_slot, ":agent_id", slot_agent_weapon_speed_factor, ":speed_factor"),
           (agent_set_slot, ":agent_id", slot_agent_weapon_accuracy_factor, ":accuracy_factor"),
           (agent_set_slot, ":agent_id", slot_agent_weapon_reload_factor, ":reload_factor"),
-        (try_end),
+        (try_end), # add existing armor factors
         (agent_get_slot, ":armor_damage_factor", ":agent_id", slot_agent_armor_damage_factor),
         (val_add, ":damage_factor", ":armor_damage_factor"),
         (agent_get_slot, ":armor_speed_factor", ":agent_id", slot_agent_armor_speed_factor),
@@ -5472,7 +5474,7 @@ scripts.extend([
       (assign, ":speed_modifier", 100),
       (assign, ":accuracy_modifier", 100),
       (assign, ":reload_modifier", 100),
-      (try_begin),
+      (try_begin), # convert the total factors (additive) into modifiers (subtracting from 100)
         (eq, ":handled", 1),
         (try_begin),
           (gt, ":damage_factor", 0),
@@ -5494,7 +5496,7 @@ scripts.extend([
           (store_sub, ":reload_modifier", reduction_factor_base, ":reload_factor"),
           (val_max, ":reload_modifier", 0),
         (try_end),
-        (try_begin),
+        (try_begin), # get the agent's wielded item type if the one being checked is not a weapon
           (neg|is_between, ":item_type", itp_type_head_armor, itp_type_hand_armor + 1),
           (assign, ":wielded_item_type", ":item_type"),
         (else_try),
@@ -5504,7 +5506,7 @@ scripts.extend([
         (else_try),
           (assign, ":wielded_item_type", -1),
         (try_end),
-        (try_begin),
+        (try_begin), # prevent attacking if relevant modifiers are zero
           (neq, ":cannot_attack", 1),
           (neq, ":speed_modifier", 0),
           (neq, ":damage_modifier", 0),
@@ -5518,13 +5520,13 @@ scripts.extend([
         (try_end),
         (eq, ":apply", 1),
         (agent_set_slot, ":agent_id", slot_agent_cannot_attack, ":cannot_attack"),
-        (try_begin),
+        (try_begin), # only apply modifiers on the server: it seems to cause memory leaks on clients
           (multiplayer_is_server),
           (agent_set_damage_modifier, ":agent_id", ":damage_modifier"),
           (agent_set_speed_modifier, ":agent_id", ":speed_modifier"),
           (agent_set_accuracy_modifier, ":agent_id", ":accuracy_modifier"),
           (agent_set_reload_speed_modifier, ":agent_id", ":reload_modifier"),
-          (try_begin),
+          (try_begin), # remember the item id to avoid duplicate calculation if the script is called twice, by hard coded triggers or whatever
             (eq, ":equipped", 1),
             (agent_set_slot, ":agent_id", slot_agent_last_apply_factors_item_id, ":item_id"),
           (else_try),
@@ -5542,15 +5544,15 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("scene_prop_adjust_hit",
-   [(store_script_param, ":instance_id", 1),
+  ("scene_prop_adjust_hit", # server: adjust hit damage by an agent on a resource scene prop for tools, skill, and more; reg0 = agent id
+   [(store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
-    (store_script_param, ":hardness", 3),
-    (store_script_param, ":tool_class", 4),
+    (store_script_param, ":hardness", 3), # divides the damage dealt by this number
+    (store_script_param, ":tool_class", 4), # constants starting with item_class_
     (store_script_param, ":skill_id", 5),
-    (store_script_param, ":attack_direction_range", 6),
+    (store_script_param, ":attack_direction_range", 6), # second digit = direction from agent_get_action_dir, first digit = subsequent directions to include
     (set_fixed_point_multiplier, 1),
-    (position_get_x, ":agent_id", pos2),
+    (position_get_x, ":agent_id", pos2), # expects agent id in pos2.x from ti_on_scene_prop_hit
     (set_fixed_point_multiplier, 100),
 
     (try_begin),
@@ -5568,7 +5570,7 @@ scripts.extend([
       (val_mul, ":hit_damage", 100),
     (try_end),
     (try_begin),
-      (ge, ":hit_damage", 100),
+      (ge, ":hit_damage", 100), # will be divided by 100 later, so checking if the damage can be greater than 0
       (try_begin),
         (gt, ":attack_direction_range", -1),
         (store_div, ":attack_direction_end", ":attack_direction_range", 10),
@@ -5605,8 +5607,8 @@ scripts.extend([
     (assign, reg0, ":agent_id"),
     ]),
 
-  ("scene_prop_damage_no_destroy",
-   [(store_script_param, ":instance_id", 1),
+  ("scene_prop_damage_no_destroy", # server: adjust damage to a scene prop so it is never destroyed; reg1 = adjusted damage, reg2 = adjusted hit points
+   [(store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
 
     (scene_prop_get_hit_points, ":hit_points", ":instance_id"),
@@ -5622,15 +5624,15 @@ scripts.extend([
     (assign, reg2, ":hit_points"),
     ]),
 
-  ("cf_check_drop_resource",
-   [(store_script_param, ":instance_id", 1),
-    (store_script_param, ":hit_points", 2),
-    (store_script_param, ":hit_points_for_resource", 3),
-    (store_script_param, ":random_adjustment", 4),
+  ("cf_check_drop_resource", # server: check if scene prop hit points have decreased enough to drop resources; storing the number to drop in reg0
+   [(store_script_param, ":instance_id", 1), # must be valid
+    (store_script_param, ":hit_points", 2), # current hit points
+    (store_script_param, ":hit_points_for_resource", 3), # hit damage required per resource dropped
+    (store_script_param, ":random_adjustment", 4), # maximum random adjustment to the above value
 
     (scene_prop_get_slot, ":next_resource_hp", ":instance_id", slot_scene_prop_next_resource_hp),
     (assign, reg0, 0),
-    (assign, ":loop_condition", 10),
+    (assign, ":loop_condition", 10), # only check for a maximum of 10 iterations, to prevent long or infinite loops
     (try_for_range, ":unused", 0, ":loop_condition"),
       (try_begin),
         (ge, ":next_resource_hp", ":hit_points"),
@@ -5649,14 +5651,14 @@ scripts.extend([
     (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, ":next_resource_hp"),
     ]),
 
-  ("cf_hit_tree",
+  ("cf_hit_tree", # server: handle agents damaging a tree, should be called from ti_on_scene_prop_hit; reg0 = agent id, reg1 = hit damage, reg2 = hit points
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
-    (store_script_param, ":fell_tree_hit_points", 3),
+    (store_script_param, ":fell_tree_hit_points", 3), # hit points when the tree should be rotated to lie along the ground and produce blocks rather than branches
     (store_script_param, ":hit_points_for_resource", 4),
     (store_script_param, ":hardness", 5),
-    (store_script_param, ":resource_imod", 6),
+    (store_script_param, ":resource_imod", 6), # item mesh variation to match the visual appearance
     (store_script_param, ":regrow_interval", 7),
 
     (scene_prop_get_slot, ":state", ":instance_id", slot_scene_prop_state),
@@ -5681,7 +5683,7 @@ scripts.extend([
           (eq, ":state", scene_prop_state_active),
           (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_destroyed),
           (prop_instance_get_starting_position, pos2, ":instance_id"),
-          (copy_position, pos3, pos2),
+          (copy_position, pos3, pos2), # calculate the best angle to match the terrain by measuring at multiple distances along the felled length
           (assign, ":trunk_angle", 90),
           (try_for_range, ":count", 1, 4),
             (position_move_x, pos3, 500),
@@ -5717,7 +5719,7 @@ scripts.extend([
         (try_end),
         (assign, ":break_effect", 1),
       (try_end),
-    (else_try),
+    (else_try), # don't allow damaging destroyed and hidden trees, for whatever reason
       (assign, ":hit_damage", 0),
       (set_trigger_result, 0),
       (set_fixed_point_multiplier, 1),
@@ -5737,10 +5739,10 @@ scripts.extend([
     (else_try),
       (call_script, "script_hit_scene_prop_play_sound", ":agent_id", ":instance_id", "snd_cut_wood_scratch"),
     (try_end),
-    ]),
+    ]), 
 
-  ("add_resource_to_regrow_list",
-   [(store_script_param, ":instance_id", 1),
+  ("add_resource_to_regrow_list", # server: add a scene prop instance id to a list for calling a specified script after the regrowing time interval
+   [(store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":regrow_interval", 2),
 
     (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_hidden),
@@ -5765,8 +5767,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("regrow_resource",
-   [(store_script_param, ":instance_id", 1),
+  ("regrow_resource", # server: generic regrowing script called if a custom one is not set
+   [(store_script_param, ":instance_id", 1), # must be valid
 
     (set_fixed_point_multiplier, 100),
     (prop_instance_get_starting_position, pos1, ":instance_id"),
@@ -5778,9 +5780,9 @@ scripts.extend([
     (prop_instance_enable_physics, ":instance_id", 1),
     ]),
 
-  ("cf_resource_animation_finished",
+  ("cf_resource_animation_finished", # server: called when an animation for a regrowing resource scene prop is finished, to change the state
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_points_for_resource", 2),
 
     (scene_prop_get_slot, ":state", ":instance_id", slot_scene_prop_state),
@@ -5797,8 +5799,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("initialize_resource_hit_points",
-   [(store_script_param, ":instance_id", 1),
+  ("initialize_resource_hit_points", # adjust the hit points for certain resource scene props using scene editor values
+   [(store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_points_for_resource", 2),
 
     (prop_instance_get_variation_id, ":start_hit_points", ":instance_id"),
@@ -5813,20 +5815,20 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_hit_regrowing_resource",
+  ("cf_hit_regrowing_resource", # server: generic script for hitting a resource scene prop, should be called from ti_on_scene_prop_hit; reg0 = agent id, reg1 = hit damage, reg2 = hit points
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
     (store_script_param, ":hit_points_for_resource", 3),
     (store_script_param, ":resource_item_id", 4),
     (store_script_param, ":hardness", 5),
-    (store_script_param, ":tool_class", 6),
+    (store_script_param, ":tool_class", 6), # constants starting with item_class_
     (store_script_param, ":skill_id", 7),
-    (store_script_param, ":attack_direction_range", 8),
-    (store_script_param, ":spawn_on_ground", 9),
+    (store_script_param, ":attack_direction_range", 8), # second digit = direction from agent_get_action_dir, first digit = subsequent directions to include
+    (store_script_param, ":spawn_on_ground", 9), # 0 = spawn resources at the hit position, 1 = spawn at a random nearby position on the ground
     (store_script_param, ":regrow_interval", 10),
-    (store_script_param, ":effect_script_id", 11),
-    (store_script_param, ":random_hit_points_adjustment", 12),
+    (store_script_param, ":effect_script_id", 11), # if greater than -1, called as a script to play visual or sound effects
+    (store_script_param, ":random_hit_points_adjustment", 12), # maximum random adjustment to hit_points_for_resource
 
     (scene_prop_get_slot, ":state", ":instance_id", slot_scene_prop_state),
     (try_begin),
@@ -5903,7 +5905,7 @@ scripts.extend([
     (call_script, "script_hit_scene_prop_play_sound", ":agent_id", ":instance_id", "snd_cut_wood_scratch"),
     ]),
 
-  ("cf_hit_damage_resource",
+  ("cf_hit_damage_resource", # server: handle damage to a resource that is not supposed to be hit
    [(multiplayer_is_server),
     (store_script_param, ":instance_id", 1),
     (store_script_param, ":hit_damage", 2),
@@ -5921,13 +5923,13 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_use_resource",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_use_resource", # server: handle resource scene props that are gathered by using
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
     (store_script_param, ":resource_item_id", 3),
     (store_script_param, ":resource_hit_points", 4),
     (store_script_param, ":regrow_interval", 5),
-    (store_script_param, ":sound_id", 6),
+    (store_script_param, ":sound_id", 6), # sound to play when a resource item is spawned
 
     (agent_get_troop_id, ":troop_id", ":agent_id"),
     (store_skill_level, ":labouring", "skl_labouring", ":troop_id"),
@@ -5963,10 +5965,10 @@ scripts.extend([
     (scene_prop_set_hit_points, ":instance_id", ":resulting_hit_points"),
     ]),
 
-  ("cf_setup_field",
+  ("cf_setup_field", # server: set up linked plants scene prop for a field grown resource
    [(multiplayer_is_server),
     (neq, "$g_edit_scene", 1),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":plant_scene_prop_id", 2),
 
     (set_fixed_point_multiplier, 100),
@@ -5984,24 +5986,24 @@ scripts.extend([
     (scene_prop_set_hit_points, ":instance_id", min_scene_prop_hit_points),
     ]),
 
-  ("cf_hit_field",
+  ("cf_hit_field", # server: handle planting,  watering, harvesting, and spoiling a field resource; should be called from ti_on_scene_prop_hit
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
     (store_script_param, ":hit_points_for_resource", 3),
     (store_script_param, ":resource_item_id", 4),
     (store_script_param, ":plant_item_id", 5),
-    (store_script_param, ":tool_class", 6),
+    (store_script_param, ":tool_class", 6), # constants starting with item_class_
     (store_script_param, ":regrow_interval", 7),
     (set_fixed_point_multiplier, 1),
-    (position_get_x, ":agent_id", pos2),
+    (position_get_x, ":agent_id", pos2), # expects agent id in pos2.x from ti_on_scene_prop_hit
     (set_fixed_point_multiplier, 100),
 
     (scene_prop_get_slot, ":state", ":instance_id", slot_scene_prop_state),
     (agent_get_troop_id, ":troop_id", ":agent_id"),
     (store_skill_level, ":skill", "skl_labouring", ":troop_id"),
     (agent_get_wielded_item, ":wielded_item_id", ":agent_id", 0),
-    (try_begin),
+    (try_begin), # planting seeds
       (eq, ":wielded_item_id", ":plant_item_id"),
       (set_trigger_result, 0),
       (gt, ":skill", 0),
@@ -6026,7 +6028,7 @@ scripts.extend([
         (val_add, ":seeds", 1),
         (scene_prop_set_slot, ":instance_id", slot_scene_prop_seeds, ":seeds"),
       (try_end),
-    (else_try),
+    (else_try), # watering
       (eq, ":wielded_item_id", "itm_water_bucket"),
       (set_trigger_result, 0),
       (call_script, "script_cf_agent_consume_item", ":agent_id", "itm_water_bucket", 1),
@@ -6035,11 +6037,11 @@ scripts.extend([
       (scene_prop_get_slot, ":water", ":instance_id", slot_scene_prop_water),
       (val_add, ":water", 1),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_water, ":water"),
-    (else_try),
+    (else_try), # prevent damaging an inactive field
       (neq, ":state", scene_prop_state_active),
       (neq, ":state", scene_prop_state_regenerating),
       (set_trigger_result, 0),
-    (else_try),
+    (else_try), # harvest or spoil, depending on tool and skill
       (assign, ":original_damage", ":hit_damage"),
       (call_script, "script_scene_prop_damage_no_destroy", ":instance_id", ":hit_damage"),
       (assign, ":hit_damage", reg1),
@@ -6076,7 +6078,7 @@ scripts.extend([
         (try_end),
         (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, ":resource_hp"),
       (try_end),
-      (try_begin),
+      (try_begin), # if destroyed, make the plants disappear
         (eq, ":destroyed", 1),
         (scene_prop_set_slot, ":instance_id", slot_scene_prop_seeds, 0),
         (scene_prop_set_slot, ":instance_id", slot_scene_prop_water, 0),
@@ -6094,8 +6096,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_field_animation_finished",
-   [(store_script_param, ":plant_instance_id", 1),
+  ("cf_field_animation_finished", # server: set up the field for harvesting after the growing animation is finished
+   [(store_script_param, ":plant_instance_id", 1), # must be valid
     (store_script_param, ":optimum_seeds", 2),
     (store_script_param, ":optimum_water", 3),
 
@@ -6136,11 +6138,11 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_hit_vine",
+  ("cf_hit_vine", # server: handle hitting a vine grown resource; should be called from ti_on_scene_prop_hit
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
-    (store_script_param, ":tool_class", 3),
+    (store_script_param, ":tool_class", 3), # constants starting with item_class_
     (store_script_param, ":regrow_interval", 4),
 
     (scene_prop_get_slot, ":state", ":instance_id", slot_scene_prop_state),
@@ -6164,7 +6166,7 @@ scripts.extend([
       (try_end),
     (else_try),
       (set_fixed_point_multiplier, 1),
-      (position_get_x, ":agent_id", pos2),
+      (position_get_x, ":agent_id", pos2), # expects agent id in pos2.x from ti_on_scene_prop_hit
       (set_fixed_point_multiplier, 100),
       (set_trigger_result, 0),
       (assign, ":hit_damage", 0),
@@ -6179,8 +6181,8 @@ scripts.extend([
     (call_script, "script_hit_scene_prop_play_sound", ":agent_id", ":instance_id", "snd_cut_wood_scratch"),
     ]),
 
-  ("regrow_vine",
-   [(store_script_param, ":instance_id", 1),
+  ("regrow_vine", # server: resource regrowing script to spawn vine fruit items
+   [(store_script_param, ":instance_id", 1), # must be valid
 
     (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_active),
     (scene_prop_get_slot, ":full_hit_points", ":instance_id", slot_scene_prop_full_hit_points),
@@ -6214,16 +6216,16 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("setup_linked_scene_props",
+  ("setup_linked_scene_props", # server, edit mode: called at mission start to find necessary links for certain scene prop kinds
    [(store_script_param, ":scene_prop_id", 1),
 
     (scene_prop_get_num_instances, ":num_instances", ":scene_prop_id"),
-    (try_for_range, ":begin_scene_prop_no", 0, ":num_instances"),
+    (try_for_range, ":begin_scene_prop_no", 0, ":num_instances"), # iterate over all scene props of the specified kind
       (scene_prop_get_instance, ":begin_instance_id", ":scene_prop_id", ":begin_scene_prop_no"),
       (scene_prop_slot_eq, ":begin_instance_id", slot_scene_prop_linked_scene_prop, 0),
       (prop_instance_get_variation_id_2, ":begin_var_2", ":begin_instance_id"),
       (prop_instance_get_position, pos1, ":begin_instance_id"),
-      (try_for_range, ":linked_scene_prop_no", 0, linked_scene_prop_slot_count),
+      (try_for_range, ":linked_scene_prop_no", 0, linked_scene_prop_slot_count), # iterate over all scene prop kinds required to link
         (store_add, ":linked_scene_prop_param_no", ":linked_scene_prop_no", 2),
         (store_script_param, ":linked_scene_prop_id", ":linked_scene_prop_param_no"),
         (gt, ":linked_scene_prop_id", -1),
@@ -6231,11 +6233,11 @@ scripts.extend([
         (assign, ":nearest_instance_id", -1),
         (assign, ":nearest_distance", -1),
         (scene_prop_get_num_instances, ":num_check_instances", ":linked_scene_prop_id"),
-        (try_for_range, ":check_scene_prop_no", 0, ":num_check_instances"),
+        (try_for_range, ":check_scene_prop_no", 0, ":num_check_instances"), # iterate over all of the required scene prop kind, finding the nearest not already linked
           (scene_prop_get_instance, ":check_instance_id", ":linked_scene_prop_id", ":check_scene_prop_no"),
           (neq, ":check_instance_id", ":begin_instance_id"),
           (prop_instance_get_variation_id_2, ":check_var_2", ":check_instance_id"),
-          (eq, ":check_var_2", ":begin_var_2"),
+          (eq, ":check_var_2", ":begin_var_2"), # match scene editor value 2 to narrow down the search
           (scene_prop_slot_eq, ":check_instance_id", slot_scene_prop_linked_scene_prop, 0),
           (prop_instance_get_position, pos2, ":check_instance_id"),
           (get_sq_distance_between_positions, ":check_distance", pos1, pos2),
@@ -6245,10 +6247,10 @@ scripts.extend([
           (assign, ":nearest_instance_id", ":check_instance_id"),
         (try_end),
         (scene_prop_set_slot, ":begin_instance_id", ":linked_scene_prop_slot", ":nearest_instance_id"),
-        (try_begin),
+        (try_begin), # success
           (gt, ":nearest_instance_id", -1),
           (scene_prop_set_slot, ":nearest_instance_id", slot_scene_prop_linked_scene_prop, ":begin_instance_id"),
-        (else_try),
+        (else_try), # failure to find a necessary linked prop
           (assign, reg10, ":begin_instance_id"),
           (prop_instance_get_scene_prop_kind, reg11, ":begin_instance_id"),
           (assign, reg12, ":linked_scene_prop_id"),
@@ -6266,12 +6268,12 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("setup_all_linked_scene_props", []),
-  ("setup_scene_props_after_mission_start", []),
+  ("setup_all_linked_scene_props", []), # generated to run the above script for each scene prop type that needs linking to other types
+  ("setup_scene_props_after_mission_start", []), # generated to call setup scripts for scene props after the mission has finished loading (after ti_on_scene_prop_init)
 
-  ("cf_agent_pick_lock",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":probablity_multiplier", 2),
+  ("cf_agent_pick_lock", # server: calculate whether an agent picks a lock successfully, based on skill, tool, and random chance
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":probablity_multiplier", 2), # 100 means a 1% chance at looting level 1, up to 10000 for 100% success rate
 
     (assign, reg0, 0),
     (agent_get_wielded_item, ":wielded_item_id", ":agent_id", 0),
@@ -6298,11 +6300,11 @@ scripts.extend([
     (lt, ":random", ":looting"),
     ]),
 
-  ("cf_use_teleport_door",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_use_teleport_door", # server: handle agents using a door which teleports to another linked door
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
     (store_script_param, ":x_offset", 3),
-    (store_script_param, ":y_offset", 4),
+    (store_script_param, ":y_offset", 4), # position offset relative to the linked door that the agent is moved to
     (store_script_param, ":z_offset", 5),
 
     (scene_prop_get_slot, ":linked_door_instance_id", ":instance_id", slot_scene_prop_linked_scene_prop),
@@ -6344,9 +6346,9 @@ scripts.extend([
     (agent_set_position, ":agent_id", pos1),
     ]),
 
-  ("cf_lock_teleport_door",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_lock_teleport_door", # server: lock a teleport door that has been picked if the player is in the owning faction and has the key permission
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -6372,10 +6374,10 @@ scripts.extend([
     (eq, ":fail", 0),
     ]),
 
-  ("cf_agent_consume_items",
-   [(store_script_param, ":agent_id", 1),
+  ("cf_agent_consume_items", # server: handle checking for and removing 4 items carried by the agent, only making changes if successful; reg1 - reg4 = the items removed, in slot order
+   [(store_script_param, ":agent_id", 1), # must be valid
     (store_script_param, ":item_1_id", 2),
-    (store_script_param, ":item_2_id", 3),
+    (store_script_param, ":item_2_id", 3), # pass -1 to any of these to check for less items
     (store_script_param, ":item_3_id", 4),
     (store_script_param, ":item_4_id", 5),
 
@@ -6435,10 +6437,10 @@ scripts.extend([
     (assign, reg4, ":item_4_slot"),
     ]),
 
-  ("cf_agent_consume_resource",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":resource_class", 2),
-    (store_script_param, ":maximum_required", 3),
+  ("cf_agent_consume_resource", # server: handle consuming any items carried by the agent of a specified item class, up to a maximum resource amount required; reg0 = amount found
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":resource_class", 2), # constants starting with item_class_
+    (store_script_param, ":maximum_required", 3), # don't consume more resource items if this amount is reached
 
     (assign, ":amount_found", 0),
     (assign, ":loop_end", ek_item_3 + 1),
@@ -6458,10 +6460,10 @@ scripts.extend([
     (gt, ":amount_found", 0),
     ]),
 
-  ("cf_agent_consume_item",
-   [(store_script_param, ":agent_id", 1),
+  ("cf_agent_consume_item", # server: handle consuming any number of a specific item carried by the agent; reg0 = last equip slot consumed from, numbered 1 - 4 rather than 0 - 3
+   [(store_script_param, ":agent_id", 1), # must be valid
     (store_script_param, ":item_id", 2),
-    (store_script_param, ":count", 3),
+    (store_script_param, ":count", 3), # 1 - 4 items to try consume
 
     (agent_has_item_equipped, ":agent_id", ":item_id"),
     (agent_get_wielded_item, ":wielded_item_id", ":agent_id", 0),
@@ -6479,13 +6481,13 @@ scripts.extend([
     (try_for_range, ":equip_slot", ek_item_0, ":loop_end"),
       (agent_get_item_slot, ":equip_item_id", ":agent_id", ":equip_slot"),
       (eq, ":equip_item_id", ":item_id"),
-      (try_begin),
+      (try_begin), # for ammo items, require full stacks for consuming
         (gt, ":check_max_ammo", 0),
         (agent_get_ammo_for_slot, ":ammo", ":agent_id", ":equip_slot"),
         (lt, ":ammo", ":check_max_ammo"),
       (else_try),
-        (store_add, ":offset_slot", ":equip_slot", 1),
-        (troop_set_slot, "trp_temp_array", ":found", ":offset_slot"),
+        (store_add, ":offset_slot", ":equip_slot", 1), # agent_get_item_slot numbered 0 - 3 = agent_unequip_item numbered 1 - 4
+        (troop_set_slot, "trp_temp_array", ":found", ":offset_slot"), # add items to a list for removing if enough found
         (val_add, ":found", 1),
         (ge, ":found", ":count"),
         (assign, ":loop_end", -1),
@@ -6504,10 +6506,10 @@ scripts.extend([
     (assign, reg0, ":offset_slot"),
     ]),
 
-  ("spawn_processed_resources",
-   [(store_script_param, ":agent_id", 1),
+  ("spawn_processed_resources", # server: spawn a row of items on the ground in front of the agent; overwrites pos1
+   [(store_script_param, ":agent_id", 1), # must be valid
     (store_script_param, ":processed_item_id", 2),
-    (store_script_param, ":processed_item_count", 3),
+    (store_script_param, ":processed_item_count", 3), # limited to a maximum of 10
 
     (val_min, ":processed_item_count", 10),
     (agent_get_position, pos1, ":agent_id"),
@@ -6525,6 +6527,9 @@ scripts.extend([
 
 ])
 
+# Generate common parts of resource processing server scripts. 'resource_class' is constants starting with item_class_.
+# 'start_effect' allows the script to proceed even if the 'finished' parameter is not 1, to allow playing effects at the start.
+# 'get_relative_pos' calculates the relative position of the agent to the scene prop, to allow different actions.
 def generate_process_init(skill=None, level=1, resource_class=None, start_effect=True, get_relative_pos=False):
   operations = [(store_script_param, ":agent_id", 1)]
   if start_effect or get_relative_pos:
@@ -6962,9 +6967,9 @@ scripts.extend([
     (call_script, "script_spawn_processed_resources", ":agent_id", "itm_leather_roll", 2),
     ]),
 
-  ("cf_use_resource_stockpile",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_use_resource_stockpile", # server: handle players using a stockpile for buying and selling resources, not crafting
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # mist be valid
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -7018,8 +7023,8 @@ scripts.extend([
     (multiplayer_send_3_int_to_player, ":player_id", server_event_scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count, ":stock_count"),
     ]),
 
-  ("calculate_stockpile_taxed_price",
-   [(store_script_param, ":instance_id", 1),
+  ("calculate_stockpile_taxed_price", # for resource stockpiles, return the taxed price in reg0 and the tax amount in reg1, depending on stock targets and current count
+   [(store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":gold_value", 2),
 
     (store_mul, ":tax_value", ":gold_value", castle_tax_gold_percentage),
@@ -7038,9 +7043,9 @@ scripts.extend([
     (assign, reg1, ":tax_value"),
     ]),
 
-  ("cf_buy_sell_item_stockpile",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_buy_sell_item_stockpile", # server: handle players using an item or horse stockpile for buying and selling
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -7051,18 +7056,18 @@ scripts.extend([
     (agent_get_wielded_item, ":shield_item_id", ":agent_id", 1),
     (item_get_type, ":item_type", ":item_id"),
     (assign, ":fail", 0),
-    (try_begin),
+    (try_begin), # if the item is wielded or worn, try selling it
       (this_or_next|eq, ":weapon_item_id", ":item_id"),
       (this_or_next|eq, ":shield_item_id", ":item_id"),
       (is_between, ":item_type", itp_type_head_armor, itp_type_hand_armor + 1),
       (call_script, "script_cf_sell_item", ":agent_id", ":instance_id"),
       (val_add, ":stock_count", 1),
-    (else_try),
+    (else_try), # else try selling a horse
       (assign, reg0, 0),
       (eq, ":item_type", itp_type_horse),
       (call_script, "script_cf_sell_horse", ":agent_id", ":instance_id"),
       (val_add, ":stock_count", 1),
-    (else_try),
+    (else_try), # if the horse selling didn't respond with a failure message and the weapon hand is empty, try buy
       (eq, reg0, 0),
       (gt, ":stock_count", 0),
       (eq, ":weapon_item_id", -1),
@@ -7078,12 +7083,12 @@ scripts.extend([
     (multiplayer_send_3_int_to_player, ":player_id", server_event_scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count, ":stock_count"),
     ]),
 
-  ("cf_craft_item_stockpile",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_craft_item_stockpile", # server: handle players crafting items at a stockpile
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
     (store_script_param, ":skill_1_id", 3),
     (store_script_param, ":required_level_1", 4),
-    (store_script_param, ":skill_2_id", 5),
+    (store_script_param, ":skill_2_id", 5), # an optional alternate skill and level to craft with
     (store_script_param, ":required_level_2", 6),
     (store_script_param, ":resource_1_item_id", 7),
     (store_script_param, ":resource_2_item_id", 8),
@@ -7129,8 +7134,8 @@ scripts.extend([
     (eq, ":error_string_id", 0),
     ]),
 
-  ("scene_prop_get_item_crafting_refund_reward",
-   [(store_script_param, ":instance_id", 1),
+  ("scene_prop_get_item_crafting_refund_reward", # reg0 = the total money given, reg1 = the default cost of all resources, reg2 = the variable extra reward
+   [(store_script_param, ":instance_id", 1), # must be valid
 
     (prop_instance_get_variation_id_2, ":design_target_stock_count", ":instance_id"),
     (scene_prop_get_slot, ":stock_count", ":instance_id", slot_scene_prop_stock_count),
@@ -7155,12 +7160,12 @@ scripts.extend([
     (store_add, reg0, reg1, ":gold_reward"),
     ]),
 
-  ("cf_repair_scene_prop",
-   [(store_script_param, ":instance_id", 1),
-    (store_script_param, ":agent_id", 2),
+  ("cf_repair_scene_prop", # server: check if an attack on a destructible scene prop should repair it; reg0 = resulting hit points, reg1 = whether more resources are required
+   [(store_script_param, ":instance_id", 1), # must be valid
+    (store_script_param, ":agent_id", 2), # must be valid
     (store_script_param, ":hit_damage", 3),
     (store_script_param, ":full_hit_points", 4),
-    (store_script_param, ":resource_class", 5),
+    (store_script_param, ":resource_class", 5), # constants starting with item_class_
 
     (agent_is_alive, ":agent_id"),
     (agent_get_wielded_item, ":wielded_item_id", ":agent_id", 0),
@@ -7196,14 +7201,14 @@ scripts.extend([
     (assign, reg0, ":hit_points"),
     ]),
 
-  ("cf_hit_repairable_scene_prop",
-   [(store_script_param, ":instance_id", 1),
+  ("cf_hit_repairable_scene_prop", # server: handle attacking a destructible and repairable scene prop; reg0 = constant starting with repairable_, reg1 = resulting hit points
+   [(store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
     (store_script_param, ":full_hit_points", 3),
-    (store_script_param, ":resource_class", 4),
-    (store_script_param, ":agent_id", 5),
-    (store_script_param, ":repair_active", 6),
-    (store_script_param, ":script_damage", 7),
+    (store_script_param, ":resource_class", 4), # constants starting with item_class
+    (store_script_param, ":agent_id", 5), # must be valid
+    (store_script_param, ":repair_active", 6), # whether to allow repairing active, not fully destroyed scene props
+    (store_script_param, ":script_damage", 7), # 0 = damage applied by an agent from ti_on_scene_prop_hit, 1 = damage applied by a script
 
     (scene_prop_get_slot, ":state", ":instance_id", slot_scene_prop_state),
     (try_begin),
@@ -7242,7 +7247,7 @@ scripts.extend([
       (call_script, "script_scene_prop_damage_no_destroy", ":instance_id", ":hit_damage"),
       (assign, ":hit_damage", reg1),
       (assign, ":hit_points", reg2),
-      (try_begin),
+      (try_begin), # for damage by a script rather than an agent, reduce the hit points manually
         (eq, ":script_damage", 1),
         (gt, ":hit_damage", 0),
         (scene_prop_set_hit_points, ":instance_id", ":hit_points"),
@@ -7264,16 +7269,16 @@ scripts.extend([
     (assign, reg1, ":hit_points"),
     ]),
 
-  ("cf_hit_door",
+  ("cf_hit_door", # server: handle hitting a rotating destructible door; should be called from ti_on_scene_prop_hit
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
     (store_script_param, ":resource_class", 3),
     (set_fixed_point_multiplier, 1),
-    (position_get_x, ":agent_id", pos2),
+    (position_get_x, ":agent_id", pos2), # expects agent id in pos2.x from ti_on_scene_prop_hit
     (set_fixed_point_multiplier, 100),
 
-    (try_begin),
+    (try_begin), # only allow repairing standing doors if they are open
       (scene_prop_slot_eq, ":instance_id", slot_scene_prop_rotation, 1),
       (assign, ":repair_active", 1),
     (else_try),
@@ -7292,7 +7297,7 @@ scripts.extend([
       (init_position, pos3),
       (agent_get_position, pos5, ":agent_id"),
       (prop_instance_get_position, pos6, ":instance_id"),
-      (try_begin),
+      (try_begin), # align the door along the ground away from the agent
         (position_is_behind_position, pos5, pos6),
         (assign, ":direction", -1),
         (position_move_y, pos3, 150),
@@ -7332,10 +7337,10 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_use_rotate_door",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":left", 3),
+  ("cf_use_rotate_door", # server: handle opening and closing a rotating door
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
+    (store_script_param, ":left", 3), # 1 makes the door rotate the other way, for matching left and right doors
 
     (scene_prop_slot_eq, ":instance_id", slot_scene_prop_state, scene_prop_state_active),
     (agent_get_player_id, ":player_id", ":agent_id"),
@@ -7390,8 +7395,8 @@ scripts.extend([
     (call_script, "script_cf_rotate_door", ":instance_id", ":left"),
     ]),
 
-  ("cf_rotate_door",
-   [(store_script_param, ":instance_id", 1),
+  ("cf_rotate_door", # server: helper script to rotate doors
+   [(store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":left", 2),
 
     (prop_instance_get_starting_position, pos1, ":instance_id"),
@@ -7412,8 +7417,8 @@ scripts.extend([
     (prop_instance_animate_to_position, ":instance_id", pos1, 100),
     ]),
 
-  ("cf_init_rotate_door",
-   [(store_script_param, ":instance_id", 1),
+  ("cf_init_rotate_door", # server: set the inital position of a rotating door
+   [(store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":left", 2),
 
     (prop_instance_get_variation_id_2, ":initial_position", ":instance_id"),
@@ -7424,13 +7429,13 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_hit_chest",
+  ("cf_hit_chest", # server: handle damaging and repairing a storage chest; should be called from ti_on_scene_prop_hit
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
     (store_script_param, ":full_hit_points", 3),
     (set_fixed_point_multiplier, 1),
-    (position_get_x, ":agent_id", pos2),
+    (position_get_x, ":agent_id", pos2), # expects agent id in pos2.x from ti_on_scene_prop_hit
     (set_fixed_point_multiplier, 100),
 
     (call_script, "script_cf_hit_repairable_scene_prop", ":instance_id", ":hit_damage", ":full_hit_points", item_class_wood, ":agent_id", 1, 0),
@@ -7458,10 +7463,10 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_pick_chest_lock",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":probability_multiplier", 3),
+  ("cf_pick_chest_lock", # server: handle players trying to pick the lock of a storage chest
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
+    (store_script_param, ":probability_multiplier", 3), # see script_cf_agent_pick_lock
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -7494,13 +7499,13 @@ scripts.extend([
     (eq, ":fail", 0),
     ]),
 
-  ("cf_hit_bridge",
+  ("cf_hit_bridge", # server: handle damaging and repairing bridges; should be called from ti_on_scene_prop_hit
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
-    (store_script_param, ":script_damage", 3),
+    (store_script_param, ":script_damage", 3), # set to 1 when the agent hit a linked scene prop, to apply damage manually
     (set_fixed_point_multiplier, 1),
-    (position_get_x, ":agent_id", pos2),
+    (position_get_x, ":agent_id", pos2), # expects agent id in pos2.x from ti_on_scene_prop_hit
     (set_fixed_point_multiplier, 100),
 
     (scene_prop_get_slot, ":full_hit_points", ":instance_id", slot_scene_prop_full_hit_points),
@@ -7536,9 +7541,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_hit_bridge_footing",
+  ("cf_hit_bridge_footing", # server: handle damaging and repairing bridges indirectly through linked props; should be called from ti_on_scene_prop_hit
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
 
     (scene_prop_get_slot, ":bridge_instance_id", ":instance_id", slot_scene_prop_linked_scene_prop),
@@ -7547,8 +7552,8 @@ scripts.extend([
     (set_trigger_result, 0),
     ]),
 
-  ("cf_init_wall",
-   [(store_script_param, ":instance_id", 1),
+  ("cf_init_wall", # server: set up destructible wall positions and slots at mission start
+   [(store_script_param, ":instance_id", 1), # must be valid
 
     (set_fixed_point_multiplier, 100),
     (prop_instance_get_starting_position, pos1, ":instance_id"),
@@ -7566,13 +7571,13 @@ scripts.extend([
     (scene_prop_set_hit_points, ":instance_id", min_scene_prop_hit_points),
     ]),
 
-  ("cf_hit_wall",
+  ("cf_hit_wall", # server: handle damaging and repairing walls and ladders; should be called from ti_on_scene_prop_hit
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
-    (store_script_param, ":script_damage", 3),
+    (store_script_param, ":script_damage", 3), # set to 1 when the agent hit a linked scene prop, to apply damage manually
     (set_fixed_point_multiplier, 1),
-    (position_get_x, ":agent_id", pos2),
+    (position_get_x, ":agent_id", pos2), # expects agent id in pos2.x from ti_on_scene_prop_hit
     (set_fixed_point_multiplier, 100),
 
     (scene_prop_get_slot, ":full_hit_points", ":instance_id", slot_scene_prop_full_hit_points),
@@ -7619,9 +7624,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_hit_build_wall",
+  ("cf_hit_build_wall", # server: handle hitting the building station for walls and ladders; should be called from ti_on_scene_prop_hit
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
 
     (scene_prop_get_slot, ":wall_instance_id", ":instance_id", slot_scene_prop_linked_scene_prop),
@@ -7630,9 +7635,9 @@ scripts.extend([
     (set_trigger_result, 0),
     ]),
 
-  ("cf_init_fire_place",
+  ("cf_init_fire_place", # server: set up the linked visible flames for a fire place prop at mission start
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
 
     (set_fixed_point_multiplier, 100),
     (init_position, pos1),
@@ -7643,11 +7648,11 @@ scripts.extend([
     (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_destroyed),
     ]),
 
-  ("cf_hit_fire_place",
+  ("cf_hit_fire_place", # server: handle adding wood to, lighting, and extinguishing a fire place; should be called from ti_on_scene_prop_hit
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (set_fixed_point_multiplier, 1),
-    (position_get_x, ":agent_id", pos2),
+    (position_get_x, ":agent_id", pos2), # expects agent id in pos2.x from ti_on_scene_prop_hit
     (set_fixed_point_multiplier, 100),
 
     (set_trigger_result, 0),
@@ -7686,8 +7691,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("fire_place_burn",
-   [(store_script_param, ":instance_id", 1),
+  ("fire_place_burn", # server: consume wood while a fire is burning, remove the flames if no fuel left
+   [(store_script_param, ":instance_id", 1), # must be valid
 
     (scene_prop_get_slot, ":state", ":instance_id", slot_scene_prop_state),
     (try_begin),
@@ -7707,9 +7712,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("winch_get_direction",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("winch_get_direction", # return the direction an agent will rotate a winch in reg0, based on relative position
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (prop_instance_get_starting_position, pos1, ":instance_id"),
     (agent_get_position, pos2, ":agent_id"),
@@ -7723,21 +7728,19 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_use_winch",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":winch_instance_id", 2),
+  ("cf_use_winch", # server: handle players using a winch to move another linked object
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":winch_instance_id", 2), # must be valid
     (store_script_param, ":move_steps_plus_one", 3),
     (store_script_param, ":step_size", 4),
     (store_script_param, ":animation_time", 5),
-    (store_script_param, ":winch_type", 6),
+    (store_script_param, ":winch_type", 6), # constants starting with winch_type_
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
     (agent_is_alive, ":agent_id"),
-
     (call_script, "script_winch_get_direction", ":agent_id", ":winch_instance_id"),
     (assign, ":direction", reg0),
-
     (scene_prop_get_slot, ":moveable_instance_id", ":winch_instance_id", slot_scene_prop_linked_scene_prop),
     (gt, ":moveable_instance_id", 0),
     (scene_prop_get_slot, ":current_target", ":moveable_instance_id", slot_scene_prop_target_position),
@@ -7751,9 +7754,9 @@ scripts.extend([
     (try_end),
     (try_begin),
       (le, ":direction", -1),
-      (val_mul, ":direction", 2),
+      (val_mul, ":direction", 2), # drop down twice as fast as raising up
       (eq, ":winch_type", winch_type_portcullis),
-      (assign, ":new_target", 0),
+      (assign, ":new_target", 0), # portcullis drops all the way in one step
       (neq, ":new_target", ":current_target"),
       (assign, ":animation_time", 20),
       (call_script, "script_scene_prop_play_sound", ":moveable_instance_id", "snd_body_fall_big"),
@@ -7787,12 +7790,12 @@ scripts.extend([
     (prop_instance_rotate_to_position, ":winch_instance_id", pos1, ":animation_time", ":winch_rotation"),
     ]),
 
-  ("cf_init_winch",
+  ("cf_init_winch", # server: set initial positions for objects linked to winches
    [(multiplayer_is_server),
-    (store_script_param, ":winch_instance_id", 1),
+    (store_script_param, ":winch_instance_id", 1), # must be valid
     (store_script_param, ":start_step", 2),
     (store_script_param, ":step_size", 3),
-    (store_script_param, ":winch_type", 4),
+    (store_script_param, ":winch_type", 4), # constants starting with winch_type_
 
     (scene_prop_get_slot, ":moveable_instance_id", ":winch_instance_id", slot_scene_prop_linked_scene_prop),
     (ge, ":moveable_instance_id", 0),
@@ -7822,9 +7825,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_init_lift_platform",
+  ("cf_init_lift_platform", # server: calculate range of motion for a lift platform at mission start
    [(multiplayer_is_server),
-    (store_script_param, ":platform_instance_id", 1),
+    (store_script_param, ":platform_instance_id", 1), # must be valid
 
     (scene_prop_get_slot, ":winch_1_instance_id", ":platform_instance_id", slot_scene_prop_linked_scene_prop_1),
     (gt, ":winch_1_instance_id", 0),
@@ -7837,7 +7840,7 @@ scripts.extend([
     (position_get_z, ":depth", pos2),
     (val_sub, ":height", 100),
     (val_sub, ":depth", 100),
-    (try_begin),
+    (try_begin), # swap the top and bottom values if needed
       (gt, ":depth", ":height"),
       (assign, ":temp", ":depth"),
       (assign, ":depth", ":height"),
@@ -7850,10 +7853,10 @@ scripts.extend([
     (prop_instance_set_position, ":platform_instance_id", pos1),
     ]),
 
-  ("cf_use_inventory",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":probability_multiplier", 3),
+  ("cf_use_inventory", # server: reply with inventory contents of a scene prop when requested by a player
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
+    (store_script_param, ":probability_multiplier", 3), # used for lock picking if the scene prop is destructible and locked
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -7890,18 +7893,18 @@ scripts.extend([
       (else_try),
         (assign, ":next_item_id", -9999),
       (try_end),
-      (try_begin),
+      (try_begin), # if the next items are identical, wait to send one message for the full slot range
         (eq, ":item_id", ":next_item_id"),
         (try_begin),
           (le, ":slot_range_begin", -1),
           (assign, ":slot_range_begin", ":inventory_slot"),
         (try_end),
       (else_try),
-        (try_begin),
+        (try_begin), # sending a group of identical items
           (gt, ":slot_range_begin", -1),
           (multiplayer_send_4_int_to_player, ":player_id", server_event_scene_prop_set_slot, ":instance_id", ":slot_range_begin", ":item_id", ":next_inventory_slot"),
           (assign, ":slot_range_begin", -1),
-        (else_try),
+        (else_try), # else just send the single slot
           (multiplayer_send_3_int_to_player, ":player_id", server_event_scene_prop_set_slot, ":instance_id", ":inventory_slot", ":item_id"),
         (try_end),
       (try_end),
@@ -7913,14 +7916,14 @@ scripts.extend([
     (player_set_slot, ":player_id", slot_player_accessing_unique_id, ":inventory_unique_id"),
     ]),
 
-  ("transfer_inventory",
-   [(store_script_param, ":player_id", 1),
+  ("transfer_inventory", # server: handle inventory transfers within and between scene props and their agent
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":instance_id", 2),
     (store_script_param, ":from_slot", 3),
     (store_script_param, ":to_slot", 4),
     (store_script_param, ":item_id", 5),
 
-    (try_begin),
+    (try_begin), # failures in this section will force disconnection from the scene prop, to stop receiving updates
       (gt, ":instance_id", 0),
       (player_get_agent_id, ":agent_id", ":player_id"),
       (agent_is_active, ":agent_id"),
@@ -7945,18 +7948,18 @@ scripts.extend([
       (try_end),
       (gt, ":inventory_count", 0),
       (scene_prop_get_slot, ":linked_scene_prop", ":instance_id", slot_scene_prop_linked_scene_prop),
-      (try_begin),
+      (try_begin), # for horse carts, use the specialized distance check
         (eq, ":linked_scene_prop", 0),
         (neg|scene_prop_slot_eq, ":instance_id", slot_scene_prop_required_horse, 0),
         (call_script, "script_cart_choose_action", ":agent_id", ":instance_id"),
         (neq, reg0, 0),
-      (else_try),
+      (else_try), # for normal storage props
         (agent_get_position, pos1, ":agent_id"),
         (prop_instance_get_position, pos2, ":instance_id"),
         (eq, ":linked_scene_prop", 0),
         (get_sq_distance_between_positions, ":sq_distance", pos1, pos2),
         (le, ":sq_distance", sq(max_distance_to_use)),
-      (else_try),
+      (else_try), # for ships, check agent is on board
         (gt, ":linked_scene_prop", 0),
         (prop_instance_is_valid, ":linked_scene_prop"),
         (neg|scene_prop_slot_eq, ":linked_scene_prop", slot_scene_prop_collision_kind, 0),
@@ -7975,7 +7978,7 @@ scripts.extend([
       (try_end),
       (gt, ":inventory_count", 0),
       (player_set_slot, ":player_id", slot_player_accessing_instance_id, ":instance_id"),
-      (try_begin),
+      (try_begin), # for failures after this point, stay connected with the scene prop, to receive updates
         (store_add, ":inventory_end", slot_scene_prop_inventory_begin, ":inventory_count"),
         (this_or_next|is_between, ":from_slot", slot_scene_prop_inventory_begin, ":inventory_end"),
         (is_between, ":from_slot", slot_scene_prop_inventory_item_0, slot_scene_prop_inventory_item_0 + ek_gloves + 1),
@@ -7984,7 +7987,7 @@ scripts.extend([
         (scene_prop_slot_eq, ":instance_id", ":to_slot", 0),
         (ge, ":item_id", all_items_begin),
         (item_get_type, ":item_type", ":item_id"),
-        (try_begin),
+        (try_begin), # checks for equipping items on the agent
           (is_between, ":to_slot", slot_scene_prop_inventory_item_0, slot_scene_prop_inventory_end),
           (try_begin),
             (is_between, ":item_type", itp_type_head_armor, itp_type_hand_armor + 1),
@@ -8003,7 +8006,7 @@ scripts.extend([
           (else_try),
             (assign, ":item_id", -1),
           (try_end),
-        (else_try),
+        (else_try), # check that the item fits inside when storing in the inventory
           (item_get_slot, ":length", ":item_id", slot_item_length),
           (neg|scene_prop_slot_ge, ":instance_id", slot_scene_prop_inventory_max_length, ":length"),
           (assign, ":item_id", -1),
@@ -8019,7 +8022,7 @@ scripts.extend([
           (assign, ":item_ammo", -1),
         (try_end),
         (assign, ":neg_from_mod_slot", 0),
-        (try_begin),
+        (try_begin), # remove items taken from the agent's equipment
           (ge, ":from_slot", slot_scene_prop_inventory_item_0),
           (store_add, ":from_equip_slot", ":from_slot", ek_item_0 - slot_scene_prop_inventory_item_0),
           (agent_get_item_slot, ":equip_item_id", ":agent_id", ":from_equip_slot"),
@@ -8039,12 +8042,12 @@ scripts.extend([
             (val_add, ":from_equip_slot", 1),
             (agent_unequip_item, ":agent_id", ":item_id", ":from_equip_slot"),
           (try_end),
-        (else_try),
+        (else_try), # removing items from the scene prop
           (lt, ":from_slot", slot_scene_prop_inventory_item_0),
           (scene_prop_slot_eq, ":instance_id", ":from_slot", ":item_id"),
           (scene_prop_set_slot, ":instance_id", ":from_slot", 0),
           (store_add, ":neg_from_mod_slot", ":from_slot", slot_scene_prop_inventory_mod_begin - slot_scene_prop_inventory_begin),
-          (val_mul, ":neg_from_mod_slot", -1),
+          (val_mul, ":neg_from_mod_slot", -1), # negative numbers in the _mod slots means the item was removed
           (try_begin),
             (gt, ":item_ammo", -1),
             (store_add, ":from_ammo_slot", ":from_slot", slot_scene_prop_inventory_ammo_begin - slot_scene_prop_inventory_begin),
@@ -8055,13 +8058,13 @@ scripts.extend([
           (assign, ":item_id", -1),
         (try_end),
         (ge, ":item_id", all_items_begin),
-        (try_begin),
+        (try_begin), # ignore empty ammo items (but not unloaded crossbows)
           (eq, ":item_ammo", 0),
           (neq, ":item_type", itp_type_crossbow),
         (else_try),
           (ge, ":to_slot", slot_scene_prop_inventory_item_0),
           (try_begin),
-            (gt, ":item_ammo", -1),
+            (gt, ":item_ammo", -1), # add up current ammo before equipping the item
             (try_for_range, ":check_equip_slot", ek_item_0, ek_item_3 + 1),
               (agent_get_item_slot, ":check_item_id", ":agent_id", ":check_equip_slot"),
               (eq, ":check_item_id", ":item_id"),
@@ -8088,7 +8091,7 @@ scripts.extend([
             (scene_prop_set_slot, ":instance_id", ":to_ammo_slot", ":item_ammo",),
           (try_end),
         (try_end),
-        (try_begin),
+        (try_begin), # ignore empty ammo items
           (eq, ":item_ammo", 0),
           (neq, ":item_type", itp_type_crossbow),
           (assign, ":to_mod_slot", -1),
@@ -8096,19 +8099,19 @@ scripts.extend([
           (store_add, ":to_mod_slot", ":to_slot", slot_scene_prop_inventory_mod_begin - slot_scene_prop_inventory_begin),
         (try_end),
         (try_begin),
-          (ge, ":neg_from_mod_slot", 0),
+          (ge, ":neg_from_mod_slot", 0), # items from the agent equipment
           (multiplayer_send_3_int_to_player, ":player_id", server_event_scene_prop_set_slot, ":instance_id", ":to_mod_slot", ":item_id"),
-        (else_try),
+        (else_try), # items moved within the inventory
           (multiplayer_send_4_int_to_player, ":player_id", server_event_scene_prop_set_slot, ":instance_id", ":to_mod_slot", ":item_id", ":neg_from_mod_slot"),
         (try_end),
-        (this_or_next|lt, ":from_slot", slot_scene_prop_inventory_item_0),
+        (this_or_next|lt, ":from_slot", slot_scene_prop_inventory_item_0), # don't send updates to other players when just shuffling agent equipment
         (lt, ":to_slot", slot_scene_prop_inventory_item_0),
-        (try_begin),
+        (try_begin), # when equipped on this agent, remove from inventory view of other players
           (ge, ":to_slot", slot_scene_prop_inventory_item_0),
           (assign, ":to_mod_slot", -1),
         (try_end),
         (get_max_players, ":max_players"),
-        (try_for_range, ":other_player_id", 1, ":max_players"),
+        (try_for_range, ":other_player_id", 1, ":max_players"), # loop over all players currently looking at the same inventory
           (player_is_active, ":other_player_id"),
           (neq, ":other_player_id", ":player_id"),
           (player_slot_eq, ":other_player_id", slot_player_accessing_instance_id, ":instance_id"),
@@ -8120,7 +8123,7 @@ scripts.extend([
           (try_end),
         (try_end),
         (scene_prop_get_slot, ":prune_time", ":instance_id", slot_scene_prop_prune_time),
-        (try_begin),
+        (try_begin), # if the inventory is stored in a spawned item, remove it if all items are taken out
           (gt, ":prune_time", 0),
           (is_between, ":from_slot", slot_scene_prop_inventory_begin, ":inventory_end"),
           (is_between, ":to_slot", slot_scene_prop_inventory_item_0, slot_scene_prop_inventory_item_0 + ek_gloves + 1),
@@ -8131,7 +8134,7 @@ scripts.extend([
           (try_end),
           (neq, ":inventory_end", -1),
           (scene_prop_set_prune_time, ":instance_id", 1),
-        (else_try),
+        (else_try), # otherwise extend the time it will be removed if that is soon
           (store_mission_timer_a, ":time"),
           (val_add, ":time", 60),
           (gt, ":time", ":prune_time"),
@@ -8144,9 +8147,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cart_choose_action",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cart_choose_action", # get the relative position of the agent to the cart to decide the action; returns reg0 as 0 = out of range, -1 = attach, 1 = access
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (assign, reg0, 0),
     (set_fixed_point_multiplier, 100),
@@ -8156,11 +8159,11 @@ scripts.extend([
     (position_set_z, pos1, ":height"),
     (scene_prop_get_slot, ":access_offset", ":instance_id", slot_scene_prop_width),
     (assign, ":access_distance", ":access_offset"),
-    (val_abs, ":access_distance"),
-    (val_mul, ":access_distance", ":access_distance"),
+    (val_abs, ":access_distance"), # use the positive value for a radius
+    (val_mul, ":access_distance", ":access_distance"), # squared
     (val_div, ":access_distance", 50), # distance * 2 / 100
     (get_sq_distance_between_positions, ":sq_distance", pos1, pos2),
-    (try_begin),
+    (try_begin), # if within range of the attach position (mesh origin)
       (le, ":sq_distance", ":access_distance"),
       (assign, reg0, 1),
       (agent_get_wielded_item, ":weapon", ":agent_id", 0),
@@ -8168,7 +8171,7 @@ scripts.extend([
       (agent_get_wielded_item, ":shield", ":agent_id", 1),
       (eq, ":shield", -1),
       (assign, reg0, -1),
-    (else_try),
+    (else_try), # if within range of the access position (the offset from the mesh origin)
       (lt, reg0, 1),
       (position_move_y, pos1, ":access_offset"),
       (get_sq_distance_between_positions, ":sq_distance", pos1, pos2),
@@ -8177,10 +8180,10 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_use_cart",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":action", 3),
+  ("cf_use_cart", # server: handle players trying to attach or access carts
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
+    (store_script_param, ":action", 3), # from cart_choose_action: -1 = attach, 1 = access
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -8193,7 +8196,7 @@ scripts.extend([
       (eq, ":action", -1),
       (scene_prop_get_slot, ":required_horse", ":instance_id", slot_scene_prop_required_horse),
       (agent_get_horse, ":horse_agent_id", ":agent_id"),
-      (try_begin),
+      (try_begin), # if a horse is required, check
         (ge, ":required_horse", 1),
         (assign, ":attach_agent_id", ":horse_agent_id"),
         (try_begin),
@@ -8205,10 +8208,10 @@ scripts.extend([
           (assign, ":fail", 1),
           (multiplayer_send_2_int_to_player, ":player_id", server_event_preset_message, "str_not_riding_necessary_horse", preset_message_error),
         (try_end),
-      (else_try),
+      (else_try), # if mounted but horse not required, disallow attaching hand carts
         (gt, ":horse_agent_id", -1),
         (assign, ":fail", 1),
-      (else_try),
+      (else_try), # hand carts
         (assign, ":attach_agent_id", ":agent_id"),
         (agent_get_troop_id, ":troop_id", ":agent_id"),
         (store_skill_level, ":labouring", "skl_labouring", ":troop_id"),
@@ -8231,10 +8234,10 @@ scripts.extend([
     (eq, ":fail", 0),
     ]),
 
-  ("cf_attach_cart",
-   [(store_script_param, ":attach_agent_id", 1),
-    (store_script_param, ":instance_id", 2),
-    (store_script_param, ":agent_id", 3),
+  ("cf_attach_cart", # server: try attach or detach agent and cart
+   [(store_script_param, ":attach_agent_id", 1), # the human or horse agent being attached to, must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
+    (store_script_param, ":agent_id", 3), # the player agent, must be valid
 
     (agent_get_attached_scene_prop, ":attached_scene_prop", ":attach_agent_id"),
     (assign, ":fail", 0),
@@ -8279,8 +8282,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cart_set_detached_position",
-   [(store_script_param, ":instance_id", 1),
+  ("cart_set_detached_position", # server: align cart to ground level when detached
+   [(store_script_param, ":instance_id", 1), # must be valid
 
     (set_fixed_point_multiplier, 100),
     (prop_instance_get_position, pos1, ":instance_id"),
@@ -8292,7 +8295,7 @@ scripts.extend([
       (gt, ":height", z_position_water_level),
       (scene_prop_get_slot, ":detach_rotation", ":instance_id", slot_scene_prop_rotation),
       (position_rotate_x, pos1, ":detach_rotation"),
-    (else_try),
+    (else_try), # float on water
       (position_set_z, pos1, z_position_water_level),
     (try_end),
     (scene_prop_get_slot, ":detach_offset", ":instance_id", slot_scene_prop_position),
@@ -8308,7 +8311,7 @@ scripts.extend([
     (prop_instance_animate_to_position, ":instance_id", pos1, ":animation_time"),
     ]),
 
-  ("add_cart_to_list",
+  ("add_cart_to_list", # add each cart to a list when loading the scene for faster proximity checks
    [(store_script_param, ":instance_id", 1),
 
     (troop_get_slot, ":cart_count", "trp_cart_array", slot_array_count),
@@ -8317,17 +8320,17 @@ scripts.extend([
     (troop_set_slot, "trp_cart_array", slot_array_count, ":cart_count"),
     ]),
 
-  ("cf_rest",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":target_horse", 2),
-    (store_script_param, ":heal_percent", 3),
-    (store_script_param, ":min_health_percent", 4),
+  ("cf_rest", # server: handle players resting at beds
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":target_horse", 2), # 0 = heal humans, 1 = heal horses
+    (store_script_param, ":heal_percent", 3), # percentage healed per use
+    (store_script_param, ":min_health_percent", 4), # minimum health percentage to be able to use this bed
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
     (assign, ":fail", 0),
     (try_begin),
-      (try_begin),
+      (try_begin), # only require food for resting humans
         (eq, ":target_horse", 0),
         (assign, ":target_agent_id", ":agent_id"),
         (agent_get_slot, ":food_amount", ":target_agent_id", slot_agent_food_amount),
@@ -8366,20 +8369,20 @@ scripts.extend([
     (eq, ":fail", 0),
     ]),
 
-  ("cf_clean_blood",
-   [(store_script_param, ":agent_id", 1),
+  ("cf_clean_blood", # server: allow players to remove blood from their agent if healthy
+   [(store_script_param, ":agent_id", 1), # must be valid
 
     (store_agent_hit_points, ":hit_points", ":agent_id", 0),
     (gt, ":hit_points", 70),
     (get_max_players, ":max_players"),
     (try_for_range, ":player_id", 1, ":max_players"),
       (player_is_active, ":player_id"),
-      (multiplayer_send_2_int_to_player, ":player_id", server_event_agent_equip_armor, ":agent_id", -1),
+      (multiplayer_send_2_int_to_player, ":player_id", server_event_agent_equip_armor, ":agent_id", -1), # magic value to redraw all armor
     (try_end),
     ]),
 
-  ("agent_clean_blood",
-   [(store_script_param, ":agent_id", 1),
+  ("agent_clean_blood", # clients: re-equip all visual armor meshes to remove blood
+   [(store_script_param, ":agent_id", 1), # must be valid
 
     (try_for_range, ":equip_slot", ek_head, ek_gloves + 1),
       (agent_get_item_slot, ":item_id", ":agent_id", ":equip_slot"),
@@ -8395,9 +8398,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("agent_hit_with_scripted_item",
-   [(store_script_param, ":attacked_agent_id", 1),
-    (store_script_param, ":attacker_agent_id", 2),
+  ("agent_hit_with_scripted_item", # server: check for scripted effects when the agent is hit by a special item; sets damage dealt when be called from ti_on_agent_hit
+   [(store_script_param, ":attacked_agent_id", 1), # must be valid
+    (store_script_param, ":attacker_agent_id", 2), # must be valid
     (store_script_param, ":damage_dealt", 3),
     (store_script_param, ":weapon_item_id", 4),
 
@@ -8466,8 +8469,8 @@ scripts.extend([
     (set_trigger_result, ":damage_result"),
     ]),
 
-  ("cf_use_bucket",
-   [(store_script_param, ":agent_id", 1),
+  ("cf_use_bucket", # server: fill the bucket if below water level
+   [(store_script_param, ":agent_id", 1), # must be valid
 
     (position_move_z, pos1, -100),
     (position_get_z, ":z_pos", pos1),
@@ -8477,8 +8480,8 @@ scripts.extend([
     (agent_set_wielded_item, ":agent_id", "itm_water_bucket"),
     ]),
 
-  ("move_fish_school",
-   [(store_script_param, ":instance_id", 1),
+  ("move_fish_school", # server: move the fish school to a new position inside the water depth limits
+   [(store_script_param, ":instance_id", 1), # must be valid
 
     (set_fixed_point_multiplier, 100),
     (prop_instance_get_position, pos1, ":instance_id"),
@@ -8581,7 +8584,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("check_fishing_nets",
+  ("check_fishing_nets", # server: check all fishing nets to see if anything was caught
    [
     (set_fixed_point_multiplier, 100),
     (scene_spawned_item_get_num_instances, ":net_num", "itm_fishing_net"),
@@ -8596,7 +8599,7 @@ scripts.extend([
       (assign, ":school_instance_id", ":linked_instance_id"),
       (scene_prop_get_num_instances, ":school_num", "spr_pw_fish_school"),
       (store_add, ":loop_end", ":school_num", 1),
-      (try_for_range, ":school_no", 0, ":loop_end"),
+      (try_for_range, ":school_no", 0, ":loop_end"), # find the closest school to the net
         (try_begin),
           (gt, ":school_instance_id", 0),
           (scene_prop_get_slot, ":fish_count", ":school_instance_id", slot_scene_prop_stock_count),
@@ -8637,9 +8640,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_use_fishing_tool",
+  ("cf_use_fishing_tool", # server: check if the player meets all requirements to catch a fish, then success is based on chance; should be called from ti_on_weapon_attack
    [(multiplayer_is_server),
-    (store_script_param, ":agent_id", 1),
+    (store_script_param, ":agent_id", 1), # must be valid
 
     (set_fixed_point_multiplier, 100),
     (position_get_z, ":z_pos", pos1),
@@ -8650,14 +8653,14 @@ scripts.extend([
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
     (agent_get_slot, ":last_fish_instance_id", ":agent_id", slot_agent_fishing_last_school),
-    (try_begin),
+    (try_begin), # first check the last fishing school used, to save time
       (gt, ":last_fish_instance_id", -1),
       (prop_instance_get_position, pos2, ":last_fish_instance_id"),
       (get_sq_distance_between_positions, ":sq_distance", pos1, pos2),
       (lt, ":sq_distance", sq(max_distance_to_catch_fish)),
       (assign, ":num_instances", -1),
       (assign, ":fish_instance_id", ":last_fish_instance_id"),
-    (else_try),
+    (else_try), # else check all other schools
       (scene_prop_get_num_instances, ":num_instances", "spr_pw_fish_school"),
       (try_for_range, ":instance_no", 0, ":num_instances"),
         (scene_prop_get_instance, ":fish_instance_id", "spr_pw_fish_school", ":instance_no"),
@@ -8694,9 +8697,9 @@ scripts.extend([
     (agent_play_sound, ":agent_id", "snd_jump_begin_water"),
     ]),
 
-  ("cf_eat_food",
+  ("cf_eat_food", # server: handle players consuming food items
    [(multiplayer_is_server),
-    (store_script_param, ":agent_id", 1),
+    (store_script_param, ":agent_id", 1), # must be valid
     (store_script_param, ":item_id", 2),
 
     (agent_is_alive, ":agent_id"),
@@ -8715,8 +8718,8 @@ scripts.extend([
     (multiplayer_send_3_int_to_player, ":player_id", server_event_agent_set_slot, ":agent_id", slot_agent_food_amount, ":food_amount"),
     ]),
 
-  ("check_agent_health",
-   [(store_script_param, ":agent_id", 1),
+  ("check_agent_health", # server: check for poison and armor encumbrance effects
+   [(store_script_param, ":agent_id", 1), # must be valid
 
     (try_begin),
       (agent_is_alive, ":agent_id"),
@@ -8764,8 +8767,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("check_kill_excess_animals",
-   [(try_begin),
+  ("check_kill_excess_animals", # server: kill random herd animals when the herd animal limit setting is exceeded
+   [
+    (try_begin),
       (multiplayer_is_server),
       (assign, ":copied_herd_animal_count", "$g_herd_animal_count"),
       (try_for_agents, ":agent_id"),
@@ -8779,8 +8783,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("check_animal_killed",
-   [(store_script_param, ":dead_agent_id", 1),
+  ("check_animal_killed", # server: when an animal is killed, play death sounds, spawn carcass if a herd animal, storing meat and hide counts
+   [(store_script_param, ":dead_agent_id", 1), # must be valid
     (store_script_param, ":killer_agent_id", 2),
 
     (try_begin),
@@ -8838,12 +8842,12 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_use_butchering_knife",
-   [(store_script_param, ":agent_id", 1),
+  ("cf_use_butchering_knife", # server: check for nearby animal carcasses for the agent to butcher
+   [(store_script_param, ":agent_id", 1), # must be valid
 
     (assign, ":found", 0),
     (agent_get_slot, ":carcass_instance_id", ":agent_id", slot_agent_hunting_last_carcass),
-    (try_begin),
+    (try_begin), # first check the last carcass used, to save time
       (prop_instance_is_valid, ":carcass_instance_id"),
       (this_or_next|scene_prop_slot_ge, ":carcass_instance_id", slot_animal_carcass_meat_count, 1),
       (scene_prop_slot_ge, ":carcass_instance_id", slot_animal_carcass_hide_count, 1),
@@ -8851,7 +8855,7 @@ scripts.extend([
       (get_sq_distance_between_positions, ":sq_distance", pos1, pos2),
       (lt, ":sq_distance", sq(max_distance_to_use)),
       (assign, ":found", 1),
-    (else_try),
+    (else_try), # otherwise check all other carcasses
       (agent_get_player_id, ":player_id", ":agent_id"),
       (player_is_active, ":player_id"),
       (store_mission_timer_a, ":time"),
@@ -8901,9 +8905,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_animal_add_to_herd",
-   [(store_script_param, ":animal_agent_id", 1),
-    (store_script_param, ":herd_manager", 2),
+  ("cf_animal_add_to_herd", # server: try find a free space for an animal in a herd
+   [(store_script_param, ":animal_agent_id", 1), # must be valid
+    (store_script_param, ":herd_manager", 2), # must be a valid instance id
     (store_script_param, ":adult_item_id", 3),
 
     (scene_prop_slot_eq, ":herd_manager", slot_animal_herd_manager_adult_item_id, ":adult_item_id"),
@@ -8939,8 +8943,8 @@ scripts.extend([
     (scene_prop_set_prune_time, ":herd_manager", 999999),
     ]),
 
-  ("animal_add_to_nearby_herd",
-   [(store_script_param, ":animal_agent_id", 1),
+  ("animal_add_to_nearby_herd", # server: try add the animal to the herd or another nearby, otherwise spawn a new herd manager
+   [(store_script_param, ":animal_agent_id", 1), # must be valid
     (store_script_param, ":herd_manager", 2),
 
     (try_begin),
@@ -8988,8 +8992,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("animal_remove_from_herd",
-   [(store_script_param, ":animal_agent_id", 1),
+  ("animal_remove_from_herd", # server: remove the animal from the herd manager, if valid
+   [(store_script_param, ":animal_agent_id", 1), # must be valid
     (store_script_param, ":herd_manager", 2),
 
     (try_begin),
@@ -9014,7 +9018,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_spawn_herd_animal",
+  ("cf_spawn_herd_animal", # server: spawn an animal and add to a nearby herd
    [(store_script_param, ":animal_item_id", 1),
     (store_script_param, ":herd_manager", 2),
 
@@ -9037,8 +9041,8 @@ scripts.extend([
     (agent_set_slot, ":animal_agent_id", slot_agent_animal_birth_time, ":time"),
     ]),
 
-  ("cf_can_spawn_herd_animal",
-   [(store_script_param, ":agent_id", 1),
+  ("cf_can_spawn_herd_animal", # server: check whether a player can spawn a new herd animal
+   [(store_script_param, ":agent_id", 1), # must be valid
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -9049,8 +9053,8 @@ scripts.extend([
     (lt, "$g_herd_animal_count", "$g_max_herd_animal_count"),
     ]),
 
-  ("animal_get_age",
-   [(store_script_param, ":animal_agent_id", 1),
+  ("animal_get_age", # server: reg0 = the seconds since the animal was born as a child, or extrapolated for spawned adults
+   [(store_script_param, ":animal_agent_id", 1), # must be valid
 
     (agent_get_slot, ":birth_time", ":animal_agent_id", slot_agent_animal_birth_time),
     (store_mission_timer_a, ":age"),
@@ -9059,8 +9063,8 @@ scripts.extend([
     (assign, reg0, ":age"),
     ]),
 
-  ("animal_check_grow",
-   [(store_script_param, ":animal_agent_id", 1),
+  ("animal_check_grow", # server: check if the animal should grow into an adult or birth a child; reg0 = the animal agent id
+   [(store_script_param, ":animal_agent_id", 1), # must be valid
 
     (agent_get_item_id, ":animal_item_id", ":animal_agent_id"),
     (store_mission_timer_a, ":time"),
@@ -9089,7 +9093,7 @@ scripts.extend([
       (try_end),
       (agent_get_slot, ":herd_manager", ":animal_agent_id", slot_agent_animal_herd_manager),
       (agent_set_slot, ":animal_agent_id", slot_agent_animal_herd_manager, -1),
-      (try_begin),
+      (try_begin), # try add the new adult to the herd replacing the child
         (prop_instance_is_valid, ":herd_manager"),
         (scene_prop_slot_eq, ":herd_manager", slot_animal_herd_manager_adult_item_id, ":adult_item_id"),
         (item_get_slot, ":loop_end", ":adult_item_id", slot_item_animal_max_in_herd),
@@ -9112,14 +9116,14 @@ scripts.extend([
       (agent_get_slot, ":reproduce_time", ":animal_agent_id", slot_agent_animal_grow_time),
       (this_or_next|le, ":reproduce_time", 0),
       (ge, ":time", ":reproduce_time"),
-      (try_begin),
+      (try_begin), # wait one cycle after growing to adult before reproducing
         (gt, ":reproduce_time", 0),
         (agent_get_slot, ":herd_manager", ":animal_agent_id", slot_agent_animal_herd_manager),
         (try_begin),
           (prop_instance_is_valid, ":herd_manager"),
           (scene_prop_slot_eq, ":herd_manager", slot_animal_herd_manager_adult_item_id, ":animal_item_id"),
           (item_get_slot, ":loop_end", ":animal_item_id", slot_item_animal_max_in_herd),
-          (try_for_range, ":herd_slot", 0, ":loop_end"),
+          (try_for_range, ":herd_slot", 0, ":loop_end"), # verify that there is at least one other adult in the herd
             (scene_prop_get_slot, ":other_animal_agent_id", ":herd_manager", ":herd_slot"),
             (neq, ":other_animal_agent_id", ":animal_agent_id"),
             (agent_is_active, ":other_animal_agent_id"),
@@ -9146,20 +9150,20 @@ scripts.extend([
     (assign, reg0, ":animal_agent_id"),
     ]),
 
-  ("animal_move",
-   [(store_script_param, ":animal_agent_id", 1),
-    (store_script_param, ":leader_agent_id", 2),
+  ("animal_move", # server: move animals, trying to avoid drowning and running into walls, following the herd leader; failing to reproduce and starving if the leader couldn't move far enough
+   [(store_script_param, ":animal_agent_id", 1), # must be valid
+    (store_script_param, ":leader_agent_id", 2), # must be valid
 
     (set_fixed_point_multiplier, 100),
     (agent_get_slot, ":herd_manager", ":animal_agent_id", slot_agent_animal_herd_manager),
     (assign, ":herd_is_starving", 0),
-    (try_begin),
+    (try_begin), # for the leader, check the actual distance moved since last time
       (eq, ":animal_agent_id", ":leader_agent_id"),
       (agent_get_position, pos1, ":animal_agent_id"),
       (store_random_in_range, ":random_angle", -30, 30),
       (prop_instance_get_position, pos6, ":herd_manager"),
       (get_sq_distance_between_positions, ":sq_distance_moved", pos1, pos6),
-      (try_begin),
+      (try_begin), # if the distance is insufficient, turn around to try avoid a possible obstruction
         (le, ":sq_distance_moved", sq(500)),
         (assign, ":herd_is_starving", 1),
         (val_add, ":random_angle", 180),
@@ -9213,7 +9217,7 @@ scripts.extend([
       (position_get_x, ":scene_max_x", pos9),
       (position_get_y, ":scene_max_y", pos9),
       (assign, ":loop_end", 10),
-      (try_for_range, ":unused", 0, ":loop_end"),
+      (try_for_range, ":unused", 0, ":loop_end"), # test multiple different distances and angles diverging from the current heading
         (copy_position, pos2, pos1),
         (position_rotate_z, pos2, ":random_angle"),
         (try_begin),
@@ -9226,7 +9230,7 @@ scripts.extend([
         (copy_position, pos3, pos2),
         (position_set_z, pos3, 0),
         (position_get_distance_to_terrain, ":water_depth", pos3),
-        (try_begin),
+        (try_begin), # avoid water and scene boundaries
           (lt, ":water_depth", z_position_water_level * -1),
           (assign, ":continue", 1),
           (try_begin),
@@ -9244,7 +9248,7 @@ scripts.extend([
           (position_move_z, pos2, ":distance_to_terrain"),
           (try_begin),
             (eq, ":animal_agent_id", ":leader_agent_id"),
-            (eq, ":times_stuck", 0),
+            (eq, ":times_stuck", 0), # unless the animal didn't move last time, avoid trying to move to a position without clear line of sight
             (copy_position, pos4, pos1),
             (copy_position, pos5, pos2),
             (position_move_z, pos4, 100, 1),
@@ -9277,9 +9281,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("animal_hit",
-   [(store_script_param, ":animal_agent_id", 1),
-    (store_script_param, ":attacker_agent_id", 2),
+  ("animal_hit", # server: handle animal reactions to being hit by various tools and weapons; the damage result is set for ti_on_agent_hit
+   [(store_script_param, ":animal_agent_id", 1), # must be valid
+    (store_script_param, ":attacker_agent_id", 2), # must be valid
     (store_script_param, ":damage_dealt", 3),
     (store_script_param, ":weapon_item_id", 4),
 
@@ -9294,7 +9298,7 @@ scripts.extend([
         (is_between, ":item_class", item_class_herding_calm, item_class_herding_rouse + 1),
         (assign, ":damage_result", 0),
         (agent_get_position, pos1, ":animal_agent_id"),
-        (try_begin),
+        (try_begin), # move the animal in the oppisite direction from the hitting agent, with a random angle variation depending on skill and wildness
           (eq, ":item_class", item_class_herding_rouse),
           (set_fixed_point_multiplier, 100),
           (agent_get_position, pos2, ":attacker_agent_id"),
@@ -9354,7 +9358,7 @@ scripts.extend([
       (val_min, ":food", ":meat_count"),
       (agent_set_slot, ":animal_agent_id", slot_agent_animal_food, ":food"),
       (assign, ":damage_result", 0),
-    (else_try),
+    (else_try), # if enough damage is dealt with other weapons, check the whole herd for reactions
       (agent_get_item_id, ":animal_item_id", ":animal_agent_id"),
       (item_get_slot, ":wildness", ":animal_item_id", slot_item_animal_wildness),
       (store_random_in_range, ":minimum_startle_damage", 1, 10),
@@ -9385,9 +9389,9 @@ scripts.extend([
     (set_trigger_result, ":damage_result"),
     ]),
 
-  ("animal_react_to_attack",
-   [(store_script_param, ":attacker_agent_id", 1),
-    (store_script_param, ":animal_agent_id", 2),
+  ("animal_react_to_attack", # server: handle specific animal reactions to being attacked, whether to charge or flee
+   [(store_script_param, ":attacker_agent_id", 1), # must be valid
+    (store_script_param, ":animal_agent_id", 2), # must be valid
     (store_script_param, ":damage_dealt", 3),
 
     (agent_get_item_id, ":animal_item_id", ":animal_agent_id"),
@@ -9407,7 +9411,7 @@ scripts.extend([
       (val_mul, ":angle", -1),
       (try_begin),
         (eq, ":reaction", animal_reaction_charge),
-        (store_random_in_range, ":distance", 500, 700),
+        (store_random_in_range, ":distance", 500, 700), # move past the targeted agent, so the animal charges through at speed
         (try_begin),
           (lt, ":distance_to_animal", 200),
           (position_copy_rotation, pos1, pos2),
@@ -9452,10 +9456,10 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("check_agent_horse_speed_factor",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":horse_agent_id", 2),
-    (store_script_param, ":under_water", 3),
+  ("check_agent_horse_speed_factor", # server: adjust riding speed for water, horse health, and the agent being overloaded by weapons or armor
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":horse_agent_id", 2), # must be valid
+    (store_script_param, ":under_water", 3), # 1 if the horse is below water level
 
     (store_agent_hit_points, ":speed_factor", ":horse_agent_id", 0),
     (try_begin),
@@ -9478,7 +9482,7 @@ scripts.extend([
       (val_max, ":speed_factor", 0),
     (try_end),
     (agent_set_horse_speed_factor, ":agent_id", ":speed_factor"),
-    (try_begin),
+    (try_begin), # drop couchable lances if unusable, since the different attack method won't be detected by the normal check
       (agent_slot_eq, ":agent_id", slot_agent_cannot_attack, 1),
       (agent_get_wielded_item, ":item_id", ":agent_id", 0),
       (neq, ":item_id", -1),
@@ -9490,8 +9494,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("check_remove_lost_horse",
-   [(store_script_param, ":horse_agent_id", 1),
+  ("check_remove_lost_horse", # server: remove horses that have strayed away from their last rider for a long time, to reduce server load
+   [(store_script_param, ":horse_agent_id", 1), # must be valid
 
     (agent_get_item_id, ":horse_item_id", ":horse_agent_id"),
     (try_begin),
@@ -9507,7 +9511,7 @@ scripts.extend([
         (agent_set_slot, ":horse_agent_id", slot_agent_horse_last_rider, ":rider_agent_id"),
       (try_end),
       (call_script, "script_check_agent_horse_speed_factor", ":rider_agent_id", ":horse_agent_id", 0),
-    (else_try),
+    (else_try), # don't remove horses with carts attached
       (agent_get_attached_scene_prop, ":attached_instance_id", ":horse_agent_id"),
       (prop_instance_is_valid, ":attached_instance_id"),
     (else_try),
@@ -9525,7 +9529,7 @@ scripts.extend([
         (agent_clear_scripted_mode, ":horse_agent_id"),
         (agent_force_rethink, ":horse_agent_id"),
       (try_end),
-    (else_try),
+    (else_try), # negative last rider values count up the amount of checks while strayed
       (le, ":last_rider", -20),
       (store_item_value, ":horse_value", ":horse_item_id"),
       (assign, ":kill", 1),
@@ -9546,8 +9550,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("check_agent_drowning",
-   [(store_script_param, ":agent_id", 1),
+  ("check_agent_drowning", # server: check whether the agent's mouth is below water level, dealing damage after a length of time
+   [(store_script_param, ":agent_id", 1), # must be valid
 
     (try_begin),
       (agent_is_alive, ":agent_id"),
@@ -9561,7 +9565,7 @@ scripts.extend([
       (assign, ":drown_height", -192),
       (set_fixed_point_multiplier, 100),
       (position_get_z, ":height", pos1),
-      (try_begin),
+      (try_begin), # adjust for the angle of a horses's body making the head higher or lower
         (gt, ":horse_item_id", -1),
         (copy_position, pos2, pos1),
         (position_move_y, pos2, 50),
@@ -9572,7 +9576,7 @@ scripts.extend([
         (val_abs, ":horse_height_difference"),
         (lt, ":horse_height_difference", 100),
         (assign, ":height", ":horse_height"),
-      (else_try),
+      (else_try), # if a rider, add the approximate height of the horse
         (gt, ":horse_agent_id", -1),
         (assign, ":drown_height", -275),
       (else_try),
@@ -9588,7 +9592,7 @@ scripts.extend([
         (val_abs, ":forwards_speed"),
         (val_div, ":forwards_speed", 200),
         (val_add, ":forwards_speed", 1),
-        (val_add, ":drowning_count", ":forwards_speed"),
+        (val_add, ":drowning_count", ":forwards_speed"), # drown more quickly at higher speed
         (agent_set_slot, ":agent_id", slot_agent_drowning_count, ":drowning_count"),
         (store_sub, ":damage", ":drowning_count", 2),
         (agent_get_troop_id, ":troop_id", ":agent_id"),
@@ -9643,14 +9647,13 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("setup_ship",
-   [(store_script_param, ":hull_instance_id", 1),
+  ("setup_ship", # server: spawn the necessary parts for a ship at mission start
+   [(store_script_param, ":hull_instance_id", 1), # must be valid
 
     (troop_get_slot, ":ship_array_count", "trp_ship_array", 0),
     (val_add, ":ship_array_count", 1),
     (troop_set_slot, "trp_ship_array", ":ship_array_count", ":hull_instance_id"),
     (troop_set_slot, "trp_ship_array", 0, ":ship_array_count"),
-
     (try_begin),
       (multiplayer_is_server),
       (neq, "$g_edit_scene", 1),
@@ -9658,7 +9661,6 @@ scripts.extend([
       (store_script_param, ":sail_off_scene_prop_id", 3),
       (store_script_param, ":ramp_scene_prop_id", 4),
       (store_script_param, ":hold_scene_prop_id", 5),
-
       (prop_instance_get_position, pos1, ":hull_instance_id"),
       (try_begin),
         (gt, ":sail_scene_prop_id", -1),
@@ -9720,9 +9722,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("agent_get_ship_station",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("agent_get_ship_station", # check if an agent is within the correct area on a ship to operate one of the stations; reg0 = constant starting with ship_station_
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (assign, ":station", ship_station_not_on_ship),
     (try_begin),
@@ -9752,9 +9754,9 @@ scripts.extend([
     (assign, reg0, ":station"),
     ]),
 
-  ("ship_get_ramp_relative_position",
-   [(store_script_param, ":ramp_target", 1),
-    (store_script_param, ":match_ground", 2),
+  ("ship_get_ramp_relative_position", # return the relative position of a ramp on a ship in pos30, for use with position_transform_position_to_parent
+   [(store_script_param, ":ramp_target", 1), # 0 = middle, -1 = left, 1 = right
+    (store_script_param, ":match_ground", 2), # 1 = try to angle the ramp down so the end meets ground level
 
     (init_position, pos30),
     (try_begin),
@@ -9801,9 +9803,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("use_ship_ramp",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("use_ship_ramp", # server: move a ship's ramp to a different position, based on the relative position of the agent to the ramp
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (prop_instance_get_position, pos1, ":instance_id"),
     (agent_get_position, pos2, ":agent_id"),
@@ -9820,16 +9822,16 @@ scripts.extend([
       (else_try),
         (assign, ":ramp_target", -1),
       (try_end),
-    (else_try),
+    (else_try), # don't allow agents off the ship to withdraw the ramp
       (scene_prop_has_agent_on_it, ":hull_instance_id", ":agent_id"),
       (assign, ":ramp_target", 0),
     (try_end),
     (scene_prop_set_slot, ":instance_id", slot_scene_prop_target_position, ":ramp_target"),
     ]),
 
-  ("cf_check_ship_climb_side",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":instance_id", 2),
+  ("cf_check_ship_climb_side", # server and clients: check if the agent is near enough to climb on the ship, performing the movement if the server
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":instance_id", 2), # must be valid
 
     (scene_prop_slot_eq, ":instance_id", slot_scene_prop_state, scene_prop_state_active),
     (set_fixed_point_multiplier, 100),
@@ -9861,8 +9863,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_client_check_control_ship",
-   [(multiplayer_get_my_player, ":my_player_id"),
+  ("cf_client_check_control_ship", # clients: check for keys pressed when at the correct areas of a ship, sending the commands to the server
+   [
+    (multiplayer_get_my_player, ":my_player_id"),
     (player_get_agent_id, ":my_agent_id", ":my_player_id"),
     (agent_is_active, ":my_agent_id"),
     (agent_is_alive, ":my_agent_id"),
@@ -9917,9 +9920,9 @@ scripts.extend([
     (eq, ":ship_array_end", -1),
     ]),
 
-  ("cf_control_ship",
+  ("cf_control_ship", # server: handle player requests to control a ship
    [(store_script_param, ":player_id", 1),
-    (store_script_param, ":instance_id", 2),
+    (store_script_param, ":instance_id", 2), # must be valid
     (store_script_param, ":forwards", 3),
     (store_script_param, ":rotation", 4),
 
@@ -9970,15 +9973,15 @@ scripts.extend([
     (gt, reg0, ship_station_not_on_ship),
     ]),
 
-  ("move_ship",
-   [(store_script_param, ":hull_instance_id", 1),
+  ("move_ship", # server: animate movement of all ship parts together, also handling collision detection
+   [(store_script_param, ":hull_instance_id", 1), # must be valid
 
     (scene_prop_get_slot, ":ramp_instance_id", ":hull_instance_id", slot_scene_prop_linked_ramp),
     (scene_prop_get_slot, ":forwards", ":hull_instance_id", slot_scene_prop_position),
     (scene_prop_get_slot, ":target_forwards", ":hull_instance_id", slot_scene_prop_target_position),
     (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_position, ":target_forwards"),
     (try_begin),
-      (neq, ":forwards", 0),
+      (neq, ":forwards", 0), # ship is moving
       (set_fixed_point_multiplier, 100),
       (prop_instance_get_position, pos1, ":hull_instance_id"),
       (assign, ":crashed", 0),
@@ -9989,12 +9992,12 @@ scripts.extend([
       (position_set_z, pos4, z_position_to_hide_object),
       (troop_get_slot, ":ship_array_end", "trp_ship_array", 0),
       (val_add, ":ship_array_end", 1),
-      (try_for_range, ":ship_array_slot", 1, ":ship_array_end"),
+      (try_for_range, ":ship_array_slot", 1, ":ship_array_end"), # check collision with other ships
         (troop_get_slot, ":other_hull_instance_id", "trp_ship_array", ":ship_array_slot"),
         (neq, ":other_hull_instance_id", ":hull_instance_id"),
         (scene_prop_get_slot, ":other_forwards", ":other_hull_instance_id", slot_scene_prop_position),
         (assign, ":continue", 1),
-        (try_begin),
+        (try_begin), # only check if the other ship is moving or it is later in the list (hasn't been moved and checked itself yet)
           (eq, ":other_forwards", 0),
         (else_try),
           (gt, ":ship_array_slot", "$g_loop_ship_to_check"),
@@ -10003,7 +10006,7 @@ scripts.extend([
         (try_end),
         (eq, ":continue", 1),
         (scene_prop_get_slot, ":other_cd_scene_prop_id", ":other_hull_instance_id", slot_scene_prop_collision_kind),
-        (scene_prop_get_instance, ":other_cd_instance_id", ":other_cd_scene_prop_id", 1),
+        (scene_prop_get_instance, ":other_cd_instance_id", ":other_cd_scene_prop_id", 1), # use primitive collision detecting meshes
         (prop_instance_get_position, pos2, ":other_hull_instance_id"),
         (prop_instance_set_position, ":other_cd_instance_id", pos2, 1),
         (try_begin),
@@ -10027,7 +10030,7 @@ scripts.extend([
         (eq, ":crashed", 0),
         (troop_get_slot, ":collision_props_count", "trp_ship_array", slot_ship_array_collision_props_count),
         (store_add, ":collision_props_end", slot_ship_array_collision_props_begin, ":collision_props_count"),
-        (try_for_range, ":collision_prop_slot", slot_ship_array_collision_props_begin, ":collision_props_end"),
+        (try_for_range, ":collision_prop_slot", slot_ship_array_collision_props_begin, ":collision_props_end"), # check collision with the list of static props near water
           (troop_get_slot, ":collision_instance_id", "trp_ship_array", ":collision_prop_slot"),
           (prop_instance_intersects_with_prop_instance, ":cd_instance_id", ":collision_instance_id"),
           (copy_position, pos2, pos1),
@@ -10055,7 +10058,7 @@ scripts.extend([
         (position_move_x, pos4, ":ship_length"),
       (try_end),
       (position_transform_position_to_parent, pos5, pos1, pos4),
-      (try_begin),
+      (try_begin), # check collision with the terrain
         (eq, ":crashed", 0),
         (copy_position, pos6, pos5),
         (position_get_distance_to_terrain, ":ground_clearance", pos6),
@@ -10075,7 +10078,7 @@ scripts.extend([
         (copy_position, pos1, pos3),
       (try_end),
       (try_begin),
-        (eq, ":crashed", 0),
+        (eq, ":crashed", 0), # stop without damage at the scene boundaries
         (get_scene_boundaries, pos7, pos8),
         (position_get_x, ":hull_end_x", pos5),
         (position_get_x, ":scene_min_x", pos7),
@@ -10106,7 +10109,7 @@ scripts.extend([
           (neq, ":rotation", 0),
           (scene_prop_get_slot, ":agent_id", ":hull_instance_id", slot_scene_prop_controlling_agent),
           (call_script, "script_agent_get_ship_station", ":agent_id", ":hull_instance_id"),
-          (try_begin),
+          (try_begin), # only keep the rudder setting while the steering agent stays there
             (neq, reg0, ship_station_rudder),
             (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_target_rotation, 0),
           (try_end),
@@ -10121,7 +10124,7 @@ scripts.extend([
           (val_abs, ":fore_side_ratio"),
           (store_atan, ":rotate_angle", ":fore_side_ratio"),
           (convert_from_fixed_point, ":rotate_angle"),
-          (try_begin),
+          (try_begin), # the rotation was converted to positive for the trigonometry calculations, convert it back if necessary
             (this_or_next|is_between, 0, ":rotation", ":forwards"),
             (is_between, 0, ":forwards", ":rotation"),
             (val_mul, ":rotate_angle", -1),
@@ -10161,7 +10164,7 @@ scripts.extend([
         (prop_instance_enable_physics, ":inactive_sail_instance_id", 0),
       (try_end),
     (try_end),
-    (try_begin),
+    (try_begin), # animate the ramp if necessary, even if the ship is not moving
       (neq, ":ramp_instance_id", -1),
       (scene_prop_get_slot, ":ramp_target", ":ramp_instance_id", slot_scene_prop_target_position),
       (assign, ":continue", 1),
@@ -10184,8 +10187,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("animate_ship_parts",
-   [(store_script_param, ":instance_id", 1),
+  ("animate_ship_parts", # server: animate the ship parts together to pos20
+   [(store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":animation_time", 2),
 
     (set_fixed_point_multiplier, 100),
@@ -10220,19 +10223,19 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_damage_ship",
+  ("cf_damage_ship", # server: apply damage or repairs to the ship, whether from an agent or from crashing
    [(multiplayer_is_server),
-    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":hit_damage", 2),
     (store_script_param, ":full_hit_points", 3),
-    (store_script_param, ":script_damage", 4),
+    (store_script_param, ":script_damage", 4), # 0 = called from ti_on_scene_prop_hit, 1 = apply the damage manually
 
     (try_begin),
       (eq, ":script_damage", 1),
       (assign, ":agent_id", -1),
     (else_try),
       (set_fixed_point_multiplier, 1),
-      (position_get_x, ":agent_id", pos2),
+      (position_get_x, ":agent_id", pos2), # expects agent id in pos2.x from ti_on_scene_prop_hit
     (try_end),
     (set_fixed_point_multiplier, 100),
     (call_script, "script_cf_hit_repairable_scene_prop", ":instance_id", ":hit_damage", ":full_hit_points", item_class_wood, ":agent_id", 1, ":script_damage"),
@@ -10284,7 +10287,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("setup_ship_collision_props",
+  ("setup_ship_collision_props", # server, edit mode: at mission start, store in an array all scene props near water that seem possible to collide ships into
    [
     (set_fixed_point_multiplier, 100),
     (assign, ":current_index", slot_ship_array_collision_props_begin),
@@ -10307,8 +10310,8 @@ scripts.extend([
     (troop_set_slot, "trp_ship_array", slot_ship_array_collision_props_count, ":count"),
     ]),
 
-  ("setup_ferry",
-   [(store_script_param, ":instance_id", 1),
+  ("setup_ferry", # server: at mission start, calculate angle, positions, and movement distances for the ferry boat
+   [(store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":winch_scene_prop_id", 2),
 
     (scene_prop_get_slot, ":platform_1_instance_id", ":instance_id", slot_scene_prop_linked_platform_1),
@@ -10335,13 +10338,13 @@ scripts.extend([
       (try_end),
       (val_add, ":max_position", 1),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_max_position, ":max_position"),
-      (set_fixed_point_multiplier, 1000000),
+      (set_fixed_point_multiplier, 1000000), # line up the ferry boat pointing exactly between platforms
       (position_transform_position_to_local, pos3, pos1, pos2),
       (position_get_x, ":relative_x", pos3),
       (position_get_y, ":relative_y", pos3),
       (store_atan2, ":angle", ":relative_x", ":relative_y"),
       (val_mul, ":angle", -1),
-      (position_rotate_x_floating, pos1, 90 * 1000000),
+      (position_rotate_x_floating, pos1, 90 * 1000000), # hack to emulate missing position_rotate_z_floating operation
       (position_rotate_y_floating, pos1, ":angle"),
       (position_rotate_x_floating, pos1, -90 * 1000000),
       (set_fixed_point_multiplier, 100),
@@ -10357,10 +10360,10 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_use_ferry_winch",
-   [(store_script_param, ":agent_id", 1),
-    (store_script_param, ":winch_instance_id", 2),
-    (store_script_param, ":is_platform", 3),
+  ("cf_use_ferry_winch", # server: handle players controlling a ferry boat
+   [(store_script_param, ":agent_id", 1), # must be valid
+    (store_script_param, ":winch_instance_id", 2), # must be valid
+    (store_script_param, ":is_platform", 3), # 0 = winch with full control, 1 = platform only allowing pulling the boat towards it
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
@@ -10386,7 +10389,7 @@ scripts.extend([
       (assign, ":platform_instance_id", ":winch_instance_id"),
       (scene_prop_get_slot, ":winch_instance_id", ":ferry_instance_id", slot_scene_prop_linked_ferry_winch),
       (scene_prop_get_slot, ":controlling_agent_id", ":ferry_instance_id", slot_scene_prop_controlling_agent),
-      (try_begin),
+      (try_begin), # don't allow pulling from the platforms if the previously controlling agent is still on board
         (neq, ":controlling_agent_id", ":agent_id"),
         (agent_is_active, ":controlling_agent_id"),
         (agent_is_alive, ":controlling_agent_id"),
@@ -10418,7 +10421,7 @@ scripts.extend([
     (try_begin),
       (eq, ":current_target", ":last_position"),
       (assign, ":total_distance", ":max_distance"),
-    (else_try),
+    (else_try), # calculate the total distance from the start to avoid accumulating errors
       (store_mul, ":total_distance", ":current_target", ":move_distance"),
       (val_clamp, ":total_distance", 0, ":max_distance"),
     (try_end),
@@ -10433,7 +10436,7 @@ scripts.extend([
     (position_set_z, pos4, z_position_to_hide_object),
     (troop_get_slot, ":ship_array_end", "trp_ship_array", 0),
     (val_add, ":ship_array_end", slot_ship_array_begin),
-    (try_for_range, ":ship_array_slot", slot_ship_array_begin, ":ship_array_end"),
+    (try_for_range, ":ship_array_slot", slot_ship_array_begin, ":ship_array_end"), # check for collision with all ships
       (troop_get_slot, ":other_hull_instance_id", "trp_ship_array", ":ship_array_slot"),
       (scene_prop_get_slot, ":other_cd_scene_prop_id", ":other_hull_instance_id", slot_scene_prop_collision_kind),
       (scene_prop_get_instance, ":other_cd_instance_id", ":other_cd_scene_prop_id", 1),
@@ -10463,7 +10466,7 @@ scripts.extend([
     (prop_instance_rotate_to_position, ":winch_instance_id", pos1, 200, ":winch_rotation"),
     ]),
 
-  ("cf_turn_windmill_fans",
+  ("cf_turn_windmill_fans", # clients: make windmill fans rotate, only visually
    [(store_script_param_1, ":fan_no"),
 
     (scene_prop_get_instance, ":instance_id", "spr_windmill_fan_turning", ":fan_no"),
@@ -10474,7 +10477,7 @@ scripts.extend([
     (call_script, "script_cf_turn_windmill_fans", ":fan_no"),
     ]),
 
-  ("scene_set_day_time",
+  ("scene_set_day_time", # clients: at mission start, set the time of day, skybox, and haze from scene prop values
    [
     (try_begin),
       (scene_prop_get_instance, ":instance_id", "spr_pw_scene_day_time", 0),
@@ -10495,8 +10498,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_play_scene_ambient_sound",
-   [(store_script_param, ":instance_id", 1),
+  ("cf_play_scene_ambient_sound", # clients: check if an ambient sound emitter scene prop should be played
+   [(store_script_param, ":instance_id", 1), # must be valid
 
     (prop_instance_get_variation_id_2, ":probability", ":instance_id"),
     (le, ":probability", 100),
@@ -10512,7 +10515,7 @@ scripts.extend([
     (play_sound_at_position, ":sound_id", pos2, sf_vol_15|sf_priority_7),
     ]),
 
-  ("music_set_situation",
+  ("music_set_situation", # clients: check if the music type should be changed for a different situation
    [
     (multiplayer_get_my_player, ":player_id"),
     (try_begin),
@@ -10533,7 +10536,7 @@ scripts.extend([
       (gt, reg1, -1),
       (assign, ":nearby_castle_faction_id", reg0),
       (try_begin),
-        (eq, ":nearby_castle_faction_id", ":faction_id"),
+        (eq, ":nearby_castle_faction_id", ":faction_id"), # nearest to one of the player faction's castles
         (assign, ":peaceful_loop_end", factions_end),
         (try_for_range, ":other_faction_id", castle_factions_begin, ":peaceful_loop_end"),
           (neq, ":other_faction_id", ":faction_id"),
@@ -10549,7 +10552,7 @@ scripts.extend([
           (assign, ":peaceful_loop_end", 0),
         (try_end),
         (try_begin),
-          (eq, ":peaceful_loop_end", 0),
+          (eq, ":peaceful_loop_end", 0), # the player's faction is hostile to another occupied faction, not at peace
           (assign, ":situation", mtf_sit_ambushed),
         (else_try),
           (assign, ":situation", mtf_sit_tavern),
@@ -10563,7 +10566,7 @@ scripts.extend([
           (player_slot_eq, ":other_player_id", slot_player_faction_id, ":nearby_castle_faction_id"),
           (assign, ":max_players", -1),
         (try_end),
-        (eq, ":max_players", -1),
+        (eq, ":max_players", -1), # nearest to a castle occupied by a hostile faction
         (assign, ":situation", mtf_sit_siege),
       (else_try),
         (assign, ":situation", mtf_sit_town),
@@ -10574,7 +10577,7 @@ scripts.extend([
       (position_get_distance_to_ground_level, ":ground_distance", pos1),
       (store_sub, ":difference", ":terrain_distance", ":ground_distance"),
       (val_abs, ":difference"),
-      (gt, ":difference", 50),
+      (gt, ":difference", 50), # mission camera is not directly above terrain, probably in a town or building
       (try_begin),
         (player_is_active, ":player_id"),
         (player_get_agent_id, ":agent_id", ":player_id"),
@@ -10595,7 +10598,7 @@ scripts.extend([
     (val_mul, "$g_recent_nearby_deaths_factor", 2),
     ]),
 
-  ("check_spawn_bots",
+  ("check_spawn_bots", # server: check if more testing bots should be spawned
    [(store_script_param, ":dead_agent_id", 1),
 
     (try_begin),
@@ -10627,7 +10630,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_client_agent_is_inactive",
+  ("cf_client_agent_is_inactive", # clients: try to check that the agent is not moving or fighting
    [
     (assign, ":action", 0),
     (multiplayer_get_my_player, ":player_id"),
@@ -10646,8 +10649,8 @@ scripts.extend([
     (eq, ":action", 0),
     ]),
 
-  ("request_poll",
-   [(store_script_param, ":poll_type", 1),
+  ("request_poll", # server: handle requests for polls from players
+   [(store_script_param, ":poll_type", 1), # constants starting with poll_type_
     (store_script_param, ":requester_player_id", 2),
     (store_script_param, ":value_1", 3),
 
@@ -10657,10 +10660,10 @@ scripts.extend([
       (assign, ":gold_cost", 0),
       (assign, ":poll_faction_id", factions_end),
       (assign, ":poll_error", 0),
-      (try_begin),
+      (try_begin), # ensure a global poll is not running
         (neg|faction_slot_eq, factions_end, slot_faction_poll_end_time, 0),
         (assign, ":poll_error", poll_result_existing),
-      (else_try),
+      (else_try), # for a new global poll, ensure that a faction poll is not running
         (neq, ":poll_type", poll_type_faction_lord),
         (try_for_range, ":other_faction_id", factions_begin, factions_end),
           (neg|faction_slot_eq, ":other_faction_id", slot_faction_poll_end_time, 0),
@@ -10701,10 +10704,10 @@ scripts.extend([
         (eq, ":poll_type", poll_type_faction_lord),
         (player_is_active, ":value_1"),
         (player_get_slot, ":poll_faction_id", ":requester_player_id", slot_player_faction_id),
-        (try_begin),
+        (try_begin), # ensure that the player is not voting for themself and the faction is not locked
           (neq, ":value_1", ":requester_player_id"),
           (faction_slot_eq, ":poll_faction_id", slot_faction_is_locked, 0),
-        (else_try),
+        (else_try), # but allow admins to override the last conditions
           (player_is_admin, ":requester_player_id"),
           (player_slot_eq, ":requester_player_id", slot_player_admin_no_factions, 0),
         (else_try),
@@ -10759,7 +10762,7 @@ scripts.extend([
       (faction_set_slot, ":poll_faction_id", slot_faction_poll_type, ":poll_type"),
       (faction_set_slot, ":poll_faction_id", slot_faction_poll_value_1, ":value_1"),
       (faction_set_slot, ":poll_faction_id", slot_faction_poll_value_2, ":value_2"),
-      (try_begin),
+      (try_begin), # save target player information in case they disconnect before the poll ends
         (this_or_next|eq, ":poll_type", poll_type_kick_player),
         (eq, ":poll_type", poll_type_faction_lord),
         (player_get_unique_id, ":unique_id", ":value_1"),
@@ -10771,8 +10774,8 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("show_poll",
-   [(store_script_param, ":poll_type", 1),
+  ("show_poll", # clients: handle showing polls or poll results
+   [(store_script_param, ":poll_type", 1), # constants starting with poll_type_ and poll_result_
 
     (try_begin),
       (ge, ":poll_type", 0),
@@ -10807,14 +10810,14 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("poll_vote",
-   [(store_script_param, ":player_id", 1),
+  ("poll_vote", # server: handle player votes for polls
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":vote", 2),
 
     (try_begin),
       (player_get_slot, ":poll_faction_id", ":player_id", slot_player_poll_faction_id),
       (gt, ":poll_faction_id", 0),
-      (player_set_slot, ":player_id", slot_player_poll_faction_id, 0),
+      (player_set_slot, ":player_id", slot_player_poll_faction_id, 0), # prevent the player voting again
       (ge, ":poll_faction_id", castle_factions_begin),
       (le, ":poll_faction_id", factions_end),
       (faction_slot_ge, ":poll_faction_id", slot_faction_poll_end_time, 1),
@@ -10822,7 +10825,7 @@ scripts.extend([
       (try_begin),
         (neq, ":poll_faction_id", factions_end),
         (neg|player_slot_eq, ":player_id", slot_player_faction_id, ":poll_faction_id"),
-        (assign, ":remove_vote", 1),
+        (assign, ":remove_vote", 1), # remove vote if the player was not in the faction at the start of the poll
       (else_try),
         (eq, ":vote", poll_vote_abstain),
         (assign, ":remove_vote", 1),
@@ -10862,7 +10865,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("check_polls_ended",
+  ("check_polls_ended", # server: check all factions for polls that have ended
    [
     (store_mission_timer_a, ":current_time"),
     (store_add, ":factions_end", factions_end, 1),
@@ -10875,7 +10878,6 @@ scripts.extend([
       (store_add, ":received_votes", ":yes_votes", ":no_votes"),
       (this_or_next|ge, ":received_votes", ":voter_count"),
       (ge, ":current_time", ":end_time"),
-
       (faction_set_slot, ":poll_faction_id", slot_faction_poll_end_time, 0),
       (store_sub, ":abstain_votes", ":voter_count", ":received_votes"),
       (val_mul, ":abstain_votes", 3),
@@ -10894,9 +10896,9 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("apply_poll_consequences",
+  ("apply_poll_consequences", # server: try to apply the poll consequences, displaying the result to voters
    [(store_script_param, ":poll_faction_id", 1),
-    (store_script_param, ":poll_result", 2),
+    (store_script_param, ":poll_result", 2), # constants starting with poll_result_
 
     (faction_get_slot, ":poll_type", ":poll_faction_id", slot_faction_poll_type),
     (faction_get_slot, ":value_1", ":poll_faction_id", slot_faction_poll_value_1),
@@ -10946,7 +10948,7 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("select_target_agent",
+  ("select_target_agent", # clients: find the agent projected closest to the center of the view, highlighting them and storing in $g_target_agent_id and $g_target_player_id
    [
     (set_fixed_point_multiplier, 1000),
     (multiplayer_get_my_player, ":my_player_id"),
@@ -10993,7 +10995,7 @@ scripts.extend([
       (gt, "$g_target_agent_id", -1),
       (agent_get_position, pos2, "$g_target_agent_id"),
       (particle_system_burst, "psys_target_agent", pos2, 1),
-      (agent_set_slot, "$g_target_agent_id", slot_agent_is_targeted, 1),
+      (agent_set_slot, "$g_target_agent_id", slot_agent_is_targeted, 1), # set an agent slot for verification if that agent dies before the usage
       (agent_get_player_id, ":target_player_id", "$g_target_agent_id"),
       (try_begin),
         (player_is_active, ":target_player_id"),
@@ -11013,7 +11015,7 @@ scripts.extend([
     (set_fixed_point_multiplier, 100),
     ]),
 
-  ("select_target_corpse",
+  ("select_target_corpse", # clients: find the nearby corpse projected closest to the center of the view, highlighing them and storing in $g_target_corpse_instance_id
    [
     (set_fixed_point_multiplier, 1000),
     (multiplayer_get_my_player, ":player_id"),
@@ -11061,7 +11063,7 @@ scripts.extend([
     (set_fixed_point_multiplier, 100),
     ]),
 
-  ("loot_target_corpse",
+  ("loot_target_corpse", # clients: request to loot the currently targeted corpse
    [
     (try_begin),
       (prop_instance_is_valid, "$g_target_corpse_instance_id"),
@@ -11085,13 +11087,13 @@ scripts.extend([
     (try_end),
     ]),
 
-  ("cf_admin_action",
-   [(store_script_param, ":admin_action", 1),
-    (store_script_param, ":admin_player_id", 2),
+  ("cf_admin_action", # server: check player requests to use admin tools, applying if successful
+   [(store_script_param, ":admin_action", 1), # constants starting with admin_action_
+    (store_script_param, ":admin_player_id", 2), # must be valid
     (store_script_param, ":target_player_id", 3),
 
     (player_is_admin, ":admin_player_id"),
-    (try_begin),
+    (try_begin), # this tool and ones past it are applied to the admin themself
       (ge, ":admin_action", admin_action_teleport_forwards),
       (assign, ":target_player_id", ":admin_player_id"),
     (try_end),
@@ -11120,7 +11122,7 @@ scripts.extend([
       (try_end),
       (player_set_is_muted, ":target_player_id", ":is_muted", 1),
     (else_try),
-      (lt, ":admin_action", admin_action_remove_horses),
+      (lt, ":admin_action", admin_action_remove_horses), # tools before this are applied to the target player's agent
       (player_get_agent_id, ":agent_id", ":target_player_id"),
       (agent_is_active, ":agent_id"),
       (try_begin),
@@ -11212,7 +11214,7 @@ scripts.extend([
         (try_end),
         (neg|troop_slot_eq, "trp_temp_array", slot_player_equip_body, 0),
         (agent_get_item_slot, ":equipped_item_id", ":agent_id", ek_body),
-        (try_begin),
+        (try_begin), # if the admin body armor selected is already equipped, return the previous armor
           (troop_slot_eq, "trp_temp_array", slot_player_equip_body, ":equipped_item_id"),
           (try_for_range, ":slot", slot_player_equip_head, slot_player_equip_gloves + 1),
             (player_get_slot, ":item_id", ":target_player_id", ":slot"),
@@ -11243,7 +11245,7 @@ scripts.extend([
         (eq, ":admin_action", admin_action_become_godlike),
         (player_slot_eq, ":admin_player_id", slot_player_admin_no_godlike_troop, 0),
         (player_get_troop_id, ":troop_id", ":admin_player_id"),
-        (try_begin),
+        (try_begin), # if the admin is already using the godlike hero, return to the previous troop
           (eq, ":troop_id", "trp_godlike_hero"),
           (player_get_slot, ":new_troop_id", ":admin_player_id", slot_player_non_lord_troop_id),
           (try_begin),
@@ -11340,10 +11342,10 @@ scripts.extend([
       (try_for_range, ":ship_slot", slot_ship_array_begin, ":loop_end"),
         (troop_get_slot, ":hull_instance_id", "trp_ship_array", ":ship_slot"),
         (assign, ":reset", 0),
-        (try_begin),
+        (try_begin), # reset all destroyed ships
           (scene_prop_slot_eq, ":hull_instance_id", slot_scene_prop_state, scene_prop_state_destroyed),
           (assign, ":reset", 1),
-        (else_try),
+        (else_try), # and also any that the admin is standing on
           (agent_is_active, ":agent_id"),
           (scene_prop_has_agent_on_it, ":hull_instance_id", ":agent_id"),
           (assign, ":reset", 2),
@@ -11447,9 +11449,9 @@ scripts.extend([
     (server_add_message_to_log, ":log_string_id"),
     ]),
 
-  ("cf_faction_admin_action",
-   [(store_script_param, ":action", 1),
-    (store_script_param, ":sender_player_id", 2),
+  ("cf_faction_admin_action", # server: check player requests to use faction lord tools, applying if successful
+   [(store_script_param, ":action", 1), # constants starting with faction_admin_action_
+    (store_script_param, ":sender_player_id", 2), # must be valid
     (store_script_param, ":value_1", 3),
 
     (player_get_slot, ":faction_id", ":sender_player_id", slot_player_faction_id),
@@ -11460,7 +11462,7 @@ scripts.extend([
       (eq, ":action", faction_admin_action_change_banner),
       (is_between, ":value_1", banner_meshes_begin, banner_meshes_end),
       (assign, ":loop_end", factions_end),
-      (try_for_range, ":other_faction_id", factions_begin, ":loop_end"),
+      (try_for_range, ":other_faction_id", factions_begin, ":loop_end"), # ensure that the banner is not currently in use by another faction
         (faction_slot_eq, ":other_faction_id", slot_faction_banner_mesh, ":value_1"),
         (faction_slot_eq, ":other_faction_id", slot_faction_is_active, 1),
         (assign, ":loop_end", -1),
@@ -11577,9 +11579,9 @@ scripts.extend([
     (eq, ":fail", 0),
     ]),
 
-  ("initialize_animation_menu_strings",
+  ("initialize_animation_menu_strings", # set up the starting and ending string ids for the animation menu
    [
-    (troop_set_slot, "trp_animation_menu_strings", 0, "str_menu_guestures"),
+    (troop_set_slot, "trp_animation_menu_strings", 0, "str_menu_guestures"), # offset 0 is for the main menu to select sub menus
     (troop_set_slot, "trp_animation_menu_strings", 0 + animation_menu_end_offset, "str_anim_cheer"),
     (troop_set_slot, "trp_animation_menu_strings", 1, "str_anim_cheer"),
     (troop_set_slot, "trp_animation_menu_strings", 1 + animation_menu_end_offset, "str_anim_away_vile_beggar"),
@@ -11591,11 +11593,12 @@ scripts.extend([
     (troop_set_slot, "trp_animation_menu_strings", 4 + animation_menu_end_offset, "str_log_animation"),
     ]),
 
-  ("initialize_animation_durations", []),
+  ("initialize_animation_durations", []), # copies animation durations in milliseconds from module_animations.py to slots of trp_animation_durations
 
 ])
 
 first_animation_menu_entry = True
+# Define an animation and / or sound for triggering from the animation menu. See the recognized parameters in the script below.
 def animation_menu_entry(string_id, **kwargs):
   result = [(else_try), (eq, ":string_id", string_id)]
   global first_animation_menu_entry
@@ -11611,10 +11614,10 @@ def animation_menu_entry(string_id, **kwargs):
 
 scripts.extend([
 
-  ("cf_try_execute_animation",
-   [(store_script_param, ":player_id", 1),
+  ("cf_try_execute_animation", # clients, server: check if an agent can play an animation; if successful, on clients return test result in reg0 or send a message, execute if the server
+   [(store_script_param, ":player_id", 1), # must be valid
     (store_script_param, ":string_id", 2),
-    (store_script_param, ":only_test", 3),
+    (store_script_param, ":only_test", 3), # if 1, the level of tests passed is returned in reg0
 
     (assign, ":test_passed", 0),
     (try_begin),
@@ -11638,17 +11641,17 @@ scripts.extend([
       (gt, ":time_ms", ":delayed_time_ms"),
       (assign, ":test_passed", 1),
 
-      (assign, ":animation", -1),
-      (assign, ":woman_alt_animation", -1),
-      (assign, ":upper_body_only", 1),
-      (assign, ":sound", -1),
-      (assign, ":man_sound", -1),
-      (assign, ":woman_sound", -1),
-      (assign, ":duration_ms", 0),
-      (assign, ":prevent_if_wielding", 0),
-      (assign, ":prevent_if_moving", 0),
-      (assign, ":add_to_chat", 0),
-      (try_begin),
+      (assign, ":animation", -1), # optional agent animation played
+      (assign, ":woman_alt_animation", -1), # optional alternate animation played if the agent is a woman.
+      (assign, ":upper_body_only", 1), # 0 = override the full body movement animations, 1 = override the upper body parts only
+      (assign, ":sound", -1), # optional sound to play for men or women
+      (assign, ":man_sound", -1), # optional sound to play only for men
+      (assign, ":woman_sound", -1), # optional sound to play only for women
+      (assign, ":duration_ms", 0), # duration in milliseconds: animations are set automatically, but this should be set when only playing a sound
+      (assign, ":prevent_if_wielding", 0), # 1 = prevent this animation from being triggered if the agent is wielding any items
+      (assign, ":prevent_if_moving", 0), # 1 = prevent this animation from being triggered if the agent is moving
+      (assign, ":add_to_chat", 0), # display the animation string in the local chat for near the player
+      (try_begin), # the first script parameter is the name string id, which must be in the appropriate section of module_strings.py
         animation_menu_entry("str_anim_cheer", animation="anim_cheer", man_sound="snd_man_victory"),
         animation_menu_entry("str_anim_clap", animation="anim_man_clap", woman_alt_animation="anim_woman_clap", prevent_if_wielding=1),
         animation_menu_entry("str_anim_raise_sword", animation="anim_pose_raise_sword"),
