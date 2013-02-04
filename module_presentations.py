@@ -3278,7 +3278,7 @@ presentations.extend([
 
   ])
 
-def prsnt_generate_find_object_slot(handler_operation_list):
+def prsnt_generate_find_object_slot():
   find_object_slot_list = [(store_trigger_param_1, ":object_id"),
     (neq, ":object_id", "$g_show_inventory_obj_container"),
     (neq, ":object_id", "$g_show_inventory_obj_left_border"),
@@ -3303,7 +3303,7 @@ def prsnt_generate_find_object_slot(handler_operation_list):
     (try_end),
     (gt, ":found_obj_slot", -1),
     ]
-  return find_object_slot_list + handler_operation_list
+  return lazy.block(find_object_slot_list)
 
 presentations.extend([
 
@@ -3441,8 +3441,9 @@ presentations.extend([
       (assign, "$g_show_inventory_update_needed", 0),
       (presentation_set_duration, 999999),
       ]),
-    (ti_on_presentation_event_state_change, prsnt_generate_find_object_slot(
-     [(set_fixed_point_multiplier, 1000),
+    (ti_on_presentation_event_state_change,
+     [prsnt_generate_find_object_slot(),
+      (set_fixed_point_multiplier, 1000),
       (store_add, ":target_mesh_slot", ":found_obj_slot", slot_scene_prop_inventory_mesh_begin - slot_scene_prop_inventory_obj_begin),
       (scene_prop_get_slot, ":target_mesh_object_id", "$g_show_inventory_instance_id", ":target_mesh_slot"),
       (store_add, ":target_inventory_slot", ":found_obj_slot", slot_scene_prop_inventory_begin - slot_scene_prop_inventory_obj_begin),
@@ -3497,16 +3498,17 @@ presentations.extend([
             (call_script, "script_preset_message", ":error_string_id", preset_message_error, 0, 0),
           (try_end),
         (try_end),
-      (else_try),
+      (else_try), # select an item from a slot
         (le, "$g_show_inventory_selected_slot", -1),
         (gt, ":target_mesh_object_id", -1),
         (store_add, "$g_show_inventory_selected_slot", ":found_obj_slot", slot_scene_prop_inventory_begin - slot_scene_prop_inventory_obj_begin),
         (assign, "$g_show_inventory_selected_mesh", ":target_mesh_object_id"),
         (overlay_set_container_overlay,  "$g_show_inventory_selected_mesh", -1),
       (try_end),
-      ])),
-    (ti_on_presentation_mouse_enter_leave, prsnt_generate_find_object_slot(
-     [(store_trigger_param_2, ":leave"),
+      ]),
+    (ti_on_presentation_mouse_enter_leave,
+     [prsnt_generate_find_object_slot(),
+      (store_trigger_param_2, ":leave"),
       (set_fixed_point_multiplier, 1000),
       (try_begin),
         (eq, ":leave", 1),
@@ -3540,7 +3542,7 @@ presentations.extend([
         (overlay_get_position, pos1, ":object_id"),
         (show_item_details, ":item_id", pos1, 100),
       (try_end),
-      ])),
+      ]),
     (ti_on_presentation_run,
      [(store_trigger_param_1, ":cur_time"),
       (set_fixed_point_multiplier, 1000),
