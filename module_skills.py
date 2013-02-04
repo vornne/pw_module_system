@@ -37,6 +37,8 @@ from header_skills import *
 # The effects of these skills can only be removed if the skill is disabled with sf_inactive flag.
 # If you want to add a new skill, use the reserved skills or use non-hardcoded skills.
 
+# To enable displaying your new skill in PW troop information popups, add it to the pw_skills list in header_skills.py.
+
 skills = [
   ("trade","Trade",sf_base_att_cha|sf_effects_party,10,"Every level of this skill reduces your trade penalty by 5%%. (Party skill)"),
   ("leadership","Leadership",sf_base_att_cha,10,"Every point increases maximum number of troops you can command by 5, increases your party morale and reduces troop wages by 5%%. (Leader skill)"),

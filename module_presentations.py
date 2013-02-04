@@ -305,7 +305,7 @@ def prsnt_check_profile_options_overlays():
 
 presentations.extend([
 
-  ("game_profile_banner_selection", 0, "mesh_load_window",
+  ("game_profile_banner_selection", 0, "mesh_load_window", # converted to a profile options selection
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
 
@@ -361,11 +361,11 @@ presentations.extend([
 
   ("game_custom_battle_designer", prsntf_manual_end_only, 0, []),
 
-  ("game_multiplayer_admin_panel", prsntf_manual_end_only, 0,
+  ("game_multiplayer_admin_panel", prsntf_manual_end_only, 0, # called by the game both when hosting a server from the client (scene editing mode in PW) and the admin panel
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
       (multiplayer_get_my_player, ":my_player_id"),
-      (try_begin),
+      (try_begin), # if no player, hosting a client server must have been selected, so give a list of scenes to edit
         (le, ":my_player_id", 0),
 
         (store_sub, ":num_scenes", scenes_end, scenes_begin),
@@ -381,7 +381,7 @@ presentations.extend([
         (position_set_x, pos1, 500),
         (position_set_y, pos1, 600),
         (overlay_set_position, "$g_presentation_obj_edit_mode_choose_scene", pos1),
-        (try_for_range_backwards, ":scene_id", scenes_begin, scenes_end),
+        (try_for_range_backwards, ":scene_id", scenes_begin, scenes_end), # add to the list from the end so the scenes are in the correct order
           (store_sub, ":name_string_id", ":scene_id", scenes_begin),
           (val_add, ":name_string_id", scene_names_begin),
           (str_store_string, s0, ":name_string_id"),
@@ -405,7 +405,7 @@ presentations.extend([
         (assign, "$g_presentation_obj_edit_mode_choose_scene", -1),
         (assign, "$g_presentation_obj_edit_mode_start_scene", -1),
       (try_end),
-      (gt, ":my_player_id", 0),
+      (gt, ":my_player_id", 0), # otherwise when connected to a server, show the admin panel
 
       (create_mesh_overlay, reg0, "mesh_mp_ui_host_maps_randomp"),
       (position_set_x, pos1, -1),
@@ -423,7 +423,7 @@ presentations.extend([
       (position_set_y, pos1, 1002),
       (overlay_set_size, reg0, pos1),
 
-      (assign, ":cur_y", 20 + (20 * admin_panel_item_height)),
+      (assign, ":cur_y", 20 + (20 * admin_panel_item_height)), # fixed offset plus the number of panel items multiplied by the height
 
       (str_clear, s0),
       (create_text_overlay, reg0, s0, tf_scrollable),
@@ -771,7 +771,7 @@ presentations.extend([
     (ti_on_presentation_event_state_change,
      [(store_trigger_param_1, ":object"),
       (store_trigger_param_2, ":value"),
-      (try_begin),
+      (try_begin), # edit scene mode
         (gt, "$g_presentation_obj_edit_mode_choose_scene", -1),
         (try_begin),
           (eq, ":object", "$g_presentation_obj_edit_mode_choose_scene"),
@@ -785,7 +785,7 @@ presentations.extend([
         (try_end),
       (try_end),
       (eq, "$g_presentation_obj_edit_mode_choose_scene", -1),
-      (try_begin),
+      (try_begin), # admin panel
         (eq, ":object", "$g_presentation_obj_admin_panel_add_to_servers_list"),
         (multiplayer_send_2_int_to_server, client_event_admin_set_game_rule, command_set_add_to_game_servers_list, ":value"),
       (else_try),
@@ -874,7 +874,7 @@ presentations.extend([
 
   ("game_before_quit", 0, "mesh_load_window", []),
 
-  ("game_rules", prsntf_manual_end_only, 0,
+  ("game_rules", prsntf_manual_end_only, 0, # lists server settings
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
       (create_mesh_overlay, reg0, "mesh_mp_ui_welcome_panel"),
@@ -1351,6 +1351,11 @@ presentations.extend([
       ]),
     ]),
 
+  # $g_list_players_action_string_id: string for ending "Choose a player to ", describing the action
+  # $g_list_players_event: network event number to send to the server with the player id
+  # $g_list_players_event_value: extra value to send with the network event above
+  # $g_list_players_keep_open: 1 = don't end the presentation after selecting a player
+  # $g_list_players_return_presentation: the presentation to return to after player selection or pressing escape
   ("list_players", prsntf_manual_end_only, 0,
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
@@ -1381,15 +1386,15 @@ presentations.extend([
         (try_begin),
           (player_is_admin, ":my_player_id"),
           (player_slot_eq, ":my_player_id", slot_player_admin_no_factions, 0),
-          (assign, ":my_player_id", 0),
+          (assign, ":my_player_id", 0), # only add the requesting player to a lord poll list if an admin with permission
         (try_end),
       (else_try),
         (eq, "$g_list_players_event", client_event_faction_admin_action),
       (else_try),
-        (assign, "$g_list_players_faction_id", -1),
+        (assign, "$g_list_players_faction_id", -1), # show players from all factions for admin tools
         (this_or_next|eq, "$g_list_players_event_value", admin_action_fade_player_out),
         (eq, "$g_list_players_event_value", admin_action_freeze_player),
-        (assign, ":my_player_id", 0),
+        (assign, ":my_player_id", 0), # only add the requesting player to the list for fade out and freeze tools
       (try_end),
 
       (val_max, "$g_list_players_action_string_id", 0),
@@ -1405,15 +1410,15 @@ presentations.extend([
       (assign, ":cur_y", 5),
       (assign, ":overlay_id", -1),
       (get_max_players, ":max_players"),
-      (try_begin),
+      (try_begin), # loop over all factions
         (eq, "$g_list_players_faction_id", -1),
         (assign, ":factions_end", factions_end),
-      (else_try),
+      (else_try), # only one iteration of the loop, for the targeted faction
         (store_add, ":factions_end", factions_begin, 1),
       (try_end),
       (try_for_range, ":current_faction_id", factions_begin, ":factions_end"),
         (faction_slot_eq, ":current_faction_id", slot_faction_is_active, 1),
-        (try_for_range, ":player_id", 1, ":max_players"),
+        (try_for_range, ":player_id", 1, ":max_players"), # loop over factions one by one, grouping their members together in the list
           (player_is_active, ":player_id"),
           (this_or_next|neq, "$g_list_players_faction_id", -1),
           (player_slot_eq, ":player_id", slot_player_faction_id, ":current_faction_id"),
@@ -1424,7 +1429,7 @@ presentations.extend([
             (str_store_player_username, s0, ":player_id"),
             (create_button_overlay, ":overlay_id", s0, 0),
             (overlay_set_size, ":overlay_id", pos2),
-            (player_set_slot, ":player_id", slot_player_list_button_id, ":overlay_id"),
+            (player_set_slot, ":player_id", slot_player_list_button_id, ":overlay_id"), # save the associated overlay id, for checking that the player hasn't disconnected and the id reused
             (val_add, ":cur_y", player_list_item_height),
           (else_try),
             (player_set_slot, ":player_id", slot_player_list_button_id, -1),
@@ -1451,14 +1456,14 @@ presentations.extend([
       (get_max_players, ":num_players"),
       (try_for_range, ":player_id", 1, ":num_players"),
         (player_is_active, ":player_id"),
-        (player_slot_eq, ":player_id", slot_player_list_button_id, ":object"),
+        (player_slot_eq, ":player_id", slot_player_list_button_id, ":object"), # ensure that the player id represents the same one selected in the list
         (try_begin),
           (is_between, "$g_list_players_event", 0, 128),
           (multiplayer_send_2_int_to_server, "$g_list_players_event", "$g_list_players_event_value", ":player_id"),
         (try_end),
         (assign, ":num_players", 0),
         (try_begin),
-          (eq, "$g_list_players_keep_open", 0),
+          (eq, "$g_list_players_keep_open", 0), # target the selected player for other use by other functions
           (assign, "$g_target_player_id", ":player_id"),
           (assign, "$g_target_player_overlay_id", ":object"),
           (try_begin),
@@ -1486,14 +1491,14 @@ presentations.extend([
         (assign, "$g_list_players_return_presentation", 0),
         (assign, "$g_list_players_keep_open", 0),
         (presentation_set_duration, 0),
-      (else_try),
+      (else_try), # continuously update list entry colors
         (get_max_players, ":max_players"),
         (try_for_range, ":player_id", 1, ":max_players"),
           (player_is_active, ":player_id"),
           (player_get_slot, ":overlay_id", ":player_id", slot_player_list_button_id),
           (gt, ":overlay_id", -1),
           (assign, ":color", 0xFFFFFF),
-          (try_begin),
+          (try_begin), # for player slot toggling, update the player name color with the current setting
             (eq, "$g_list_players_event", client_event_faction_admin_action),
             (try_begin),
               (eq, "$g_list_players_event_value", faction_admin_action_toggle_player_door_key),
@@ -1513,7 +1518,7 @@ presentations.extend([
             (else_try),
               (assign, ":color", 0xFF3333),
             (try_end),
-          (else_try),
+          (else_try), # when including multiple factions, set to the player faction's color
             (eq, "$g_list_players_faction_id", -1),
             (player_get_slot, ":faction_id", ":player_id", slot_player_faction_id),
             (is_between, ":faction_id", factions_begin, factions_end),
@@ -1598,6 +1603,9 @@ presentations.extend([
       ]),
     ]),
 
+  # $g_list_faction_event: network event number to send to the server with the faction id
+  # $g_list_faction_event_value: extra value to send with the network event above
+  # $g_list_faction_return_presentation: the presentation to return to after faction selection or pressing escape
   ("list_factions", prsntf_manual_end_only, 0,
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
@@ -2438,7 +2446,7 @@ presentations.extend([
       ]),
     ]),
 
-  ("respawn_time_counter", prsntf_read_only|prsntf_manual_end_only, 0,
+  ("respawn_time_counter", prsntf_read_only|prsntf_manual_end_only, 0, # show seconds until respawn and allow requesting the next spawn point
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
       (gt, "$g_respawn_start_time", 0),
@@ -2490,7 +2498,7 @@ presentations.extend([
           (multiplayer_get_my_player, ":player_id"),
           (player_is_active, ":player_id"),
           (player_get_slot, ":faction_id", ":player_id", slot_player_faction_id),
-          (try_begin),
+          (try_begin), # check for valid castles to spawn at, displaying the next if that control is pressed
             (is_between, ":faction_id", castle_factions_begin, factions_end),
             (this_or_next|eq, "$g_presentation_obj_respawn_castle", -1),
             (key_clicked, key_tilde),
@@ -2583,7 +2591,7 @@ presentations.extend([
       ]),
     ]),
 
-  ("tabbed_stats_chart", prsntf_manual_end_only, 0,
+  ("tabbed_stats_chart", prsntf_manual_end_only, 0, # displays tab buttons marked with faction symbols to view lists of members and their stats
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
 
@@ -2599,7 +2607,7 @@ presentations.extend([
       (overlay_set_size, reg1, pos1),
 
       (assign, ":faction_count", 0),
-      (assign, ":selected_button_x", 10),
+      (assign, ":selected_button_x", 10), # calculate position of the frame for the selected faction button (10 = all players)
       (try_for_range, ":faction_id", factions_begin, factions_end),
         (faction_slot_eq, ":faction_id", slot_faction_is_active, 1),
         (try_begin),
@@ -2626,7 +2634,7 @@ presentations.extend([
       (position_set_y, pos10, 500),
       (assign, ":x_pos", 158),
       (position_set_y, pos1, 575),
-      (try_for_range, ":faction_id", factions_begin, factions_end),
+      (try_for_range, ":faction_id", factions_begin, factions_end), # create symbol buttons for all active factions in the scene
         (faction_slot_eq, ":faction_id", slot_faction_is_active, 1),
         (try_begin),
           (eq, ":faction_id", "fac_commoners"),
@@ -2668,10 +2676,10 @@ presentations.extend([
         (this_or_next|eq, ":faction_id", -1),
         (player_slot_eq, ":player_id", slot_player_faction_id, ":faction_id"),
         (try_begin),
-          (eq, ":faction_id", -1),
+          (eq, ":faction_id", -1), # when displaying all players, don't list in any particular order
           (assign, ":player_ranking", ":player_id"),
         (else_try),
-          (try_begin),
+          (try_begin), # when listing a single faction, order by troop type if a castle owning faction, then by score
             (eq, ":faction_id", ":my_faction_id"),
             (ge, ":faction_id", castle_factions_begin),
             (player_get_agent_id, ":agent_id", ":player_id"),
@@ -2691,16 +2699,16 @@ presentations.extend([
           (val_add, ":player_score", stats_chart_score_max / 2),
           (val_clamp, ":player_score", 0, stats_chart_score_max),
           (val_lshift, ":player_score", stats_chart_score_shift),
-          (val_lshift, ":player_ranking", stats_chart_ranking_shift),
-          (val_or, ":player_ranking", ":player_score"),
-          (val_or, ":player_ranking", ":player_id"),
+          (val_lshift, ":player_ranking", stats_chart_ranking_shift), # score troop ranking in the highest bits (most priority)
+          (val_or, ":player_ranking", ":player_score"), # store score in the middle bits (lower priority)
+          (val_or, ":player_ranking", ":player_id"), # store player id in the lowest bits (tiebreaker only if above values are identical)
         (try_end),
         (troop_set_slot, "trp_temp_array", ":player_count", ":player_ranking"),
         (val_add, ":player_count", 1),
       (try_end),
 
       (try_begin),
-        (neq, ":faction_id", -1),
+        (neq, ":faction_id", -1), # insertion sort of players to be listed, by calculated ranking
         (try_for_range, ":current_index", 1, ":player_count"),
           (troop_get_slot, ":current_value", "trp_temp_array", ":current_index"),
           (assign, ":end_loop", 0),
@@ -2764,7 +2772,7 @@ presentations.extend([
       (position_set_x, pos11, 750),
       (position_set_y, pos11, 750),
 
-      (assign, ":castle_found", 0),
+      (assign, ":castle_found", 0), # list castles owned by the faction
       (try_for_range, ":castle_owner_slot", slot_mission_data_castle_owner_faction_begin, slot_mission_data_castle_owner_faction_end),
         (troop_slot_eq, "trp_mission_data", ":castle_owner_slot", ":faction_id"),
         (call_script, "script_cf_castle_is_active", ":castle_owner_slot"),
@@ -2869,7 +2877,7 @@ presentations.extend([
 
       (try_for_range_backwards, ":player_index", 0, ":player_count"),
         (troop_get_slot, ":player_id", "trp_temp_array", ":player_index"),
-        (val_and, ":player_id", stats_chart_player_mask),
+        (val_and, ":player_id", stats_chart_player_mask), # strip the upper ranking bits from the player id
 
         (val_sub, ":cur_y", player_list_item_height),
         (position_set_y, pos1, ":cur_y"),
@@ -2954,7 +2962,7 @@ presentations.extend([
         (overlay_set_position, reg1, pos5),
       (try_end),
 
-      (store_mul, "$g_stats_chart_update_period", ":player_count", 100),
+      (store_mul, "$g_stats_chart_update_period", ":player_count", 100), # update less often when there are more players to sort
       (val_max, "$g_stats_chart_update_period", 1000),
 
       (omit_key_once, key_mouse_scroll_up),
@@ -2967,7 +2975,7 @@ presentations.extend([
         (is_between, ":overlay_id", "$g_presentation_obj_stats_chart_faction_begin", "$g_presentation_obj_stats_chart_all_factions"),
         (store_sub, ":active_faction_no", ":overlay_id", "$g_presentation_obj_stats_chart_faction_begin"),
         (assign, ":test_faction_no", -1),
-        (assign, ":loop_end", factions_end),
+        (assign, ":loop_end", factions_end), # calculate the faction id of the tab clicked
         (try_for_range, ":faction_id", factions_begin, ":loop_end"),
           (faction_slot_eq, ":faction_id", slot_faction_is_active, 1),
           (val_add, ":test_faction_no", 1),
@@ -3180,7 +3188,7 @@ presentations.extend([
       ]),
     ]),
 
-  ("display_agent_labels", prsntf_read_only|prsntf_manual_end_only, 0,
+  ("display_agent_labels", prsntf_read_only|prsntf_manual_end_only, 0, # display player name and optionally faction name above the heads of nearby agents
    [(ti_on_presentation_load,
      [(assign, "$g_presentation_agent_labels_overlay_count", 0),
       (assign, "$g_presentation_agent_labels_update_time", 0),
@@ -3194,7 +3202,7 @@ presentations.extend([
         (presentation_set_duration, 0),
       (else_try),
         (gt, ":current_time", "$g_presentation_agent_labels_update_time"),
-        (store_add, "$g_presentation_agent_labels_update_time", ":current_time", 20),
+        (store_add, "$g_presentation_agent_labels_update_time", ":current_time", 20), # check and update all visible labels every 20 milliseconds
         (multiplayer_get_my_player, ":my_player"),
         (gt, ":my_player", -1),
         (str_clear, s0),
@@ -3218,13 +3226,13 @@ presentations.extend([
           (le, ":sq_distance", sq(max_distance_to_see_labels)),
           (copy_position, pos3, pos2),
           (position_move_z, pos3, 50),
-          (position_get_screen_projection, pos4, pos3),
+          (position_get_screen_projection, pos4, pos3), # get the 2D position on screen 50 above the 3D position of the agent
           (position_get_x, ":x_pos", pos4),
           (position_get_y, ":y_pos", pos4),
-          (is_between, ":x_pos", -100, 1100),
+          (is_between, ":x_pos", -100, 1100), # check if inside the view boundaries or nearly so
           (is_between, ":y_pos", -100, 850),
           (position_has_line_of_sight_to_position, pos1, pos2),
-          (try_begin),
+          (try_begin), # create a new overlay if needed
             (ge, ":overlay_id", "$g_presentation_agent_labels_overlay_count"),
             (create_text_overlay, reg0, s0, tf_center_justify|tf_with_outline),
             (val_add, "$g_presentation_agent_labels_overlay_count", 1),
@@ -3249,7 +3257,7 @@ presentations.extend([
             (overlay_set_color, ":overlay_id", ":color"),
             (overlay_set_position, ":overlay_id", pos4),
             (copy_position, pos5, pos3),
-            (position_move_z, pos5, 200),
+            (position_move_z, pos5, 200), # move the 3D position up by 200 and check the 2D distance moved, to get the appropriate text size (reducing with distance)
             (position_get_screen_projection, pos6, pos5),
             (position_get_y, ":y_pos_up", pos6),
             (store_sub, ":height", ":y_pos_up", ":y_pos"),
@@ -3278,6 +3286,7 @@ presentations.extend([
 
   ])
 
+# Factor out a common part of show_inventory triggers: finding the affected slot.
 def prsnt_generate_find_object_slot():
   find_object_slot_list = [(store_trigger_param_1, ":object_id"),
     (neq, ":object_id", "$g_show_inventory_obj_container"),
@@ -3336,7 +3345,7 @@ presentations.extend([
       (val_mul, ":current_y", inventory_slot_spacing),
       (val_sub, ":current_y", 1),
       (store_add, ":inventory_end", ":inventory_count", slot_scene_prop_inventory_begin),
-      (try_for_range, ":inventory_slot", slot_scene_prop_inventory_begin, ":inventory_end"),
+      (try_for_range, ":inventory_slot", slot_scene_prop_inventory_begin, ":inventory_end"), # show inventory slots with items inside
         (create_image_button_overlay, reg1, "mesh_mp_inventory_choose", "mesh_mp_inventory_choose"),
         (overlay_set_size, reg1, pos11),
         (position_set_x, pos1, ":current_x"),
@@ -3367,7 +3376,7 @@ presentations.extend([
         (try_end),
       (try_end),
 
-      (set_container_overlay, -1),
+      (set_container_overlay, -1), # show the player equipment slots at the edge, outside the scrolling container
       (multiplayer_get_my_player, ":player_id"),
       (player_is_active, ":player_id"),
       (player_get_agent_id, ":agent_id", ":player_id"),
@@ -3447,12 +3456,12 @@ presentations.extend([
       (store_add, ":target_mesh_slot", ":found_obj_slot", slot_scene_prop_inventory_mesh_begin - slot_scene_prop_inventory_obj_begin),
       (scene_prop_get_slot, ":target_mesh_object_id", "$g_show_inventory_instance_id", ":target_mesh_slot"),
       (store_add, ":target_inventory_slot", ":found_obj_slot", slot_scene_prop_inventory_begin - slot_scene_prop_inventory_obj_begin),
-      (try_begin),
+      (try_begin), # an item is already selected
         (gt, "$g_show_inventory_selected_slot", -1),
-        (try_begin),
+        (try_begin), # if the selected item was put back in its current slot, replace without sending a message to the server
           (eq, ":target_inventory_slot", "$g_show_inventory_selected_slot"),
           (scene_prop_get_slot, ":target_object_id", "$g_show_inventory_instance_id", ":found_obj_slot"),
-          (try_begin),
+          (try_begin), # if the target is inside the scrolling container, recalculate the slot position
             (is_between, "$g_show_inventory_selected_slot", slot_scene_prop_inventory_begin, slot_scene_prop_inventory_item_0),
             (overlay_set_container_overlay,  "$g_show_inventory_selected_mesh", "$g_show_inventory_obj_container"),
             (store_sub, ":target_slot_no", ":target_inventory_slot", slot_scene_prop_inventory_begin),
@@ -3469,7 +3478,7 @@ presentations.extend([
             (try_end),
             (val_mul, ":target_mesh_x", inventory_slot_spacing),
             (val_mul, ":target_mesh_y", inventory_slot_spacing),
-          (else_try),
+          (else_try), # for fixed equipment slots
             (overlay_get_position, pos1, ":target_object_id"),
             (position_get_x, ":target_mesh_x", pos1),
             (position_get_y, ":target_mesh_y", pos1),
@@ -3481,7 +3490,7 @@ presentations.extend([
           (overlay_set_position, "$g_show_inventory_selected_mesh", pos1),
           (assign, "$g_show_inventory_selected_slot", -1),
           (assign, "$g_show_inventory_selected_mesh", -1),
-        (else_try),
+        (else_try), # request the selected item be transferred to another slot
           (neg|scene_prop_slot_ge, "$g_show_inventory_instance_id", ":target_inventory_slot", all_items_begin),
           (scene_prop_get_slot, ":item_id", "$g_show_inventory_instance_id", "$g_show_inventory_selected_slot"),
           (ge, ":item_id", all_items_begin),
@@ -3546,7 +3555,7 @@ presentations.extend([
     (ti_on_presentation_run,
      [(store_trigger_param_1, ":cur_time"),
       (set_fixed_point_multiplier, 1000),
-      (try_begin),
+      (try_begin), # move the selected item with the mouse
         (gt, "$g_show_inventory_selected_mesh", -1),
         (mouse_get_position, pos1),
         (overlay_set_position, "$g_show_inventory_selected_mesh", pos1),
@@ -3555,36 +3564,36 @@ presentations.extend([
         (key_clicked, key_escape),
         (gt, ":cur_time", 200),
         (assign, "$g_show_inventory_instance_id", 0),
-        (multiplayer_send_message_to_server, client_event_transfer_inventory),
+        (multiplayer_send_message_to_server, client_event_transfer_inventory), # tell the server not to send any more updates for this inventory
         (presentation_set_duration, 0),
-      (else_try),
+      (else_try), # end if the server signals or the item prop instance has been removed
         (this_or_next|eq, "$g_show_inventory_update_needed", -1),
         (this_or_next|neg|prop_instance_is_valid, "$g_show_inventory_instance_id"),
         (neg|scene_prop_slot_eq, "$g_show_inventory_instance_id", slot_scene_prop_inventory_unique_id, "$g_last_inventory_unique_id"),
         (assign, "$g_show_inventory_instance_id", 0),
         (presentation_set_duration, 0),
-      (else_try),
+      (else_try), # if an update is signalled as necessary, check the inventory mod slots for changes
         (eq, "$g_show_inventory_update_needed", 1),
         (assign, "$g_show_inventory_update_needed", 0),
         (multiplayer_get_my_player, ":player_id"),
         (player_is_active, ":player_id"),
         (player_get_agent_id, ":agent_id", ":player_id"),
         (agent_is_active, ":agent_id"),
-        (try_for_range, ":equip_slot", ek_item_0, ek_gloves + 1),
+        (try_for_range, ":equip_slot", ek_item_0, ek_gloves + 1), # check and update the agent equipment slots
           (agent_get_item_slot, ":item_id", ":agent_id", ":equip_slot"),
           (store_add, ":inventory_slot", ":equip_slot", slot_scene_prop_inventory_item_0 - ek_item_0),
           (neg|scene_prop_slot_eq, "$g_show_inventory_instance_id", ":inventory_slot", ":item_id"),
           (store_add, ":inventory_mod_slot", ":equip_slot", slot_scene_prop_inventory_mod_item_0 - ek_item_0),
           (scene_prop_set_slot, "$g_show_inventory_instance_id", ":inventory_mod_slot", ":item_id"),
         (try_end),
-        (try_for_range, ":added_mod_slot", slot_scene_prop_inventory_mod_begin, slot_scene_prop_inventory_mod_end),
+        (try_for_range, ":added_mod_slot", slot_scene_prop_inventory_mod_begin, slot_scene_prop_inventory_mod_end), # check for items added to slots
           (scene_prop_get_slot, ":added_item_id", "$g_show_inventory_instance_id", ":added_mod_slot"),
           (ge, ":added_item_id", all_items_begin),
           (store_add, ":added_inventory_slot", ":added_mod_slot", slot_scene_prop_inventory_begin - slot_scene_prop_inventory_mod_begin),
           (scene_prop_set_slot, "$g_show_inventory_instance_id", ":added_inventory_slot", ":added_item_id"),
           (assign, ":mesh_object_id", -1),
           (assign, ":loop_end", slot_scene_prop_inventory_mod_end),
-          (try_for_range, ":removed_mod_slot", slot_scene_prop_inventory_mod_begin, ":loop_end"),
+          (try_for_range, ":removed_mod_slot", slot_scene_prop_inventory_mod_begin, ":loop_end"), # check the removed slots for item meshes to reuse
             (scene_prop_slot_eq, "$g_show_inventory_instance_id", ":removed_mod_slot", -1),
             (store_add, ":removed_inventory_slot", ":removed_mod_slot", slot_scene_prop_inventory_begin - slot_scene_prop_inventory_mod_begin),
             (scene_prop_slot_eq, "$g_show_inventory_instance_id", ":removed_inventory_slot", ":added_item_id"),
@@ -3595,7 +3604,7 @@ presentations.extend([
             (scene_prop_get_slot, ":mesh_object_id", "$g_show_inventory_instance_id", ":removed_mesh_slot"),
             (scene_prop_set_slot, "$g_show_inventory_instance_id", ":removed_mesh_slot", -1),
           (try_end),
-          (try_begin),
+          (try_begin), # otherwise if an existing mesh for a removed item was not found, create a new one
             (le, ":mesh_object_id", -1),
             (create_mesh_overlay_with_item_id, ":mesh_object_id", ":added_item_id"),
           (try_end),
@@ -3604,7 +3613,7 @@ presentations.extend([
           (store_add, ":added_obj_slot", ":added_mod_slot", slot_scene_prop_inventory_obj_begin - slot_scene_prop_inventory_mod_begin),
           (scene_prop_get_slot, ":added_object_id", "$g_show_inventory_instance_id", ":added_obj_slot"),
           (overlay_set_display, ":mesh_object_id", 0),
-          (try_begin),
+          (try_begin), # if transferring into the scrollable container, calculate the slot position
             (is_between, ":added_inventory_slot", slot_scene_prop_inventory_begin, slot_scene_prop_inventory_item_0),
             (overlay_set_container_overlay,  ":mesh_object_id", "$g_show_inventory_obj_container"),
             (store_sub, ":added_slot_no", ":added_inventory_slot", slot_scene_prop_inventory_begin),
@@ -3621,7 +3630,7 @@ presentations.extend([
             (try_end),
             (val_mul, ":added_mesh_x", inventory_slot_spacing),
             (val_mul, ":added_mesh_y", inventory_slot_spacing),
-          (else_try),
+          (else_try), # transferring into agent equipment slots
             (overlay_set_container_overlay,  ":mesh_object_id", -1),
             (overlay_get_position, pos1, ":added_object_id"),
             (position_get_x, ":added_mesh_x", pos1),
@@ -3633,14 +3642,14 @@ presentations.extend([
           (position_set_y, pos1, ":added_mesh_y"),
           (overlay_set_position, ":mesh_object_id", pos1),
           (overlay_set_display, ":mesh_object_id", 1),
-          (try_begin),
+          (try_begin), # if the currently selected mesh was moved, drop it
             (this_or_next|eq, ":mesh_object_id", "$g_show_inventory_selected_mesh"),
             (is_between, ":added_mod_slot", slot_scene_prop_inventory_mod_item_0, slot_scene_prop_inventory_mod_end),
             (assign, "$g_show_inventory_selected_slot", -1),
             (assign, "$g_show_inventory_selected_mesh", -1),
           (try_end),
         (try_end),
-        (try_for_range, ":removed_mod_slot", slot_scene_prop_inventory_mod_begin, slot_scene_prop_inventory_mod_end),
+        (try_for_range, ":removed_mod_slot", slot_scene_prop_inventory_mod_begin, slot_scene_prop_inventory_mod_end), # hide any unused meshes for removed items
           (scene_prop_get_slot, ":removed_mod", "$g_show_inventory_instance_id", ":removed_mod_slot"),
           (scene_prop_set_slot, "$g_show_inventory_instance_id", ":removed_mod_slot", 0),
           (eq, ":removed_mod", -1),
@@ -3658,7 +3667,11 @@ presentations.extend([
       ]),
     ]),
 
-  ("chat_box", prsntf_manual_end_only, 0,
+  # $g_chat_box_string_id:
+  # $g_chat_box_player_string_id: the prompt string to display above the text box if a player is targeted - s1 is replaced with the target's name
+  # $g_target_player_id: the player name is inserted in the prompt string and sent with the network message to the server
+  # $g_chat_box_event_type: network event number to send to the server associated with the string
+  ("chat_box", prsntf_manual_end_only, 0, # text entry box for custom chat message types, emulating the look of the hard coded one
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
 
@@ -3710,7 +3723,7 @@ presentations.extend([
             (val_add, "$g_chat_box_event_type", 1),
           (try_end),
           (troop_get_slot, ":last_event", "trp_last_chat_message", slot_last_chat_message_event_type),
-          (call_script, "script_chat_event_increment", ":last_event"),
+          (call_script, "script_chat_event_increment", ":last_event"), # increment the network event number sent from a looped range, to try detect missed and duplicated messages
           (assign, ":event", reg0),
           (val_min, "$g_chat_box_event_type", net_chat_event_mask),
           (assign, ":event_type", "$g_chat_box_event_type"),
@@ -3727,7 +3740,7 @@ presentations.extend([
             (assign, ":target_player_id", "$g_target_player_id"),
             (val_lshift, ":target_player_id", net_chat_param_1_shift),
             (is_between, ":target_player_id", 0, net_value_upper_bound),
-            (val_or, ":event", ":target_player_id"),
+            (val_or, ":event", ":target_player_id"), # store target player id in upper bits of the event number
           (else_try),
             (assign, ":continue", 0),
           (try_end),
@@ -3759,7 +3772,7 @@ presentations.extend([
         (presentation_set_duration, 0),
       (else_try),
         (gt, "$g_chat_box_player_string_id", 0),
-        (key_clicked, key_f11),
+        (key_clicked, key_f11), # select player to target from a list
         (assign, "$g_list_players_event", -1),
         (assign, "$g_list_players_action_string_id", "str_send_message_to"),
         (assign, "$g_list_players_return_presentation", "prsnt_chat_box"),
@@ -3769,7 +3782,7 @@ presentations.extend([
       ]),
     ]),
 
-  ("chat_overlay", prsntf_read_only|prsntf_manual_end_only, 0,
+  ("chat_overlay", prsntf_read_only|prsntf_manual_end_only, 0, # displays recent lines of local or faction chat, to keep track of longer conversations
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
 
@@ -3828,7 +3841,7 @@ presentations.extend([
         (gt, ":stored_buffer", -1),
         (assign, "$g_chat_overlay_ring_buffer_displayed", ":stored_buffer"),
         (assign, ":overlay_id", "$g_presentation_obj_chat_overlay_begin"),
-        (try_for_range, ":chat_line_no", 0, chat_overlay_ring_buffer_size),
+        (try_for_range, ":chat_line_no", 0, chat_overlay_ring_buffer_size), # lines are stored in a ring buffer (of dummy troop names), overwriting the oldest first
           (store_sub, ":overlay_troop_id", ":stored_buffer", ":chat_line_no"),
           (try_begin),
             (lt, ":overlay_troop_id", chat_overlay_ring_buffer_begin),
@@ -3850,7 +3863,7 @@ presentations.extend([
       ]),
     ]),
 
-  ("faction_banner_selection", prsntf_manual_end_only, 0,
+  ("faction_banner_selection", prsntf_manual_end_only, 0, # display faction banners 16 at a time, redrawing the presentation for page changes
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
 
@@ -3944,7 +3957,7 @@ presentations.extend([
       ]),
     ]),
 
-  ("money_bag", prsntf_manual_end_only, 0,
+  ("money_bag", prsntf_manual_end_only, 0, # allows dropping money bags on the ground, and depositing to or withdrawing from nearby money chests
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
 
@@ -4068,7 +4081,7 @@ presentations.extend([
         (try_end),
       (else_try),
         (eq, ":object", "$g_presentation_obj_money_bag_admin_cheat"),
-        (store_mul, ":admin_cheat_amount", "$g_presentation_money_bag_amount", -1),
+        (store_mul, ":admin_cheat_amount", "$g_presentation_money_bag_amount", -1), # requesting to drop negative values = admin spawning money
         (multiplayer_send_int_to_server, client_event_drop_money_bag, ":admin_cheat_amount"),
       (else_try),
         (eq, ":object", "$g_presentation_obj_money_bag_done"),
@@ -4085,7 +4098,7 @@ presentations.extend([
       ]),
     ]),
 
-  ("gold", prsntf_read_only|prsntf_manual_end_only, 0,
+  ("gold", prsntf_read_only|prsntf_manual_end_only, 0, # display the player's gold, using the correct value when the engine value has been corrupted by overflow
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
 
@@ -4118,7 +4131,7 @@ presentations.extend([
       ]),
     ]),
 
-  ("admin_item_select", prsntf_manual_end_only, 0,
+  ("admin_item_select", prsntf_manual_end_only, 0, # allow admins to spawn any item for themselves
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
 
@@ -4193,7 +4206,7 @@ presentations.extend([
       ]),
     ]),
 
-  ("target_agent_name", prsntf_read_only|prsntf_manual_end_only, 0,
+  ("target_agent_name", prsntf_read_only|prsntf_manual_end_only, 0, # display the name of the currently targeted player or bot troop in the corner of the screen
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
       (create_text_overlay, "$g_presentation_obj_target_agent_name", "str_empty_string", tf_right_align|tf_with_outline),
@@ -4236,7 +4249,7 @@ presentations.extend([
       ]),
     ]),
 
-  ("action_menu", prsntf_manual_end_only, 0,
+  ("action_menu", prsntf_manual_end_only, 0, # quick menu for selecting various player actions and toggling some settings
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
 
@@ -4339,7 +4352,7 @@ presentations.extend([
           (le, ":instance_id", 0),
           (set_fixed_point_multiplier, 100),
           (agent_get_position, pos1, ":my_agent_id"),
-          (try_begin),
+          (try_begin), # allow admins in special armor to attach carts from long distances, to retrieve them from inaccessible locations
             (player_is_admin, ":my_player_id"),
             (agent_get_item_slot, ":body_item_id", ":my_agent_id", ek_body),
             (this_or_next|eq, ":body_item_id", "itm_invisible_body"),
@@ -4351,7 +4364,7 @@ presentations.extend([
           (assign, ":closest_sq_distance", ":maximum_sq_distance"),
           (troop_get_slot, ":loop_end", "trp_cart_array", slot_array_count),
           (val_add, ":loop_end", 1),
-          (try_for_range, ":slot", slot_array_begin, ":loop_end"),
+          (try_for_range, ":slot", slot_array_begin, ":loop_end"), # search for the nearest unattached cart
             (troop_get_slot, ":test_instance_id", "trp_cart_array", ":slot"),
             (scene_prop_get_slot, ":attached_agent_id", ":test_instance_id", slot_scene_prop_attached_to_agent),
             (try_begin),
@@ -4472,7 +4485,7 @@ presentations.extend([
       ]),
     ]),
 
-  ("food_bar", prsntf_read_only|prsntf_manual_end_only, 0,
+  ("food_bar", prsntf_read_only|prsntf_manual_end_only, 0, # bar showing the player agent's current food amount, below the health bar
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 10000),
 
@@ -4519,7 +4532,7 @@ presentations.extend([
 
   ])
 
-prsnt_animation_menu_triggers = [
+prsnt_animation_menu_triggers = [ # common triggers for the animation menu presentations below
     (ti_on_presentation_load,
      [(set_fixed_point_multiplier, 1000),
 
@@ -4527,7 +4540,7 @@ prsnt_animation_menu_triggers = [
       (store_add, ":end_slot", "$g_animation_menu_selected", animation_menu_end_offset),
       (troop_get_slot, ":end_string_id", "trp_animation_menu_strings", ":end_slot"),
       (store_sub, ":menu_items_count", ":end_string_id", ":begin_string_id"),
-      (try_begin),
+      (try_begin), # end if the current sub menu selected has no entries
         (le, ":menu_items_count", 0),
         (assign, "$g_animation_menu_selected", 0),
         (assign, "$g_presentation_obj_animation_menu_begin", 0),
@@ -4552,7 +4565,7 @@ prsnt_animation_menu_triggers = [
       (assign, ":y_pos", 508),
       (assign, reg0, 1),
       (assign, ":key", key_1),
-      (try_for_range, ":string_id", ":begin_string_id", ":end_string_id"),
+      (try_for_range, ":string_id", ":begin_string_id", ":end_string_id"), # create the buttons with consecutive overlay ids, after all frames
         (str_store_string, s0, ":string_id"),
         (create_button_overlay, reg1, "str_reg0__s0"),
         (overlay_set_color, reg1, 0xFFFFFF),
@@ -4573,13 +4586,13 @@ prsnt_animation_menu_triggers = [
      [(store_trigger_param_1, ":overlay_id"),
       (is_between, ":overlay_id", "$g_presentation_obj_animation_menu_begin", "$g_presentation_obj_animation_menu_end"),
       (store_sub, ":menu_item", ":overlay_id", "$g_presentation_obj_animation_menu_begin"),
-      (try_begin),
+      (try_begin), # main menu: show a sub menu
         (eq, "$g_animation_menu_selected", 0),
         (clear_omitted_keys),
         (presentation_set_duration, 0),
         (start_presentation, "prsnt_animation_menu"),
         (store_add, "$g_animation_menu_selected", ":menu_item", 1),
-      (else_try),
+      (else_try), # animation entry clicked on
         (troop_get_slot, ":string_id", "trp_animation_menu_strings", "$g_animation_menu_selected"),
         (val_add, ":string_id", ":menu_item"),
         (multiplayer_get_my_player, ":my_player_id"),
@@ -4607,7 +4620,7 @@ prsnt_animation_menu_triggers = [
           (store_sub, ":menu_item", ":overlay_id", "$g_presentation_obj_animation_menu_begin"),
           (troop_get_slot, ":string_id", "trp_animation_menu_strings", "$g_animation_menu_selected"),
           (val_add, ":string_id", ":menu_item"),
-          (try_begin),
+          (try_begin), # check pressed number keys, to select menu entries
             (key_clicked, ":key"),
             (try_begin),
               (eq, "$g_animation_menu_selected", 0),
@@ -4633,7 +4646,7 @@ prsnt_animation_menu_triggers = [
           (try_end),
           (neq, ":loop_end", -1),
           (val_add, ":key", 1),
-          (try_begin),
+          (try_begin), # check if the animation can currently be played, coloring the text differently depending on the result
             (call_script, "script_cf_try_execute_animation", ":my_player_id", ":string_id", 1),
             (try_begin),
               (this_or_next|eq, "$g_animation_menu_selected", 0),
@@ -4653,7 +4666,7 @@ prsnt_animation_menu_triggers = [
 
 presentations.extend([
 
-  ("animation_menu", prsntf_manual_end_only, 0, prsnt_animation_menu_triggers),
-  ("animation_menu_no_mouse_grab", prsntf_manual_end_only|prsntf_read_only, 0, prsnt_animation_menu_triggers),
+  ("animation_menu", prsntf_manual_end_only, 0, prsnt_animation_menu_triggers), # animation menu that grabs mouse input, and can be clicked on
+  ("animation_menu_no_mouse_grab", prsntf_manual_end_only|prsntf_read_only, 0, prsnt_animation_menu_triggers), # animation menu that doesn't grab input, entries being selected with number keys
 
   ])
