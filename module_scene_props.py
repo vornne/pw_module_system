@@ -2701,7 +2701,7 @@ scene_props = [
   ("pw_buy_fishing_net",spr_buy_item_flags(4),"pw_fishing_net_b","bo_pw_fishing_net_b", spr_buy_item_triggers("itm_fishing_net", pos_offset=(150,-100,0), rotate=(0,-90,0), resources=[("itm_wood_pole_short", 2), ("itm_linen_thread", 2)], engineer=2)),
   ("pw_buy_sickle",spr_buy_item_flags(1),"pw_sickle","bo_pw_weapon_small", spr_buy_item_triggers("itm_sickle", resources=["itm_iron_bar_short", "itm_stick"], engineer=2)),
   ("pw_buy_scythe",spr_buy_item_flags(3),"pw_scythe","bo_pw_weapon_big", spr_buy_item_triggers("itm_scythe", resources=["itm_iron_bar", "itm_wood_pole"], engineer=2)),
-  ("pw_buy_wheat_sack",spr_buy_item_flags(1),"pw_wheat_sack","bo_pw_weapon_small", spr_buy_item_triggers("itm_wheat_sack", pos_offset=(0,0,-20), resources=["itm_wheat_sheaf"], engineer=1)),
+  ("pw_buy_wheat_sack",spr_buy_item_flags(1),"pw_wheat_sack","bo_pw_weapon_small", spr_buy_item_triggers("itm_wheat_sack", pos_offset=(0,0,-20), resources=["itm_wheat_sheaf"])),
   ("pw_buy_kitchen_knife",spr_buy_item_flags(1),"pw_kitchen_knife","bo_pw_weapon_small", spr_buy_item_triggers("itm_kitchen_knife", resources=["itm_iron_piece"], engineer=2)),
   ("pw_buy_cleaver",spr_buy_item_flags(2),"cleaver_new","bo_pw_weapon_small", spr_buy_item_triggers("itm_cleaver", resources=["itm_iron_bar_short"], engineer=2)),
   ("pw_buy_knife",spr_buy_item_flags(1),"peasant_knife_new","bo_pw_weapon_small", spr_buy_item_triggers("itm_knife", resources=["itm_iron_bar_short"], engineer=2)),
