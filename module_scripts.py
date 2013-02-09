@@ -2274,7 +2274,8 @@ scripts.extend([
 
   ("initialize_banner_info", # store background colors for all the banners in an array
    [
-    (troop_set_slot, "trp_banner_background_color_array", 0, 0xFFAAAA99),
+    (troop_set_slot, "trp_banner_background_color_array", 0, 0xFFAAAA99), # plain white for scene props and item icons
+    (troop_set_slot, "trp_banner_background_color_array", 1, 0xFF554433), # brown for commoners and outlaws
     (troop_set_slot, "trp_banner_background_color_array", "mesh_banner_a01", 0xFF8f4531),
     (troop_set_slot, "trp_banner_background_color_array", "mesh_banner_a02", 0xFFd9d7d1),
     (troop_set_slot, "trp_banner_background_color_array", "mesh_banner_a03", 0xFF373736),
@@ -2505,9 +2506,13 @@ scripts.extend([
       (agent_get_player_id, ":player_id", ":agent_id"),
       (player_is_active, ":player_id"),
       (player_get_slot, ":player_faction_id", ":player_id", slot_player_faction_id),
-      (ge, ":player_faction_id", castle_factions_begin),
-      (faction_get_slot, ":banner_mesh", ":player_faction_id", slot_faction_banner_mesh),
-      (gt, ":banner_mesh", 0),
+      (try_begin),
+        (ge, ":player_faction_id", castle_factions_begin),
+        (faction_get_slot, ":banner_mesh", ":player_faction_id", slot_faction_banner_mesh),
+        (gt, ":banner_mesh", 0),
+      (else_try), # banner mesh 1 is for a plain brown background
+        (assign, ":banner_mesh", 1),
+      (try_end),
     (else_try), # banner mesh 0 is for a plain white background
       (assign, ":banner_mesh", 0),
     (try_end),
