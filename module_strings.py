@@ -864,6 +864,13 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("castle_name_53", "Whiteforge Harbour"),
   ("castle_name_54", "Whiteforge Guardhouse"),
   ("castle_name_55", "Saint Michael Abbey"),
+  ("castle_name_56", "Nordheim"),
+  ("castle_name_57", "Nordheim Castle"),
+  ("castle_name_58", "Farendal"),
+  ("castle_name_59", "Madvakt Castle"),
+  ("castle_name_60", "Bredby"),
+  ("castle_name_61", "Kildevakt Castle"),
+  ("castle_name_62", "Saltklippen"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]
