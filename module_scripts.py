@@ -1981,7 +1981,7 @@ scripts.extend([
     (assign, "$g_spawn_item_prune_time", 600),
     (assign, "$g_full_respawn_health", 0),
     (assign, "$g_max_herd_animal_count", 20),
-    (assign, "$g_initial_stockpile_multiplier", 100),
+    (assign, "$g_initial_stockpile_multiplier", 50),
     (troop_set_slot, "trp_serf", slot_troop_ranking, 0),
     (troop_set_slot, "trp_peasant", slot_troop_ranking, 1),
     (troop_set_slot, "trp_militia", slot_troop_ranking, 2),
