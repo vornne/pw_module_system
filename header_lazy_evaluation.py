@@ -1,3 +1,7 @@
+####################################################################################################################
+# Python classes for performing certain calculations at module system build time.
+####################################################################################################################
+
 class LazyIdEvaluation:
   """Base class for identifier calculations delayed to module system build time."""
 
