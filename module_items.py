@@ -769,7 +769,7 @@ items = [
 ["bolts", "Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag_b", ixmesh_carry)], itp_type_bolts|itp_default_ammo|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical,
  95, weight(2.25)|weapon_length(63)|thrust_damage(1,pierce)|max_ammo(29), imodbits_missile],
 ["steel_bolts", "Steel Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag_c", ixmesh_carry)], itp_type_bolts|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical,
- 190,weight(2.5)|weapon_length(63)|thrust_damage(2,pierce)|max_ammo(29), imodbits_missile],
+ 190, weight(2.5)|weapon_length(63)|thrust_damage(2,pierce)|max_ammo(29), imodbits_missile],
 
 ["old_shield", "Old Shield", [("shield_heater_c",0)], itp_type_shield|itp_wooden_parry, itcf_carry_kite_shield,
  157, weight(3.5)|hit_points(210)|body_armor(2)|spd_rtng(70)|shield_width(50), imodbits_shield],
@@ -927,7 +927,7 @@ items = [
 ["mining_pick", "Mining Pick", [("pw_mining_pick",0),("pw_mining_pick_inv",ixmesh_inventory)], itp_type_polearm|itp_two_handed|itp_primary|itp_unbalanced|itp_cant_use_on_horseback, itc_parry_polearm|itcf_overswing_polearm|itcf_carry_axe_back,
  423, weight(5)|spd_rtng(70)|weapon_length(93)|swing_damage(30,pierce)|thrust_damage(0,pierce), imodbits_none, [itm_class(item_class_mining)]],
 ["repair_hammer", "Repair Hammer", [("pw_repair_hammer",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_parry, itc_scimitar|itcf_carry_bow_back,
- 634, weight(3)|spd_rtng(92)|weapon_length(120)|swing_damage(5,blunt)|thrust_damage(0,pierce), imodbits_none, [itm_class(item_class_repair)]],
+ 634, weight(3)|spd_rtng(92)|weapon_length(65)|swing_damage(5,blunt)|thrust_damage(0,pierce), imodbits_none, [itm_class(item_class_repair)]],
 ["lock_pick", "Lock Pick", [("pw_lock_pick",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger,
  1260, weight(0.25)|spd_rtng(100)|weapon_length(23)|swing_damage(1,blunt)|thrust_damage(5,pierce), imodbits_none, [itm_class(item_class_lock_pick)]],
 ["admin_lock_pick", "Admin Lock Pick", [("pw_lock_pick",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger,
