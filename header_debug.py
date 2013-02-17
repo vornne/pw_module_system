@@ -69,3 +69,8 @@ def vars(*args):
 # example: dbg.vars_display(":agent_id", ":horse_agent_id", ":distance"),
 def vars_display(*args):
   return lazy.block([var(arg) for arg in args] + [display()])
+
+# initialize all debug registers in case some are not set
+def reset_all(value=-989):
+  return lazy.block((assign, reg(r), value)
+    for r in range(register_begin, register_end + 1))
