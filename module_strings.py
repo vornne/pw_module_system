@@ -739,7 +739,7 @@ F11 = spawn test horse at agent position^\
 F12 = measure distance to the first pointer_arrow prop"),
   ("pw_editor_values_info", "Scene prop editor values 1 and 2^^\
 pw_buy_*:^value 1 = faction + multiplier^value 2 = design target stock count^^\
-pw_stockpile_*:^value 1 = faction + multiplier^value 2 = 01 - 09: initial and target count / 10;  10 - 120: stock limit / 100^^\
+pw_stockpile_*:^value 1 = faction + multiplier^value 2 = 01 - 09: initial and target count / 10;  10 - 120: stock limit / 10^^\
 pw_export_*:^value 1 = faction + multiplier^value 2 = faction tax multiplier^^\
 pw_import_*:^value 1 = faction + multiplier^^\
 pw_change_troop_*:^value 1 = faction + multiplier^^\
