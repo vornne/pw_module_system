@@ -1570,9 +1570,12 @@ scripts.extend([
 
     ]),
 
-  ("game_missile_dives_into_water", # called by the game whenever a missle drops below water level
+  ("game_missile_dives_into_water", # called by the game whenever a missle drops below water level; pos1 = water impact position and rotation
    [#(store_script_param, ":missile_item_id", 1),
-    #(store_script_param, ":unknown", 2),
+    #(store_script_param, ":missile_item_modifier", 2),
+    #(store_script_param, ":launcher_item_id", 3),
+    #(store_script_param, ":launcher_item_modifier", 4),
+    #(store_script_param, ":shooter_agent_id", 5),
 
     (try_begin),
       (neg|multiplayer_is_server),
@@ -1580,6 +1583,43 @@ scripts.extend([
       (position_copy_origin, pos2, pos1),
       (particle_system_burst_no_sync, "psys_game_water_splash_2", pos2, 10),
     (try_end),
+    ]),
+
+  ("wse_multiplayer_message_received", # called by the WSE whenever a composite network message is received, both clients and servers
+   [#(store_script_param, ":sender_player_id", 1),
+    #(store_script_param, ":event_type", 2),
+
+    ]),
+
+  ("wse_chat_message_received", # clients and server: called by the WSE when a chat message is received. s0 contains the modifiable message; a non zero trigger result suppresses the message
+   [#(store_script_param, ":sender_player_id", 1),
+    #(store_script_param, ":chat_type", 2), # 0 = global, 1 = team
+
+    ]),
+
+  ("wse_console_command_received", # called by the WSE when a command is entered on the dedicated server console, after parsing standard commands. s0 contains the text; a non zero trigger result means the command succeeded; set the result string for the message to display on success (if empty, the default message will be used)
+   [
+
+    ]),
+
+  ("wse_get_agent_scale", # called by the WSE each time an agent is created; trigger result = agent scale (fixed point)
+   [#(store_script_param, ":troop_id", 1),
+    #(store_script_param, ":horse_item_id", 2),
+    #(store_script_param, ":horse_item_modifier", 3),
+    #(store_script_param, ":player_id", 4),
+
+    ]),
+
+  ("wse_window_opened", # called by the WSE each time a window (party/inventory/character) is opened; trigger result = presentation that replaces the window (if not set or negative, window will open normally)
+   [#(store_script_param, ":window_no", 1),
+    #(store_script_param, ":window_param_1", 2),
+    #(store_script_param, ":window_param_2", 3),
+
+    ]),
+
+  ("wse_game_saved", # called by the WSE after single player games are saved successfully
+   [
+
     ]),
 
   ("get_random_equipment", # get a random item inside a range of ids, that is not women only clothing; store in reg0

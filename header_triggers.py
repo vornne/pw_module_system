@@ -46,7 +46,13 @@ ti_on_agent_hit                                   = -28.0
 # trigger param 1: hit agent id
 # trigger param 2: attacker agent id
 # trigger param 3: inflicted damage
-# reg0: attacker item_id
+# trigger param 4: raw damage (before being soaked by armor)
+# trigger param 5: hit bone
+# trigger param 6: item id
+# trigger param 7: item modifier
+# trigger param 8: missile item id
+# trigger param 9: missile item modifier
+# trigger param 10: damage type
 # pos0: position of the blow, rotation gives the direction of the blow
 # trigger result: if greater than or equal to zero, inflicted damage is set to the value specified
 
@@ -54,6 +60,12 @@ ti_on_player_exit                                 = -29.0
 # trigger param 1: player id
 
 ti_on_leave_area                                  = -30.0
+
+ti_on_agent_start_reloading                       = -105.0
+# trigger param 1: agent id
+
+ti_on_agent_end_reloading                         = -106.0
+# trigger param 1: agent id
 
 #-----------------------------------------------------------------------------
 # SCENE PROP TRIGGERS
@@ -63,7 +75,12 @@ ti_on_scene_prop_init                             = -40.0
 
 ti_on_scene_prop_hit                              = -42.0
 # trigger param 1: instance id
-# trigger param 2: hit damage
+# trigger param 2: inflicted damage (server only)
+# trigger param 3: attacker agent id (server only)
+# trigger param 4: item id (server only)
+# trigger param 5: item modifier (server only)
+# trigger param 6: missile item id (server only)
+# trigger param 7: missile item modifier (server only)
 # pos1: hit position
 # pos2: x holds attacker agent id, use (set_fixed_point_multiplier, 1)
 # trigger result: if greater than or equal to zero, inflicted damage is set to the value specified
@@ -91,6 +108,10 @@ ti_on_scene_prop_cancel_use                       = -48.0
 # trigger param 1: agent id
 # trigger param 2: instance id
 
+ti_on_scene_prop_stepped_on                       = -100.0
+# trigger param 1: agent id
+# trigger param 2: prop instance id
+
 #-----------------------------------------------------------------------------
 # ITEM TRIGGERS
 #-----------------------------------------------------------------------------
@@ -104,6 +125,32 @@ ti_on_missile_hit                                 = -52.0
 # trigger param 1: shooter agent id
 # trigger param 2: collision_type: 0 = world, 1 = agent, 2 = dynamic prop, 3 = world, 4 = mission object, 8 = friend, 9 = neutral agent, 10 = under water
 # pos1: missile position
+
+ti_on_init_missile                                = -101.0
+# trigger param 1: shooter agent id
+# trigger param 2: launcher item id
+# trigger param 3: launcher item modifier
+# trigger param 4: missile item id
+# trigger param 5: missile item modifier
+
+ti_on_shield_hit                                  = -103.0
+# trigger param 1: receiver agent id
+# trigger param 2: dealer agent id
+# trigger param 3: inflicted damage
+# trigger param 4: raw damage (before shield skill and skill resistance bonuses)
+# trigger param 5: item id
+# trigger param 6: item modifier
+# trigger param 7: missile item id
+# trigger param 8: missile item modifier
+# trigger result: if set, damage dealt to shield
+
+ti_on_missile_dive                                = -104.0
+# trigger param 1: shooter agent id
+# trigger param 2: launcher item id
+# trigger param 3: launcher item modifier
+# trigger param 4: missile item id
+# trigger param 5: missile item modifier
+# pos0: water impact position and rotation
 
 #-----------------------------------------------------------------------------
 # MISSION TEMPLATE TRIGGERS
