@@ -647,7 +647,7 @@ def spr_build_wall_triggers():
 
 # Point to capture castles using a faction banner.
 def spr_capture_castle_triggers():
-  return [spr_call_script_use_trigger("script_cf_capture_castle")]
+  return [spr_call_script_use_trigger("script_cf_use_capture_point")]
 
 def spr_chest_flags(use_time=1):
   return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached|spr_use_time(max(use_time, 1))

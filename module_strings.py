@@ -618,6 +618,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("must_leave_s1_first", "You must leave the {s1} first."),
   ("not_a_member_of_s1", "You are not a member of the {s1}."),
   ("s1_captured_s2", "The {s1} have captured {s2}!"),
+  ("your_faction_not_hostile_to_s1", "Your faction is not hostile to the {s1}."),
+  ("your_faction_not_captured_required_points", "Your faction has not captured the required secondary points."),
   ("door_locked_by_s1", "The door is locked by the {s1}."),
   ("door_bolted", "The door is bolted on the other side."),
   ("chest_locked_by_s1", "This chest is locked by the {s1}."),
@@ -710,7 +712,7 @@ General Information\
  When you die, a bag with a small percentage of your money will be dropped, along with all your equipped items.\
 ^^Troops with the wound treatment skill can heal other badly wounded players by hitting them with the surgeon's scalpel, up to a certain percentage of full health, based on skill; while resting on beds can be used by less wounded troops to heal fully - each type of bed can have a different minimum health required - which requires and uses up food eaten.\
  Players hit with a poisoned dagger will lose health slowly over time until they die, unless a doctor treats them with a healing herb leaf.\
-^^Enemy castles can be captured for your faction by using the flag pole (probably on top of the castle keep) while holding a your faction's banner item. The banner and name of a faction can be changed by the lord; when the banner is changed, armor on players of that faction will be updated, but hand banners will not.\
+^^Enemy castles can be captured for your faction by using a primary flag pole (probably on top of the castle keep) while holding a your faction's banner item; some castles might require secondary points to be captured first, either all of them, at least one, or a combination of both. Lords can also give away their own castles peacefully by using the other faction's banner on a primary capture point. The banner and name of a faction can be changed by the lord; when the banner is changed, armor on players of that faction will be updated, but hand banners will not.\
 ^^To shout with the local chat messages, hold down right shift while pressing enter. With faction chat messages, the lord can send messages that are displayed in big letters in the same way, with right shift.\
  A normal player can only send admin chat messages that are visible to other admins on the server; admins can also send messages to specific players after selecting from the list brought up with F11 (press escape to cancel the list and target everyone), and can also hold right shift when sending to send announcements to all players or warnings to a specific player.\
  As admin, holding down right shift while voting overrides the poll. The agent selected by pressing the target key with shift held down (if any) will be used as the target for admin tools and chat."),
@@ -753,7 +755,7 @@ pw portcullises, drawbridges, trapdoors:^value 1 = options bitfield (0x1 = start
 pw_lift_platform:^value 2 = linking id with two x_winch props^^\
 pw ships:^value 1 = initial ramp position (0 = center, 1 = left, 2 = right)^Only place the hull, the other parts are spawned at mission start.^^\
 pw_ferry_boat:^value 2 = linking id with two pw_ferry_platform props^^\
-pw_castle_capture_point:^value 1 = faction / castle id^^\
+pw_castle_capture_point:^value 1 = faction / castle id^value 2 = capture type (0 = primary, 1 = all secondary, 2 one secondary)^^\
 pw_castle_sign:^value 1 = faction / castle id^value 2 = number of the name, listed at the end of strings.txt (name can't be one used by another castle)^^\
 pw_castle_money_chest:^value 1 = faction / castle id^value 2 = initial gold^^\
 pw_item_chest_*:^value 1 = faction / castle id^^\

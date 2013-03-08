@@ -188,6 +188,7 @@ slot_scene_prop_height                = 23 # multiple meanings - use with care
 slot_scene_prop_collision_kind        = 24 # collision testing scene prop kind for ships; set to -1 for scene props that should never be checked for collision with ships
 slot_scene_prop_speed_limit           = 25 # used for ships
 slot_scene_prop_no_move_physics       = 26 # whether to disable physics when moving, so agents can't ride on the prop
+slot_scene_prop_capture_faction_id    = 27 # faction that has captured this prop individually, rather than the castle it belongs to
 
 slot_scene_prop_next_resource_hp      = 30 # hit points when the next resource item should be produced
 slot_scene_prop_state                 = 31 # constants below starting with scene_prop_state_
@@ -518,10 +519,15 @@ change_faction_type_respawn           = 0 # changing faction when training
 change_faction_type_no_respawn        = 1 # changing faction by clicking the use control, to the same troop type or one that allows it
 change_faction_type_outlawed          = 2 # being forced to change when outlawed, without respawning
 
+capture_point_type_primary            = 0 # after the required secondary points are captured, take over the castle
+capture_point_type_secondary_all      = 1 # require taking all secondary capture points of this type
+capture_point_type_secondary_one      = 2 # require taking at least one secondary capture point of this type
+
 redraw_all_banners                    = 0 # at mission start on the server
 redraw_castle_banners                 = 1 # when a castle is captured
 redraw_faction_banners                = 2 # when a faction lord changes their banner
 redraw_client_banner_positions        = 3 # at mission start on a client, to work around engine quirks with spawned items
+redraw_single_capture_point_banner    = 4 # when a secondary point is captured
 
 inventory_slots_per_row               = 6
 inventory_slot_spacing                = 100
