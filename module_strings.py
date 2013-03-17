@@ -4,6 +4,7 @@ strings = [
   ("yes", "Yes."),
   ("no", "No."),
 # Strings before this point are hardwired.
+  ("credits_0", "Persistent World Module^Copyright 2010 Steven Schwartfeger (Vornne)"),
   ("credits_1", "Mount&Blade: Warband Copyright 2008-2010 Taleworlds Entertainment"),
   ("credits_2", "Game design:^Armagan Yavuz^Steve Negus^Cem Cimenbicer"),
   ("credits_3", "Programming:^Armagan Yavuz^Cem Cimenbicer^Serdar Kocdemir^Ozan Gumus"),
