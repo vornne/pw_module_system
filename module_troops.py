@@ -114,7 +114,7 @@ troops = [
    str_14|agi_12|pw_attr,wpex(95,70,80,30,40,70),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_athletics_2|knows_sailing_9|knows_riding_1,default_face_1,default_face_2],
   ["traveler","Traveler","a traveler",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_old_coarse_tunic","itm_old_hide_boots","itm_tattered_wrapping_boots","itm_old_knife"],
-   str_10|agi_13|pw_attr,wpex(60,40,50,10,20,60),knows_pw|knows_ironflesh_1|knows_power_strike_1|knows_athletics_5|knows_sailing_7|knows_riding_3|knows_labouring_1|knows_herding_1,default_face_1,default_face_2],
+   str_10|agi_13|pw_attr,wpex(60,40,50,10,20,60),knows_pw|knows_ironflesh_1|knows_power_strike_1|knows_athletics_5|knows_sailing_7|knows_riding_3|knows_labouring_1|knows_herding_1|knows_tailoring_2,default_face_1,default_face_2],
   ["lord","Lord","the lord",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
    ["itm_old_tabard","itm_ripped_woolen_hose","itm_old_hide_boots","itm_worn_sword"],
    str_15|agi_15|pw_attr,wpex(115,115,115,50,70,50),knows_pw|knows_leadership_1|knows_ironflesh_6|knows_power_strike_4|knows_shield_2|knows_athletics_2|knows_riding_5,default_face_1,default_face_2],
