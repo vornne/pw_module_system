@@ -874,6 +874,7 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("castle_name_60", "Bredby"),
   ("castle_name_61", "Kildevakt Castle"),
   ("castle_name_62", "Saltklippen"),
+  ("castle_name_63", "Nantes"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]
