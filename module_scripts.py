@@ -8705,6 +8705,8 @@ scripts.extend([
       (scene_prop_get_slot, ":placement_skill", ":net_instance_id", slot_scene_prop_position),
       (gt, ":placement_skill", 0),
       (prop_instance_get_position, pos1, ":net_instance_id"),
+      (position_get_z, ":height", pos1),
+      (lt, ":height", -100),
       (copy_position, pos2, pos1),
       (position_set_z, pos2, z_position_water_level),
       (scene_prop_get_slot, ":linked_instance_id", ":net_instance_id", slot_scene_prop_linked_scene_prop),
