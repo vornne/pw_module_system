@@ -600,7 +600,6 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 
   ("troop_not_available", "Not available to you^{s0}"),
   ("troop_train", "Train to be {s1} for the {s2}"),
-  ("troop_leave_faction", "Leave your faction and become {s1}"),
   ("troop_assume_role", "Assume the role of {s1} of the {s2}"),
   ("troop_become", "Become {s1} with the {s2}"),
   ("troop_become_for", "Become {s1} for the {s2}"),

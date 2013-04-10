@@ -2743,7 +2743,7 @@ scene_props = [
   ("pw_clean_blood",spr_use_time(3),"cloth_a","bo_cloth_a", spr_clean_blood_triggers()),
 
   ("code_spawn_marker",0,"0","0", []),
-  ("pw_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_peasant", cost=50, after_respawn=True, use_string="str_troop_leave_faction")),
+  ("pw_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_peasant", cost=50, after_respawn=True, use_string="str_troop_become")),
   ("pw_change_troop_serf",spr_use_time(30),"trident","bo_pw_weapon_big", spr_change_troop_triggers("trp_serf", cost=150)),
   ("pw_change_troop_militia",spr_use_time(30),"practice_sword","bo_pw_weapon", spr_change_troop_triggers("trp_militia", cost=500)),
   ("pw_change_troop_huntsman",spr_use_time(30),"short_bow","bo_pw_weapon", spr_change_troop_triggers("trp_huntsman", cost=500)),
