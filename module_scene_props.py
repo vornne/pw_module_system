@@ -58,14 +58,19 @@ def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=Fals
   if stockpile is True:
     init_trigger[1].extend([
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count_update_time, -1),
-      (prop_instance_get_variation_id_2, ":initial_stock_count", ":instance_id")])
+      (try_begin),
+        (neq, "$g_game_type", "mt_quick_battle"),
+        (prop_instance_get_variation_id_2, ":initial_stock_count", ":instance_id")])
     if resource_stock_count is True:
-      init_trigger[1].extend([(val_mod, ":initial_stock_count", 10),
+      init_trigger[1].extend([
+        (val_mod, ":initial_stock_count", 10),
         (val_mul, ":initial_stock_count", 10),
         (scene_prop_set_slot, ":instance_id", slot_scene_prop_is_resource_stockpile, 1)])
-    init_trigger[1].extend([(val_mul, ":initial_stock_count", "$g_initial_stockpile_multiplier"),
-      (val_div, ":initial_stock_count", 100),
-      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count, ":initial_stock_count")])
+    init_trigger[1].extend([
+        (val_mul, ":initial_stock_count", "$g_initial_stockpile_multiplier"),
+        (val_div, ":initial_stock_count", 100),
+        (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count, ":initial_stock_count"),
+      (try_end)])
   if price_multiplier is not None:
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_multiplier, price_multiplier))
   return init_trigger
