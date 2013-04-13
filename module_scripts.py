@@ -73,11 +73,19 @@ scripts.extend([
           (eq, "$g_game_type", "mt_quick_battle"),
           (str_store_string, s0, "str_buy_sell"),
         (else_try),
+          (eq, "$g_game_type", "mt_no_money"),
+          (str_store_string, s0, "str_take_put_craft"),
+        (else_try),
           (str_store_string, s0, "str_buy_sell_craft"),
         (else_try),
         (try_end),
       (else_try), # for unlimited buying stations
-        (str_store_string, s0, "str_buy"),
+        (try_begin),
+          (eq, "$g_game_type", "mt_no_money"),
+          (str_store_string, s0, "str_take"),
+        (else_try),
+          (str_store_string, s0, "str_buy"),
+        (try_end),
       (try_end),
 
       (try_begin), # store extra information for script game_get_item_extra_text, called by the show_item_details operation
@@ -88,6 +96,7 @@ scripts.extend([
           (assign, "$g_extra_item_details_1_string_id", "str_stock_count_reg0"),
           (assign, "$g_extra_item_details_1_color", 0xFF8888DD),
           (try_begin), # if a crafting stockpile, calculate the extra reward
+            (neq, "$g_game_type", "mt_no_money"),
             (scene_prop_slot_eq, ":instance_id", slot_scene_prop_is_resource_stockpile, 0),
             (call_script, "script_scene_prop_get_item_crafting_refund_reward", ":instance_id"),
             (assign, "$g_extra_item_details_2_value", reg1),
@@ -100,6 +109,7 @@ scripts.extend([
               (assign, "$g_extra_item_details_2_color", 0xFF888888),
             (try_end),
           (else_try), # otherwise if a resource stockpile, check if full or nearly so
+            (scene_prop_slot_eq, ":instance_id", slot_scene_prop_is_resource_stockpile, 1),
             (prop_instance_get_variation_id_2, ":stock_limit", ":instance_id"),
             (val_div, ":stock_limit", 10),
             (val_mul, ":stock_limit", 100),
@@ -115,11 +125,14 @@ scripts.extend([
               (str_store_string, s0, "str_stockpile_nearly_full"),
             (try_end),
           (try_end),
-        (try_end), # calculate the selling price
-        (call_script, "script_calculate_stockpile_taxed_price", ":instance_id", ":gold_value"),
-        (assign, "$g_extra_item_details_3_value", reg0),
-        (assign, "$g_extra_item_details_3_string_id", "str_selling_price_reg0"),
-        (assign, "$g_extra_item_details_3_color", 0xFFAA7777),
+        (try_end),
+        (try_begin), # calculate the selling price
+          (neq, "$g_game_type", "mt_no_money"),
+          (call_script, "script_calculate_stockpile_taxed_price", ":instance_id", ":gold_value"),
+          (assign, "$g_extra_item_details_3_value", reg0),
+          (assign, "$g_extra_item_details_3_string_id", "str_selling_price_reg0"),
+          (assign, "$g_extra_item_details_3_color", 0xFFAA7777),
+        (try_end),
       (try_end),
 
       (agent_get_look_position, pos3, ":my_agent_id"),
@@ -147,6 +160,7 @@ scripts.extend([
         (str_store_string, s0, "str_troop_not_available"),
       (try_end),
       (try_begin),
+        (neq, "$g_game_type", "mt_no_money"),
         (scene_prop_get_slot, ":gold_cost", ":instance_id", slot_scene_prop_gold_value),
         (gt, ":gold_cost", 0),
         (assign, reg10, ":gold_cost"),
@@ -716,6 +730,7 @@ scripts.extend([
         (eq, ":event_type", server_event_set_overflow_gold),
         (store_script_param, ":gold_value", 3),
         (try_begin),
+          (neq, "$g_game_type", "mt_no_money"),
           (is_between, ":gold_value", max_correctly_displayed_gold + 1, max_possible_gold),
           (assign, "$g_overflow_gold_value", ":gold_value"),
           (multiplayer_get_my_player, ":my_player_id"),
@@ -847,9 +862,12 @@ scripts.extend([
         (call_script, "script_transfer_inventory", ":sender_player_id", ":instance_id", ":from_slot", ":to_slot", ":item_id"),
       (else_try), # transfer money between the player and a money chest
         (eq, ":event_type", client_event_transfer_gold),
-        (store_script_param, ":instance_id", 3),
-        (store_script_param, ":gold_value", 4),
-        (call_script, "script_cf_use_castle_money_chest", ":sender_player_id", ":instance_id", ":gold_value"),
+        (try_begin),
+          (neq, "$g_game_type", "mt_no_money"),
+          (store_script_param, ":instance_id", 3),
+          (store_script_param, ":gold_value", 4),
+          (call_script, "script_cf_use_castle_money_chest", ":sender_player_id", ":instance_id", ":gold_value"),
+        (try_end),
       (else_try), # set the type of the next chat message to be received (since string messages can't have additional information)
         (eq, ":event_type", client_event_chat_message_type),
         (store_script_param, ":chat_event_type", 3),
@@ -1025,21 +1043,24 @@ scripts.extend([
         (try_end),
       (else_try), # client requesting to drop a money bag
         (eq, ":event_type", client_event_drop_money_bag),
-        (store_script_param, ":gold_amount", 3),
-        (try_begin), # for positive amounts, drop a money bag
-          (gt, ":gold_amount", 0),
-          (call_script, "script_cf_drop_money_bag_item", ":sender_player_id", ":gold_amount"),
-        (else_try), # for negative amounts, check the admin has permission then spawn them the absolute money amount
-          (lt, ":gold_amount", 0),
-          (player_is_admin, ":sender_player_id"),
-          (player_slot_eq, ":sender_player_id", slot_player_admin_no_gold, 0),
-          (val_mul, ":gold_amount", -1),
-          (call_script, "script_player_adjust_gold", ":sender_player_id", ":gold_amount", 1),
-          (assign, reg0, ":gold_amount"),
-          (str_store_string, s3, "str_log_admin_cheat_money"),
-          (str_store_player_username, s0, ":sender_player_id"),
-          (player_get_unique_id, reg0, ":sender_player_id"),
-          (server_add_message_to_log, "str_log_admin_target_self"),
+        (try_begin),
+          (neq, "$g_game_type", "mt_no_money"),
+          (store_script_param, ":gold_amount", 3),
+          (try_begin), # for positive amounts, drop a money bag
+            (gt, ":gold_amount", 0),
+            (call_script, "script_cf_drop_money_bag_item", ":sender_player_id", ":gold_amount"),
+          (else_try), # for negative amounts, check the admin has permission then spawn them the absolute money amount
+            (lt, ":gold_amount", 0),
+            (player_is_admin, ":sender_player_id"),
+            (player_slot_eq, ":sender_player_id", slot_player_admin_no_gold, 0),
+            (val_mul, ":gold_amount", -1),
+            (call_script, "script_player_adjust_gold", ":sender_player_id", ":gold_amount", 1),
+            (assign, reg0, ":gold_amount"),
+            (str_store_string, s3, "str_log_admin_cheat_money"),
+            (str_store_player_username, s0, ":sender_player_id"),
+            (player_get_unique_id, reg0, ":sender_player_id"),
+            (server_add_message_to_log, "str_log_admin_target_self"),
+          (try_end),
         (try_end),
       (else_try), # requesting a spawn point or switching spectator status
         (eq, ":event_type", client_event_request_spawn_point),
@@ -1209,8 +1230,9 @@ scripts.extend([
         (try_end),
       (else_try), # handle player requests to reveal their money pouch to another player
         (eq, ":event_type", client_event_reveal_money_pouch),
-        (store_script_param, ":target_agent_id", 3),
         (try_begin),
+          (neq, "$g_game_type", "mt_no_money"),
+          (store_script_param, ":target_agent_id", 3),
           (agent_is_active, ":target_agent_id"),
           (agent_is_alive, ":target_agent_id"),
           (agent_get_player_id, ":target_player_id", ":target_agent_id"),
@@ -3335,9 +3357,14 @@ scripts.extend([
     (else_try), # otherwise, set default attributes
       (assign, ":troop_id", playable_troops_begin),
       (assign, ":faction_id", factions_begin),
-      (store_random_in_range, ":gold_value", 30, 100),
-      (val_mul, ":gold_value", "$g_starting_gold_multiplier"),
-      (val_div, ":gold_value", 100),
+      (try_begin),
+        (neq, "$g_game_type", "mt_no_money"),
+        (store_random_in_range, ":gold_value", 30, 100),
+        (val_mul, ":gold_value", "$g_starting_gold_multiplier"),
+        (val_div, ":gold_value", 100),
+      (else_try),
+        (assign, ":gold_value", 0),
+      (try_end),
       (assign, ":outlaw_rating", 0),
     (try_end),
     (player_set_troop_id, ":player_id", ":troop_id"),
@@ -3511,6 +3538,7 @@ scripts.extend([
         (multiplayer_is_server),
         (this_or_next|neq, "$g_commoner_outlaw_loot", 1),
         (neg|player_slot_eq, ":dead_player_id", slot_player_faction_id, "fac_commoners"),
+        (neq, "$g_game_type", "mt_no_money"),
         (call_script, "script_player_drop_loot", ":dead_player_id"),
       (try_end),
     (try_end),
@@ -3582,9 +3610,9 @@ scripts.extend([
   ("player_drop_loot", # server: drop a loot money bag based on amount carried and server settings
    [(store_script_param, ":player_id", 1), # must be valid
 
-    (assign, ":gold_loot", 0),
-    (player_get_gold, ":gold", ":player_id"),
     (try_begin),
+      (neq, "$g_game_type", "mt_no_money"),
+      (player_get_gold, ":gold", ":player_id"),
       (gt, ":gold", 0),
       (store_random_in_range, ":loot_multiplier", 10, 21),
       (store_mul, ":gold_loot", ":loot_multiplier", "$g_combat_gold_multiplier"),
@@ -3779,9 +3807,11 @@ scripts.extend([
     (try_end),
     (try_begin),
       (lt, ":player_gold", ":gold_cost"),
+      (neq, "$g_game_type", "mt_no_money"),
       (multiplayer_send_2_int_to_player, ":player_id", server_event_preset_message, "str_dont_have_enough_money", preset_message_error),
     (try_end),
-    (ge, ":player_gold", ":gold_cost"),
+    (this_or_next|ge, ":player_gold", ":gold_cost"),
+    (eq, "$g_game_type", "mt_no_money"),
     ]),
 
   ("player_adjust_gold", # server: adjust player gold, sending large values manually that would overflow in the engine code, and playing an appropriate sound
@@ -3790,6 +3820,7 @@ scripts.extend([
     (store_script_param, ":add_abs_sub", 3), # -1 = subtract, 0 = set, 1 = add
 
     (try_begin),
+      (neq, "$g_game_type", "mt_no_money"),
       (ge, ":gold_value", 0),
       (this_or_next|eq, ":add_abs_sub", 0),
       (gt, ":gold_value", 0),
@@ -3830,9 +3861,13 @@ scripts.extend([
     (store_script_param, ":item_id", 2), # if invalid, set the base value below
     (store_script_param, ":base_value_multiplier", 3), # the base value if the item id is not valid, otherwise an extra multiplier applied from module system code
 
-    (scene_prop_get_slot, ":value", ":instance_id", slot_scene_prop_gold_value),
-    (try_begin), # not already cached: calculate the value by applying the multipliers
-      (eq, ":value", 0),
+    (try_begin),
+      (eq, "$g_game_type", "mt_no_money"),
+      (assign, ":value", 0),
+      (assign, ":multiplier", 0),
+    (else_try),
+      (scene_prop_get_slot, ":value", ":instance_id", slot_scene_prop_gold_value),
+      (eq, ":value", 0), # not already cached: calculate the value by applying the multipliers
       (try_begin),
         (gt, ":item_id", -1),
         (store_item_value, ":base_value", ":item_id"),
@@ -4263,14 +4298,17 @@ scripts.extend([
     (try_for_range, ":chest_slot", slot_mission_data_castle_money_chest_begin, slot_mission_data_castle_money_chest_end),
       (troop_set_slot, "trp_mission_data", ":chest_slot", 0),
     (try_end),
-    (scene_prop_get_num_instances, ":chest_num", "spr_pw_castle_money_chest"),
-    (try_for_range, ":chest_no", 0, ":chest_num"),
-      (scene_prop_get_instance, ":instance_id", "spr_pw_castle_money_chest", ":chest_no"),
-      (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
-      (is_between, reg1, slot_mission_data_castle_owner_faction_begin, slot_mission_data_castle_owner_faction_end),
-      (store_add, ":chest_slot", reg1, slot_mission_data_castle_money_chest_begin),
-      (troop_slot_eq, "trp_mission_data", ":chest_slot", 0),
-      (troop_set_slot, "trp_mission_data", ":chest_slot", ":instance_id"),
+    (try_begin),
+      (neq, "$g_game_type", "mt_no_money"),
+      (scene_prop_get_num_instances, ":chest_num", "spr_pw_castle_money_chest"),
+      (try_for_range, ":chest_no", 0, ":chest_num"),
+        (scene_prop_get_instance, ":instance_id", "spr_pw_castle_money_chest", ":chest_no"),
+        (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
+        (is_between, reg1, slot_mission_data_castle_owner_faction_begin, slot_mission_data_castle_owner_faction_end),
+        (store_add, ":chest_slot", reg1, slot_mission_data_castle_money_chest_begin),
+        (troop_slot_eq, "trp_mission_data", ":chest_slot", 0),
+        (troop_set_slot, "trp_mission_data", ":chest_slot", ":instance_id"),
+      (try_end),
     (try_end),
     ]),
 
@@ -4280,6 +4318,7 @@ scripts.extend([
     (store_script_param, ":percentage", 3), # if greater than -1, applied as a percentage to the value
 
     (try_begin),
+      (neq, "$g_game_type", "mt_no_money"),
       (is_between, ":castle_slot", slot_mission_data_castle_owner_faction_begin, slot_mission_data_castle_owner_faction_end),
       (val_add, ":castle_slot", slot_mission_data_castle_money_chest_begin),
       (troop_get_slot, ":instance_id", "trp_mission_data", ":castle_slot"),
@@ -5170,6 +5209,7 @@ scripts.extend([
 
     (assign, ":fail_message", -1),
     (try_begin),
+      (neq, "$g_game_type", "mt_no_money"),
       (neq, ":gold_value", 0),
       (assign, ":fail_message", "str_no_money_chest_nearby"),
       (call_script, "script_cf_can_use_scene_prop", ":player_id", ":instance_id", "spr_pw_castle_money_chest"),
@@ -5271,6 +5311,7 @@ scripts.extend([
   ("cf_use_money_bag_item", # server: handle players retrieving the contents of equipped money bags
    [(store_script_param, ":agent_id", 1), # must be valid
 
+    (neq, "$g_game_type", "mt_no_money"),
     (call_script, "script_cf_agent_consume_item", ":agent_id", "itm_money_bag", 1),
     (call_script, "script_cf_pop_agent_money_bag_value", ":agent_id"),
     (assign, ":gold_value", reg0),
@@ -5286,6 +5327,7 @@ scripts.extend([
 
     (try_begin),
       (eq, ":item_id", "itm_money_bag"), # since the item instance will be removed immediately aftewards, transfer the contents to an agent slot
+      (neq, "$g_game_type", "mt_no_money"),
       (scene_prop_get_slot, ":value", ":instance_id", slot_scene_prop_gold_value),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_value, 0),
       (try_for_range, ":value_slot", slot_agent_money_bag_1_value, slot_agent_money_bag_4_value + 1),
@@ -5315,6 +5357,7 @@ scripts.extend([
     (else_try),
       (eq, ":item_id", "itm_money_bag"),
       (try_begin),
+        (neq, "$g_game_type", "mt_no_money"),
         (call_script, "script_cf_pop_agent_money_bag_value", ":agent_id"), # transfer from the agent slot into the new dropped item instance
         (scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_value, reg0),
       (try_end),
@@ -7140,17 +7183,20 @@ scripts.extend([
       (multiplayer_send_int_to_player, ":player_id", server_event_play_sound, "snd_failure"),
     (try_end),
     (eq, ":fail", 0),
-    (call_script, "script_calculate_stockpile_taxed_price", ":instance_id", ":gold_value"),
     (try_begin),
-      (eq, ":add_or_subtract", 1),
-      (assign, ":gold_value", reg0),
-    (else_try),
-      (eq, ":add_or_subtract", -1),
-      (assign, ":tax_value", reg1),
-      (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
-      (call_script, "script_castle_receive_gold", reg1, ":tax_value", -1),
+      (neq, "$g_game_type", "mt_no_money"),
+      (call_script, "script_calculate_stockpile_taxed_price", ":instance_id", ":gold_value"),
+      (try_begin),
+        (eq, ":add_or_subtract", 1),
+        (assign, ":gold_value", reg0),
+      (else_try),
+        (eq, ":add_or_subtract", -1),
+        (assign, ":tax_value", reg1),
+        (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
+        (call_script, "script_castle_receive_gold", reg1, ":tax_value", -1),
+      (try_end),
+      (call_script, "script_player_adjust_gold", ":player_id", ":gold_value", ":add_or_subtract"),
     (try_end),
-    (call_script, "script_player_adjust_gold", ":player_id", ":gold_value", ":add_or_subtract"),
     (try_begin),
       (neq, "$g_game_type", "mt_quick_battle"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count, ":stock_count"),

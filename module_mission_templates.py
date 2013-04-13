@@ -708,7 +708,10 @@ static_presentations_setup = (ti_battle_window_opened, 0, 0, [], # clients: call
       (gt, "$g_respawn_start_time", 0),
       (start_presentation, "prsnt_respawn_time_counter"),
     (try_end),
-    (start_presentation, "prsnt_gold"),
+    (try_begin),
+      (neq, "$g_game_type", "mt_no_money"),
+      (start_presentation, "prsnt_gold"),
+    (try_end),
     (start_presentation, "prsnt_food_bar"),
     (try_begin), # if an inventory was being accessed before the presentations were cleared, notify the server to stop sending updates
       (gt, "$g_show_inventory_instance_id", 0),
@@ -904,7 +907,6 @@ def common_triggers(self):
     faction_chat_pressed,
     admin_chat_pressed,
     ship_control_pressed,
-    money_bag_pressed,
     animation_menu_pressed,
 
     welcome_message,
@@ -916,11 +918,17 @@ def common_triggers(self):
 
 mission_templates = [
   ("conquest", mtf_battle_mode, -1, "Build up your faction's economy to conquer castles.", spawn_points_0_99,
-    common_triggers("conquest")
-    ),
+    common_triggers("conquest") + [
+    money_bag_pressed,
+    ]),
 
   ("quick_battle", mtf_battle_mode, -1, "Fight for control of the castles.", spawn_points_0_99,
-    common_triggers("quick_battle")
+    common_triggers("quick_battle") + [
+    money_bag_pressed,
+    ]),
+
+  ("no_money", mtf_battle_mode, -1, "Fight for control of resources, weapons, and armor.", spawn_points_0_99,
+    common_triggers("no_money")
     ),
 
   ("edit_scene", 0, -1, "edit_scene", [(0,mtef_visitor_source,0,aif_start_alarmed,1,[])],

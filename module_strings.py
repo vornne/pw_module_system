@@ -225,6 +225,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 
   ("game_type_1", "Conquest"),
   ("game_type_2", "Quick Battle"),
+  ("game_type_3", "No Money"),
   ("game_types_end", "game_types_end"),
 
   ("fac_1_default_name", "Red Faction"),
@@ -548,6 +549,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("buy", "Buy"),
   ("buy_sell", "Buy / Sell"),
   ("buy_sell_craft", "Buy / Sell / Craft"),
+  ("take", "Take"),
+  ("take_put_craft", "Take / Put / Craft"),
   ("dont_have_enough_money", "You don't have enough money."),
   ("cant_equip_item", "You can't equip this item."),
   ("collect_reg1_gold", "Collect {reg1} gold"),
@@ -686,6 +689,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("error_scene_prop_0_pw", "Error: scene prop instance id 0 (kind {reg0}) is scripted (pw), so it might not work correctly."),
   ("game_type_1_info", "This is the basic original game type: resources can be gathered to sell or to craft items like weapons, for helping your faction prosper and conquer."),
   ("game_type_2_info", "Stock piles and crafting are disabled, so unlimited items can be bought without requiring the support of resource gathering or crafting."),
+  ("game_type_3_info", "The concept of money has been removed from this game type, so resource gathering and crafting are the only things required to obtain items."),
   ("pw_welcome", "{s10}\
 ^^Game Type: {s11}\
 ^-----------------------------------------------------------\
