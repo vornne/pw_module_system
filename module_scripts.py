@@ -1037,6 +1037,12 @@ scripts.extend([
         (try_begin), # positive values are spawn points
           (gt, ":spawn_point", 0),
           (player_set_slot, ":sender_player_id", slot_player_requested_spawn_point, ":spawn_point"),
+          (store_script_param, ":restart_as_peasant", 4),
+          (try_begin),
+            (eq, ":restart_as_peasant", 1),
+            (player_set_troop_id, ":sender_player_id", "trp_peasant"),
+            (call_script, "script_change_faction", ":sender_player_id", "fac_commoners", change_faction_type_respawn),
+          (try_end),
         (else_try),
           (try_begin), # if the player hasn't requested to spawn after connecting to the server
             (player_slot_eq, ":sender_player_id", slot_player_requested_spawn_point, -1),
