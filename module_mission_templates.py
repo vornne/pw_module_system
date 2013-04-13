@@ -167,7 +167,6 @@ after_mission_start_setup = (ti_after_mission_start, 0, 0, [], # spawn and move 
     (assign, "$g_preset_message_display_enabled", 0),
     (multiplayer_is_server),
     (assign, "$g_next_scene", -1),
-    (assign, "$g_next_mission", game_type_mission_templates_begin),
     (call_script, "script_setup_ship_collision_props"),
     (call_script, "script_setup_scene_props_after_mission_start"),
     (init_position, pos1),
@@ -509,11 +508,16 @@ game_ended_check = (1, 5, 0, # server: check for game end from victory or an adm
     (assign, "$g_game_ended", 1),
     ],
    [(try_begin), # after the delay, start the next mission
-      (is_between, "$g_next_scene", scenes_begin, scenes_end),
-      (start_multiplayer_mission, "$g_next_mission", "$g_next_scene", 1),
-    (else_try),
-      (start_multiplayer_mission, "$g_next_mission", 0, 0),
+      (neg|is_between, "$g_next_game_type", game_type_mission_templates_begin, game_type_mission_templates_end),
+      (assign, "$g_next_game_type", game_type_mission_templates_begin),
     (try_end),
+    (assign, ":started_manually", 1),
+    (try_begin),
+      (neg|is_between, "$g_next_scene", scenes_begin, scenes_end),
+      (assign, "$g_next_scene", scenes_begin),
+      (assign, ":started_manually", 0),
+    (try_end),
+    (start_multiplayer_mission, "$g_next_game_type", "$g_next_scene", ":started_manually"),
     (call_script, "script_game_set_multiplayer_mission_end"),
     ])
 
@@ -819,8 +823,7 @@ animation_menu_pressed = (0, 0.05, 0, [(game_key_clicked, gk_animation_menu),(ca
 
 welcome_message = (0, 0, ti_once, [], # clients: show a welcome message when connecting to a server
    [(neg|multiplayer_is_server),
-    (str_store_welcome_message, s10),
-    (call_script, "script_preset_message", "str_pw_welcome", preset_message_read_object, "str_join_game", 0),
+    (call_script, "script_show_welcome_message"),
     ])
 
 turn_windmill_fans = (0, 0, 4.0, [], # clients: make windmill fans in the scene turn visually (not affecting collision detection)
@@ -854,9 +857,8 @@ shadow_recalculation = (15, 1, 0, # clients: periodically recalculate environmen
     (rebuild_shadow_map),
     ])
 
-mission_templates = [
-  ("conquest", mtf_battle_mode, -1, "Fight for control of the castles.", spawn_points_0_99,
-   [
+def common_triggers(self):
+  return [(ti_before_mission_start, 0, 0, [(assign, "$g_game_type", "mt_" + self)], []),
     before_mission_start_setup,
     after_mission_start_setup,
 
@@ -910,7 +912,12 @@ mission_templates = [
     ambient_sounds_check,
     music_situation_check,
     shadow_recalculation,
-    ]),
+    ]
+
+mission_templates = [
+  ("conquest", mtf_battle_mode, -1, "Build up your faction's economy to conquer castles.", spawn_points_0_99,
+    common_triggers("conquest")
+    ),
 
   ("edit_scene", 0, -1, "edit_scene", [(0,mtef_visitor_source,0,aif_start_alarmed,1,[])],
    [

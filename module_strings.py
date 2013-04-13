@@ -445,6 +445,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("server_name", "Server name:"),
   ("game_password", "Game password:"),
   ("welcome_message", "Welcome message:"),
+  ("game_type", "Game type:"),
   ("scene", "Scene:"),
   ("start_scene", "Start scene"),
   ("edit_scene", "Edit scene"),
@@ -681,9 +682,14 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("error_edit_mode_not_enabled", "Edit mode is not enabled in the Warband launcher: you will not be able to edit this scene."),
   ("no_more_unlinked_scene_props", "No more unlinked scene props."),
   ("error_scene_prop_0_pw", "Error: scene prop instance id 0 (kind {reg0}) is scripted (pw), so it might not work correctly."),
-  ("pw_welcome", "{s10}^^\
-General Information\
-^^When you first join the game, you start in the commoners faction as a peasant; to train as another troop type and join a faction at the same time, go to one of the castles and use a training station.\
+  ("game_type_1_info", "This is the basic original game type: resources can be gathered to sell or to craft items like weapons, for helping your faction prosper and conquer."),
+  ("pw_welcome", "{s10}\
+^^Game Type: {s11}\
+^-----------------------------------------------------------\
+^{s12}\
+^^General Information\
+^-----------------------------------------------------------\
+^When you first join the game, you start in the commoners faction as a peasant; to train as another troop type and join a faction at the same time, go to one of the castles and use a training station.\
  You can only join another faction as a commoner, or to become a commoner. The outlaws faction can be joined by training as one, but you will also get transferred to it after multiple team kills.\
  Troop type, faction, gold, and outlaw rating are saved if you crash or disconnect from the game, and when you rejoin your previous stats will be given back. At peasant, ruffian, or brigand training stations, clicking use will switch faction to commoners or outlaws without respawning, keeping your previous class until you die; but after that you will respawn as the targeted troop, unless your previous troop type was peasant or serf. You can also switch factions by just clicking use if you are using the targeted troop type already, or at the mercenary training stations (which are enabled only when the faction owns no castles).\
  For a certain period after a player spawns they will be invulnerable to attack, and also unable to attack others; when this period is over the default weapons will be given.\

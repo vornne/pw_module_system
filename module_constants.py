@@ -581,6 +581,8 @@ game_type_mission_templates_end = "mt_edit_scene"
 game_type_names_begin = "str_game_type_1"
 game_type_names_end = "str_game_types_end"
 
+game_type_info_strings_begin = "str_game_type_1_info"
+
 banner_meshes_begin = "mesh_banner_a01"
 banner_meshes_end = "mesh_banners_default_a"
 

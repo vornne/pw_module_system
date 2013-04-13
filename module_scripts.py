@@ -1066,7 +1066,8 @@ scripts.extend([
           (player_slot_eq, ":sender_player_id", slot_player_admin_no_panel, 0),
           (store_script_param, ":command", 3),
           (store_script_param, ":value", 4),
-          (call_script, "script_cf_execute_command", ":command", ":value"),
+          (store_script_param, ":value_2", 5),
+          (call_script, "script_cf_execute_command", ":command", ":value", ":value_2"),
         (try_end),
       (else_try), # handle admins changing the server name
         (eq, ":event_type", client_event_admin_set_server_name),
@@ -1874,6 +1875,7 @@ scripts.extend([
       (try_begin),
         (is_between, ":value", scenes_begin, scenes_end),
         (assign, "$g_next_scene", ":value"),
+        (store_script_param, "$g_next_game_type", 3),
       (else_try),
         (assign, ":error_string_id", "str_invalid_scene"),
       (try_end),
@@ -10789,6 +10791,16 @@ scripts.extend([
       (agent_get_defend_action, ":action", ":agent_id"),
     (try_end),
     (eq, ":action", 0),
+    ]),
+
+  ("show_welcome_message", # clients: display the server welcome and game information messages
+   [
+    (str_store_welcome_message, s10),
+    (store_add, ":name_string_id", lazy.sub(game_type_names_begin, game_type_mission_templates_begin), "$g_game_type"),
+    (str_store_string, s11, ":name_string_id"),
+    (store_add, ":info_string_id", lazy.sub(game_type_info_strings_begin, game_type_mission_templates_begin), "$g_game_type"),
+    (str_store_string, s12, ":info_string_id"),
+    (call_script, "script_preset_message", "str_pw_welcome", preset_message_read_object, "str_join_game", 0),
     ]),
 
   ("request_poll", # server: handle requests for polls from players
