@@ -7334,7 +7334,6 @@ scripts.extend([
       (val_div, ":gold_reward", 100),
       (scene_prop_get_slot, ":skill_reward", ":instance_id", slot_scene_prop_average_craft_skill),
       (val_mul, ":skill_reward", craft_skill_gold_reward_multiplier),
-      (scene_prop_get_slot, ":skill_reward", ":instance_id", slot_scene_prop_resources_default_cost),
       (val_add, ":gold_reward", ":skill_reward"),
       (val_mul, ":gold_reward", ":stock_count_factor"),
       (val_div, ":gold_reward", ":design_target_stock_count"),
