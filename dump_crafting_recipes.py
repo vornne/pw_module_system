@@ -65,7 +65,9 @@ for entry in crafting_data:
     recipe.resources_default_cost += item[5]
     recipe.resource_names.append(item[1])
   recipe.average_skill_level = entry[4]
-  recipe.max_crafting_reward = recipe.resources_default_cost + (recipe.average_skill_level * 100) + (recipe.crafted_item.price / 5)
+  recipe.max_crafting_reward = (recipe.resources_default_cost +
+    ((recipe.average_skill_level * craft_skill_gold_reward_multiplier) / 100) +
+    ((recipe.crafted_item.price * craft_price_gold_reward_percentage) / 100))
   recipe.time = item_craft_times[item_id]
   crafting_recipes.append(recipe)
 
