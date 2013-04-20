@@ -777,6 +777,7 @@ pw_scene_day_time:^value 1 = scene hour of day (0 - 23)^^\
 pw_scene_cloud_haze:^value 1 = global cloud (adjusts skybox)^value 2 = global haze^^\
 pw_scene_ambient_sound:^value 1 = sound id offset from snd_fire_loop^value 2 = probability the sound will be played (0 - 100) or 127 = looping^^\
 pw_scene_light:^value 1 = flicker magnitude^value 2 = flicker interval^scale x = red, 1.00 = 100^scale y = green, 1.00 = 100^scale z = blue, 1.00 = 100^^\
+pw_fire_wood_heap:^value 2 = initial wood amount^^\
 pw_fish_school:^value 1 = maximum depth (in meters)^value 2 = maximum fish count^^\
 pw_herd_animal_spawn:^value 1 = animal item offset starting with 1 for deer, 0 or invalid for a random animal^value 2 = approximate time between spawns in hours, minimum 1^^\
 ^The values can be modified in the scene editor panel, scene prop section: the two fields, labelled 'Var No' and 'Var 2 No'. These can each store an integer in the range 0 - 127.^\

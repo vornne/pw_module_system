@@ -7831,6 +7831,9 @@ scripts.extend([
     (spawn_scene_prop, "spr_wood_heap_fire"),
     (scene_prop_set_slot, ":instance_id", slot_scene_prop_linked_scene_prop, reg0),
     (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_destroyed),
+    (prop_instance_get_variation_id_2, ":initial_wood_amount", ":instance_id"),
+    (val_mul, ":initial_wood_amount", 1000),
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count, ":initial_wood_amount"),
     ]),
 
   ("cf_hit_fire_place", # server: handle adding wood to, lighting, and extinguishing a fire place; should be called from ti_on_scene_prop_hit
