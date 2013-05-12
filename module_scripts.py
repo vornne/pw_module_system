@@ -8715,7 +8715,7 @@ scripts.extend([
     (position_set_z, pos1, z_position_water_level),
     (assign, ":closest_depth", 999999),
     (get_scene_boundaries, pos5, pos6),
-    (store_random_in_range, ":distance", 500, 1000),
+    (store_random_in_range, ":distance", fish_school_min_move_distance, fish_school_max_move_distance),
     (store_mul, ":negative_distance", ":distance", -1),
     (store_random_in_range, ":initial_direction", 0, 4),
     (store_add, ":loop_end", ":initial_direction", 4),
