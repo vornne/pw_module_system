@@ -2261,7 +2261,7 @@ scripts.extend([
     (else_try),
       (val_add, reg0, 1),
     (try_end),
-    ]), 
+    ]),
 
   ("cf_chat_event_is_new", # check whether a chat event is probably new or old, depending on the event number
    [(store_script_param, ":event", 1),
@@ -2322,7 +2322,7 @@ scripts.extend([
     (neg|is_presentation_active, "prsnt_game_multiplayer_admin_panel"),
     (neg|is_presentation_active, "prsnt_game_rules"),
     (neg|is_presentation_active, "prsnt_admin_item_select"),
-    ]), 
+    ]),
 
   ("initialize_banner_info", # store background colors for all the banners in an array
    [
@@ -4837,7 +4837,7 @@ scripts.extend([
     (try_end),
     (eq, ":fail", 0),
     (call_script, "script_change_armor", ":agent_id", ":item_id"),
-    ]),  
+    ]),
 
   ("change_armor", # server: equip an armor item on an agent, sending messages to all clients to update the mesh
    [(store_script_param, ":agent_id", 1),
@@ -5373,7 +5373,7 @@ scripts.extend([
       (neg|player_is_admin, ":player_id"),
       (agent_unequip_item, ":agent_id", ":item_id"),
     (try_end),
-    ]), 
+    ]),
 
   ("check_on_item_dropped", # server: extra checks when an agent drops an item
    [(store_script_param, ":agent_id", 1), # must be valid
@@ -5938,7 +5938,7 @@ scripts.extend([
     (else_try),
       (call_script, "script_hit_scene_prop_play_sound", ":agent_id", ":instance_id", "snd_cut_wood_scratch"),
     (try_end),
-    ]), 
+    ]),
 
   ("add_resource_to_regrow_list", # server: add a scene prop instance id to a list for calling a specified script after the regrowing time interval
    [(store_script_param, ":instance_id", 1), # must be valid

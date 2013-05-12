@@ -12,7 +12,7 @@
 ####################################################################################################################
 
 gtf_overlay   = 0x00000001 # depreciated
-gtf_dusty     = 0x00000002 # controls dustiness of the ground for foot dust particle systems 
+gtf_dusty     = 0x00000002 # controls dustiness of the ground for foot dust particle systems
 gtf_has_color = 0x00000004 # you can overwrite the ambient color of the ground spec (default: 0.61, 0.72, 0.15)
 
 ground_specs = [

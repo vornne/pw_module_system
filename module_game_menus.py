@@ -25,10 +25,10 @@ from module_constants import *
 #     Each menu-option record is a tuple containing the following fields:
 #   6.1) Menu-option-id (string) used for referencing game-menus in other files.
 #        The prefix mno_ is automatically added before each menu-option.
-#   6.2) Conditions block (list). This must be a valid operation block. See header_operations.py for reference. 
+#   6.2) Conditions block (list). This must be a valid operation block. See header_operations.py for reference.
 #        The conditions are executed for each menu option to decide whether the option will be shown to the player or not.
 #   6.3) Menu-option text (string).
-#   6.4) Consequences block (list). This must be a valid operation block. See header_operations.py for reference. 
+#   6.4) Consequences block (list). This must be a valid operation block. See header_operations.py for reference.
 #        The consequences are executed for the menu option that has been selected by the player.
 #
 # Note: The first Menu is the initial character creation menu.
