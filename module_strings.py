@@ -226,6 +226,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("game_type_1", "Conquest"),
   ("game_type_2", "Quick Battle"),
   ("game_type_3", "No Money"),
+  ("game_type_4", "Feudalism"),
   ("game_types_end", "game_types_end"),
 
   ("fac_1_default_name", "Red Faction"),
@@ -583,6 +584,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("stockpile_nearly_full", "Stockpile is nearly full"),
   ("stockpile_full", "Stockpile is full"),
   ("export", "Export"),
+  ("export_for_s1", "Export for {s1}"),
   ("import", "Import"),
   ("build", "Build"),
   ("access", "Access"),
@@ -600,6 +602,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("buy_banner_faction", "Buy a banner for the {s1}"),
   ("stock_count_reg0", "Stock count: {reg0}"),
   ("crafting_refund_reg0_reward_reg1", "Crafting refund: {reg0} reward: {reg1}"),
+  ("crafting_reward_reg1", "Crafting reward: {reg1}"),
   ("selling_price_reg0", "Selling price: {reg0}"),
   ("womens_clothes", "Women's clothes"),
   ("item_id", "Item ID:"),
@@ -690,6 +693,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("game_type_1_info", "This is the basic original game type: resources can be gathered to sell or to craft items like weapons, for helping your faction prosper and conquer."),
   ("game_type_2_info", "Stock piles and crafting are disabled, so unlimited items can be bought without requiring the support of resource gathering or crafting."),
   ("game_type_3_info", "The concept of money has been removed from this game type, so resource gathering and crafting are the only things required to obtain items."),
+  ("game_type_4_info", "Exporting resources only transfers money to the castle chest, with no personal reward, and resource stockpiles have no cost for buying or selling."),
   ("pw_welcome", "{s10}\
 ^^Game Type: {s11}\
 ^-----------------------------------------------------------\

@@ -915,19 +915,24 @@ def common_triggers(self):
     ]
 
 mission_templates = [
-  ("conquest", mtf_battle_mode, -1, "Build up your faction's economy to conquer castles.", spawn_points_0_99,
+  ("conquest", mtf_battle_mode, -1, "Conquest.", spawn_points_0_99,
     common_triggers("conquest") + [
     money_bag_pressed,
     ]),
 
-  ("quick_battle", mtf_battle_mode, -1, "Fight for control of the castles.", spawn_points_0_99,
+  ("quick_battle", mtf_battle_mode, -1, "Quick battle.", spawn_points_0_99,
     common_triggers("quick_battle") + [
     money_bag_pressed,
     ]),
 
-  ("no_money", mtf_battle_mode, -1, "Fight for control of resources, weapons, and armor.", spawn_points_0_99,
+  ("no_money", mtf_battle_mode, -1, "No money.", spawn_points_0_99,
     common_triggers("no_money")
     ),
+
+  ("feudalism", mtf_battle_mode, -1, "Feudalism.", spawn_points_0_99,
+    common_triggers("feudalism") + [
+    money_bag_pressed,
+    ]),
 
   ("edit_scene", 0, -1, "edit_scene", [(0,mtef_visitor_source,0,aif_start_alarmed,1,[])],
    [
