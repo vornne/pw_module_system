@@ -737,7 +737,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
  A normal player can only send admin chat messages that are visible to other admins on the server; admins can also send messages to specific players after selecting from the list brought up with F11 (press escape to cancel the list and target everyone), and can also hold right shift when sending to send announcements to all players or warnings to a specific player.\
  As admin, holding down right shift while voting overrides the poll. The agent selected by pressing the target key with shift held down (if any) will be used as the target for admin tools and chat."),
   ("pw_editor_welcome", "Press F1 for editing information."),
-  ("pw_editor_info", "-- General editing information^^\
+  ("pw_editor_info", "General editing information^-----------------------------------------------------------^^\
 * Scripted scene props (starting with pw) do not work in this mode, only on a dedicated server.^\
 * Make sure the first few scene props placed are not scripted (start with pw): instance id 0 can't be handled by some scripts.^\
 * Factions are numbered from 0 - 9, with commoners = 0, outlaws = 1, and the 4 castle factions starting from 2.^\
@@ -751,15 +751,16 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 * Fish schools should be placed somewhere in water, and will move randomly to nearby shallow parts.^\
 * The maximum number of lights in a scene that will be visible is 10: a limitation of the game engine.^\
 * The lift platform must be linked with two corresponding winches, which will determine the vertical movement range: the plaform will be able to move between 1 unit below the upper winch to 1 unit below the lower one.^\
-^-- Edit scene mode keys^\
+^Edit scene mode keys^-----------------------------------------------------------^^\
 F1 = this information^\
 F2 = scene prop editor value information^\
+F3 = list of castle names with numbers^\
 F8 = move agent to the positions of all scene props that can't find the other prop they need to link with.^\
 F9 = spawn new random player agent^\
 F10 = move agent to the positions of all scene props added to the ship collision list when the scene was loaded^\
 F11 = spawn test horse at agent position^\
 F12 = measure distance to the first pointer_arrow prop"),
-  ("pw_editor_values_info", "Scene prop editor values 1 and 2^^\
+  ("pw_editor_values_info", "Scene prop editor values 1 and 2^-----------------------------------------------------------^^\
 pw_buy_*:^value 1 = faction + multiplier^value 2 = design target stock count^^\
 pw_stockpile_*:^value 1 = faction + multiplier^value 2 = 01 - 09: initial and target count / 10;  10 - 120: stock limit / 10^^\
 pw_export_*:^value 1 = faction + multiplier^value 2 = faction tax multiplier^^\
@@ -776,7 +777,7 @@ pw_lift_platform:^value 2 = linking id with two x_winch props^^\
 pw ships:^value 1 = initial ramp position (0 = center, 1 = left, 2 = right)^Only place the hull, the other parts are spawned at mission start.^^\
 pw_ferry_boat:^value 2 = linking id with two pw_ferry_platform props^^\
 pw_castle_capture_point:^value 1 = faction / castle id^value 2 = capture type (0 = primary, 1 = all secondary, 2 one secondary)^^\
-pw_castle_sign:^value 1 = faction / castle id^value 2 = number of the name, listed at the end of strings.txt (name can't be one used by another castle)^^\
+pw_castle_sign:^value 1 = faction / castle id^value 2 = number of the name, listed in the F3 information window (name can't be used by another castle)^^\
 pw_castle_money_chest:^value 1 = faction / castle id^value 2 = initial gold^^\
 pw_item_chest_*:^value 1 = faction / castle id^^\
 pw_scene_day_time:^value 1 = scene hour of day (0 - 23)^^\
@@ -786,6 +787,7 @@ pw_scene_light:^value 1 = flicker magnitude^value 2 = flicker interval^scale x =
 pw_fire_wood_heap:^value 2 = initial wood amount^^\
 pw_fish_school:^value 1 = maximum depth (in meters)^value 2 = maximum fish count^^\
 pw_herd_animal_spawn:^value 1 = animal item offset starting with 1 for deer, 0 or invalid for a random animal^value 2 = approximate time between spawns in hours, minimum 1^^\
+-----------------------------------------------------------^\
 ^The values can be modified in the scene editor panel, scene prop section: the two fields, labelled 'Var No' and 'Var 2 No'. These can each store an integer in the range 0 - 127.^\
 ^The scene props with 'value 1 = faction + multiplier' share the same code for storing a combination of faction id / castle id and gold value multiplier in value 1:^\
 0 is the commoner faction, which normally means the prop is not associated with any faction, 1 for outlaws, and 2 - 9 associate the scene prop with a castle (which starts owned by the corresponding faction id).^\
@@ -794,6 +796,8 @@ The other part is a multiple of 10, representing specific gold value multipliers
 These two separate values are combined: for example, 31 = outlaw faction and 60% value, 116 = castle 5 (starts owned by faction 5, the yellow faction) and 500% value.^\
 ^The scene props with 'value 2 = linking id with x' mean that they are designed to be linked to another scene prop, x representing the first scene prop's name:^\
 On scene load, the props are linked by searching for the nearest prop in the scene of the specified type, with the same value 2, and that hasn't already been linked; so for example, with a teleport door pair on opposite sides of the scene, you could set the value 2 of both to 53 and not use that number for any of the other props of the same type, so they are linked correctly even when not close together, or if someone else adds more props of the same type in between."),
+  ("pw_editor_castle_names", "Castle names with numbers^-----------------------------------------------------------^^{s2}"),
+  ("castle_names_numbers_format", "{reg1} = {s1}^{s0}"),
 
   ("book_of_clothing", "The Book of Tailoring Clothes^^^"),
   ("book_of_weapons", "The Book of Crafting Weaponry^^^"),

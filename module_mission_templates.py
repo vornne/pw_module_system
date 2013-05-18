@@ -1001,6 +1001,18 @@ mission_templates = [
      [(call_script, "script_preset_message", "str_pw_editor_values_info", preset_message_read_object, 0, 0),
       ]),
 
+    (0, 0, 0, [(key_clicked, key_f3)], # list castle names with the corresponding numbers in the editor
+     [(str_clear, s0),
+      (store_sub, reg1, castle_names_end, castle_names_begin),
+      (try_for_range_backwards, ":castle_name_string_id", castle_names_begin, castle_names_end),
+        (val_sub, reg1, 1),
+        (str_store_string, s1, ":castle_name_string_id"),
+        (str_store_string, s0, "str_castle_names_numbers_format"),
+      (try_end),
+      (str_store_string, s2, s0),
+      (call_script, "script_preset_message", "str_pw_editor_castle_names", preset_message_read_object, 0, 0),
+      ]),
+
     (0, 0, 0, [(key_clicked, key_f12)], # measure distance between the player agent and the first pointer_arrow scene prop
      [(scene_prop_get_instance, ":instance_id", "spr_pointer_arrow", 0),
       (prop_instance_get_position, pos1, ":instance_id"),
