@@ -2569,6 +2569,7 @@ presentations.extend([
           (player_is_active, ":player_id"),
           (player_get_slot, ":faction_id", ":player_id", slot_player_faction_id),
           (try_begin), # check for valid castles to spawn at, displaying the next if that control is pressed
+            (neq, "$g_game_type", "mt_permanent_death"),
             (is_between, ":faction_id", castle_factions_begin, factions_end),
             (this_or_next|eq, "$g_presentation_obj_respawn_castle", -1),
             (key_clicked, key_tilde),

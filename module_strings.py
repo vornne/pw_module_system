@@ -227,6 +227,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("game_type_2", "Quick Battle"),
   ("game_type_3", "No Money"),
   ("game_type_4", "Feudalism"),
+  ("game_type_5", "Permanent Death"),
   ("game_types_end", "game_types_end"),
 
   ("fac_1_default_name", "Red Faction"),
@@ -694,6 +695,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("game_type_2_info", "Stock piles and crafting are disabled, so unlimited items can be bought without requiring the support of resource gathering or crafting."),
   ("game_type_3_info", "The concept of money has been removed from this game type, so resource gathering and crafting are the only things required to obtain items."),
   ("game_type_4_info", "Exporting resources only transfers money to the castle chest, with no personal reward, and resource stockpiles have no cost for buying or selling."),
+  ("game_type_5_info", "After dying or disconnecting, you will be reset to a peasant commoner with no money."),
   ("pw_welcome", "{s10}\
 ^^Game Type: {s11}\
 ^-----------------------------------------------------------\

@@ -934,6 +934,11 @@ mission_templates = [
     money_bag_pressed,
     ]),
 
+  ("permanent_death", mtf_battle_mode, -1, "Permanent death.", spawn_points_0_99,
+    common_triggers("permanent_death") + [
+    money_bag_pressed,
+    ]),
+
   ("edit_scene", 0, -1, "edit_scene", [(0,mtef_visitor_source,0,aif_start_alarmed,1,[])],
    [
     (ti_before_mission_start, 0, 0, [], # set up some basic values for scene editing features
