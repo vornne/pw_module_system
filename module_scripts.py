@@ -10885,7 +10885,7 @@ scripts.extend([
       (modify_visitors_at_site, ":current_scene"),
       (try_for_range, ":unused", 0, ":bots_to_spawn"),
         (store_random_in_range, ":entry_point", 0, 5),
-        (store_random_in_range, ":troop_id", playable_troops_begin, playable_troops_end),
+        (store_random_in_range, ":troop_id", playable_troops_begin, "trp_godlike_hero"),
         (add_visitors_to_current_scene, ":entry_point", ":troop_id", 1, 0, -1),
       (try_end),
     (try_end),
