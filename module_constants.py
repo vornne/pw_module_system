@@ -103,6 +103,7 @@ slot_agent_died_normally              = 15
 slot_agent_animation_end_time_ms      = 16 # mission time in milliseconds
 slot_agent_last_animation_string_id   = 17
 slot_agent_recent_animations_delay_ms = 18 # interval in milliseconds
+slot_agent_storage_corpse_instance_id = 19 # saved when discarding armor
 
 slot_agent_animal_herd_manager        = 20 # instance id of the herd manager item attached to
 slot_agent_animal_birth_time          = 21 # mission time when the animal was spawned as a child, or extrapolated if spawned as an adult

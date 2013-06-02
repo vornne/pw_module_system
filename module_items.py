@@ -1346,7 +1346,7 @@ itm_wall_banner("fac_8", "b"),
 ["pointer_arrow", "pointer_arrow", [("pointer_arrow",0)], itp_no_pick_up_from_ground, 0, 0, 0, 0],
 ["animal_herd_manager", "animal_herd_manager", [("invisible",0)], itp_no_pick_up_from_ground, 0, 0, 0, 0],
 ["animal_carcass", "animal_carcass", [("pw_blood_a",0)], itp_no_pick_up_from_ground, 0, 0, 0, 0],
-["agent_corpse", "agent_corpse", [("pw_blood_b",0),("pw_blood_c",1)], itp_no_pick_up_from_ground, 0, 0, 0, 0],
+["agent_corpse", "agent_corpse", [("pw_blood_b",imodbit_plain),("pw_blood_c",imodbit_cracked),("pw_dropped_armor",imodbit_rusty)], itp_no_pick_up_from_ground, 0, 0, 0, 0],
 ]
 
 item_lengths_list = []
