@@ -12104,3 +12104,118 @@ scripts.extend([
     ]),
 
 ])
+
+# Fill a chest's inventory slot with a set load out of items at mission start.
+# 'load_out_id' is the value 2 of the scene prop set in the scene editor.
+# 'item_lists' is the rest of the parameters passed as lists: multiple lists passed are treated as alternate load outs to be randomly selected.
+def chest_load_out(load_out_id, *item_lists):
+  result = [(eq, ":load_out_id", load_out_id)]
+  if len(item_lists) > 1:
+    result.extend([(store_random_in_range, ":random", 0, len(item_lists)),
+      (try_begin)])
+    for i, item_list in enumerate(item_lists):
+      result.append((eq, ":random", i))
+      result.extend((scene_prop_set_slot, ":instance_id", slot_scene_prop_inventory_begin + j, item_id)
+        for j, item_id in enumerate(item_list))
+      result.append((else_try))
+    result[-1] = (try_end)
+  else:
+    result.extend((scene_prop_set_slot, ":instance_id", slot_scene_prop_inventory_begin + i, item_id)
+      for i, item_id in enumerate(item_lists[0]))
+  result.append((else_try))
+  return lazy.block(result)
+
+scripts.extend([
+
+  ("scene_fill_chests_starting_inventory",
+   [
+    (call_script, "script_chests_fill_starting_inventory", "spr_pw_item_chest_a"),
+    (call_script, "script_chests_fill_starting_inventory", "spr_pw_item_chest_b"),
+    (call_script, "script_chests_fill_starting_inventory", "spr_pw_item_chest_invisible"),
+    ]),
+
+  ("chests_fill_starting_inventory",
+   [(store_script_param, ":scene_prop_id", 1),
+
+    (scene_prop_get_num_instances, ":num_instances", ":scene_prop_id"),
+    (try_for_range, ":instance_no", 0, ":num_instances"),
+      (scene_prop_get_instance, ":instance_id", ":scene_prop_id", ":instance_no"),
+      (prop_instance_get_variation_id_2, ":load_out_id", ":instance_id"),
+      (gt, ":load_out_id", 0),
+      (try_begin),
+
+        chest_load_out(1, ["itm_bread"] * 3, ["itm_bread"] * 5, ["itm_cooked_fish"] * 4, ["itm_cooked_meat"] * 2),
+        chest_load_out(2, ["itm_bread"] * 10, ["itm_bread"] * 16, ["itm_cooked_fish"] * 7, ["itm_cooked_meat"] * 6, ["itm_carrot"] * 3),
+        chest_load_out(3, ["itm_bread"] * 5 + ["itm_cooked_fish"] * 5 + ["itm_cooked_meat"] * 5 + ["itm_meat_pie"] * 3,
+          ["itm_meat_pie"] * 4 + ["itm_cooked_fish"] * 6 + ["itm_cooked_meat"] * 2 + ["itm_bread"] * 10,
+          ["itm_grapes"] * 10 + ["itm_salted_fish"] * 3 + ["itm_salted_meat"] * 4 + ["itm_bread"] * 7),
+        chest_load_out(4, ["itm_beer_cask"] + ["itm_cooked_meat"] * 5, ["itm_bread"] * 23,
+          ["itm_beer_cask"] + ["itm_cooked_meat"] * 7, ["itm_bread"] * 15,
+          ["itm_beer_cask"] * 2 + ["itm_cooked_meat"] * 8, ["itm_bread"] * 17),
+        chest_load_out(5, ["itm_wine_barrel"] * 2 + ["itm_cooked_fish"] * 7, ["itm_bread"] * 12,
+          ["itm_wine_barrel"] + ["itm_cooked_meat"] * 4, ["itm_bread"] * 13,
+          ["itm_wine_barrel"] * 2 + ["itm_cooked_meat"] * 4 + ["itm_cooked_fish"] * 5 + ["itm_bread"] * 8),
+
+        chest_load_out(10, ["itm_straw_hat", "itm_sickle", "itm_carrot"], ["itm_hood_c", "itm_knife", "itm_fish"], ["itm_wrapping_boots", "itm_club", "itm_grapes"]),
+        chest_load_out(11, ["itm_linen_tunic", "itm_hide_boots"], ["itm_red_shirt", "itm_woolen_hose"], ["itm_rough_tunic", "itm_wrapping_boots"], ["itm_tunic_with_green_cape"]),
+        chest_load_out(12, ["itm_tabard", "itm_hide_boots"] * 3, ["itm_black_robe", "itm_wrapping_boots"] * 5, ["itm_rough_tunic", "itm_wrapping_boots"] * 4),
+        chest_load_out(13, ["itm_tabard", "itm_ankle_boots", "itm_pelt_coat", "itm_hide_boots", "itm_rawhide_coat", "itm_fur_coat", "itm_butchering_knife"],
+          ["itm_black_robe", "itm_friar_robe", "itm_friar_sandals", "itm_fur_coat", "itm_wrapping_boots", "itm_hunter_boots", "itm_fishing_spear"],
+          ["itm_rough_tunic", "itm_wrapping_boots", "itm_leather_apron", "itm_hide_boots", "itm_coarse_tunic", "itm_coarse_tunic", "itm_cleaver"]),
+        chest_load_out(14, ["itm_rich_outfit", "itm_hide_boots", "itm_fur_coat", "itm_nomad_boots", "itm_lyre"], ["itm_priest_robe", "itm_priest_leggings"],
+          ["itm_friar_robe", "itm_friar_sandals"] * 3, ["itm_courtly_outfit", "itm_ankle_boots", "itm_lute"], ["itm_nobleman_outfit", "itm_khergit_leather_boots", "itm_die"]),
+        chest_load_out(15, ["itm_fur_hat", "itm_fur_coat", "itm_nomad_boots"] * 3, ["itm_priest_coif", "itm_priest_robe", "itm_priest_leggings"] * 2,
+          ["itm_friar_robe", "itm_friar_sandals"] * 7, ["itm_nobleman_outfit", "itm_khergit_leather_boots", "itm_courtly_outfit", "itm_ankle_boots", "itm_leather_gloves"],
+          ["itm_surgeon_coif", "itm_surgeon_coat", "itm_blue_hose"] * 2, ["itm_leather_jacket", "itm_khergit_leather_boots", "itm_leather_gloves"] * 2),
+        chest_load_out(16, ["itm_fur_hat", "itm_fur_coat", "itm_nomad_boots", "itm_bucket"], ["itm_common_hood", "itm_rough_tunic", "itm_hunter_boots", "itm_butchering_knife"],
+          ["itm_tunic_with_green_cape", "itm_nomad_boots", "itm_woodcutter_axe"] * 2, ["itm_woolen_cap", "itm_pelt_coat", "itm_ankle_boots", "itm_hunting_bow", "itm_arrows"],
+          ["itm_surgeon_coif", "itm_surgeon_coat", "itm_blue_hose", "itm_surgeon_scalpel"], ["itm_leather_jacket", "itm_khergit_leather_boots", "itm_herding_crook"] * 3),
+        chest_load_out(17, ["itm_leather_apron", "itm_nomad_boots"] * 5 + ["itm_bucket", "itm_scythe", "itm_woodcutter_axe", "itm_butchering_knife", "itm_broom"],
+          ["itm_coarse_tunic", "itm_wrapping_boots"] * 6 + ["itm_sickle", "itm_bucket", "itm_mining_pick", "itm_fishing_net", "itm_cleaver", "itm_knife"],
+          ["itm_tunic_with_green_cape", "itm_nomad_boots"] * 4 + ["itm_small_mining_pick", "itm_herding_crook", "itm_butchering_knife", "itm_sickle"]),
+        chest_load_out(18, ["itm_coarse_tunic", "itm_nomad_boots", "itm_knife"], ["itm_leather_jacket", "itm_khergit_leather_boots", "itm_lock_pick"],
+          ["itm_coarse_tunic", "itm_wrapping_boots", "itm_club"] + ["itm_broom"] * 6, ["itm_pilgrim_hood", "itm_pilgrim_disguise", "itm_wrapping_boots", "itm_quarter_staff"],
+          ["itm_gold_bar"], ["itm_silver_bar"], ["itm_coarse_tunic", "itm_hunter_boots", "itm_poisoned_dagger"], ["itm_tunic_with_green_cape", "itm_nomad_boots", "itm_dagger"]),
+
+        chest_load_out(20, ["itm_nordic_veteran_archer_helmet", "itm_leather_jerkin", "itm_hide_boots", "itm_sword_viking_b_small",
+          "itm_nordic_footman_helmet", "itm_byrnie", "itm_leather_boots", "itm_one_handed_battle_axe_a",
+          "itm_nordic_fighter_helmet", "itm_mail_hauberk", "itm_leather_boots", "itm_leather_gloves", "itm_sword_viking_a_long",
+          "itm_nordic_warlord_helmet", "itm_banded_armor", "itm_mail_boots", "itm_scale_gauntlets", "itm_shortened_voulge"],
+          ["itm_nordic_footman_helmet", "itm_leather_jerkin", "itm_leather_boots", "itm_leather_gloves", "itm_sword_viking_c"] * 3,
+          ["itm_nordic_archer_helmet", "itm_leather_armor", "itm_hunter_boots", "itm_one_handed_war_axe_b"] * 2 +
+          ["itm_nordic_fighter_helmet", "itm_byrnie", "itm_splinted_leather_greaves", "itm_leather_gloves",] * 2 + ["itm_one_handed_battle_axe_b", "itm_two_handed_axe"]),
+        chest_load_out(21, ["itm_vaegir_fur_helmet", "itm_leather_vest_plain", "itm_hide_boots", "itm_scimitar",
+          "itm_vaegir_spiked_helmet", "itm_lamellar_vest", "itm_mail_chausses", "itm_leather_gloves", "itm_scimitar_b",
+          "itm_vaegir_noble_helmet", "itm_lamellar_armor", "itm_mail_boots", "itm_scale_gauntlets", "itm_bardiche"],
+          ["itm_vaegir_lamellar_helmet", "itm_studded_leather_coat", "itm_leather_boots", "itm_leather_gloves", "itm_khergit_sword_d"] * 3,
+          ["itm_khergit_war_helmet", "itm_arabian_armor_b", "itm_mail_chausses", "itm_mail_mittens"] * 3 + ["itm_khergit_sword_c", "itm_sarranid_axe_a", "itm_awlpike"]),
+        chest_load_out(22, ["itm_mail_coif", "itm_arena_armor", "itm_mail_chausses", "itm_mail_mittens", "itm_sword_medieval_c_long"] * 4,
+        ["itm_skullcap", "itm_red_gambeson", "itm_splinted_greaves", "itm_winged_mace"] * 4,
+        ["itm_segmented_helmet", "itm_padded_leather", "itm_leather_boots", "itm_leather_gloves"] * 4 + ["itm_club_with_spike_head", "itm_long_hafted_spiked_mace"] * 2,
+        ["itm_flat_topped_helmet", "itm_haubergeon", "itm_mail_chausses", "itm_mail_mittens", "itm_military_cleaver_c"] * 4),
+        chest_load_out(23, ["itm_leather_cap", "itm_leather_vest_plain", "itm_nomad_boots", "itm_sword_medieval_a"] * 3,
+          ["itm_leather_steppe_cap_a", "itm_khergit_armor", "itm_khergit_leather_boots", "itm_mace_4"] * 3,
+          ["itm_skullcap", "itm_red_gambeson", "itm_leather_boots"] * 3 + ["itm_military_pick", "itm_military_hammer", "itm_military_sickle"]),
+
+        chest_load_out(30, ["itm_khergit_lady_hat_b", "itm_khergit_lady_dress_b", "itm_khergit_leather_boots", "itm_knife", "itm_bread"],
+          ["itm_khergit_lady_hat", "itm_khergit_lady_dress", "itm_khergit_leather_boots", "itm_knife", "itm_cooked_fish"]),
+        chest_load_out(31, ["itm_sarranid_head_cloth", "itm_sarranid_lady_dress", "itm_woolen_hose", "itm_sickle", "itm_bread"],
+          ["itm_sarranid_head_cloth_b", "itm_sarranid_lady_dress_b", "itm_woolen_hose", "itm_bucket", "itm_grapes"]),
+        chest_load_out(32, ["itm_bride_crown", "itm_bride_dress", "itm_bride_shoes"]),
+        chest_load_out(33, ["itm_lady_dress_ruby", "itm_lady_dress_green", "itm_lady_dress_blue", "itm_wimple_a", "itm_wimple_b", "itm_barbette"],
+          ["itm_dress", "itm_blue_dress", "itm_peasant_dress", "itm_woolen_dress", "itm_ladys_hood"],
+          ["itm_sarranid_common_dress", "itm_sarranid_felt_head_cloth", "itm_sarranid_common_dress_b", "itm_sarranid_felt_head_cloth_b"]),
+
+        chest_load_out(99, ["itm_great_helmet", "itm_plate_armor", "itm_plate_boots", "itm_gauntlets", "itm_steel_shield", "itm_morningstar"],
+          ["itm_winged_great_helmet", "itm_cuir_bouilli", "itm_iron_greaves", "itm_lamellar_gauntlets", "itm_bec_de_corbin_a"],
+          ["itm_full_helm", "itm_scale_armor", "itm_iron_greaves", "itm_scale_gauntlets", "itm_two_handed_cleaver"],
+          ["itm_vaegir_mask", "itm_vaegir_elite_armor", "itm_mail_boots", "itm_scale_gauntlets", "itm_two_handed_battle_axe"],
+          ["itm_bishop_helm", "itm_bishop_armor", "itm_bishop_chausses", "itm_bishop_gloves", "itm_bishop_mitre", "itm_bishop_crosier"]),
+
+        (assign, reg0, ":load_out_id"),
+        (display_message, "str_error_load_out_id_reg0_not_defined"),
+      (try_end),
+    (try_end),
+    ]),
+
+])

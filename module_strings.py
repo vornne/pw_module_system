@@ -691,6 +691,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("error_edit_mode_not_enabled", "Edit mode is not enabled in the Warband launcher: you will not be able to edit this scene."),
   ("no_more_unlinked_scene_props", "No more unlinked scene props."),
   ("error_scene_prop_0_pw", "Error: scene prop instance id 0 (kind {reg0}) is scripted (pw), so it might not work correctly."),
+  ("error_load_out_id_reg0_not_defined", "Error: the inventory load out id {reg0} is not defined."),
   ("game_type_1_info", "This is the basic original game type: resources can be gathered to sell or to craft items like weapons, for helping your faction prosper and conquer."),
   ("game_type_2_info", "Stock piles and crafting are disabled, so unlimited items can be bought without requiring the support of resource gathering or crafting."),
   ("game_type_3_info", "The concept of money has been removed from this game type, so resource gathering and crafting are the only things required to obtain items."),
@@ -779,7 +780,7 @@ pw_ferry_boat:^value 2 = linking id with two pw_ferry_platform props^^\
 pw_castle_capture_point:^value 1 = faction / castle id^value 2 = capture type (0 = primary, 1 = all secondary, 2 one secondary)^^\
 pw_castle_sign:^value 1 = faction / castle id^value 2 = number of the name, listed in the F3 information window (name can't be used by another castle)^^\
 pw_castle_money_chest:^value 1 = faction / castle id^value 2 = initial gold^^\
-pw_item_chest_*:^value 1 = faction / castle id^^\
+pw_item_chest_*:^value 1 = faction / castle id^value 2 = starting inventory load out id^^\
 pw_scene_day_time:^value 1 = scene hour of day (0 - 23)^^\
 pw_scene_cloud_haze:^value 1 = global cloud (adjusts skybox)^value 2 = global haze^^\
 pw_scene_ambient_sound:^value 1 = sound id offset from snd_fire_loop^value 2 = probability the sound will be played (0 - 100) or 127 = looping^^\

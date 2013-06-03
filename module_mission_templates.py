@@ -524,6 +524,11 @@ draw_initial_banners = (0, 0, ti_once, [], # server: calculate and draw all cast
     (call_script, "script_redraw_castle_banners", redraw_all_banners, -1),
     ])
 
+fill_chests_starting_inventory = (8, 0, ti_once, [], # server: wait so the pseudo random number generator can get some entropy
+   [(multiplayer_is_server),
+    (call_script, "script_scene_fill_chests_starting_inventory"),
+    ])
+
 fire_place_check = (1, 0, 60, # server: wait 1 second between checks of fire heaps, then 60 seconds after all have been checked
    [(multiplayer_is_server),
     (scene_prop_get_instance, ":instance_id", "spr_pw_fire_wood_heap", "$g_fire_place_instance_no"),
@@ -887,6 +892,7 @@ def common_triggers(self):
     polls_check,
     game_ended_check,
     draw_initial_banners,
+    fill_chests_starting_inventory,
     fire_place_check,
     fish_school_loop,
     herd_leader_movement_loop,
