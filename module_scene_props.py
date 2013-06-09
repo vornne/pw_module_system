@@ -2649,7 +2649,7 @@ scene_props = [
   ("pw_buy_barbed_arrows",spr_buy_item_flags(1),"barbed_arrow","bo_pw_weapon", spr_buy_item_triggers("itm_barbed_arrows", resources=[], engineer=1)),
   ("pw_buy_khergit_arrows",spr_buy_item_flags(1),"arrow","bo_pw_weapon", spr_buy_item_triggers("itm_khergit_arrows", resources=[], engineer=1)),
   ("pw_buy_bodkin_arrows",spr_buy_item_flags(1),"piercing_arrow","bo_pw_weapon", spr_buy_item_triggers("itm_bodkin_arrows", resources=[], engineer=1)),
-  ("pw_buy_hunting_crossbow",spr_buy_item_flags(5),"crossbow_a","bo_pw_weapon_small", spr_buy_item_triggers("itm_hunting_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], engineer=3)),
+  ("pw_buy_hunting_crossbow",spr_buy_item_flags(5),"crossbow_a","bo_pw_weapon_small", spr_buy_item_triggers("itm_hunting_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], engineer=2)),
   ("pw_buy_light_crossbow",spr_buy_item_flags(6),"crossbow_b","bo_pw_weapon_small", spr_buy_item_triggers("itm_light_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], engineer=3)),
   ("pw_buy_crossbow",spr_buy_item_flags(8),"crossbow_a","bo_pw_weapon_small", spr_buy_item_triggers("itm_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], engineer=4)),
   ("pw_buy_heavy_crossbow",spr_buy_item_flags(10),"crossbow_c","bo_pw_weapon_small", spr_buy_item_triggers("itm_heavy_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], engineer=5)),
