@@ -8894,7 +8894,7 @@ scripts.extend([
     (try_end),
     (try_begin),
       (gt, ":fish_count", 0),
-      (store_random_in_range, ":random", 0, 50),
+      (store_random_in_range, ":random", 0, 20),
       (gt, ":fish_count", ":random"),
       (store_random_in_range, ":move_x", -500, 501),
       (position_move_x, pos3, ":move_x"),
