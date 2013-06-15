@@ -650,6 +650,23 @@ def spr_build_wall_triggers():
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_use, [])]
 
+# Construction box which disappears when built, allowing access to stations hidden inside.
+def spr_construction_box_triggers(resource_class=item_class_wood):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_build"),
+      (call_script, "script_initialize_resource_hit_points", ":instance_id", -1),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_destroyed),
+      (scene_prop_set_hit_points, ":instance_id", 1),
+      ]),
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_construction_box", ":instance_id", ":hit_damage", resource_class),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_use, [])]
+
 # Point to capture castles using a faction banner.
 def spr_capture_castle_triggers():
   return [spr_call_script_use_trigger("script_cf_use_capture_point")]
@@ -2832,6 +2849,7 @@ scene_props = [
   ("pw_ladder_12m",spr_ladder_flags(),"siege_ladder_move_12m","bo_siege_ladder_move_12m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=560, height=1200, no_move_physics=True)),
   ("pw_ladder_14m",spr_ladder_flags(),"siege_ladder_move_14m","bo_siege_ladder_move_14m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=600, height=2000, no_move_physics=True)),
   ("pw_ladder_build",spr_build_flags(),"pw_build_ladder","bo_pw_build_ladder", spr_build_wall_triggers()),
+  ("pw_construction_box",sokf_static_movement|sokf_show_hit_point_bar|sokf_destructible|sokf_missiles_not_attached,"pw_construction_box","bo_pw_construction_box", spr_construction_box_triggers()),
 
   ("pw_winch_frame",0,"winch_stabilizer_a","bo_winch_stabilizer_a", []),
   ("pw_portcullis_winch",spr_use_time(1),"winch","bo_winch_fixed", spr_portcullis_winch_triggers("pw_portcullis")),

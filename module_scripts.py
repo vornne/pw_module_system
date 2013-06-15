@@ -6062,8 +6062,11 @@ scripts.extend([
     (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, ":start_hit_points"),
     (try_begin),
       (multiplayer_is_server),
+      (gt, ":hit_points_for_resource", -1),
       (val_sub, ":start_hit_points", ":hit_points_for_resource"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, ":start_hit_points"),
+    (else_try),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, 1),
     (try_end),
     ]),
 
@@ -7922,6 +7925,42 @@ scripts.extend([
     (gt, ":wall_instance_id", 0),
     (call_script, "script_cf_hit_wall", ":wall_instance_id", ":hit_damage", 1),
     (set_trigger_result, 0),
+    ]),
+
+  ("cf_hit_construction_box", # server: handle building and damaging construction boxes; should be called from ti_on_scene_prop_hit
+   [(multiplayer_is_server),
+    (store_script_param, ":instance_id", 1), # must be valid
+    (store_script_param, ":hit_damage", 2),
+    (store_script_param, ":resource_class", 3), # constants starting with item_class_
+    (set_fixed_point_multiplier, 1),
+    (position_get_x, ":agent_id", pos2), # expects agent id in pos2.x from ti_on_scene_prop_hit
+    (set_fixed_point_multiplier, 100),
+
+    (scene_prop_get_slot, ":full_hit_points", ":instance_id", slot_scene_prop_full_hit_points),
+    (call_script, "script_cf_hit_repairable_scene_prop", ":instance_id", ":hit_damage", ":full_hit_points", ":resource_class", ":agent_id", 1, 0),
+    (assign, ":result", reg0),
+    (try_begin),
+      (this_or_next|eq, ":result", repairable_hit),
+      (eq, ":result", repairable_destroyed),
+      (particle_system_burst, "psys_dummy_straw", pos1, 50),
+      (call_script, "script_hit_scene_prop_play_sound", ":agent_id", ":instance_id", "snd_cut_wood"),
+    (else_try),
+      (eq, ":result", repairable_hit_destroyed),
+      (call_script, "script_hit_scene_prop_play_sound", ":agent_id", ":instance_id", "snd_cut_wood_scratch"),
+    (else_try),
+      (eq, ":result", repairable_repairing),
+      (agent_play_sound, ":agent_id", "snd_repair_wood"),
+    (else_try),
+      (eq, ":result", repairable_repaired),
+      (agent_play_sound, ":agent_id", "snd_repair_wood"),
+      (prop_instance_get_starting_position, pos1, ":instance_id"),
+      (particle_system_burst, "psys_dummy_smoke_big", pos1, 20),
+      (init_position, pos1),
+      (position_set_z, pos1, z_position_to_hide_object),
+      (prop_instance_set_position, ":instance_id", pos1),
+      (prop_instance_enable_physics, ":instance_id", 0),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_hidden),
+    (try_end),
     ]),
 
   ("cf_init_fire_place", # server: set up the linked visible flames for a fire place prop at mission start
