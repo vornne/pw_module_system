@@ -11489,7 +11489,7 @@ scripts.extend([
       (try_begin),
         (eq, ":admin_action", admin_action_kill_player),
         (player_slot_eq, ":admin_player_id", slot_player_admin_no_kill_fade, 0),
-        (agent_deliver_damage_to_agent, ":agent_id", ":agent_id", 200),
+        (agent_deliver_damage_to_agent, ":agent_id", ":agent_id", 500),
       (else_try),
         (eq, ":admin_action", admin_action_fade_player_out),
         (player_slot_eq, ":admin_player_id", slot_player_admin_no_kill_fade, 0),
