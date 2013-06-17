@@ -3870,7 +3870,7 @@ presentations.extend([
 
       (create_mesh_overlay, reg1, "mesh_white_plane"),
       (overlay_set_color, reg1, 0x000000),
-      (overlay_set_alpha, reg1, 0x88),
+      (overlay_set_alpha, reg1, 0xCC),
       (position_set_x, pos1, 5),
       (position_set_y, pos1, 553),
       (overlay_set_position, reg1, pos1),
