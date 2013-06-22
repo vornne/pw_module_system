@@ -33,21 +33,8 @@ function show_player_names()
 {
   check_player_name_actions();
 
-  $current_uri = htmlspecialchars($_SERVER["REQUEST_URI"]);
-  $desc = "";
-  if (isset($_GET["order_by"]))
-  {
-    $order_by = explode("_", $_GET["order_by"]);
-    if (count($order_by) <= 1) $desc = "_desc";
-    $order_by = $order_by[0];
-    $cleaned_uri = htmlspecialchars(preg_replace('/[&?]order_by=[^=&?]*/', '', $_SERVER["REQUEST_URI"]));
-  }
-  else
-  {
-    $cleaned_uri = $current_uri;
-  }
-
-  echo("<form action=\"$current_uri\" method=\"get\"><div class=\"database_actions\">");
+  $current_uri_no_start = htmlspecialchars(preg_replace('/&start=[^=&]*/', '', $_SERVER["REQUEST_URI"]));
+  echo("<form action=\"$current_uri_no_start\" method=\"get\"><div class=\"database_actions\">");
   echo('<input type="hidden" name="page" value="player_names"/>');
   if (isset($order_by)) echo("<input type=\"hidden\" name=\"order_by\" value=\"$order_by\"/>");
   echo('<label for="filter_text">Filter by:</label>');
@@ -73,24 +60,62 @@ function show_player_names()
     }
   }
 
-  if (isset($order_by))
+  $desc = "";
+  if (isset($_GET["order_by"]))
   {
+    $order_words = explode("_", $_GET["order_by"]);
+    $order_by = $order_words[0];
     if ($order_by == "uid") $query .= " ORDER BY player_names.unique_id";
     else if ($order_by == "name") $query .= " ORDER BY player_names.name";
     else if ($order_by == "date") $query .= " ORDER BY player_names.last_used_time";
     else if ($order_by == "server") $query .= " ORDER BY player_names.inserted_by_warband_server_id";
-    if ($desc == "") $query .= " DESC";
+    if (count($order_words) <= 1)
+    {
+      $desc = "_desc";
+    }
+    else
+    {
+      $query .= " DESC";
+    }
   }
+  $current_uri_no_order = htmlspecialchars(preg_replace('/&(order_by|start)=[^=&]*/', '', $_SERVER["REQUEST_URI"]));
+
+  $filter_start = filter_input(INPUT_GET, "start", FILTER_VALIDATE_INT, array("options"=>array("min_range"=>0)));
+  if ($filter_start)
+  {
+    $query .= " LIMIT $filter_start, " . pw_name_server_config::player_names_per_page;
+  }
+  else
+  {
+    $query .= " LIMIT " . pw_name_server_config::player_names_per_page;
+  }
+
+  $current_uri = htmlspecialchars($_SERVER["REQUEST_URI"]);
 
   $query .= ";";
   $result = mysql_query($query);
   if (!$result) return echo_database_error();
+
+  $page_links = '<div class="database_actions">';
+  if ($filter_start && $filter_start > 0)
+  {
+    $prev_page_start = max($filter_start - pw_name_server_config::player_names_per_page, 0);
+    $page_links .= "<a href=\"$current_uri_no_start&amp;start=$prev_page_start\">Previous page</a>&nbsp;";
+  }
+  if (mysql_num_rows($result) >= pw_name_server_config::player_names_per_page)
+  {
+    $next_page_start = $filter_start + pw_name_server_config::player_names_per_page;
+    $page_links .= "<a href=\"$current_uri_no_start&amp;start=$next_page_start\">Next page</a>&nbsp;";
+  }
+  $page_links .= '</div>';
+  echo($page_links);
+
   echo("<form action=\"$current_uri\" method=\"post\">");
   echo('<table class="database_view"><thead><tr><th/>');
-  echo("<th><a href=\"$cleaned_uri&amp;order_by=uid$desc\">unique id</a></th>");
-  echo("<th><a href=\"$cleaned_uri&amp;order_by=name$desc\">name</a></th>");
-  echo("<th><a href=\"$cleaned_uri&amp;order_by=date$desc\">last used</a></th>");
-  echo("<th><a href=\"$cleaned_uri&amp;order_by=server$desc\">created by server</a></th>");
+  echo("<th><a href=\"$current_uri_no_order&amp;order_by=uid$desc\">unique id</a></th>");
+  echo("<th><a href=\"$current_uri_no_order&amp;order_by=name$desc\">name</a></th>");
+  echo("<th><a href=\"$current_uri_no_order&amp;order_by=date$desc\">last used</a></th>");
+  echo("<th><a href=\"$current_uri_no_order&amp;order_by=server$desc\">created by server</a></th>");
   echo('</tr></thead><tbody>');
   while ($row = mysql_fetch_assoc($result))
   {
@@ -105,6 +130,7 @@ function show_player_names()
     echo("</tr>\n");
   }
   echo("</tbody></table>\n");
+  echo($page_links);
   echo('<div class="database_actions">');
   echo('<input type="submit" name="remove_names" value="Remove names"/>');
   echo('<input type="submit" name="set_permissions" value="Set permissions"/>');
