@@ -2334,6 +2334,7 @@ scene_props = [
   ("pw_stockpile_iron_bar",spr_use_time(1),"pw_chest_c","bo_pw_chest_c", spr_stockpile_resource_triggers("itm_iron_bar")),
   ("pw_stockpile_flour_sack",spr_use_time(1),"mill_flour_sack_desk_a","bo_mill_flour_sack_desk_a_fixed", spr_stockpile_resource_triggers("itm_flour_sack")),
   ("pw_stockpile_salt_sack",spr_use_time(1),"pw_salt_sack","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_salt_sack")),
+  ("pw_stockpile_salt",spr_use_time(1),"pw_salt","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_salt")),
   ("pw_stockpile_salted_fish",spr_use_time(1),"pw_fish","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_salted_fish")),
   ("pw_stockpile_salted_meat",spr_use_time(1),"pw_meat_salted","bo_pw_weapon", spr_stockpile_resource_triggers("itm_salted_meat")),
   ("pw_stockpile_wheat_sheaf",spr_use_time(1),"pw_wheat_sheaf","bo_pw_weapon", spr_stockpile_resource_triggers("itm_wheat_sheaf")),

@@ -1002,7 +1002,7 @@ items = [
 ["carrot", "Carrot", [("pw_carrot",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,
  15, weight(0.25)|spd_rtng(90)|weapon_length(25)|swing_damage(0,cut), imodbits_none, [itm_class(item_class_food, 8)]],
 ["salt_sack", "Salt Sack", [("pw_salt_sack",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_quiver_right_vertical,
- 400, weight(1.5)|spd_rtng(60)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [itm_class(item_class_food, 0)]],
+ 1600, weight(1.5)|spd_rtng(60)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [itm_class(item_class_food, 0)]],
 ["salt", "Salt", [("pw_salt",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger,
  100, weight(0.25)|spd_rtng(70)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [itm_class(item_class_food, 0)]],
 
