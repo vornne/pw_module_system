@@ -550,6 +550,7 @@ presentations.extend([
         (str_store_string, s0, ":name_string_id"),
         (overlay_add_item, "$g_presentation_obj_admin_panel_game_type", s0),
       (try_end),
+      (assign, "$g_selected_game_type", "$g_game_type"),
       (val_clamp, "$g_selected_game_type", game_type_mission_templates_begin, game_type_mission_templates_end),
       (store_sub, ":game_type_index", lazy.sub(game_type_mission_templates_end, 1), "$g_selected_game_type"),
       (overlay_set_val, "$g_presentation_obj_admin_panel_game_type", ":game_type_index"),
