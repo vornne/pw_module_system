@@ -2309,9 +2309,9 @@ scene_props = [
   ("pw_stick_bush_2c",spr_resource_flags(),"bushes02_c","bo_bushes02_a_fixed", spr_hit_plant_triggers("itm_stick", full_hp=1500, resource_hp=50, regrow_interval=120, effect_script="script_hit_bush_effect")),
   ("pw_herb_bush_a",spr_resource_flags(),"pw_herb_a_bush","bo_pw_herb_bush", spr_hit_plant_triggers("itm_healing_herb", full_hp=400, resource_hp=40, regrow_interval=600)),
   ("pw_herb_bush_poison",spr_resource_flags(),"pw_herb_b_bush","bo_pw_herb_bush", spr_hit_plant_triggers("itm_poison_herb", full_hp=600, resource_hp=30, regrow_interval=2000)),
-  ("pw_wheat_field",spr_field_flags(),"pw_wheat_field","bo_pw_wheat_field", spr_hit_field_triggers(resource_item="itm_wheat_sheaf", plant_item="itm_wheat_sack", plant_spr="spr_code_wheat", height=180, full_hp=1000, resource_hp=100, tool_class=item_class_grain_harvesting, regrow_interval=600)),
+  ("pw_wheat_field",spr_field_flags(),"pw_wheat_field","bo_pw_wheat_field", spr_hit_field_triggers(resource_item="itm_wheat_sheaf", plant_item="itm_wheat_sack", plant_spr="spr_code_wheat", height=180, full_hp=2000, resource_hp=50, tool_class=item_class_grain_harvesting, regrow_interval=600)),
   ("code_wheat",0,"pw_wheat","0", spr_field_plant_triggers(seeds=4, water=2)),
-  ("pw_grape_vine",spr_resource_flags(),"pw_grape_vine","bo_pw_grape_vine", spr_hit_vine_triggers("itm_grapes", resources=10, full_hp=300, length=350, height=100, tool_class=item_class_knife, regrow_interval=300)),
+  ("pw_grape_vine",spr_resource_flags(),"pw_grape_vine","bo_pw_grape_vine", spr_hit_vine_triggers("itm_grapes", resources=16, full_hp=300, length=350, height=100, tool_class=item_class_knife, regrow_interval=300)),
   ("pw_grape_vine_stake",0,"pw_grape_vine_stake","bo_pw_grape_vine_stake", []),
   ("pw_flax_plants",spr_field_flags()|spr_use_time(1),"pw_flax_plants","bo_pw_flax_plants", spr_use_plant_triggers("itm_flax_bundle", full_hp=300, resource_hp=50, regrow_interval=300, sound="snd_pull_flax")),
 
