@@ -361,4 +361,7 @@ meshes = [
   ("pw_status_background_player", 0, "pw_status_background_player", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("pw_status_food_bar", 0, "pw_status_food_bar", 0, 0, 0, 0, 0, 0, 1, 1, 1),
 
+  ("pw_progress_bar", 0, "pw_progress_bar", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("pw_progress_bar_fill", 0, "pw_progress_bar_fill", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+
 ]

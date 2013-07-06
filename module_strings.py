@@ -561,6 +561,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("winch_lower", "Lower"),
   ("winch_raise", "Raise"),
   ("winch_drop", "Drop"),
+  ("destructible", "Destructible"),
   ("cut_down", "Cut down"),
   ("mine", "Mine"),
   ("harvest", "Harvest"),

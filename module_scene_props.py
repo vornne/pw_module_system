@@ -253,7 +253,7 @@ def spr_teleport_door_triggers(pos_offset=(0,0,0)):
     [link_scene_prop, link_scene_prop_self]]
 
 def spr_rotate_door_flags(use_time=1):
-  return sokf_static_movement|sokf_destructible|sokf_show_hit_point_bar|spr_use_time(use_time)|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible|spr_use_time(use_time)|sokf_missiles_not_attached
 
 # A rotating door, destructable and repairable with the resource class specified. The 'left' setting adjusts which way it will rotate, for matched left and right doors.
 def spr_rotate_door_triggers(hit_points=1000, resource_class=item_class_wood, left=0):
@@ -349,7 +349,7 @@ def spr_cart_triggers(horse=-1, detach_offset=0, detach_rotation=0, inventory_co
     ]
 
 def spr_tree_flags():
-  return sokf_static_movement|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible|sokf_missiles_not_attached
 
 # Tree which will regrow after being cut down for wood. 'resource_imod' sets the mesh variation of branches and blocks.
 # 'fell_hp' is the hit points when the tree will fall over and start producing blocks, and 'resource_hp' is the amount of hit damage needed per resource.
@@ -422,10 +422,10 @@ def spr_use_plant_triggers(resource_item, full_hp=1000, resource_hp=200, regrow_
     ]
 
 def spr_resource_flags():
-  return sokf_static_movement|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible|sokf_missiles_not_attached
 
 def spr_field_flags():
-  return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+  return sokf_destructible|sokf_missiles_not_attached
 
 # A field that is planted with 'plant_item' to produce 'resource_item'. 'plant_spr' is the scene prop type for the growing plants; set 'height' to the height of that mesh.
 def spr_hit_field_triggers(resource_item, plant_item, plant_spr, height=200, full_hp=1000, resource_hp=200, tool_class=-1, regrow_interval=600, use_string="str_harvest"):
@@ -571,7 +571,7 @@ def spr_ferry_winch_triggers(is_platform=0):
   return [spr_call_script_use_trigger("script_cf_use_ferry_winch", is_platform)]
 
 def spr_structure_flags():
-  return sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+  return sokf_moveable|sokf_destructible|sokf_missiles_not_attached
 
 # Destructable and rebuildable bridge: requires linking with two 'footing' scene props for rebuilding on either side.
 def spr_bridge_triggers(footing, hit_points=1000):
@@ -580,6 +580,7 @@ def spr_bridge_triggers(footing, hit_points=1000):
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, hit_points),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_destructible"),
       ]),
     (ti_on_scene_prop_hit,
      [(store_trigger_param_1, ":instance_id"),
@@ -587,16 +588,18 @@ def spr_bridge_triggers(footing, hit_points=1000):
       (call_script, "script_cf_hit_bridge", ":instance_id", ":hit_damage", 0),
       ]),
     (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_use, []),
     [link_scene_prop, footing, footing]]
 
 def spr_build_flags():
-  return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+  return sokf_destructible|sokf_missiles_not_attached
 
 # Footings for rebuilding after the bridge is totally destroyed.
 def spr_bridge_footing_triggers():
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", 1000),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_show_linked_hit_points, 1),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_build"),
       ]),
     (ti_on_scene_prop_hit,
@@ -608,7 +611,7 @@ def spr_bridge_footing_triggers():
     (ti_on_scene_prop_use, [])]
 
 def spr_ladder_flags():
-  return sokf_type_ladder|sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+  return sokf_type_ladder|sokf_moveable|sokf_destructible|sokf_missiles_not_attached
 
 # Buildable walls, also used for ladders: requires a 'build' scene prop for construction when totally destroyed. 'height' should be set to the height of the mesh.
 # 'no_move_physics' disables walking on the prop until the construction animation is completed.
@@ -618,6 +621,7 @@ def spr_wall_triggers(build, hit_points=1000, height=1000, no_move_physics=False
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_height, height),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_destructible"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_no_move_physics, int(no_move_physics))
       ]),
     (ti_on_scene_prop_hit,
@@ -626,6 +630,7 @@ def spr_wall_triggers(build, hit_points=1000, height=1000, no_move_physics=False
       (call_script, "script_cf_hit_wall", ":instance_id", ":hit_damage", 0),
       ]),
     (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_use, []),
     [link_scene_prop, build],
     [init_scene_prop, "script_cf_init_wall"]]
   if no_move_physics:
@@ -640,6 +645,7 @@ def spr_build_wall_triggers():
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", 1000),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_show_linked_hit_points, 1),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_build"),
       ]),
     (ti_on_scene_prop_hit,
@@ -672,7 +678,7 @@ def spr_capture_castle_triggers():
   return [spr_call_script_use_trigger("script_cf_use_capture_point")]
 
 def spr_chest_flags(use_time=1):
-  return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached|spr_use_time(max(use_time, 1))
+  return sokf_destructible|sokf_missiles_not_attached|spr_use_time(max(use_time, 1))
 
 # Money chest that can be linked with a castle to store tax automatically gathered, and allow the lord to control the access.
 # A 'probability' of the default 100 will give 1% chance of successful lock picking per looting skill level, which can be increased up to 10000 for guaranteed success.
@@ -941,7 +947,7 @@ scene_props = [
   ("destroy_bridge_b",0,"destroy_bridge_b","bo_destroy_bridge_b", []),
 
   ("catapult",0,"Catapult","bo_Catapult", []),
-  ("catapult_destructible",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible,"Catapult","bo_Catapult", []),
+  ("catapult_destructible",sokf_moveable|sokf_destructible,"Catapult","bo_Catapult", []),
 
   ("broom",0,"broom","0", []),
   ("garlic",0,"garlic","0", []),
@@ -1052,7 +1058,7 @@ scene_props = [
   ("tunnel_salt",0,"tunnel_salt","bo_tunnel_salt", []),
   ("salt_a",0,"salt_a","bo_salt_a", []),
 
-  ("door_destructible",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(2),"tutorial_door_a","bo_tutorial_door_a", []),
+  ("door_destructible",sokf_moveable|sokf_destructible|spr_use_time(2),"tutorial_door_a","bo_tutorial_door_a", []),
 
   ("tutorial_door_a",sokf_moveable,"tutorial_door_a","bo_tutorial_door_a", []),
   ("tutorial_door_b",sokf_moveable,"tutorial_door_b","bo_tutorial_door_b", []),
@@ -1105,9 +1111,9 @@ scene_props = [
   ("castle_f_battlement_corner_b",0,"castle_f_battlement_corner_b","bo_castle_f_battlement_corner_b", []),
   ("castle_f_battlement_corner_c",0,"castle_f_battlement_corner_c","bo_castle_f_battlement_corner_c", []),
 
-  ("castle_f_door_a",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"castle_f_door_a","bo_castle_f_door_a", []),
+  ("castle_f_door_a",sokf_moveable|sokf_destructible|spr_use_time(0),"castle_f_door_a","bo_castle_f_door_a", []),
   ("castle_f_doors_top_a",0,"castle_f_doors_top_a","bo_castle_f_doors_top_a", []),
-  ("castle_f_sally_door_a",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"castle_f_sally_door_a","bo_castle_f_sally_door_a", []),
+  ("castle_f_sally_door_a",sokf_moveable|sokf_destructible|spr_use_time(0),"castle_f_sally_door_a","bo_castle_f_sally_door_a", []),
   ("castle_f_stairs_a",sokf_type_ladder,"castle_f_stairs_a","bo_castle_f_stairs_a", []),
   ("castle_f_tower_a",0,"castle_f_tower_a","bo_castle_f_tower_a", []),
   ("castle_f_wall_stairs_a",sokf_type_ladder,"castle_f_wall_stairs_a","bo_castle_f_wall_stairs_a", []),
@@ -1559,7 +1565,7 @@ scene_props = [
   ("castle_e_battlement_a",0,"castle_e_battlement_a","bo_castle_e_battlement_a", []),
   ("castle_e_battlement_c",0,"castle_e_battlement_c","bo_castle_e_battlement_c", []),
   ("castle_e_battlement_a_destroyed",0,"castle_e_battlement_a_destroyed","bo_castle_e_battlement_a_destroyed", []),
-  ("castle_e_sally_door_a",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"castle_e_sally_door_a","bo_castle_e_sally_door_a", []),
+  ("castle_e_sally_door_a",sokf_moveable|sokf_destructible|spr_use_time(0),"castle_e_sally_door_a","bo_castle_e_sally_door_a", []),
   ("castle_e_corner",0,"castle_e_corner","bo_castle_e_corner", []),
   ("castle_e_corner_b",0,"castle_e_corner_b","bo_castle_e_corner_b", []),
   ("castle_e_corner_c",0,"castle_e_corner_c","bo_castle_e_corner_c", []),
@@ -1644,7 +1650,7 @@ scene_props = [
   ("trebuchet_old",0,"trebuchet_old","bo_trebuchet_old", []),
   ("trebuchet_new",0,"trebuchet_new","bo_trebuchet_old", []),
 
-  ("trebuchet_destructible",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible,"trebuchet_new","bo_trebuchet_old", []),
+  ("trebuchet_destructible",sokf_moveable|sokf_destructible,"trebuchet_new","bo_trebuchet_old", []),
 
   ("stone_ball",0,"stone_ball","0", []),
 
@@ -2001,18 +2007,18 @@ scene_props = [
   ("earth_tower_a",0,"earth_tower_a","bo_earth_tower_a", []),
   ("earth_stairs_c",0,"earth_stairs_c","bo_earth_stairs_c", []),
 
-  ("earth_sally_gate_left",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"earth_sally_gate_left","bo_earth_sally_gate_left", []),
-  ("earth_sally_gate_right",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"earth_sally_gate_right","bo_earth_sally_gate_right", []),
+  ("earth_sally_gate_left",sokf_moveable|sokf_destructible|spr_use_time(0),"earth_sally_gate_left","bo_earth_sally_gate_left", []),
+  ("earth_sally_gate_right",sokf_moveable|sokf_destructible|spr_use_time(0),"earth_sally_gate_right","bo_earth_sally_gate_right", []),
 
   ("barrier_box",sokf_invisible|sokf_type_barrier3d,"barrier_box","bo_barrier_box", []),
   ("barrier_capsule",sokf_invisible|sokf_type_barrier3d,"barrier_capsule","bo_barrier_capsule", []),
   ("barrier_cone" ,sokf_invisible|sokf_type_barrier3d,"barrier_cone" ,"bo_barrier_cone" , []),
   ("barrier_sphere" ,sokf_invisible|sokf_type_barrier3d,"barrier_sphere" ,"bo_barrier_sphere" , []),
 
-  ("viking_keep_destroy_sally_door_right",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"viking_keep_destroy_sally_door_right","bo_viking_keep_destroy_sally_door_right", []),
-  ("viking_keep_destroy_sally_door_left",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"viking_keep_destroy_sally_door_left","bo_viking_keep_destroy_sally_door_left", []),
+  ("viking_keep_destroy_sally_door_right",sokf_moveable|sokf_destructible|spr_use_time(0),"viking_keep_destroy_sally_door_right","bo_viking_keep_destroy_sally_door_right", []),
+  ("viking_keep_destroy_sally_door_left",sokf_moveable|sokf_destructible|spr_use_time(0),"viking_keep_destroy_sally_door_left","bo_viking_keep_destroy_sally_door_left", []),
 
-  ("castle_f_door_b",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"castle_e_sally_door_a","bo_castle_e_sally_door_a", []),
+  ("castle_f_door_b",sokf_moveable|sokf_destructible|spr_use_time(0),"castle_e_sally_door_a","bo_castle_e_sally_door_a", []),
 
   ("ctf_flag_kingdom_1", sokf_moveable|sokf_face_player, "ctf_flag_kingdom_1", "0", []),
   ("ctf_flag_kingdom_2", sokf_moveable|sokf_face_player, "ctf_flag_kingdom_2", "0", []),
@@ -2850,7 +2856,7 @@ scene_props = [
   ("pw_ladder_12m",spr_ladder_flags(),"siege_ladder_move_12m","bo_siege_ladder_move_12m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=560, height=1200, no_move_physics=True)),
   ("pw_ladder_14m",spr_ladder_flags(),"siege_ladder_move_14m","bo_siege_ladder_move_14m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=600, height=2000, no_move_physics=True)),
   ("pw_ladder_build",spr_build_flags(),"pw_build_ladder","bo_pw_build_ladder", spr_build_wall_triggers()),
-  ("pw_construction_box",sokf_static_movement|sokf_show_hit_point_bar|sokf_destructible|sokf_missiles_not_attached,"pw_construction_box","bo_pw_construction_box", spr_construction_box_triggers()),
+  ("pw_construction_box",sokf_static_movement|sokf_destructible|sokf_missiles_not_attached,"pw_construction_box","bo_pw_construction_box", spr_construction_box_triggers()),
 
   ("pw_winch_frame",0,"winch_stabilizer_a","bo_winch_stabilizer_a", []),
   ("pw_portcullis_winch",spr_use_time(1),"winch","bo_winch_fixed", spr_portcullis_winch_triggers("pw_portcullis")),
@@ -2874,20 +2880,20 @@ scene_props = [
   ("pw_back_box",sokf_moveable|spr_use_time(3),"pw_back_box","bo_pw_back_box", spr_cart_triggers(detach_offset=-13, inventory_count=10, max_item_length=80, access_distance=-80)),
   ("pw_horse_pack",sokf_moveable|spr_use_time(2),"pw_horse_pack","bo_pw_horse_pack", spr_cart_triggers(horse=1, detach_offset=49, inventory_count=20, max_item_length=100, access_distance=90)),
 
-  ("pw_ship_a",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_a","bo_pw_ship_a", spr_ship_triggers(hit_points=5000, length=800, width=150, height=-20, speed=6, sail="pw_ship_a_sail", sail_off="pw_ship_a_sail_off", collision="pw_ship_a_cd")),
+  ("pw_ship_a",sokf_moveable|sokf_destructible,"pw_ship_a","bo_pw_ship_a", spr_ship_triggers(hit_points=5000, length=800, width=150, height=-20, speed=6, sail="pw_ship_a_sail", sail_off="pw_ship_a_sail_off", collision="pw_ship_a_cd")),
   ("pw_ship_a_sail",sokf_moveable,"pw_ship_a_sail","bo_pw_ship_a_sail", []),
   ("pw_ship_a_sail_off",sokf_moveable,"pw_ship_a_sail_off","bo_pw_ship_a_sail_off", []),
   ("pw_ship_a_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pw_ship_a_cd", []),
-  ("pw_ship_b",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_b","bo_pw_ship_b", spr_ship_triggers(hit_points=8000, length=1400, width=230, height=100, speed=4, sail="pw_ship_b_sail", collision="pw_ship_b_cd")),
+  ("pw_ship_b",sokf_moveable|sokf_destructible,"pw_ship_b","bo_pw_ship_b", spr_ship_triggers(hit_points=8000, length=1400, width=230, height=100, speed=4, sail="pw_ship_b_sail", collision="pw_ship_b_cd")),
   ("pw_ship_b_sail",sokf_moveable,"pw_ship_b_sail","bo_pw_ship_b_sail", []),
   ("pw_ship_b_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pw_ship_b_cd", []),
-  ("pw_ship_c",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_c","bo_pw_ship_c", spr_ship_triggers(hit_points=10000, length=1400, width=300, height=300, speed=4, sail="pw_ship_c_sail", sail_off="pw_ship_c_sail_off", ramp="pw_ship_c_ramp", hold="pw_ship_c_hold", collision="pw_ship_c_cd")),
+  ("pw_ship_c",sokf_moveable|sokf_destructible,"pw_ship_c","bo_pw_ship_c", spr_ship_triggers(hit_points=10000, length=1400, width=300, height=300, speed=4, sail="pw_ship_c_sail", sail_off="pw_ship_c_sail_off", ramp="pw_ship_c_ramp", hold="pw_ship_c_hold", collision="pw_ship_c_cd")),
   ("pw_ship_c_sail",sokf_moveable,"pw_ship_c_sail","bo_pw_ship_c_sail", []),
   ("pw_ship_c_sail_off",sokf_moveable,"pw_ship_c_sail_off","bo_pw_ship_c_sail_off", []),
   ("pw_ship_c_ramp",sokf_moveable|spr_use_time(1),"pw_ship_c_ramp","bo_pw_ship_c_ramp", spr_ship_ramp_triggers()),
   ("pw_ship_c_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_c_hold", spr_item_storage_triggers(inventory_count=90, max_item_length=500)),
   ("pw_ship_c_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pw_ship_c_cd", []),
-  ("pw_ship_d",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_d","bo_pw_ship_d", spr_ship_triggers(hit_points=7000, length=900, width=250, height=120, speed=5, sail="pw_ship_d_sail", hold="pw_ship_d_hold", collision="pw_ship_d_cd")),
+  ("pw_ship_d",sokf_moveable|sokf_destructible,"pw_ship_d","bo_pw_ship_d", spr_ship_triggers(hit_points=7000, length=900, width=250, height=120, speed=5, sail="pw_ship_d_sail", hold="pw_ship_d_hold", collision="pw_ship_d_cd")),
   ("pw_ship_d_sail",sokf_moveable,"pw_ship_d_sail","bo_pw_ship_d_sail", []),
   ("pw_ship_d_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_d_hold", spr_item_storage_triggers(inventory_count=64, max_item_length=500)),
   ("pw_ship_d_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pw_ship_d_cd", []),

@@ -264,6 +264,22 @@ scripts.extend([
     (else_try), # otherwise fall back to the default string
       (str_store_string, s0, "str_use"),
     (try_end),
+
+    (try_begin), # find the base scene prop a linked prop is targeted
+      (scene_prop_slot_eq, ":instance_id", slot_scene_prop_show_linked_hit_points, 1),
+      (scene_prop_get_slot, "$g_show_hit_points_instance_id", ":instance_id", slot_scene_prop_linked_scene_prop),
+      (prop_instance_is_valid, "$g_show_hit_points_instance_id"),
+    (else_try),
+      (assign, "$g_show_hit_points_instance_id", ":instance_id"),
+    (try_end),
+    (scene_prop_get_slot, "$g_scene_prop_full_hit_points", "$g_show_hit_points_instance_id", slot_scene_prop_full_hit_points),
+    (try_begin), # set values to display the hit points bar presentation
+      (gt, "$g_scene_prop_full_hit_points", 0),
+      (scene_prop_get_hit_points, "$g_scene_prop_hit_points", "$g_show_hit_points_instance_id"),
+      (gt, "$g_scene_prop_hit_points", "$g_scene_prop_full_hit_points"),
+      (assign, "$g_scene_prop_full_hit_points", "$g_scene_prop_hit_points"),
+      (scene_prop_set_slot, "$g_show_hit_points_instance_id", slot_scene_prop_full_hit_points, "$g_scene_prop_hit_points"),
+    (try_end),
     ]),
 
   ("store_troop_skills_description", []), # dynamically generate a string listing a troop's skills
@@ -800,6 +816,15 @@ scripts.extend([
           (str_store_player_username, s1, ":player_id"),
           (str_store_string, s0, ":string_id"),
           (display_message, "str_log_animation", local_animation_color),
+        (try_end),
+      (else_try),
+        (eq, ":event_type", server_event_update_scene_prop_hit_points),
+        (store_script_param, ":instance_id", 3),
+        (store_script_param, ":hit_points", 4),
+        (try_begin),
+          (prop_instance_is_valid, ":instance_id"),
+          (ge, ":hit_points", 0),
+          (scene_prop_set_hit_points, ":instance_id", ":hit_points"),
         (try_end),
       (try_end),
 
@@ -6508,6 +6533,7 @@ scripts.extend([
           (gt, ":nearest_instance_id", -1),
           (scene_prop_set_slot, ":nearest_instance_id", slot_scene_prop_linked_scene_prop, ":begin_instance_id"),
         (else_try), # failure to find a necessary linked prop
+          (multiplayer_is_server),
           (assign, reg10, ":begin_instance_id"),
           (prop_instance_get_scene_prop_kind, reg11, ":begin_instance_id"),
           (assign, reg12, ":linked_scene_prop_id"),
@@ -7842,6 +7868,7 @@ scripts.extend([
       (particle_system_burst, "psys_dummy_smoke", pos1, 50),
       (agent_play_sound, ":agent_id", "snd_man_grunt"),
     (try_end),
+    (assign, reg2, ":agent_id"),
     ]),
 
   ("cf_hit_bridge_footing", # server: handle damaging and repairing bridges indirectly through linked props; should be called from ti_on_scene_prop_hit
@@ -7852,6 +7879,12 @@ scripts.extend([
     (scene_prop_get_slot, ":bridge_instance_id", ":instance_id", slot_scene_prop_linked_scene_prop),
     (gt, ":bridge_instance_id", 0),
     (call_script, "script_cf_hit_bridge", ":bridge_instance_id", ":hit_damage", 1),
+    (agent_get_player_id, ":player_id", reg2),
+    (try_begin),
+      (player_is_active, ":player_id"),
+      (scene_prop_get_hit_points, ":hit_points", ":bridge_instance_id"),
+      (multiplayer_send_2_int_to_player, ":player_id", server_event_update_scene_prop_hit_points, ":bridge_instance_id", ":hit_points"),
+    (try_end),
     (set_trigger_result, 0),
     ]),
 
@@ -7925,6 +7958,7 @@ scripts.extend([
       (prop_instance_animate_to_position, ":instance_id", pos2, 1000),
       (agent_play_sound, ":agent_id", "snd_man_grunt"),
     (try_end),
+    (assign, reg2, ":agent_id"),
     ]),
 
   ("cf_hit_build_wall", # server: handle hitting the building station for walls and ladders; should be called from ti_on_scene_prop_hit
@@ -7935,6 +7969,12 @@ scripts.extend([
     (scene_prop_get_slot, ":wall_instance_id", ":instance_id", slot_scene_prop_linked_scene_prop),
     (gt, ":wall_instance_id", 0),
     (call_script, "script_cf_hit_wall", ":wall_instance_id", ":hit_damage", 1),
+    (agent_get_player_id, ":player_id", reg2),
+    (try_begin),
+      (player_is_active, ":player_id"),
+      (scene_prop_get_hit_points, ":hit_points", ":wall_instance_id"),
+      (multiplayer_send_2_int_to_player, ":player_id", server_event_update_scene_prop_hit_points, ":wall_instance_id", ":hit_points"),
+    (try_end),
     (set_trigger_result, 0),
     ]),
 

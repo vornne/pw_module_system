@@ -205,6 +205,8 @@ slot_scene_prop_resources_default_cost = 39
 slot_scene_prop_water                 = 40
 slot_scene_prop_seeds                 = 41
 
+slot_scene_prop_show_linked_hit_points = 45
+
 scene_prop_state_active               = 0
 scene_prop_state_destroyed            = 1
 scene_prop_state_hidden               = 2
@@ -537,6 +539,9 @@ inventory_slot_spacing                = 100
 inventory_mesh_offset                 = 50
 inventory_container_x_offset          = 190
 inventory_container_y_offset          = 175
+
+scene_prop_hit_points_bar_scale_x     = 6230
+scene_prop_hit_points_bar_scale_y     = 15000
 
 select_agent_max_x                    = 300
 select_agent_max_y                    = 200
