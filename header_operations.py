@@ -1232,6 +1232,21 @@ def get_opcode_name(opcode):
     opname = repr(opcode)
   return prefix + opname if prefix else opname
 
+def print_operations_block(block):
+  indent = 0
+  for operation in block:
+    if isinstance(operation, (tuple, list)):
+      opcode = operation[0]
+      operation_list = [get_opcode_name(opcode)] + [repr(entry) for entry in operation[1:]]
+    else:
+      opcode = operation
+      operation_list = [get_opcode_name(opcode)]
+    if opcode in (else_try, try_end) and indent > 0:
+      indent -= 1
+    print "{0}({1}),".format("  " * indent, ", ".join(operation_list))
+    if opcode in try_begin_operations or opcode == else_try:
+      indent += 1
+
 lhs_operations = frozenset([
   try_for_range,
   try_for_range_backwards,
