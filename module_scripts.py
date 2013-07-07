@@ -3158,7 +3158,6 @@ scripts.extend([
       (try_end),
       (try_begin),
         (eq, ":spawn", 1),
-        (neg|player_is_busy_with_menus, ":player_id"),
         (player_get_troop_id, ":troop_id", ":player_id"),
         (is_between, ":troop_id", playable_troops_begin, playable_troops_end),
         (try_begin),
@@ -3181,8 +3180,6 @@ scripts.extend([
         (player_set_slot, ":player_id", slot_player_spawn_state, player_spawn_state_invulnerable),
         (store_mission_timer_a, ":spawn_time"),
         (player_set_slot, ":player_id", slot_player_spawn_invulnerable_time, ":spawn_time"),
-      (else_try),
-        (assign, ":spawn", 0),
       (try_end),
     (else_try), # if the player is currently alive under spawn protection, check if the time is up
       (eq, ":spawn_state", player_spawn_state_invulnerable),
