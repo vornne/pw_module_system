@@ -571,7 +571,7 @@ def spr_ferry_winch_triggers(is_platform=0):
   return [spr_call_script_use_trigger("script_cf_use_ferry_winch", is_platform)]
 
 def spr_structure_flags():
-  return sokf_moveable|sokf_destructible|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible|sokf_missiles_not_attached
 
 # Destructable and rebuildable bridge: requires linking with two 'footing' scene props for rebuilding on either side.
 def spr_bridge_triggers(footing, hit_points=1000):
@@ -611,7 +611,7 @@ def spr_bridge_footing_triggers():
     (ti_on_scene_prop_use, [])]
 
 def spr_ladder_flags():
-  return sokf_type_ladder|sokf_moveable|sokf_destructible|sokf_missiles_not_attached
+  return sokf_type_ladder|sokf_static_movement|sokf_destructible|sokf_missiles_not_attached
 
 # Buildable walls, also used for ladders: requires a 'build' scene prop for construction when totally destroyed. 'height' should be set to the height of the mesh.
 # 'no_move_physics' disables walking on the prop until the construction animation is completed.
@@ -2872,13 +2872,13 @@ scene_props = [
   ("pw_lift_platform_winch",spr_use_time(1),"winch_b","bo_winch_fixed", spr_lift_platform_winch_triggers()),
   ("pw_lift_platform",sokf_moveable,"pw_lift_platform","bo_pw_lift_platform", spr_lift_platform_triggers("pw_lift_platform_winch")),
 
-  ("pw_cart_a",sokf_moveable|spr_use_time(1),"pw_cart_a","bo_pw_cart_a", spr_cart_triggers(horse="itm_cart_horse", detach_offset=60, detach_rotation=-20, inventory_count=48, max_item_length=250, access_distance=-180)),
-  ("pw_cart_b",sokf_moveable|spr_use_time(1),"pw_cart_b","bo_pw_cart_b", spr_cart_triggers(horse="itm_cart_horse", detach_offset=110, detach_rotation=-6, inventory_count=42, max_item_length=250, access_distance=-170)),
-  ("pw_wheelbarrow",sokf_moveable|spr_use_time(1),"pw_hand_cart_a","bo_pw_hand_cart_a", spr_cart_triggers(detach_offset=47, detach_rotation=15, inventory_count=12, max_item_length=120, access_distance=110)),
-  ("pw_hand_cart",sokf_moveable|spr_use_time(1),"pw_hand_cart_b","bo_pw_hand_cart_b", spr_cart_triggers(detach_offset=90, inventory_count=24, max_item_length=150, access_distance=-170)),
-  ("pw_back_basket",sokf_moveable|spr_use_time(2),"pw_back_basket","bo_pw_back_basket", spr_cart_triggers(detach_offset=-12, inventory_count=5, max_item_length=95, access_distance=-60)),
-  ("pw_back_box",sokf_moveable|spr_use_time(3),"pw_back_box","bo_pw_back_box", spr_cart_triggers(detach_offset=-13, inventory_count=10, max_item_length=80, access_distance=-80)),
-  ("pw_horse_pack",sokf_moveable|spr_use_time(2),"pw_horse_pack","bo_pw_horse_pack", spr_cart_triggers(horse=1, detach_offset=49, inventory_count=20, max_item_length=100, access_distance=90)),
+  ("pw_cart_a",sokf_static_movement|spr_use_time(1),"pw_cart_a","bo_pw_cart_a", spr_cart_triggers(horse="itm_cart_horse", detach_offset=60, detach_rotation=-20, inventory_count=48, max_item_length=250, access_distance=-180)),
+  ("pw_cart_b",sokf_static_movement|spr_use_time(1),"pw_cart_b","bo_pw_cart_b", spr_cart_triggers(horse="itm_cart_horse", detach_offset=110, detach_rotation=-6, inventory_count=42, max_item_length=250, access_distance=-170)),
+  ("pw_wheelbarrow",sokf_static_movement|spr_use_time(1),"pw_hand_cart_a","bo_pw_hand_cart_a", spr_cart_triggers(detach_offset=47, detach_rotation=15, inventory_count=12, max_item_length=120, access_distance=110)),
+  ("pw_hand_cart",sokf_static_movement|spr_use_time(1),"pw_hand_cart_b","bo_pw_hand_cart_b", spr_cart_triggers(detach_offset=90, inventory_count=24, max_item_length=150, access_distance=-170)),
+  ("pw_back_basket",sokf_static_movement|spr_use_time(2),"pw_back_basket","bo_pw_back_basket", spr_cart_triggers(detach_offset=-12, inventory_count=5, max_item_length=95, access_distance=-60)),
+  ("pw_back_box",sokf_static_movement|spr_use_time(3),"pw_back_box","bo_pw_back_box", spr_cart_triggers(detach_offset=-13, inventory_count=10, max_item_length=80, access_distance=-80)),
+  ("pw_horse_pack",sokf_static_movement|spr_use_time(2),"pw_horse_pack","bo_pw_horse_pack", spr_cart_triggers(horse=1, detach_offset=49, inventory_count=20, max_item_length=100, access_distance=90)),
 
   ("pw_ship_a",sokf_moveable|sokf_destructible,"pw_ship_a","bo_pw_ship_a", spr_ship_triggers(hit_points=5000, length=800, width=150, height=-20, speed=6, sail="pw_ship_a_sail", sail_off="pw_ship_a_sail_off", collision="pw_ship_a_cd")),
   ("pw_ship_a_sail",sokf_moveable,"pw_ship_a_sail","bo_pw_ship_a_sail", []),
