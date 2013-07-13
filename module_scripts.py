@@ -3267,6 +3267,10 @@ scripts.extend([
         (neq, ":spawn_state", player_spawn_state_invulnerable),
         (agent_set_team, ":agent_id", team_default),
       (try_end),
+      (try_begin),
+        (eq, "$g_mute_global_chat", 1),
+        (player_set_is_muted, ":player_id", "$g_mute_global_chat"),
+      (try_end),
     (try_end),
     ]),
 

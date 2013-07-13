@@ -621,6 +621,7 @@ profile_options = [ # global flag variables for options stored in a player profi
   "$g_chat_overlay_type_selected",
   "$g_disable_automatic_shadow_recalculation",
   "$g_animation_menu_no_mouse_grab",
+  "$g_mute_global_chat",
   ]
 if len(profile_options) >= profile_banner_id_option_bits_end - profile_banner_id_option_bits_begin:
   raise Exception("Too many profile options: %d, maximum %d" % (len(profile_options), profile_banner_id_option_bits_end - profile_banner_id_option_bits_begin))

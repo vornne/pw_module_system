@@ -499,6 +499,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("reveal_money_pouch_to_target", "Reveal money pouch to target"),
   ("toggle_automatic_shadow_recalculation", "Toggle automatic shadow recalculation"),
   ("toggle_clickable_animation_menu", "Toggle clickable animation menu"),
+  ("toggle_muting_global_chat", "Toggle muting global chat"),
   ("action_menu_end", "action_menu_end"),
   ("s0_are_you_sure", "{s0} - are you sure?"),
   ("confirmation", "confirmation"),
@@ -508,6 +509,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("display_chat_overlay", "Display chat overlay"),
   ("overlay_shows_faction_chat", "Overlay shows faction chat instead of local"),
   ("disable_automatic_shadow_recalculation", "Disable automatic shadow recalculation"),
+  ("mute_global_chat", "Mute global chat"),
   ("non_clickable_animation_menu", "Non-clickable animation menu"),
 
   ("reg0__s0", "{!}{reg0}. {s0}"),
