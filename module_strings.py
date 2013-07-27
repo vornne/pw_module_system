@@ -4086,7 +4086,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("a_duel_between_you_and_s0_will_start_in_3_seconds", "A duel between you and {s0} will start in 3 seconds."),
   ("you_have_lost_a_duel", "You have lost a duel."),
   ("you_have_won_a_duel", "You have won a duel!"),
-  ("server_s0", "[SERVER]: {s0}"),
+  ("server_s0", "[!]: {s0}"),
   ("disallow_ranged_weapons", "Disallow ranged weapons"),
   ("ranged_weapons_are_disallowed", "Ranged weapons are disallowed."),
   ("ranged_weapons_are_allowed", "Ranged weapons are allowed."),

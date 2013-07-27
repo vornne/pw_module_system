@@ -1087,6 +1087,7 @@ agent_set_use_speed_modifier           = 2095   # (agent_set_use_speed_modifier,
 agent_set_visibility                   = 2096   # (agent_set_visibility, <agent_id>, <value>), # 0 for invisible, 1 for visible.
 agent_get_crouch_mode                  = 2097   # (agent_ai_get_crouch_mode, <destination>, <agent_id>),
 agent_set_crouch_mode                  = 2098   # (agent_ai_set_crouch_mode, <agent_id>, <value>), # 0-1
+agent_set_ranged_damage_modifier       = 2099   # (agent_set_ranged_damage_modifier, <agent_id>, <value>), # value is in percentage, 100 is default
 
 val_lshift             = 2100 # (val_lshift, <destination>, <value>), # shifts the bits of destination to left by value amount.
 val_rshift             = 2101 # (val_rshift, <destination>, <value>), # shifts the bits of destination to right by value amount.
