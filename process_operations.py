@@ -125,6 +125,7 @@ class IdentifierMap:
     id_map = self.tag_map[tag]
     for i, entry in enumerate(data):
       name = entry[0]
+      pc.assert_valid_identifier(name, entry=entry, tag=tag)
       if name in id_map:
         pc.ERROR("duplicate identifier '%s_%s'" % (tag, name))
       id_map[name] = opmask|i

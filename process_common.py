@@ -12,31 +12,41 @@ def replace_spaces(s):
 
 is_valid_regex = re.compile("[a-z0-9_]+$")
 def is_valid_identifier(s):
-  return is_valid_regex.match(s)
+  try:
+    return is_valid_regex.match(s)
+  except TypeError:
+    return False
 
-def assert_valid_identifier(s, entry=None):
+def assert_valid_identifier(s, entry=None, tag=None):
   if not is_valid_identifier(s):
-    ERROR("identifier '%s' contains invalid characters: must be lowercase, digits, and underscores" % s, entry=entry)
+    ERROR("identifier %s is invalid: must be a string of lowercase, digit, or underscore characters" % repr(s), entry=entry, tag=tag)
 
-def format_error_message(prefix, msg, entry=None, opcode=None):
-  output = [prefix, msg]
-  if entry:
-    output.append("; at ")
-    output.append(repr(entry))
+def format_error_message(prefix, msg, entry=None, opcode=None, tag=None):
+  message = [prefix, msg]
+  info = []
+  if tag:
+    info.extend([",", " type tag: ", tag])
   if opcode:
-    output.append(", operation: ")
-    output.append(header_operations.get_opcode_name(opcode))
-  return "".join(output)
+    info.extend([",", " operation: ", header_operations.get_opcode_name(opcode)])
+  if entry:
+    entry_string = repr(entry)
+    if len(entry_string) > 100:
+      entry_string = entry_string[:100] + " ... <snipped>"
+    info.extend([",", " entry: ", entry_string])
+  if len(info):
+    info[0] = ";"
+  return "".join(message + info)
 
 class ModuleSystemError(Exception):
 
-  def __init__(self, msg, entry=None, opcode=None):
+  def __init__(self, msg, entry=None, opcode=None, tag=None):
     self.msg = msg
     self.entry = entry
     self.opcode = opcode
+    self.tag = tag
 
   def __str__(self):
-    return format_error_message("ERROR: ", msg=self.msg, entry=self.entry, opcode=self.opcode)
+    return format_error_message("ERROR: ", msg=self.msg, entry=self.entry, opcode=self.opcode, tag=self.tag)
 
 def ERROR(*a, **k):
   raise ModuleSystemError(*a, **k)
