@@ -26667,8 +26667,6 @@ scripts = [
         (assign, ":quest_return_penalty", -1),
         (assign, ":quest_expire_penalty", -1),
       (else_try),
-        (eq, ":quest_no", "qst_lend_companion"),
-      (else_try),
         (eq, ":quest_no", "qst_collect_debt"),
         (try_begin),
           (quest_slot_eq, "qst_collect_debt", slot_quest_current_state, 1), #debt collected but not delivered
