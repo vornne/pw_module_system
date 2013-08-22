@@ -776,6 +776,7 @@ pw mines:^value 1 = initial hit points / 1000^value 2 = respawn time multiplier^
 pw trees, bushes, plants, fields, vines:^value 2 = respawn time multiplier^^\
 pw bridges:^value 2 = linking id with two x_footing props^^\
 pw walls, ladders:^value 2 = linking id with x_build^^\
+pw_construction_box:^value 1 = hit points multiplier^^\
 pw portcullises, drawbridges, trapdoors:^value 1 = options bitfield (0x1 = start closed)^value 2 = linking id with x_winch^^\
 pw_lift_platform:^value 2 = linking id with two x_winch props^^\
 pw ships:^value 1 = initial ramp position (0 = center, 1 = left, 2 = right)^Only place the hull, the other parts are spawned at mission start.^^\
