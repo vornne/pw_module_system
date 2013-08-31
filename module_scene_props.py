@@ -247,10 +247,12 @@ def spr_buy_banner_triggers(banner_item_begin, mercenary=False, use_string="str_
   return [init_trigger, spr_call_script_use_trigger("script_cf_buy_banner")]
 
 # Teleport to a linked door of the same scene prop type. 'pos_offset' specifies the relative position from each door that the character will be moved to.
-def spr_teleport_door_triggers(pos_offset=(0,0,0)):
-  return [spr_call_script_cancel_use_trigger("script_cf_lock_teleport_door"),
-    spr_call_script_use_trigger("script_cf_use_teleport_door", pos_offset[0], pos_offset[1], pos_offset[2]),
+def spr_teleport_door_triggers(pos_offset=(0,0,0), pickable=1):
+  triggers = [spr_call_script_use_trigger("script_cf_use_teleport_door", pos_offset[0], pos_offset[1], pos_offset[2], pickable),
     [link_scene_prop, link_scene_prop_self]]
+  if pickable == 1:
+    triggers.append(spr_call_script_cancel_use_trigger("script_cf_lock_teleport_door"))
+  return triggers
 
 def spr_rotate_door_flags(use_time=1):
   return sokf_static_movement|sokf_destructible|spr_use_time(use_time)|sokf_missiles_not_attached
@@ -2833,6 +2835,7 @@ scene_props = [
   ("pw_door_teleport_inset_b",spr_use_time(1),"pw_teleport_door_b","bo_pw_teleport_door_a", spr_teleport_door_triggers(pos_offset=(0,50,0))),
   ("pw_door_teleport_inset_c",spr_use_time(1),"pw_teleport_door_c","bo_pw_teleport_door_a", spr_teleport_door_triggers(pos_offset=(0,50,0))),
   ("pw_door_teleport_invisible",sokf_invisible|spr_use_time(1),"pw_invisible_door","bo_pw_invisible_door", spr_teleport_door_triggers(pos_offset=(0,50,0))),
+  ("pw_door_teleport_invisible_not_pickable",sokf_invisible|spr_use_time(1),"pw_invisible_door","bo_pw_invisible_door", spr_teleport_door_triggers(pos_offset=(0,50,0), pickable=0)),
   ("pw_door_rotate_a",spr_rotate_door_flags(1),"castle_f_sally_door_a","bo_castle_f_sally_door_a", spr_rotate_door_triggers(hit_points=5000)),
   ("pw_door_rotate_b",spr_rotate_door_flags(1),"castle_e_sally_door_a","bo_castle_e_sally_door_a_fixed", spr_rotate_door_triggers(hit_points=5000)),
   ("pw_door_rotate_c",spr_rotate_door_flags(1),"castle_f_door_a","bo_castle_f_door_a_fixed", spr_rotate_door_triggers(hit_points=5000)),

@@ -6601,6 +6601,7 @@ scripts.extend([
     (store_script_param, ":x_offset", 3),
     (store_script_param, ":y_offset", 4), # position offset relative to the linked door that the agent is moved to
     (store_script_param, ":z_offset", 5),
+    (store_script_param, ":is_pickable", 6),
 
     (scene_prop_get_slot, ":linked_door_instance_id", ":instance_id", slot_scene_prop_linked_scene_prop),
     (gt, ":linked_door_instance_id", 0),
@@ -6624,6 +6625,8 @@ scripts.extend([
     (else_try),
       (scene_prop_slot_eq, ":instance_id", slot_scene_prop_unlocked, 1),
     (else_try),
+      (assign, reg0, 0),
+      (eq, ":is_pickable", 1),
       (call_script, "script_cf_agent_pick_lock", ":agent_id", 100),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_unlocked, 1),
       (scene_prop_set_slot, ":linked_door_instance_id", slot_scene_prop_unlocked, 1),
