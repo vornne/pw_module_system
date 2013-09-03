@@ -325,6 +325,12 @@ def spr_lift_platform_triggers(winch):
   return [[link_scene_prop, winch, winch],
     [init_scene_prop, "script_cf_init_lift_platform"]]
 
+# Winch for controlling a sliding door; controlling a linked scene prop of the 'target' kind.
+def spr_sliding_door_winch_triggers(target, move_steps=1, step_size=100, animation_time=100):
+  return [spr_call_script_use_trigger("script_cf_use_winch", move_steps+1, step_size, animation_time, winch_type_sliding_door),
+    [link_scene_prop, target],
+    [init_scene_prop, "script_cf_init_winch", move_steps, step_size, winch_type_sliding_door]]
+
 # Carts attachable to characters or horses. Set 'horse' to 1 to allow attaching to any horse, or the horse item id for restricting to a specific type.
 # The cart mesh should be oriented with the horse or agent position at the origin, and when detached it will be rotated by 'detach_rotation' and moved vertically by 'detach_offset'.
 # The absolute value of 'access_distance' is used for the radius from the origin that will allow attaching, and moved forwards by that value (back if negative) is the center of the radius for accessing.
@@ -2924,6 +2930,8 @@ scene_props = [
   ("pw_drawbridge_b",sokf_moveable,"castle_drawbridges_open","bo_castle_drawbridges_open", []),
   ("pw_trapdoor_winch_a",spr_use_time(1),"winch","bo_winch_fixed", spr_drawbridge_winch_triggers("pw_trapdoor_a", rotation_steps=2, step_size=45, animation_time=50)),
   ("pw_trapdoor_a",sokf_static_movement,"belfry_b_platform_a","bo_belfry_b_platform_a", []),
+  ("pw_sliding_door_winch_a",spr_use_time(1),"winch","bo_winch_fixed", spr_sliding_door_winch_triggers("pw_sliding_door_a", move_steps=1, step_size=150)),
+  ("pw_sliding_door_a",sokf_moveable,"castle_e_sally_door_a","bo_castle_e_sally_door_a", []),
   ("pw_lift_platform_winch",spr_use_time(1),"winch_b","bo_winch_fixed", spr_lift_platform_winch_triggers()),
   ("pw_lift_platform",sokf_moveable,"pw_lift_platform","bo_pw_lift_platform", spr_lift_platform_triggers("pw_lift_platform_winch")),
 

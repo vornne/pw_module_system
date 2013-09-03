@@ -482,6 +482,7 @@ bow_ranged_max_level_difference       = 3 # max power draw or power throw differ
 winch_type_drawbridge                 = 0
 winch_type_portcullis                 = 1
 winch_type_platform                   = 2
+winch_type_sliding_door               = 3
 
 repairable_hit                        = 0
 repairable_destroyed                  = 1
