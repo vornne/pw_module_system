@@ -3035,6 +3035,12 @@ scene_props = [
   ("code_freeze_agent",sokf_moveable,"0","bo_pw_freeze_agent", []),
   ("code_freeze_horse_agent",sokf_moveable,"0","bo_pw_freeze_horse_agent", []),
 
+  ("custom_script_trigger_a",sokf_invisible|spr_use_time(1),"pw_invisible_chest","bo_pw_invisible_chest", []),
+  ("custom_script_trigger_b",sokf_invisible|spr_use_time(1),"pw_invisible_chest","bo_pw_invisible_chest", []),
+  ("custom_script_trigger_c",sokf_invisible|spr_use_time(1),"pw_invisible_chest","bo_pw_invisible_chest", []),
+  ("custom_script_trigger_d",sokf_invisible|spr_use_time(1),"pw_invisible_chest","bo_pw_invisible_chest", []),
+  ("custom_script_trigger_e",sokf_invisible|spr_use_time(1),"pw_invisible_chest","bo_pw_invisible_chest", []),
+
 ]
 
 def fill_scene_props_list(list_var, trigger_id, modify_function):
