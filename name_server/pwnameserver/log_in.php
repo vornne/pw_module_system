@@ -10,7 +10,7 @@ function show_log_in()
   echo('</tbody></table></form>');
 }
 
-function check_log_in()
+function check_log_in($db)
 {
   if (isset($_POST["log_in"]))
   {
@@ -18,14 +18,13 @@ function check_log_in()
     $server_password = filter_input(INPUT_POST, "server_password", FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
     if ($server_name && $server_password)
     {
-      $server_name = mysql_real_escape_string($server_name);
-      $server_password = mysql_real_escape_string($server_password);
-      $result = mysql_query("SELECT id, name FROM warband_servers WHERE name = '$server_name' AND password = SHA1('$server_password');");
-      if ($result && $row = mysql_fetch_assoc($result))
+      $stmt = $db->prepare("SELECT id, name FROM warband_servers WHERE name = ? AND password = SHA1(?)");
+      $stmt->execute(array($server_name, $server_password));
+      if ($row = $stmt->fetch(PDO::FETCH_OBJ))
       {
         session_regenerate_id(true);
-        $_SESSION["server_id"] = $row["id"];
-        $_SESSION["server_name"] = $row["name"];
+        $_SESSION["server_id"] = $row->id;
+        $_SESSION["server_name"] = $row->name;
         $_SESSION["time"] = time();
         return true;
       }

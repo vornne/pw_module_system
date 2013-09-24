@@ -1,5 +1,5 @@
 <?php
-function check_player_name_actions()
+function check_player_name_actions($db)
 {
   if (!filter_has_var(INPUT_POST, "ids")) return;
   $ids = $_POST["ids"];
@@ -11,16 +11,16 @@ function check_player_name_actions()
     $id = filter_var($id, FILTER_VALIDATE_INT, array("options"=>array("min_range"=>0)));
     if ($remove_names)
     {
-      $result = mysql_query("DELETE FROM player_names WHERE id = '$id';");
-      if (!$result) return echo_database_error();
+      $stmt = $db->prepare("DELETE FROM player_names WHERE id = ?");
+      $stmt->execute(array($id));
     }
     else if ($set_permissions)
     {
-      $result = mysql_query("SELECT unique_id FROM player_names WHERE id = '$id' LIMIT 1;");
-      if (!$result) return echo_database_error();
-      if (!$row = mysql_fetch_assoc($result)) return;
-      $result = mysql_query("INSERT INTO admin_permissions (unique_id, server_id) VALUES ('$row[unique_id]', '$_SESSION[server_id]') ON DUPLICATE KEY UPDATE server_id = server_id;");
-      if (!$result) return echo_database_error();
+      $stmt = $db->prepare("SELECT unique_id FROM player_names WHERE id = ?  LIMIT 1");
+      $stmt->execute(array($id));
+      if (!$row = $stmt->fetch(PDO::FETCH_OBJ)) return;
+      $stmt = $db->prepare("INSERT INTO admin_permissions (unique_id, server_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE server_id = server_id");
+      $stmt->execute(array($row->unique_id, $_SESSION[server_id]));
     }
   }
   if ($set_permissions)
@@ -29,9 +29,9 @@ function check_player_name_actions()
   }
 }
 
-function show_player_names()
+function show_player_names($db)
 {
-  check_player_name_actions();
+  check_player_name_actions($db);
 
   $current_uri_no_start = htmlspecialchars(preg_replace('/&start=[^=&]*/', '', $_SERVER["REQUEST_URI"]));
   echo("<form action=\"$current_uri_no_start\" method=\"get\"><div class=\"database_actions\">");
@@ -43,20 +43,25 @@ function show_player_names()
   echo('<input type="submit" name="by_name" value="name"/>');
   echo("</div></form>\n");
 
+  $params = array();
   $query = "SELECT player_names.id, unique_id, player_names.name AS player_name, last_used_time, warband_servers.name AS server_name
     FROM player_names LEFT JOIN warband_servers ON player_names.inserted_by_warband_server_id = warband_servers.id";
   if (isset($_GET["by_uid"]))
   {
     $filter_unique_id = filter_input(INPUT_GET, "filter", FILTER_VALIDATE_INT, array("options"=>array("min_range"=>1, "max_range"=>10000000)));
-    if ($filter_unique_id) $query .= " WHERE player_names.unique_id = '$filter_unique_id'";
+    if ($filter_unique_id)
+    {
+      $query .= " WHERE player_names.unique_id = :filter_unique_id";
+      $params[":filter_unique_id"] = $filter_unique_id;
+    }
   }
   else if (isset($_GET["by_name"]))
   {
     $filter_name = filter_input(INPUT_GET, "filter", FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
     if ($filter_name)
     {
-      $filter_name = mysql_real_escape_string($filter_name);
-      $query .= " WHERE player_names.name LIKE '%$filter_name%'";
+      $query .= " WHERE player_names.name LIKE :filter_name";
+      $params[":filter_name"] = "%$filter_name%";
     }
   }
 
@@ -83,28 +88,27 @@ function show_player_names()
   $filter_start = filter_input(INPUT_GET, "start", FILTER_VALIDATE_INT, array("options"=>array("min_range"=>0)));
   if ($filter_start)
   {
-    $query .= " LIMIT $filter_start, " . pw_name_server_config::player_names_per_page;
+    $query .= " LIMIT $filter_start, " . pw_config::player_names_per_page;
   }
   else
   {
-    $query .= " LIMIT " . pw_name_server_config::player_names_per_page;
+    $query .= " LIMIT " . pw_config::player_names_per_page;
   }
 
   $current_uri = htmlspecialchars($_SERVER["REQUEST_URI"]);
 
-  $query .= ";";
-  $result = mysql_query($query);
-  if (!$result) return echo_database_error();
+  $stmt = $db->prepare($query);
+  $stmt->execute($params);
 
   $page_links = '<div class="database_actions">';
   if ($filter_start && $filter_start > 0)
   {
-    $prev_page_start = max($filter_start - pw_name_server_config::player_names_per_page, 0);
+    $prev_page_start = max($filter_start - pw_config::player_names_per_page, 0);
     $page_links .= "<a href=\"$current_uri_no_start&amp;start=$prev_page_start\">Previous page</a>&nbsp;";
   }
-  if (mysql_num_rows($result) >= pw_name_server_config::player_names_per_page)
+  if ($stmt->rowCount() >= pw_config::player_names_per_page)
   {
-    $next_page_start = $filter_start + pw_name_server_config::player_names_per_page;
+    $next_page_start = $filter_start + pw_config::player_names_per_page;
     $page_links .= "<a href=\"$current_uri_no_start&amp;start=$next_page_start\">Next page</a>&nbsp;";
   }
   $page_links .= '</div>';
@@ -117,7 +121,7 @@ function show_player_names()
   echo("<th><a href=\"$current_uri_no_order&amp;order_by=date$desc\">last used</a></th>");
   echo("<th><a href=\"$current_uri_no_order&amp;order_by=server$desc\">created by server</a></th>");
   echo('</tr></thead><tbody>');
-  while ($row = mysql_fetch_assoc($result))
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
   {
     $cb_id = "cb_$row[id]";
     echo("<tr><td><input type=\"checkbox\" name=\"ids[]\" value=\"$row[id]\" id=\"$cb_id\"/></td>");

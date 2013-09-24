@@ -813,6 +813,7 @@ Healing herbs found in certain locations can be cut from the bushes with a knife
 Poisonous herbs can also sometimes be found, which are then applied to the blades of certain weapons used for murderous deeds; they have many brown stalks covered in tiny green leaves."),
 
   ("name_server_error_code_reg0", "Name server: error code {reg0}."),
+  ("name_server_input_error_parameter_s0", "Name server: input error with parameter '{s0}'."),
   ("name_server_invalid_response", "Name server: invalid response '{reg0}|{reg1}|{reg2}|{s0}|{reg3}'."),
   ("name_server_log_s10", "Name server: player {s0} ({reg2}): {s10}"),
   ("kicked_using_other_players_name", "Kicked for using another player's name."),

@@ -1,9 +1,10 @@
 A simple name server for Warband servers running the Persistent World module.
 
-To install, you need a web server with PHP and MySQL installed; I use Linux and
-Apache (LAMP) so the instructions will be tailored to that. Lines starting with
-"$" represent commands to run in the shell prompt, and lines starting with
-"mysql>" represent queries to run in the mysql command line tool.
+To install, you need a web server with PHP and the PDO extension set up with
+MySQL support; I use Linux and Apache (LAMP) so the instructions will be
+tailored to that. Lines starting with "$" represent commands to run in the
+shell prompt, and lines starting with "mysql>" represent queries to run in the
+mysql command line tool.
 
 First, copy the pwnameserver directory to your web server's document root;
 then edit private/config.php, setting the desired the host name, user name,
