@@ -9,6 +9,14 @@ ALTER TABLE admin_permissions ADD COLUMN animals BOOLEAN DEFAULT FALSE NOT NULL 
 ALTER TABLE admin_permissions ADD COLUMN factions BOOLEAN DEFAULT FALSE NOT NULL AFTER animals;
 
 -- Update for PW_4.5.0
+--   Default database name was changed from 'pw_player_names' to 'persistent_world'; you can keep your existing
+--   database name and change private/config.php, or otherwise dump and restore your database into the new name:
+--     mysql -u root -p -e "CREATE DATABASE persistent_world"
+--     mysqldump -u root -p pw_player_names > backup_pw.sql
+--     cat backup_pw.sql | mysql -u root -p persistent_world
+--     mysql -u root -p -e "GRANT ALL ON persistent_world.* TO 'pw_name_server'@'localhost' IDENTIFIED BY 'yourpassword'"
+--   Then remove the old database after you have checked the new one:
+--     mysql -u root -p -e "DROP DATABASE pw_player_names"
 CREATE TABLE sessions (
   id VARCHAR(32) NOT NULL,
   access_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

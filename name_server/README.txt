@@ -18,8 +18,8 @@ $ mysql --user=root --password
 Create the database and grant access (values must match what you set in
 private/config.php):
 
-mysql> CREATE DATABASE pw_player_names;
-mysql> GRANT ALL ON pw_player_names.* TO 'pw_name_server'@'localhost' IDENTIFIED BY 'mcn345N2iH';
+mysql> CREATE DATABASE persistent_world;
+mysql> GRANT ALL ON persistent_world.* TO 'pw_name_server'@'localhost' IDENTIFIED BY 'mcn345N2iH';
 mysql> QUIT;
 
 Load the database schema:

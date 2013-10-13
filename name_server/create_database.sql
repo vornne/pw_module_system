@@ -1,5 +1,5 @@
-CREATE DATABASE pw_player_names;
-USE pw_player_names;
+CREATE DATABASE persistent_world;
+USE persistent_world;
 
 CREATE TABLE player_names (
   id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,

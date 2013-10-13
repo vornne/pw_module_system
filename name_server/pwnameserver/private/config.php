@@ -4,7 +4,7 @@ class pw_config
   const database_server_name = "localhost";
   const database_username = "pw_name_server";
   const database_password = "mcn345N2iH";
-  const database_name = "pw_player_names";
+  const database_name = "persistent_world";
   const max_names_per_player = 5;
   const admin_permissions_first_field_no = 3;
   const valid_separators = "-_ '";
