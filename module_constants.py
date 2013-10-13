@@ -206,6 +206,7 @@ slot_scene_prop_water                 = 40
 slot_scene_prop_seeds                 = 41
 
 slot_scene_prop_show_linked_hit_points = 45
+slot_scene_prop_disabled              = 46
 
 scene_prop_state_active               = 0
 scene_prop_state_destroyed            = 1

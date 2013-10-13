@@ -76,7 +76,7 @@ def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=Fals
   return init_trigger
 
 # Helper to generate a trigger that just passes the parameters on to a script.
-def spr_call_script_trigger(script_name, trigger_type, *args):
+def spr_call_script_trigger(trigger_type, script_name, *args):
   use_trigger = (trigger_type,
      [(store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":instance_id"),
@@ -88,11 +88,15 @@ def spr_call_script_trigger(script_name, trigger_type, *args):
 
 # Helper to generate a trigger that calls a script after completely using.
 def spr_call_script_use_trigger(script_name, *args):
-  return spr_call_script_trigger(script_name, ti_on_scene_prop_use, *args)
+  return spr_call_script_trigger(ti_on_scene_prop_use, script_name, *args)
+
+# Helper to generate a trigger that calls a script after starting usage.
+def spr_call_script_start_use_trigger(script_name, *args):
+  return spr_call_script_trigger(ti_on_scene_prop_start_use, script_name, *args)
 
 # Helper to generate a trigger that calls a script after canceling usage.
 def spr_call_script_cancel_use_trigger(script_name, *args):
-  return spr_call_script_trigger(script_name, ti_on_scene_prop_cancel_use, *args)
+  return spr_call_script_trigger(ti_on_scene_prop_cancel_use, script_name, *args)
 
 def spr_buy_item_flags(use_time=1):
   use_time = max(use_time, 1)
@@ -181,7 +185,7 @@ def spr_import_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_st
   buy_trigger[1].append((call_script, "script_cf_buy_item", ":agent_id", ":instance_id"))
   triggers = [spr_item_init_trigger(item_id, use_string=use_string, price_multiplier=price_multiplier), buy_trigger]
   if check_script is not None:
-    triggers.append(spr_call_script_trigger(check_script, ti_on_scene_prop_start_use))
+    triggers.append(spr_call_script_start_use_trigger(check_script))
   return triggers
 
 # Stockpile a resource item: only allows buying and selling, with custom pricing rules.
@@ -683,7 +687,12 @@ def spr_construction_box_triggers(resource_class=item_class_wood):
 
 # Point to capture castles using a faction banner.
 def spr_capture_castle_triggers():
-  return [spr_call_script_use_trigger("script_cf_use_capture_point")]
+  return [spr_call_script_start_use_trigger("script_cf_use_capture_point", 0),
+    (ti_on_scene_prop_cancel_use,
+     [(store_trigger_param_2, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_disabled, 0),
+      ]),
+    spr_call_script_use_trigger("script_cf_use_capture_point", 1)]
 
 def spr_chest_flags(use_time=1):
   return sokf_destructible|sokf_missiles_not_attached|spr_use_time(max(use_time, 1))

@@ -4129,9 +4129,13 @@ scripts.extend([
   ("cf_use_capture_point", # server: after an agent uses a capture point scene prop, capture the castle if checks succeed
    [(store_script_param, ":agent_id", 1), # must be valid
     (store_script_param, ":instance_id", 2), # must be valid
+    (store_script_param, ":completed", 3), # 1 if completed using the scene prop
 
     (agent_get_player_id, ":player_id", ":agent_id"),
     (player_is_active, ":player_id"),
+    (this_or_next|neq, ":completed", 1),
+    (neg|scene_prop_slot_eq, ":instance_id", slot_scene_prop_disabled, ":player_id"), # player started using when not hostile
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_disabled, 0),
     (player_get_slot, ":player_faction_id", ":player_id", slot_player_faction_id),
     (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
     (assign, ":faction_id", reg0),
@@ -4149,6 +4153,10 @@ scripts.extend([
       (else_try),
         (assign, ":castle_no", -1),
         (multiplayer_send_3_int_to_player, ":player_id", server_event_preset_message, "str_your_faction_not_hostile_to_s1", preset_message_faction|preset_message_fail_sound, ":faction_id"),
+        (try_begin),
+          (neq, ":completed", 1),
+          (scene_prop_set_slot, ":instance_id", slot_scene_prop_disabled, ":player_id"), # disable capturing if factions are not hostile at start of use
+        (try_end),
       (try_end),
       (gt, ":castle_no", -1),
       (faction_get_slot, ":banner_item_id", ":player_faction_id", slot_faction_banner_mesh),
@@ -4190,18 +4198,23 @@ scripts.extend([
         (try_begin),
           (neq, ":type_secondary_all_check_result", 0),
           (neq, ":type_secondary_one_check_result", 0),
-          (call_script, "script_cf_agent_consume_item", ":agent_id", ":banner_item_id", 1),
-          (call_script, "script_capture_castle", ":player_faction_id", ":castle_no"),
+          (try_begin),
+            (eq, ":completed", 1),
+            (call_script, "script_cf_agent_consume_item", ":agent_id", ":banner_item_id", 1),
+            (call_script, "script_capture_castle", ":player_faction_id", ":castle_no"),
+          (try_end),
         (else_try),
           (multiplayer_send_3_int_to_player, ":player_id", server_event_preset_message, "str_your_faction_not_captured_required_points", preset_message_faction|preset_message_fail_sound, ":player_faction_id"),
         (try_end),
       (else_try), # capturing a single secondary point
+        (eq, ":completed", 1),
         (is_between, ":capture_type", capture_point_type_secondary_all, capture_point_type_secondary_one + 1),
         (call_script, "script_cf_agent_consume_item", ":agent_id", ":banner_item_id", 1),
         (scene_prop_set_slot, ":instance_id", slot_scene_prop_capture_faction_id, ":player_faction_id"),
         (call_script, "script_redraw_castle_banners", redraw_single_capture_point_banner, ":instance_id"),
       (try_end),
     (else_try), # as lord, giving away an owned castle using the other faction's banner
+      (eq, ":completed", 1),
       (eq, ":faction_id", ":player_faction_id"),
       (eq, ":capture_type", capture_point_type_primary),
       (call_script, "script_cf_player_is_lord", ":player_id"),
