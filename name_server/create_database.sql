@@ -68,3 +68,10 @@ CREATE TABLE admin_permissions (
   PRIMARY KEY (id),
   UNIQUE KEY (server_id, unique_id)
 );
+
+CREATE TABLE sessions (
+  id VARCHAR(32) NOT NULL,
+  access_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  data TEXT,
+  PRIMARY KEY (id)
+);

@@ -7,3 +7,11 @@ ALTER TABLE admin_permissions ADD COLUMN animals BOOLEAN DEFAULT FALSE NOT NULL 
 
 -- Update for PW_4_beta3
 ALTER TABLE admin_permissions ADD COLUMN factions BOOLEAN DEFAULT FALSE NOT NULL AFTER animals;
+
+-- Update for PW_4.5.0
+CREATE TABLE sessions (
+  id VARCHAR(32) NOT NULL,
+  access_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  data TEXT,
+  PRIMARY KEY (id)
+);
