@@ -980,7 +980,7 @@ items = [
 ["wheat_sack", "Wheat Sack", [("pw_throwing_wheat",0),("pw_thrown_wheat",ixmesh_flying_ammo),("pw_wheat_sack",ixmesh_carry),("pw_wheat_sack",ixmesh_inventory)], itp_type_thrown|itp_primary|itp_cant_use_on_horseback, itcf_throw_stone|itcf_carry_quiver_right_vertical|itcf_show_holster_when_drawn,
  20, weight(0.25)|spd_rtng(90)|weapon_length(20)|shoot_speed(10)|max_ammo(10), imodbits_none, [itm_throw_wheat_trigger()]],
 ["wheat_sheaf", "Wheat Sheaf", [("pw_wheat_sheaf",0)], itp_type_one_handed_wpn|itp_two_handed|itp_primary|itp_no_parry, itcf_slashleft_onehanded|itcf_slashright_onehanded|itcf_carry_bow_back,
- 35, weight(3)|spd_rtng(60)|weapon_length(45), imodbits_none, [itm_class(item_class_food, 0)]],
+ 35, weight(3)|spd_rtng(60)|weapon_length(45)|swing_damage(7,blunt), imodbits_none, [itm_class(item_class_food, 0)]],
 ["flour_sack", "Flour Sack", [("pw_flour_sack",0),("pw_flour_sack_carry",ixmesh_carry)], itp_type_polearm|itp_two_handed|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_carry_quiver_back,
  162, weight(25)|weapon_length(100), imodbits_none, [itm_class(item_class_food, 0)]],
 ["bread", "Bread", [("pw_bread_a",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_bowcase_left,
