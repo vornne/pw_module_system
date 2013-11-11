@@ -259,7 +259,7 @@ def spr_teleport_door_triggers(pos_offset=(0,0,0), pickable=1):
   return triggers
 
 def spr_rotate_door_flags(use_time=1):
-  return sokf_static_movement|sokf_destructible|spr_use_time(use_time)|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible|spr_use_time(use_time)
 
 # A rotating door, destructable and repairable with the resource class specified. The 'left' setting adjusts which way it will rotate, for matched left and right doors.
 def spr_rotate_door_triggers(hit_points=1000, resource_class=item_class_wood, left=0):
@@ -361,7 +361,7 @@ def spr_cart_triggers(horse=-1, detach_offset=0, detach_rotation=0, inventory_co
     ]
 
 def spr_tree_flags():
-  return sokf_static_movement|sokf_destructible|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible
 
 # Tree which will regrow after being cut down for wood. 'resource_imod' sets the mesh variation of branches and blocks.
 # 'fell_hp' is the hit points when the tree will fall over and start producing blocks, and 'resource_hp' is the amount of hit damage needed per resource.
@@ -381,6 +381,7 @@ def spr_tree_triggers(full_hp=1000, fell_hp=500, resource_hp=100, hardness=1, re
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_animation_finished,
      [(store_trigger_param_1, ":instance_id"),
+      (prop_instance_clear_attached_missiles, ":instance_id"),
       (call_script, "script_cf_resource_animation_finished", ":instance_id", resource_hp),
       ]),
     (ti_on_scene_prop_use, [])]
@@ -583,7 +584,7 @@ def spr_ferry_winch_triggers(is_platform=0):
   return [spr_call_script_use_trigger("script_cf_use_ferry_winch", is_platform)]
 
 def spr_structure_flags():
-  return sokf_static_movement|sokf_destructible|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible
 
 # Destructable and rebuildable bridge: requires linking with two 'footing' scene props for rebuilding on either side.
 def spr_bridge_triggers(footing, hit_points=1000):
@@ -604,7 +605,7 @@ def spr_bridge_triggers(footing, hit_points=1000):
     [link_scene_prop, footing, footing]]
 
 def spr_build_flags():
-  return sokf_destructible|sokf_missiles_not_attached
+  return sokf_destructible
 
 # Footings for rebuilding after the bridge is totally destroyed.
 def spr_bridge_footing_triggers():
@@ -623,7 +624,7 @@ def spr_bridge_footing_triggers():
     (ti_on_scene_prop_use, [])]
 
 def spr_ladder_flags():
-  return sokf_type_ladder|sokf_static_movement|sokf_destructible|sokf_missiles_not_attached
+  return sokf_type_ladder|sokf_static_movement|sokf_destructible
 
 # Buildable walls, also used for ladders: requires a 'build' scene prop for construction when totally destroyed. 'height' should be set to the height of the mesh.
 # 'no_move_physics' disables walking on the prop until the construction animation is completed.
@@ -695,7 +696,7 @@ def spr_capture_castle_triggers():
     spr_call_script_use_trigger("script_cf_use_capture_point", 1)]
 
 def spr_chest_flags(use_time=1):
-  return sokf_destructible|sokf_missiles_not_attached|spr_use_time(max(use_time, 1))
+  return sokf_destructible|spr_use_time(max(use_time, 1))
 
 # Money chest that can be linked with a castle to store tax automatically gathered, and allow the lord to control the access.
 # A 'probability' of the default 100 will give 1% chance of successful lock picking per looting skill level, which can be increased up to 10000 for guaranteed success.
@@ -2926,7 +2927,7 @@ scene_props = [
   ("pw_ladder_12m",spr_ladder_flags(),"siege_ladder_move_12m","bo_siege_ladder_move_12m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=560, height=1200, no_move_physics=True)),
   ("pw_ladder_14m",spr_ladder_flags(),"siege_ladder_move_14m","bo_siege_ladder_move_14m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=600, height=2000, no_move_physics=True)),
   ("pw_ladder_build",spr_build_flags(),"pw_build_ladder","bo_pw_build_ladder", spr_build_wall_triggers()),
-  ("pw_construction_box",sokf_static_movement|sokf_destructible|sokf_missiles_not_attached,"pw_construction_box","bo_pw_construction_box", spr_construction_box_triggers()),
+  ("pw_construction_box",sokf_static_movement|sokf_destructible,"pw_construction_box","bo_pw_construction_box", spr_construction_box_triggers()),
 
   ("pw_winch_frame",0,"winch_stabilizer_a","bo_winch_stabilizer_a", []),
   ("pw_portcullis_winch",spr_use_time(1),"winch","bo_winch_fixed", spr_portcullis_winch_triggers("pw_portcullis")),
