@@ -204,6 +204,8 @@ slot_scene_prop_resources_default_cost = 39
 
 slot_scene_prop_water                 = 40
 slot_scene_prop_seeds                 = 41
+slot_scene_prop_fruiting_interval     = slot_scene_prop_water
+slot_scene_prop_fruit_count           = slot_scene_prop_seeds
 
 slot_scene_prop_show_linked_hit_points = 45
 slot_scene_prop_disabled              = 46

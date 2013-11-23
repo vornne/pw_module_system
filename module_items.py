@@ -1005,6 +1005,8 @@ items = [
  386, weight(25)|spd_rtng(60)|weapon_length(53)|swing_damage(8,blunt), imodbits_none, [itm_class(item_class_food, 40)]],
 ["meat_pie", "Meat Pie", [("pw_meat_pie",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_bowcase_left,
  280, weight(4)|spd_rtng(65)|weapon_length(20)|swing_damage(1,cut), imodbits_none, [itm_class(item_class_food, 75)]],
+["red_apple", "Red Apple", [("pw_apple_red",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_quiver_right_vertical,
+ 20, weight(0.25)|spd_rtng(90)|weapon_length(25)|swing_damage(0,cut), imodbits_none, [itm_class(item_class_food, 8)]],
 ["apple_pie", "Apple Pie", [("pw_apple_pie",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_bowcase_left,
  190, weight(4)|spd_rtng(65)|weapon_length(20)|swing_damage(1,cut), imodbits_none, [itm_class(item_class_food, 57)]],
 ["carrot", "Carrot", [("pw_carrot",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_right,

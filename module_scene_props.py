@@ -386,6 +386,21 @@ def spr_tree_triggers(full_hp=1000, fell_hp=500, resource_hp=100, hardness=1, re
       ]),
     (ti_on_scene_prop_use, [])]
 
+# A tree that produces fruit without any character involvement. Passes parameters on to the spr_tree_triggers function.
+def spr_fruit_tree_triggers(fruit, count, height, width, fruiting_interval=3600, **args):
+  triggers = spr_tree_triggers(**args)
+  assert triggers[0][0] == ti_on_scene_prop_init
+  triggers[0][1].extend([
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_regrow_script, "script_regrow_fruit_tree"),
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_resource_item_id, fruit),
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_fruit_count, count),
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_height, height),
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_width, width),
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_fruiting_interval, fruiting_interval),
+    ])
+  return triggers
+
+
 # Plant that can be hit to harvest resources, with optional tool class, skill, and attack direction range for optimum damage.
 # The lower digit of 'attack_range' is the beginning direction of agent_get_action_dir, and the upper digit is how many consecutive directions to include. For example, 21 is left and right.
 # If 'effect_script' is set to a script id, it will be called for the effect when a resource is produced.
@@ -2384,6 +2399,7 @@ scene_props = [
   ("pw_grape_vine",spr_resource_flags(),"pw_grape_vine","bo_pw_grape_vine", spr_hit_vine_triggers("itm_grapes", resources=16, full_hp=300, length=350, height=100, tool_class=item_class_knife, regrow_interval=300)),
   ("pw_grape_vine_stake",0,"pw_grape_vine_stake","bo_pw_grape_vine_stake", []),
   ("pw_flax_plants",spr_field_flags()|spr_use_time(1),"pw_flax_plants","bo_pw_flax_plants", spr_use_plant_triggers("itm_flax_bundle", full_hp=300, resource_hp=50, regrow_interval=300, sound="snd_pull_flax")),
+  ("pw_apple_tree_a",spr_tree_flags(),"pw_apple_tree_a","bo_pw_apple_tree_a", spr_fruit_tree_triggers(fruit="itm_red_apple", count=10, height=350, width=150, fruiting_interval=1200, full_hp=600, fell_hp=100, regrow_interval=1800)),
 
   ("pw_iron_mine",spr_resource_flags(),"pw_iron_vein_a2","bo_pw_iron_vein_a2", spr_hit_mine_triggers("itm_iron_ore", resource_hp=60, hardness=4)),
   ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_vein_a1","bo_pw_iron_vein_a1", spr_hit_mine_triggers("itm_iron_ore", resource_hp=70, hardness=4)),

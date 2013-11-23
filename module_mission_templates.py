@@ -452,6 +452,8 @@ resource_regrow_check = (10, 0, 0, [], # server: call the script to regrow a rem
       (troop_get_slot, ":instance_id", "trp_removed_scene_props", ":resource_slot"),
       (le, ":instance_id", 0),
     (else_try),
+      (scene_prop_get_slot, ":regrow_script", ":instance_id", slot_scene_prop_regrow_script),
+      (eq, ":regrow_script", 0),
       (neg|scene_prop_slot_eq, ":instance_id", slot_scene_prop_state, scene_prop_state_hidden),
       (troop_set_slot, "trp_removed_scene_props", ":resource_slot", -1),
     (else_try),
@@ -459,7 +461,6 @@ resource_regrow_check = (10, 0, 0, [], # server: call the script to regrow a rem
       (store_mission_timer_a, ":time"),
       (ge, ":time", ":regen_time"), # if the regeneration time is passed, remove from the list and call the stored script
       (troop_set_slot, "trp_removed_scene_props", ":resource_slot", -1),
-      (scene_prop_get_slot, ":regrow_script", ":instance_id", slot_scene_prop_regrow_script),
       (try_begin),
         (eq, ":regrow_script", 0),
         (call_script, "script_regrow_resource", ":instance_id"),
