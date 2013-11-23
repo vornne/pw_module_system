@@ -959,4 +959,20 @@ particle_systems = [
     rotation_speed=0.0,
     rotation_damping=0.0),
 
+  psys("dynamic_rain", psf_billboard_2d|psf_global_emit_dir, "prtcl_rain",
+    number=3.0, life=1.0, damping=0.3, gravity=1.0,
+    alpha=[(0.0, 0.0), (0.4, 0.3)],
+    emit_box=     (2.0, 2.0, 0.2),
+    emit_velocity=(0.0, 0.0, -10.0),
+    emit_direction_randomness=0.01),
+
+  psys("dynamic_snow", psf_billboard_3d|psf_global_emit_dir|psf_randomize_size|psf_randomize_rotation, "prt_mesh_snow_fall_1",
+    number=1.0, life=2.0, damping=0.2, gravity=0.1, turbulence_size=30.0, turbulence_strength=20.0,
+    alpha=[(0.2, 1.0), (1.0, 1.0)],
+    emit_box=     (2.0, 2.0, 0.2),
+    emit_velocity=(0.0, 0.0, -5.0),
+    emit_direction_randomness=1.0,
+    rotation_speed=200.0,
+    rotation_damping=0.5),
+
 ]

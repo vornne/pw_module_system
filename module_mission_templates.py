@@ -686,6 +686,11 @@ herd_animal_spawn_check = (60, 0, 0, [], # server: check all herd animal spawner
     (try_end),
     ])
 
+weather_situation_check = (loop_weather_adjust_interval, 0, 0, [], # server: adjust the weather systems in the scene
+   [(multiplayer_is_server),
+    (call_script, "script_scene_adjust_weather_situation"),
+    ])
+
 escape_pressed = (ti_escape_pressed, 0, 0, [], # clients: show escape menu
    [(call_script, "script_cf_no_input_presentation_active"),
     (start_presentation, "prsnt_escape_menu"),
@@ -864,6 +869,16 @@ shadow_recalculation = (15, 1, 0, # clients: periodically recalculate environmen
     (rebuild_shadow_map),
     ])
 
+adjust_weather_effects = (0, 0, 0.9, [], # clients: calculate weather effects based on server updates
+   [(neg|multiplayer_is_server),
+    (call_script, "script_cf_adjust_weather_effects"),
+    ])
+
+render_weather_effects = (0.1, 0, 0, [], # clients: regularly display weather effects
+   [(neg|multiplayer_is_server),
+    (call_script, "script_cf_render_weather_effects"),
+    ])
+
 def common_triggers(self):
   return [(ti_before_mission_start, 0, 0, [(assign, "$g_game_type", "mt_" + self)], []),
     before_mission_start_setup,
@@ -900,6 +915,7 @@ def common_triggers(self):
     herd_follower_movement_loop,
     herd_animal_count_check,
     herd_animal_spawn_check,
+    weather_situation_check,
 
     escape_pressed,
     tab_pressed,
@@ -919,6 +935,8 @@ def common_triggers(self):
     ambient_sounds_check,
     music_situation_check,
     shadow_recalculation,
+    adjust_weather_effects,
+    render_weather_effects,
     ]
 
 mission_templates = [

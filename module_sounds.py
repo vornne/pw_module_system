@@ -14,7 +14,7 @@ sounds = [
  ("quest_concluded", sf_2d|sf_priority_9|sf_vol_7, ["drum_3.ogg"]),
  ("quest_failed", sf_2d|sf_priority_9|sf_vol_7, ["quest_failed.ogg"]),
  ("quest_cancelled", sf_2d|sf_priority_9|sf_vol_7, ["quest_cancelled.ogg"]),
- ("rain", sf_2d|sf_priority_2|sf_vol_4|sf_looping, ["rain_1.ogg"]),
+ ("rain", sf_2d|sf_priority_2|sf_vol_3|sf_looping, ["rain_1.ogg"]),
  ("money_received", sf_priority_5|sf_vol_4, ["coins_dropped_1.ogg"]),
  ("money_paid", sf_priority_5|sf_vol_4, ["coins_dropped_2.ogg"]),
  ("sword_clash_1", 0, ["sword_clank_metal_09.ogg","sword_clank_metal_09b.ogg","sword_clank_metal_10.ogg","sword_clank_metal_10b.ogg","sword_clank_metal_12.ogg","sword_clank_metal_12b.ogg","sword_clank_metal_13.ogg","sword_clank_metal_13b.ogg"]),

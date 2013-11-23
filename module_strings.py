@@ -789,6 +789,10 @@ pw_scene_day_time:^value 1 = scene hour of day (0 - 23)^^\
 pw_scene_cloud_haze:^value 1 = global cloud (adjusts skybox)^value 2 = global haze^^\
 pw_scene_ambient_sound:^value 1 = sound id offset from snd_fire_loop^value 2 = probability the sound will be played (0 - 100) or 127 = looping^^\
 pw_scene_light:^value 1 = flicker magnitude^value 2 = flicker interval^scale x = red, 1.00 = 100^scale y = green, 1.00 = 100^scale z = blue, 1.00 = 100^^\
+pw_scene_precipitation:^value 1 = minimum precipitation intensity^value 2 = maximum precipitation intensity^scale x = precipitation area size^^\
+pw_scene_fog:^position z (height) = visiblity distance^scale x = red, 1.00 = 255^scale y = green, 1.00 = 255^scale z = blue, 1.00 = 255^^\
+pw_scene_snow_level:^position z (height) = level in scene where rain changes to snow^^\
+pw_scene_wind_direction:^value 1 = minimum wind strength^value 2 = maximum wind strength^^\
 pw_fire_wood_heap:^value 2 = initial wood amount^^\
 pw_fish_school:^value 1 = maximum depth (in meters)^value 2 = maximum fish count^^\
 pw_herd_animal_spawn:^value 1 = animal item offset starting with 1 for deer, 0 or invalid for a random animal^value 2 = approximate time between spawns in hours, minimum 1^^\

@@ -3021,6 +3021,10 @@ scene_props = [
       (add_point_light_to_entity, ":flicker_magnitude", ":flicker_interval"),
       ]),
     ]),
+  ("pw_scene_precipitation",sokf_invisible,"pw_precipitation_area","0", []),
+  ("pw_scene_fog",sokf_invisible,"barrier_box","0", []),
+  ("pw_scene_snow_level",sokf_invisible,"barrier_box","0", []),
+  ("pw_scene_wind_direction",sokf_invisible,"pw_wind_arrow","0", []),
 
   ("pw_fire_wood_heap",sokf_destructible|sokf_missiles_not_attached,"pw_wood_heap_c","bo_pw_wood_heap_c", spr_fire_place_triggers()),
   ("wood_heap_fire",0,"0","0",
