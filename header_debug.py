@@ -1,5 +1,5 @@
 from header_common import reg
-from header_operations import assign, display_message, server_add_message_to_log
+from header_operations import *
 import header_lazy_evaluation as lazy
 
 ####################################################################################################################
@@ -61,6 +61,24 @@ def display(message=None, reset=True):
 # example: dbg.log(),
 def log(message=None, reset=True):
   return (server_add_message_to_log, generate_string(message, reset))
+
+# example: dbg.update_pres(),
+def update_pres(reset=True):
+  global current_register
+  global register_names
+  update_block = []
+  for i in xrange(register_begin, current_register):
+    update_block.append((str_store_string, i, "@{0}: {{reg{1}}}".format(register_names[i], i)))
+  update_block.extend([
+    (assign, "$g_dbg_presentation_registers_end", current_register),
+    (try_begin),
+      (neg|is_presentation_active, "prsnt_dbg_overlay"),
+      (start_presentation, "prsnt_dbg_overlay"),
+    (try_end),
+    ])
+  if reset is True:
+    current_register = register_begin
+  return lazy.block(update_block)
 
 # example: dbg.vars(":player_id", ":agent_id", ":gold"),
 def vars(*args):

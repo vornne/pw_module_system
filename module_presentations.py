@@ -4813,4 +4813,38 @@ presentations.extend([
   ("animation_menu", prsntf_manual_end_only, 0, prsnt_animation_menu_triggers), # animation menu that grabs mouse input, and can be clicked on
   ("animation_menu_no_mouse_grab", prsntf_manual_end_only|prsntf_read_only, 0, prsnt_animation_menu_triggers), # animation menu that doesn't grab input, entries being selected with number keys
 
+  ("dbg_overlay", prsntf_manual_end_only|prsntf_read_only, 0, # an overlay for repeatedly displaying values for debugging without cluttering up the chat log
+   [(ti_on_presentation_load,
+     [(assign, "$g_dbg_presentation_overlays_end", 0),
+      (presentation_set_duration, 999999),
+      ]),
+    (ti_on_presentation_run,
+     [(set_fixed_point_multiplier, 1000),
+      (assign, ":overlay_id", 0),
+      (try_for_range, ":string_register", dbg.register_begin, "$g_dbg_presentation_registers_end"),
+        (str_store_string_reg, s0, ":string_register"),
+        (try_begin),
+          (lt, ":overlay_id", "$g_dbg_presentation_overlays_end"),
+          (overlay_set_text, ":overlay_id", s0),
+        (else_try),
+          (create_text_overlay, reg0, s0, tf_right_align|tf_with_outline),
+          (position_set_x, pos1, 990),
+          (store_mul, ":height", ":overlay_id", 20),
+          (val_add, ":height", 150),
+          (position_set_y, pos1, ":height"),
+          (overlay_set_position, reg0, pos1),
+          (position_set_x, pos1, 900),
+          (position_set_y, pos1, 900),
+          (overlay_set_size, reg0, pos1),
+          (overlay_set_color, reg0, 0xFFFFFFFF),
+          (val_add, "$g_dbg_presentation_overlays_end", 1),
+        (try_end),
+        (val_add, ":overlay_id", 1),
+      (try_end),
+      (try_for_range, ":blank_overlay_id", ":overlay_id", "$g_dbg_presentation_overlays_end"),
+        (overlay_set_text, ":blank_overlay_id", "str_no_string"),
+      (try_end),
+      ]),
+    ]),
+
   ])
