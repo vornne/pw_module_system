@@ -2851,6 +2851,7 @@ scene_props = [
   ("pw_rest_dungeon_bed_b",spr_use_time(15),"dungeon_bed_b","bo_dungeon_bed_b", spr_rest_triggers(8, min_health_pct=70)),
   ("pw_rest_pillow_a",spr_use_time(18),"pillow_a","bo_pillow", spr_rest_triggers(20, min_health_pct=45)),
   ("pw_rest_pillow_b",spr_use_time(24),"pillow_b","bo_pillow", spr_rest_triggers(30, min_health_pct=40)),
+  ("pw_rest_invisible",sokf_invisible|spr_use_time(15),"pw_invisible_door","bo_pw_invisible_door", spr_rest_triggers(10, min_health_pct=60)),
   ("pw_rest_horse_trough",spr_use_time(15),"feeding_trough_a","bo_feeding_trough_a", spr_rest_triggers(30, min_health_pct=30, horse=1, use_string="str_rest_horse")),
   ("pw_rest_horse_hay",spr_use_time(30),"pw_horse_hay","bo_pw_horse_hay", spr_rest_triggers(70, min_health_pct=30, horse=1, use_string="str_rest_horse")),
   ("pw_rest_horse_manger",spr_use_time(22),"wall_manger_a","bo_wall_manger_a", spr_rest_triggers(60, min_health_pct=25, horse=1, use_string="str_rest_horse")),
