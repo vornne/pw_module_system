@@ -3253,6 +3253,7 @@ scripts.extend([
     (agent_set_slot, ":agent_id", slot_agent_animal_carcass_instance_id, -1),
     (try_begin),
       (eq, "$g_full_respawn_health", 0),
+      (agent_is_human, ":agent_id"),
       (agent_set_max_hit_points, ":agent_id", max_hit_points_percent),
     (try_end),
     (agent_get_player_id, ":player_id", ":agent_id"),
