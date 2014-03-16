@@ -2944,7 +2944,7 @@ scene_props = [
   ("pw_ladder_8m",spr_ladder_flags(),"siege_ladder_move_8m","bo_siege_ladder_move_8m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=440, height=800, no_move_physics=True)),
   ("pw_ladder_10m",spr_ladder_flags(),"siege_ladder_move_10m","bo_siege_ladder_move_10m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=480, height=1000, no_move_physics=True)),
   ("pw_ladder_12m",spr_ladder_flags(),"siege_ladder_move_12m","bo_siege_ladder_move_12m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=560, height=1200, no_move_physics=True)),
-  ("pw_ladder_14m",spr_ladder_flags(),"siege_ladder_move_14m","bo_siege_ladder_move_14m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=600, height=2000, no_move_physics=True)),
+  ("pw_ladder_14m",spr_ladder_flags(),"siege_ladder_move_14m","bo_siege_ladder_move_14m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=600, height=1400, no_move_physics=True)),
   ("pw_ladder_build",spr_build_flags(),"pw_build_ladder","bo_pw_build_ladder", spr_build_wall_triggers()),
   ("pw_construction_box",sokf_static_movement|sokf_destructible,"pw_construction_box","bo_pw_construction_box", spr_construction_box_triggers()),
 
