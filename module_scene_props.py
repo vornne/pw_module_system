@@ -2938,6 +2938,8 @@ scene_props = [
   ("pw_siege_wall_b_build",spr_build_flags(),"pw_build_wall","bo_pw_build", spr_build_wall_triggers()),
   ("pw_siege_shield_a",spr_structure_flags(),"siege_large_shield_a","bo_siege_large_shield_a_fixed", spr_wall_triggers("pw_siege_shield_a_build", hit_points=2000, height=280)),
   ("pw_siege_shield_a_build",spr_build_flags(),"pw_build_wall","bo_pw_build", spr_build_wall_triggers()),
+  ("pw_siege_ramp_14m",spr_structure_flags(),"pw_siege_ramp_14m","bo_pw_siege_ramp_14m", spr_wall_triggers("pw_siege_ramp_build", hit_points=1500, height=1400, no_move_physics=True)),
+  ("pw_siege_ramp_build",spr_build_flags(),"pw_build_bridge","bo_pw_build", spr_build_wall_triggers()),
   ("pw_ladder_6m",spr_ladder_flags(),"siege_ladder_move_6m","bo_siege_ladder_move_6m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=400, height=600, no_move_physics=True)),
   ("pw_ladder_8m",spr_ladder_flags(),"siege_ladder_move_8m","bo_siege_ladder_move_8m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=440, height=800, no_move_physics=True)),
   ("pw_ladder_10m",spr_ladder_flags(),"siege_ladder_move_10m","bo_siege_ladder_move_10m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=480, height=1000, no_move_physics=True)),
