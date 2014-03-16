@@ -5377,7 +5377,7 @@ scripts.extend([
 
   ("cf_use_castle_money_chest", # server and clients: handle depositing to and withdrawing from a money chest. the client version just does the checks, the server version also applies changes
    [(store_script_param, ":player_id", 1), # must be valid
-    (store_script_param, ":instance_id", 2), # must be valid
+    (store_script_param, ":instance_id", 2),
     (store_script_param, ":gold_value", 3), # positive values to deposit, negative to withdraw
 
     (assign, ":fail_message", -1),
@@ -10099,20 +10099,20 @@ scripts.extend([
     (store_script_param, ":horse_agent_id", 2), # must be valid
     (store_script_param, ":under_water", 3), # 1 if the horse is below water level
 
-    (store_agent_hit_points, ":speed_factor", ":horse_agent_id", 0),
-    (try_begin),
+    (store_agent_hit_points, ":speed_factor", ":horse_agent_id", 0), # horse speed corresponds to health
+    (try_begin), # underwater or attached to a cart, speed is clamped down below 50%
       (agent_get_attached_scene_prop, ":attached_spr", ":horse_agent_id"),
       (this_or_next|ge, ":under_water", 1),
       (neq, ":attached_spr", -1),
       (val_clamp, ":speed_factor", 20, 50),
-    (else_try),
+    (else_try), # otherwise, speed reduction for health is between 100% - 50%
       (val_add, ":speed_factor", 50),
       (val_min, ":speed_factor", 100),
     (try_end),
     (agent_get_slot, ":rider_speed_factor", ":agent_id", slot_agent_armor_speed_factor),
     (agent_get_slot, ":weapon_speed_factor", ":agent_id", slot_agent_weapon_speed_factor),
     (val_add, ":rider_speed_factor", ":weapon_speed_factor"),
-    (try_begin),
+    (try_begin), # if the agent is using weapons or armor they don't meet requirements for, reduce the speed further
       (gt, ":rider_speed_factor", 0),
       (store_sub, ":rider_speed_factor", reduction_factor_base, ":rider_speed_factor"),
       (val_div, ":rider_speed_factor", 2),
