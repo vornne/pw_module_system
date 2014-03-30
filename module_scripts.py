@@ -11357,6 +11357,7 @@ scripts.extend([
    [
     (set_fixed_point_multiplier, 100),
     (try_begin), # emit precipitation blocks which are not under cover
+      (eq, "$g_disable_rain_snow_particles", 0),
       (ge, "$g_current_precipitation_intensity", 20),
       (gt, "$g_current_precipitation_particles", 0),
       (mission_cam_get_position, pos1),

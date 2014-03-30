@@ -511,6 +511,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("disable_automatic_shadow_recalculation", "Disable automatic shadow recalculation"),
   ("mute_global_chat", "Mute global chat"),
   ("non_clickable_animation_menu", "Non-clickable animation menu"),
+  ("disable_rain_snow_particles", "Disable rain and snow particles"),
 
   ("reg0__s0", "{!}{reg0}. {s0}"),
   ("menu_guestures", "Guestures"),
