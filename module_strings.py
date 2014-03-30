@@ -497,7 +497,6 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("discard_foot", "Discard foot armor"),
   ("toggle_hand", "Toggle hand armor"),
   ("reveal_money_pouch_to_target", "Reveal money pouch to target"),
-  ("toggle_automatic_shadow_recalculation", "Toggle automatic shadow recalculation"),
   ("toggle_clickable_animation_menu", "Toggle clickable animation menu"),
   ("toggle_muting_global_chat", "Toggle muting global chat"),
   ("action_menu_end", "action_menu_end"),
