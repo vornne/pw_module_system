@@ -2234,6 +2234,8 @@ scene_props = [
   ("enterable_castle_house_b",0,"pw_enterable_castle_house_b","bo_pw_enterable_castle_house_b",[]),
   ("enterable_castle_house_b2",0,"pw_enterable_castle_house_b2","bo_pw_enterable_castle_house_b",[]),
   ("enterable_castle_house_b3",0,"pw_enterable_castle_house_b3","bo_pw_enterable_castle_house_b",[]),
+  ("enterable_castle_house_c",0,"pw_enterable_castle_house_c","bo_pw_enterable_castle_house_c",[]),
+  ("enterable_castle_h_keep_a",0,"pw_enterable_castle_h_keep_a","bo_pw_enterable_castle_h_keep_a",[]),
   ("enterable_town_house_s",0,"pw_enterable_town_house_s","bo_pw_enterable_town_house_s",[]),
   ("enterable_town_house_s2",0,"pw_enterable_town_house_s2","bo_pw_enterable_town_house_s",[]),
   ("enterable_town_house_s3",0,"pw_enterable_town_house_s3","bo_pw_enterable_town_house_s",[]),
