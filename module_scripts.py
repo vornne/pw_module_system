@@ -1140,6 +1140,13 @@ scripts.extend([
             (player_get_team_no, ":player_team", ":sender_player_id"),
             (eq, ":player_team", team_spectators),
             (player_set_team_no, ":sender_player_id", team_default),
+            (try_begin), # clean up spawn state if the player's agent was faded out without resetting it
+              (player_slot_eq, ":sender_player_id", slot_player_spawn_state, player_spawn_state_alive),
+              (player_get_agent_id, ":agent_id", ":player_id"),
+              (this_or_next|neg|agent_is_active, ":agent_id"),
+              (neg|agent_is_alive, ":agent_id"),
+              (player_set_slot, ":sender_player_id", slot_player_spawn_state, player_spawn_state_dead),
+            (try_end),
           (else_try),
             (player_set_team_no, ":sender_player_id", team_spectators),
           (try_end),
