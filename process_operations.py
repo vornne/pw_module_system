@@ -124,7 +124,10 @@ class IdentifierMap:
       self.tag_map[tag] = {}
     id_map = self.tag_map[tag]
     for i, entry in enumerate(data):
-      name = entry[0]
+      try:
+        name = entry[0]
+      except TypeError:
+        pc.ERROR("'%s' entry number %d, '%s': has no valid identifier field" % (tag, i, entry))
       pc.assert_valid_identifier(name, entry=entry, tag=tag)
       if name in id_map:
         pc.ERROR("duplicate identifier '%s_%s'" % (tag, name))
