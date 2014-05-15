@@ -910,6 +910,8 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("castle_name_62", "Saltklippen"),
   ("castle_name_63", "Nantes"),
   ("castle_name_64", "Irontown"),
+  ("castle_name_65", "Halmar"),
+  ("castle_name_66", "Brunwud Castle"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]
