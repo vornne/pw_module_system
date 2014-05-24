@@ -217,6 +217,7 @@ sounds = [
  ("fire", sf_priority_6|sf_vol_10, ["Fire_Small_Crackle_Slick_op.ogg"]),
  ("horse_neigh", sf_priority_8|sf_vol_10, ["horse_exterior_whinny_01.ogg","horse_exterior_whinny_02.ogg","horse_exterior_whinny_03.ogg","horse_exterior_whinny_04.ogg","horse_exterior_whinny_05.ogg","horse_whinny.ogg"]),
  ("pull_flax", sf_priority_6|sf_vol_3, ["draw_other.ogg"]),
+ ("lance_break", sf_priority_12|sf_vol_10, ["shield_broken.ogg"]),
 
  ("away_vile_beggar", sf_priority_10|sf_vol_10|sf_stream_from_hd, ["encounter_nobleman_1.ogg"]),
  ("my_lord", sf_priority_10|sf_vol_10|sf_stream_from_hd, ["encounter_farmer_7.ogg","encounter_farmer_9.ogg"]),

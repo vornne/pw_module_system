@@ -1029,6 +1029,10 @@ items = [
  533, weight(0.75)|difficulty(0)|spd_rtng(105)|weapon_length(47)|swing_damage(18,cut)|thrust_damage(24,pierce), imodbits_sword],
 ["poisoned_dagger", "Poisoned Dagger", [("pw_dagger_poison",0),("scab_dagger",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_left|itcf_show_holster_when_drawn,
  1570, weight(0.75)|difficulty(0)|spd_rtng(105)|weapon_length(47)|swing_damage(18,cut)|thrust_damage(24,pierce), imodbits_sword],
+["thin_lance", "Thin Lance", [("spear_d_2-8m",0)], itp_couchable|itp_type_polearm|itp_offset_lance|itp_primary|itp_penalty_with_shield|itp_wooden_parry, itc_spear|itcf_carry_spear,
+ 230, weight(3.0)|difficulty(14)|spd_rtng(80)|weapon_length(180)|swing_damage(16, blunt)|thrust_damage(26, pierce), imodbits_polearm],
+["broken_lance", "Broken Lance", [("pw_broken_lance",0)], itp_type_polearm|itp_no_pick_up_from_ground, 0,
+ 0, weight(3.0)|difficulty(14)|spd_rtng(0)|weapon_length(180)|swing_damage(0, blunt)|thrust_damage(0, blunt), imodbits_polearm],
 
 ["money_bag", "Money Bag", [("pw_money_bag_hold",0),("pw_money_bag",ixmesh_carry),("pw_money_bag_inv",ixmesh_inventory)], itp_type_one_handed_wpn|itp_primary, itcf_carry_quiver_front_right|itcf_thrust_onehanded,
  0, weight(1)|spd_rtng(80), imodbits_none, [(ti_on_weapon_attack, [(store_trigger_param_1, ":agent_id"), (call_script, "script_cf_use_money_bag_item", ":agent_id")])]],
