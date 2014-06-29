@@ -4019,6 +4019,35 @@ scripts.extend([
     (try_end),
     ]),
 
+  ("scene_prop_get_multiplier", # calculate the price multiplier from value 1 of a scene prop, returning in reg2
+   [(store_script_param, ":instance_id", 1), # must be valid
+
+    (prop_instance_get_variation_id, ":multiplier_no", ":instance_id"),
+    (val_div, ":multiplier_no", 10),
+    (try_begin),
+      (eq, ":multiplier_no", 0),
+      (assign, reg2, 100),
+    (else_try),
+      (try_begin),
+        (is_between, ":multiplier_no", 1, 5),
+        (store_mul, reg2, ":multiplier_no", 20),
+      (else_try),
+        (is_between, ":multiplier_no", 5, 10),
+        (store_add, reg2, ":multiplier_no", 1),
+        (val_mul, reg2, 20),
+      (else_try),
+        (eq, ":multiplier_no", 10),
+        (assign, reg2, 350),
+      (else_try),
+        (eq, ":multiplier_no", 11),
+        (assign, reg2, 500),
+      (else_try),
+        (eq, ":multiplier_no", 12),
+        (assign, reg2, 1000),
+      (try_end),
+    (try_end),
+    ]),
+
   ("scene_prop_get_gold_value", # calculate the gold value and multiplier associated with a scene prop, caching for faster use later, storing in reg0 and reg1
    [(store_script_param, ":instance_id", 1), # must be valid
     (store_script_param, ":item_id", 2), # if invalid, set the base value below
@@ -4048,30 +4077,12 @@ scripts.extend([
         (assign, ":base_value", ":base_value_multiplier"),
       (try_end),
       (gt, ":base_value", 0),
-      (prop_instance_get_variation_id, ":multiplier_no", ":instance_id"),
-      (val_div, ":multiplier_no", 10),
+      (call_script, "script_scene_prop_get_multiplier", ":instance_id"),
+      (assign, ":multiplier", reg2),
       (try_begin),
-        (eq, ":multiplier_no", 0),
+        (eq, ":multiplier", 100),
         (assign, ":value", ":base_value"),
-        (assign, ":multiplier", 100),
       (else_try),
-        (try_begin),
-          (is_between, ":multiplier_no", 1, 5),
-          (store_mul, ":multiplier", ":multiplier_no", 20),
-        (else_try),
-          (is_between, ":multiplier_no", 5, 10),
-          (store_add, ":multiplier", ":multiplier_no", 1),
-          (val_mul, ":multiplier", 20),
-        (else_try),
-          (eq, ":multiplier_no", 10),
-          (assign, ":multiplier", 350),
-        (else_try),
-          (eq, ":multiplier_no", 11),
-          (assign, ":multiplier", 500),
-        (else_try),
-          (eq, ":multiplier_no", 12),
-          (assign, ":multiplier", 1000),
-        (try_end),
         (store_mul, ":value", ":base_value", ":multiplier"),
         (val_div, ":value", 100),
         (val_max, ":value", 1),
@@ -4092,6 +4103,129 @@ scripts.extend([
     (try_end),
     (assign, reg0, ":value"),
     (assign, reg1, ":multiplier"),
+    ]),
+
+  ("calculate_local_resource_price_multiplier", # only called by scene_prop_calculate_resource_refund_cost to calculate the effect of price areas at pos40, returning multiplier in reg2
+   [(store_script_param, ":price_area_scene_prop_id", 1), # must be a scene prop id (kind)
+    (store_script_param, ":price_area_count", 2), # must be the result of calling scene_prop_get_num_instances for the above scene prop id
+
+    (try_begin), # if there is only only one price area of this type, use it for the entire scene
+      (eq, ":price_area_count", 1),
+      (scene_prop_get_instance, ":instance_id", ":price_area_scene_prop_id", 0),
+      (call_script, "script_scene_prop_get_multiplier", ":instance_id"),
+    (else_try), # if there are multiple price areas, try find the closest enclosing area, or interpolate
+      (gt, ":price_area_count", 1),
+      (assign, ":price_multiplier", 0),
+      (set_fixed_point_multiplier, 100),
+      (assign, ":closest_distance_inside", 1000000),
+      (assign, ":inside_area_multiplier", -1),
+      (assign, ":proportional_factor_sum", 0),
+      (try_for_range, ":instance_no", 0, ":price_area_count"),
+        (scene_prop_get_instance, ":instance_id", ":price_area_scene_prop_id", ":instance_no"),
+        (prop_instance_get_position, pos41, ":instance_id"),
+        (position_set_z, pos41, 0),
+        (get_distance_between_positions, ":current_distance", pos40, pos41),
+        (prop_instance_get_scale, pos42, ":instance_id"),
+        (position_get_scale_x, ":current_area_radius", pos42),
+        (val_mul, ":current_area_radius", 100),
+        (try_begin), # try find the closest area that the position is inside
+          (lt, ":current_distance", ":closest_distance_inside"),
+          (lt, ":current_distance", ":current_area_radius"),
+          (assign, ":closest_distance_inside", ":current_distance"),
+          (call_script, "script_scene_prop_get_multiplier", ":instance_id"),
+          (assign, ":inside_area_multiplier", reg2),
+        (else_try), # otherwise store the distances to the edge of each price area in the scene, for later calculation
+          (eq, ":inside_area_multiplier", -1), # skip if inside at least one area
+          (store_sub, ":distance_from_area_edge", ":current_distance", ":current_area_radius"),
+          (val_div, ":distance_from_area_edge", 1000),
+          (val_max, ":distance_from_area_edge", 1),
+          (store_div, ":proportional_factor", 1000, ":distance_from_area_edge"),
+          (troop_set_slot, "trp_temp_array", ":instance_no", ":instance_id"),
+          (scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_multiplier, ":proportional_factor"),
+          (val_add, ":proportional_factor_sum", ":proportional_factor"),
+        (try_end),
+      (try_end),
+      (try_begin), # if inside an area, use that price multiplier
+        (neq, ":inside_area_multiplier", -1),
+        (assign, ":price_multiplier", ":inside_area_multiplier"),
+      (else_try), # otherwise finish interpolating the price multiplier between all areas, after distance proportions can be calculated
+        (try_for_range, ":instance_no", 0, ":price_area_count"), # finish interpolating the price multiplier, after proportions of the total can be calculated
+          (troop_get_slot, ":instance_id", "trp_temp_array", ":instance_no"),
+          (scene_prop_get_slot, ":normalized_proportional_factor", ":instance_id", slot_scene_prop_gold_multiplier),
+          (scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_multiplier, 0), # reset the slot after using it as temporary storage
+          (val_mul, ":normalized_proportional_factor", 1000),
+          (val_div, ":normalized_proportional_factor", ":proportional_factor_sum"),
+          (call_script, "script_scene_prop_get_multiplier", ":instance_id"),
+          (store_mul, ":proportional_multiplier", reg2, ":normalized_proportional_factor"),
+          (val_add, ":price_multiplier", ":proportional_multiplier"),
+        (try_end),
+        (val_div, ":price_multiplier", 1000),
+      (try_end),
+      (assign, reg2, ":price_multiplier"),
+    (try_end),
+    ]),
+
+  ("scene_prop_calculate_resource_refund_cost", # calculate the cost of crafting resources associated with a scene prop, caching for faster use later, returning cost in reg1
+   [(store_script_param, ":instance_id", 1), # must be valid
+
+    (scene_prop_get_num_instances, ":local_wood_price_areas", "spr_pw_local_wood_price_area"),
+    (scene_prop_get_num_instances, ":local_iron_price_areas", "spr_pw_local_iron_price_area"),
+    (scene_prop_get_num_instances, ":local_cloth_price_areas", "spr_pw_local_cloth_price_area"),
+    (scene_prop_get_num_instances, ":local_leather_price_areas", "spr_pw_local_leather_price_area"),
+    (scene_prop_get_num_instances, ":local_precious_price_areas", "spr_pw_local_precious_price_area"),
+    (try_begin), # if there are no areas in the scene, use the precalculated default cost
+      (eq, ":local_wood_price_areas", 0),
+      (eq, ":local_iron_price_areas", 0),
+      (eq, ":local_cloth_price_areas", 0),
+      (eq, ":local_leather_price_areas", 0),
+      (eq, ":local_precious_price_areas", 0),
+      (scene_prop_get_slot, ":resource_refund_cost", ":instance_id", slot_scene_prop_resources_default_cost),
+    (else_try), # otherwise calculate the local prices of the required resource types, resulting in a cost to refund the resources for crafting the item at this stockpile position
+      (assign, ":resource_refund_cost", 0),
+      (assign, ":local_wood_price_multiplier", -1),
+      (assign, ":local_iron_price_multiplier", -1),
+      (assign, ":local_cloth_price_multiplier", -1),
+      (assign, ":local_leather_price_multiplier", -1),
+      (assign, ":local_precious_price_multiplier", -1),
+      (set_fixed_point_multiplier, 100),
+      (prop_instance_get_position, pos40, ":instance_id"),
+      (position_set_z, pos40, 0),
+      (try_for_range, ":resource_slot", slot_scene_prop_crafting_resource_1, slot_scene_prop_crafting_resource_4 + 1),
+        (scene_prop_get_slot, ":resource_item_id", ":instance_id", ":resource_slot"),
+        (ge, ":resource_item_id", all_items_begin),
+        (assign, reg2, 0),
+        (item_get_slot, ":item_class", ":resource_item_id", slot_item_class),
+        (try_begin),
+        lazy.block([
+          lazy.block([
+          (eq, ":item_class", item_class),
+          (try_begin),
+            (eq, local_price_multiplier_var, -1),
+            (call_script, "script_calculate_local_resource_price_multiplier", spr_local_price_area, local_price_count_var),
+            (assign, local_price_multiplier_var, reg2),
+          (else_try),
+            (assign, reg2, local_price_multiplier_var),
+          (try_end),
+        (else_try)]) for item_class, local_price_multiplier_var, spr_local_price_area, local_price_count_var in
+         [(item_class_wood, ":local_wood_price_multiplier", "spr_pw_local_wood_price_area", ":local_wood_price_areas"),
+          (item_class_iron, ":local_iron_price_multiplier", "spr_pw_local_iron_price_area", ":local_iron_price_areas"),
+          (item_class_cloth,":local_cloth_price_multiplier", "spr_pw_local_cloth_price_area", ":local_cloth_price_areas"),
+          (item_class_leather,":local_leather_price_multiplier", "spr_pw_local_leather_price_area", ":local_leather_price_areas"),
+          (item_class_precious,":local_precious_price_multiplier", "spr_pw_local_precious_price_area", ":local_precious_price_areas"),
+          ]
+        ]),
+        (try_end),
+        (store_item_value, ":item_cost", ":resource_item_id"),
+        (try_begin),
+          (gt, reg2, 0),
+          (val_mul, ":item_cost", reg2),
+          (val_div, ":item_cost", 100),
+        (try_end),
+        (val_add, ":resource_refund_cost", ":item_cost"),
+      (try_end),
+    (try_end),
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_resource_refund_cost, ":resource_refund_cost"),
+    (assign, reg1, ":resource_refund_cost"),
     ]),
 
   ("scene_setup_factions_castles", # server: at mission start, for each faction set whether active, and for each castle set owning faction, whether active, and whether it has training stations
@@ -7616,7 +7750,7 @@ scripts.extend([
     (eq, ":error_string_id", 0),
     ]),
 
-  ("scene_prop_get_item_crafting_refund_reward", # reg0 = the total money given, reg1 = the default cost of all resources, reg2 = the variable extra reward
+  ("scene_prop_get_item_crafting_refund_reward", # reg0 = the total money given, reg1 = the local cost of all resources, reg2 = the variable extra reward
    [(store_script_param, ":instance_id", 1), # must be valid
 
     (prop_instance_get_variation_id_2, ":design_target_stock_count", ":instance_id"),
@@ -7638,7 +7772,11 @@ scripts.extend([
     (try_end),
     (try_begin),
       (neq,  "$g_game_type", "mt_feudalism"),
-      (scene_prop_get_slot, reg1, ":instance_id", slot_scene_prop_resources_default_cost),
+      (scene_prop_get_slot, reg1, ":instance_id", slot_scene_prop_resource_refund_cost),
+      (try_begin),
+        (lt, reg1, 0),
+        (call_script, "script_scene_prop_calculate_resource_refund_cost", ":instance_id"),
+      (try_end),
     (else_try),
       (assign, reg1, 0),
     (try_end),

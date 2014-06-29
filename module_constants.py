@@ -210,6 +210,12 @@ slot_scene_prop_fruit_count           = slot_scene_prop_seeds
 slot_scene_prop_show_linked_hit_points = 45
 slot_scene_prop_disabled              = 46
 
+slot_scene_prop_resource_refund_cost  = 50
+slot_scene_prop_crafting_resource_1   = 51
+slot_scene_prop_crafting_resource_2   = 52
+slot_scene_prop_crafting_resource_3   = 53
+slot_scene_prop_crafting_resource_4   = 54
+
 scene_prop_state_active               = 0
 scene_prop_state_destroyed            = 1
 scene_prop_state_hidden               = 2

@@ -166,8 +166,15 @@ def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_strin
     if average_craft_skill > 0:
       init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_average_craft_skill, min(max(average_craft_skill, 1), 10)))
     crafting_data.append([item_id, accepted_skills, resources, resource_list, average_craft_skill])
-    init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_resources_default_cost, lazy.add(
-        lazy.price(resource_list[0]), lazy.price(resource_list[1]), lazy.price(resource_list[2]), lazy.price(resource_list[3]))))
+    init_trigger[1].extend([
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_resources_default_cost, lazy.add(
+        lazy.price(resource_list[0]), lazy.price(resource_list[1]), lazy.price(resource_list[2]), lazy.price(resource_list[3]))),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_resource_refund_cost, -1),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_crafting_resource_1, resource_list[0]),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_crafting_resource_2, resource_list[1]),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_crafting_resource_3, resource_list[2]),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_crafting_resource_4, resource_list[3]),
+      ])
   return [init_trigger, buy_trigger, craft_trigger]
 
 # Export an item, removing it from the game world in exchange for money.
@@ -3066,6 +3073,12 @@ scene_props = [
       ]),
     ]),
   ("pw_herd_animal_spawn",sokf_invisible,"pw_ground_arrow","0", []),
+
+  ("pw_local_wood_price_area",sokf_invisible,"pw_local_wood_price_area","0", []),
+  ("pw_local_iron_price_area",sokf_invisible,"pw_local_iron_price_area","0", []),
+  ("pw_local_cloth_price_area",sokf_invisible,"pw_local_cloth_price_area","0", []),
+  ("pw_local_leather_price_area",sokf_invisible,"pw_local_leather_price_area","0", []),
+  ("pw_local_precious_price_area",sokf_invisible,"pw_local_precious_price_area","0", []),
 
   ("code_freeze_agent",sokf_moveable,"0","bo_pw_freeze_agent", []),
   ("code_freeze_horse_agent",sokf_moveable,"0","bo_pw_freeze_horse_agent", []),

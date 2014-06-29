@@ -769,6 +769,7 @@ pw_buy_*:^value 1 = faction + multiplier^value 2 = design target stock count^^\
 pw_stockpile_*:^value 1 = faction + multiplier^value 2 = 01 - 09: initial and target count / 10;  10 - 120: stock limit / 10^^\
 pw_export_*:^value 1 = faction + multiplier^value 2 = faction tax multiplier^^\
 pw_import_*:^value 1 = faction + multiplier^^\
+pw_local_*_price_area:^value 1 = multiplier^scale x = scene area of effect (prices of props outside will be interpolated between other areas of this type)^^\
 pw_change_troop_*:^value 1 = faction + multiplier^^\
 pw_door_rotate_*:^value 1 = faction / castle id^value 2 = options bitfield (0x1 = start open, 0x2 = bolted, 0x4 = not pickable, 0x8 = half hit points, 0x10 = start destroyed)^^\
 pw_door_teleport_*:^value 1 = faction / castle id^value 2 = linking id with x^^\
