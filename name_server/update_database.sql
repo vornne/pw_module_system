@@ -23,3 +23,6 @@ CREATE TABLE sessions (
   data TEXT,
   PRIMARY KEY (id)
 );
+ALTER TABLE player_names MODIFY COLUMN unique_id INT(8) UNSIGNED NOT NULL;
+ALTER TABLE clan_players MODIFY COLUMN unique_id INT(8) UNSIGNED NOT NULL;
+ALTER TABLE admin_permissions MODIFY COLUMN unique_id INT(8) UNSIGNED NOT NULL;

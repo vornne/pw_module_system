@@ -28,7 +28,7 @@ class pw_server_response extends pw_db
     parent::__construct(pw_config::database_error);
 
     $this->pid_restrictions = array("options"=>array("min_range"=>1, "max_range"=>250));
-    $this->uid_restrictions = array("options"=>array("min_range"=>1, "max_range"=>10000000));
+    $this->uid_restrictions = array("options"=>array("min_range"=>1, "max_range"=>100000000));
     $this->var_restrictions = array("options"=>array("min_range"=>0, "max_range"=>127));
     $this->id_restrictions = array("options"=>array("min_range"=>-1, "max_range"=>100000));
     $this->gold_restrictions = array("options"=>array("min_range"=>0, "max_range"=>999999999));

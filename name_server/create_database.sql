@@ -3,7 +3,7 @@ USE persistent_world;
 
 CREATE TABLE player_names (
   id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-  unique_id INT(7) UNSIGNED NOT NULL,
+  unique_id INT(8) UNSIGNED NOT NULL,
   name VARCHAR(28) NOT NULL,
   last_used_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   inserted_by_warband_server_id INT(5) UNSIGNED DEFAULT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE clan_tags (
 CREATE TABLE clan_players (
   id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   clan_id INT(5) UNSIGNED NOT NULL,
-  unique_id INT(7) UNSIGNED NOT NULL,
+  unique_id INT(8) UNSIGNED NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY (clan_id, unique_id)
 );
@@ -45,7 +45,7 @@ CREATE TABLE warband_servers (
 
 CREATE TABLE admin_permissions (
   id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-  unique_id INT(7) UNSIGNED NOT NULL,
+  unique_id INT(8) UNSIGNED NOT NULL,
   server_id INT(5) UNSIGNED NOT NULL,
   panel BOOLEAN DEFAULT FALSE NOT NULL,
   gold BOOLEAN DEFAULT FALSE NOT NULL,

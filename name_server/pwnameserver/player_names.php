@@ -48,7 +48,7 @@ function show_player_names($db)
     FROM player_names LEFT JOIN warband_servers ON player_names.inserted_by_warband_server_id = warband_servers.id";
   if (isset($_GET["by_uid"]))
   {
-    $filter_unique_id = filter_input(INPUT_GET, "filter", FILTER_VALIDATE_INT, array("options"=>array("min_range"=>1, "max_range"=>10000000)));
+    $filter_unique_id = filter_input(INPUT_GET, "filter", FILTER_VALIDATE_INT, array("options"=>array("min_range"=>1, "max_range"=>100000000)));
     if ($filter_unique_id)
     {
       $query .= " WHERE player_names.unique_id = :filter_unique_id";
