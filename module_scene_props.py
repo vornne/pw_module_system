@@ -236,6 +236,9 @@ def spr_change_troop_triggers(troop_id, cost=0, mercenary=False, after_respawn=F
   init_trigger = (ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_troop_id, troop_id),
+      (troop_slot_eq, troop_id, slot_troop_training_scene_prop_id, 0),
+      (prop_instance_get_scene_prop_kind, ":this_scene_prop_id", ":instance_id"),
+      (troop_set_slot, troop_id, slot_troop_training_scene_prop_id, ":this_scene_prop_id"),
       ])
   if cost != 0:
     init_trigger[1].append((call_script, "script_scene_prop_get_gold_value", ":instance_id", -1, cost))
@@ -587,7 +590,7 @@ def spr_ship_triggers(hit_points=1000, length=1000, width=200, height=100, speed
     [init_scene_prop, "script_setup_ship", spr_tag(sail), spr_tag(sail_off), spr_tag(ramp), spr_tag(hold)]]
 
 def spr_ship_ramp_triggers():
-  return [spr_call_script_use_trigger("script_use_ship_ramp")]
+  return [spr_call_script_use_trigger("script_cf_use_ship_ramp")]
 
 # Winchable ferry boat, requiring two 'platform' props at each end of the movement range, and a 'winch' scene prop for movement on the boat.
 # 'length' is the dimension of the boat in the direction of travel, used to move close to the platforms.
@@ -808,6 +811,22 @@ def spr_destroy_heap_triggers():
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_destroy_s1"),
       ]),
     spr_call_script_use_trigger("script_cf_use_destroy_heap")]
+
+# An area that stores character data to an external web server when used, for traveling to a different server.
+# 'length' and 'width' should be set to the dimensions of the scene prop, to match the visible mesh when scaled.
+def spr_server_travel_area_triggers(length, width):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_length, length),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_width, width),
+      (try_begin),
+        (eq, "$g_game_type", "mt_combined_world"),
+        (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_travel_from_realm"),
+      (else_try),
+        (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_admire_the_view"),
+      (try_end),
+      ]),
+    spr_call_script_use_trigger("script_cf_player_transfer_to_server")]
 
 scene_props = [
   ("invalid_object",0,"question_mark","0", []),
@@ -2934,6 +2953,8 @@ scene_props = [
   ("pw_door_rotate_stable",spr_rotate_door_flags(1),"pw_full_stable_door_a","bo_pw_full_stable_door_a", spr_rotate_door_triggers(hit_points=1000, left=1)),
   ("pw_door_rotate_village_a",spr_rotate_door_flags(1),"pw_village_door_a","bo_pw_village_door_a", spr_rotate_door_triggers(hit_points=2000)),
   ("pw_door_rotate_village_b",spr_rotate_door_flags(1),"pw_village_door_b","bo_pw_village_door_a", spr_rotate_door_triggers(hit_points=2000)),
+
+  ("pw_server_travel_area",sokf_invisible|spr_use_time(30),"pw_travel_area","bo_pw_travel_area", spr_server_travel_area_triggers(length=300, width=500)),
 
   ("pw_wooden_bridge_a",spr_structure_flags(),"bridge_wooden","bo_bridge_wooden_fixed", spr_bridge_triggers("pw_wooden_bridge_a_footing", hit_points=15000)),
   ("pw_wooden_bridge_a_footing",spr_build_flags(),"pw_build_bridge","bo_pw_build", spr_bridge_footing_triggers()),

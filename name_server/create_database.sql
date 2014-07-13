@@ -37,8 +37,9 @@ CREATE TABLE clan_players (
 
 CREATE TABLE warband_servers (
   id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-  name VARCHAR(20) NOT NULL,
+  name VARCHAR(28) NOT NULL,
   password CHAR(40) NOT NULL,
+  scene_name VARCHAR(28) NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY (password)
 );
@@ -67,6 +68,37 @@ CREATE TABLE admin_permissions (
   factions BOOLEAN DEFAULT FALSE NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY (server_id, unique_id)
+);
+
+CREATE TABLE stored_characters (
+  id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  unique_id INT(8) UNSIGNED NOT NULL,
+  time_stored TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  from_server_id INT(5) UNSIGNED NOT NULL,
+  to_server_id INT(5) UNSIGNED NOT NULL,
+  link_id INT(1) UNSIGNED NOT NULL,
+  instance_id INT(5) UNSIGNED NOT NULL,
+  gold INT(10) UNSIGNED NOT NULL,
+  troop_id INT(5) NOT NULL,
+  agent_troop_id INT(5) NOT NULL,
+  weapon_1_item_id INT(5) NOT NULL,
+  weapon_1_ammo INT(5) UNSIGNED NOT NULL,
+  weapon_2_item_id INT(5) NOT NULL,
+  weapon_2_ammo INT(5) UNSIGNED NOT NULL,
+  weapon_3_item_id INT(5) NOT NULL,
+  weapon_3_ammo INT(5) UNSIGNED NOT NULL,
+  weapon_4_item_id INT(5) NOT NULL,
+  weapon_4_ammo INT(5) UNSIGNED NOT NULL,
+  head_item_id INT(5) NOT NULL,
+  body_item_id INT(5) NOT NULL,
+  foot_item_id INT(5) NOT NULL,
+  hand_item_id INT(5) NOT NULL,
+  horse_item_id INT(5) NOT NULL,
+  hit_points INT(5) UNSIGNED NOT NULL,
+  horse_hit_points INT(5) UNSIGNED NOT NULL,
+  food INT(5) UNSIGNED NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY (unique_id)
 );
 
 CREATE TABLE sessions (

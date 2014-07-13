@@ -94,7 +94,6 @@ class pw_check_player extends pw_server_response
     $warband_server_id = $this->get_warband_server_id_from_input_password();
 
     $player_id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT, $this->pid_restrictions);
-    if ($player_id == 0) exit_code(pw_config::success);
     $player_uid = filter_input(INPUT_GET, "uid", FILTER_VALIDATE_INT, $this->uid_restrictions);
     if (is_null($player_id) || is_null($player_uid) || !filter_has_var(INPUT_GET, "name")) exit_code(pw_config::input_error);
 

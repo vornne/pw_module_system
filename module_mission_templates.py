@@ -177,7 +177,7 @@ after_mission_start_setup = (ti_after_mission_start, 0, 0, [], # spawn and move 
       (spawn_scene_prop, "spr_code_spawn_marker"),
     (try_end),
     (assign, "$g_spawned_bot_count", 0),
-    (call_script, "script_check_name_server"),
+    (call_script, "script_initialize_name_server"),
     ])
 
 player_joined = (ti_server_player_joined, 0, 0, [], # server: handle connecting players
@@ -301,7 +301,8 @@ player_check_loop = (0, 0, 0.5, # server: check all players to see if any need a
       (else_try),
         (try_begin),
           (this_or_next|player_slot_eq, ":player_id", slot_player_spawn_state, player_spawn_state_dead),
-          (player_slot_eq, ":player_id", slot_player_spawn_state, player_spawn_state_invulnerable),
+          (this_or_next|player_slot_eq, ":player_id", slot_player_spawn_state, player_spawn_state_invulnerable),
+          (player_slot_eq, ":player_id", slot_player_spawn_state, player_spawn_state_invulnerable_at_marker),
           (call_script, "script_cf_player_check_spawn_agent", ":player_id"),
           (assign, ":loop_end", -1), # if the spawn checks were run, end the loop to give other triggers a chance to run, then immediately continue
           (store_add, "$g_loop_player_id", ":player_id", 1),
@@ -965,6 +966,11 @@ mission_templates = [
     money_bag_pressed,
     ]),
 
+  ("combined_world", mtf_battle_mode, -1, "Combined world.", spawn_points_0_99,
+    common_triggers("combined_world") + [
+    money_bag_pressed,
+    ]),
+
   ("edit_scene", 0, -1, "edit_scene", [(0,mtef_visitor_source,0,aif_start_alarmed,1,[])],
    [
     (ti_before_mission_start, 0, 0, [], # set up some basic values for scene editing features
@@ -1098,7 +1104,7 @@ mission_templates = [
       (player_set_slot, ":player_id", slot_player_equip_body, reg0),
       (call_script, "script_get_random_equipment", "itm_sarranid_boots_a", "itm_khergit_leather_boots"),
       (player_set_slot, ":player_id", slot_player_equip_foot, reg0),
-      (call_script, "script_player_add_spawn_items", ":player_id", 1),
+      (call_script, "script_player_set_spawn_items", ":player_id", 1),
       (player_spawn_new_agent, ":player_id", 0),
       (mission_cam_get_position, pos10),
       ]),

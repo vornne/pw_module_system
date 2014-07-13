@@ -11,7 +11,7 @@
 
 slot_player_faction_id                = 0
 slot_player_spawn_state               = 1 # listed below, starting with player_spawn_state_
-slot_player_spawn_invulnerable_time   = 2 # mission time when the player spawned with temporary invlunerability
+slot_player_invulnerable_end_time     = 2 # mission time when the player will lose temporary invlunerability
 slot_player_spawn_health_percent      = 3 # saved health percentage to be applied when next spawning
 slot_player_spawn_entry_point         = 4 # entry point used at last spawn
 
@@ -19,6 +19,7 @@ player_spawn_state_dead               = 0
 player_spawn_state_invulnerable       = 1 # while invlunerable soon after spawning
 player_spawn_state_at_marker          = 2 # set before spawning to indicate that the agent should be shifted to the player's marker scene prop
 player_spawn_state_alive              = 3
+player_spawn_state_invulnerable_at_marker = 4
 
 slot_player_inactive_index            = 5 # index in the inactive players array, if stored
 slot_player_next_chat_event_type      = 6 # next chat event number that the server expects this player's client to use
@@ -57,26 +58,35 @@ slot_player_kick_at_time              = 36 # time to kick a player after the nam
 slot_player_can_faction_announce      = 37
 slot_player_next_spawn_health_percent = 38 # spawn health percentage for the troop applied after death, if that server option is enabled
 slot_player_accessing_unique_id       = 39 # a unique number identifying an inventory scene prop being accessed that could despawn and the instance id be reused, like corpses
+slot_player_web_server_loading_status = 40 # status when a web server is linked to store character data
+slot_player_web_server_wait_time_end  = 41 # time when the web server request was sent
+slot_player_respawn_troop_id          = 41 # stored troop to be used after the next death and respawn
+slot_player_spawn_horse_health_percent = 42 # saved health percentage to be applied to a player's horse when spawning in place
 
-slot_player_admin_no_panel            = 40 # admin permission slots: the default value 0 is permissive so everything works when a name server is not connected
-slot_player_admin_no_gold             = 41
-slot_player_admin_no_kick             = 42
-slot_player_admin_no_temporary_ban    = 43
-slot_player_admin_no_permanent_ban    = 44
-slot_player_admin_no_kill_fade        = 45
-slot_player_admin_no_freeze           = 46
-slot_player_admin_no_teleport_self    = 47
-slot_player_admin_no_admin_items      = 48
-slot_player_admin_no_heal_self        = 49
-slot_player_admin_no_godlike_troop    = 50
-slot_player_admin_no_ships            = 51
-slot_player_admin_no_announce         = 52
-slot_player_admin_no_override_poll    = 53
-slot_player_admin_no_all_items        = 54
-slot_player_admin_no_mute             = 55
-slot_player_admin_no_animals          = 56
-slot_player_admin_no_factions         = 57
-slot_player_admin_end                 = 58
+loading_status_none                   = 0
+loading_status_awaiting_reply         = 1
+loading_status_ready_to_spawn         = 2
+loading_status_waiting_to_quit        = 3
+
+slot_player_admin_no_panel            = 50 # admin permission slots: the default value 0 is permissive so everything works when a name server is not connected
+slot_player_admin_no_gold             = 51
+slot_player_admin_no_kick             = 52
+slot_player_admin_no_temporary_ban    = 53
+slot_player_admin_no_permanent_ban    = 54
+slot_player_admin_no_kill_fade        = 55
+slot_player_admin_no_freeze           = 56
+slot_player_admin_no_teleport_self    = 57
+slot_player_admin_no_admin_items      = 58
+slot_player_admin_no_heal_self        = 59
+slot_player_admin_no_godlike_troop    = 60
+slot_player_admin_no_ships            = 61
+slot_player_admin_no_announce         = 62
+slot_player_admin_no_override_poll    = 63
+slot_player_admin_no_all_items        = 64
+slot_player_admin_no_mute             = 65
+slot_player_admin_no_animals          = 66
+slot_player_admin_no_factions         = 67
+slot_player_admin_end                 = 68
 
 ########################################################
 ##  AGENT SLOTS            #############################
@@ -368,6 +378,7 @@ slot_troop_equipment_horse_begin      = 9 * troop_slot_count_per_equipment_type
 
 slot_troop_ranking                    = 50 # used for sorting troop types in the player stats chart
 slot_troop_spawn_health_percent       = 51 # respawn health percentage when dying as this troop
+slot_troop_training_scene_prop_id     = 52 # the scene prop kind used to train as this troop
 
 slot_player_array_size                = 0
 slot_player_array_begin               = 1
@@ -421,7 +432,7 @@ slot_array_begin                      = 1
 
 ########################################################
 
-spawn_invulnerable_time               = 10 # time agents are invlunerable after freshly spawning
+spawn_invulnerable_interval           = 10 # time agents are invlunerable after freshly spawning
 loop_player_check_outlaw_interval     = 60
 loop_agent_check_interval             = 2
 loop_horse_check_interval             = 30
@@ -432,6 +443,8 @@ repeat_action_min_interval            = 5 # prevent players from repeating certa
 carcass_search_min_interval           = 5 # only search for a different animal carcass to process after this interval from the last
 poll_time_duration                    = 60
 name_server_kick_delay_interval       = 5 # delay before kicking from the server to allow the rejection message to be received
+server_travel_kick_delay_interval     = 10 # delay before kicking from the server to allow the travel message to be read
+web_server_reply_wait_interval        = 30 # time to wait for a web server reply before spawning the player
 
 def sq(distance):
   return distance * distance / 100 # get_sq_distance_between_positions always uses fixed point multiplier 100
@@ -567,6 +580,9 @@ max_scene_prop_instance_id            = 10000 # when trying to loop over all pro
 
 max_food_amount                       = 100
 max_hit_points_percent                = 200
+
+agent_not_frozen                      = -1
+agent_frozen_saving                   = -2
 
 all_items_begin = "itm_tattered_headcloth"
 all_items_end = "itm_all_items_end"

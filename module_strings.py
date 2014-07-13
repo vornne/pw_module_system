@@ -229,6 +229,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("game_type_3", "No Money"),
   ("game_type_4", "Feudalism"),
   ("game_type_5", "Permanent Death"),
+  ("game_type_6", "Combined World"),
   ("game_types_end", "game_types_end"),
 
   ("fac_1_default_name", "Red Faction"),
@@ -572,6 +573,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("burn", "Burn"),
   ("destroy_s1", "Destroy {s1}"),
   ("destroy_all_items_cart", "Destroy all items in cart"),
+  ("travel_from_realm", "Travel from this realm"),
+  ("admire_the_view", "Admire the view"),
   ("process_wood", "Process wood"),
   ("process_metal", "Smelt metal"),
   ("process_hammer_metal", "Hammer metal"),
@@ -701,6 +704,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("game_type_3_info", "The concept of money has been removed from this game type, so resource gathering and crafting are the only things required to obtain items."),
   ("game_type_4_info", "Exporting resources only transfers money to the castle chest, with no personal reward, and resource stockpiles have no cost for buying or selling."),
   ("game_type_5_info", "After dying or disconnecting, you will be reset to a peasant commoner with no money."),
+  ("game_type_6_info", "Multiple servers running different scenes can be connected, allowing characters to travel between them at specific locations."),
   ("pw_welcome", "{s10}\
 ^^Game Type: {s11}\
 ^-----------------------------------------------------------\
@@ -774,6 +778,7 @@ pw_local_*_price_area:^value 1 = multiplier^scale x = scene area of effect (pric
 pw_change_troop_*:^value 1 = faction + multiplier^^\
 pw_door_rotate_*:^value 1 = faction / castle id^value 2 = options bitfield (0x1 = start open, 0x2 = bolted, 0x4 = not pickable, 0x8 = half hit points, 0x10 = start destroyed)^^\
 pw_door_teleport_*:^value 1 = faction / castle id^value 2 = linking id with x^^\
+pw_server_travel_area:^value 1 = server number connected to^value 2 = linking id with travel area in connecting server^^\
 pw mines:^value 1 = initial hit points / 1000^value 2 = respawn time multiplier^^\
 pw trees, bushes, plants, fields, vines:^value 2 = respawn time multiplier^^\
 pw bridges:^value 2 = linking id with two x_footing props^^\
@@ -826,8 +831,21 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("kicked_using_other_clan_tag", "Kicked for using another clan's tag."),
   ("kicked_using_invalid_name", "Kicked for using invalid characters in the name."),
   ("kicked_not_registered", "Kicked since not registered for this server."),
-  ("http_s1_password_s2_id_reg1_uid_reg2_name_s3", "http://{s1}/checkplayer.php?password={s2}&id={reg1}&uid={reg2}&name={s3}"),
+  ("successfully_traveled_from_realm", "You have safely traveled away from this realm."),
+  ("successfully_traveled_from_realm_to_s1_server_s0", "You have safely traveled from this realm to '{s1}'^(the server named '{s0}')."),
+  ("s13", "{!}{s13}"),
+  ("checking_for_server_transfer", "Checking for server transfer..."),
+  ("waiting_for_server_transfer", "Waiting for server transfer..."),
+  ("server_transfer_complete", "Server transfer complete, ready to spawn."),
+  ("no_reply_from_database", "No reply from database."),
+  ("http_s1_checkplayer_password_s2_id_reg1_uid_reg2_name_s3", "http://{s1}/checkplayer.php?password={s2}&id={reg1}&uid={reg2}&name={s3}"),
   ("http_s0_admin", "{s0}&admin"),
+  ("http_s1_startserver_password_s2_server_name_s3_scene_name_s4", "http://{s1}/startserver.php?password={s2}&server-name={s3}&scene-name={s4}"),
+  ("http_s1_storeplayer_password_s2_format", "http://{s1}/storeplayer.php?password={s2}&id={reg1}&uid={reg2}&to-server={reg3}&link={reg4}&inst={reg5}&gold={reg6}&\
+troop={reg7}&agent-troop={reg8}&wpn1={reg9}&ammo1={reg10}&wpn2={reg11}&ammo2={reg12}&wpn3={reg13}&ammo3={reg14}&wpn4={reg15}&ammo4={reg16}&head={reg17}&body={reg18}&foot={reg19}&hand={reg20}&\
+horse={reg21}&hp={reg22}&horse-hp={reg23}&food={reg24}"),
+  ("http_s1_loadplayer_password_s2_id_reg1_uid_reg2", "http://{s1}/loadplayer.php?password={s2}&id={reg1}&uid={reg2}"),
+  ("http_s1_clearplayer_password_s2_id_reg1_uid_reg2", "http://{s1}/clearplayer.php?password={s2}&id={reg1}&uid={reg2}"),
   ("name_server", "localhost/pwnameserver"),
   ("name_server_password", "WD915Kyi18"),
 
