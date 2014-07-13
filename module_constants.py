@@ -62,6 +62,8 @@ slot_player_web_server_loading_status = 40 # status when a web server is linked 
 slot_player_web_server_wait_time_end  = 41 # time when the web server request was sent
 slot_player_respawn_troop_id          = 41 # stored troop to be used after the next death and respawn
 slot_player_spawn_horse_health_percent = 42 # saved health percentage to be applied to a player's horse when spawning in place
+slot_player_has_intentionally_quit    = 43 # when the player chose to quit, as opposed to a client crash
+slot_player_previous_crashed_agent_id = 44 # when rejoining after a client crash, the previous agent to be used to copy from after spawning
 
 loading_status_none                   = 0
 loading_status_awaiting_reply         = 1
@@ -87,6 +89,28 @@ slot_player_admin_no_mute             = 65
 slot_player_admin_no_animals          = 66
 slot_player_admin_no_factions         = 67
 slot_player_admin_end                 = 68
+
+player_slots_to_keep_and_restore = [
+  slot_player_non_lord_troop_id,
+  slot_player_teleport_to_ship_no,
+  slot_player_last_faction_kicked_from,
+  slot_player_next_spawn_health_percent,
+  slot_player_respawn_troop_id,
+]
+player_slots_to_keep_restore_and_sync_to_client = [
+  slot_player_has_faction_door_key,
+  slot_player_has_faction_money_key,
+  slot_player_has_faction_item_key,
+  slot_player_faction_chat_muted,
+  slot_player_can_faction_announce,
+]
+player_agent_slots_to_keep_and_restore = [
+  slot_player_equip_head,
+  slot_player_equip_body,
+  slot_player_equip_foot,
+  slot_player_equip_gloves,
+]
+all_player_slots_to_keep_and_restore = player_slots_to_keep_and_restore + player_slots_to_keep_restore_and_sync_to_client + player_agent_slots_to_keep_and_restore
 
 ########################################################
 ##  AGENT SLOTS            #############################
@@ -152,6 +176,22 @@ slot_agent_weapon_reload_factor       = 63
 slot_agent_cannot_attack              = 64 # marks that any attack should be canceled
 slot_agent_armor_damage_through       = 65 # factor of letting damage received bleed through the armor
 slot_agent_last_apply_factors_item_id = 66 # last item id that modifier factors were last checked for, to avoid duplicating calculations due to trigger activation quirks
+
+slot_agent_holding_player_remove_time = 98
+slot_agent_holding_player_uid         = 99
+slot_agent_player_slots_begin         = 100
+
+agent_slots_to_restore = [
+  slot_agent_drowning_count,
+  slot_agent_poison_amount,
+  slot_agent_poisoner_agent_id,
+  slot_agent_freeze_instance_id,
+  slot_agent_food_amount,
+  slot_agent_money_bag_1_value,
+  slot_agent_money_bag_2_value,
+  slot_agent_money_bag_3_value,
+  slot_agent_money_bag_4_value,
+]
 
 ########################################################
 ##  SCENE PROP SLOTS       #############################
@@ -388,7 +428,8 @@ player_array_troop_id                 = 1
 player_array_faction_id               = 2
 player_array_gold_value               = 3
 player_array_outlaw_rating            = 4
-player_array_entry_size               = 5 # number of values stored in the disconnected players array
+player_array_crashed_agent_id         = 5
+player_array_entry_size               = 6 # number of values stored in the disconnected players array
 
 max_castle_count = 8
 slot_mission_data_castle_owner_faction_begin    = 0 # owner factions of all castles
@@ -445,6 +486,7 @@ poll_time_duration                    = 60
 name_server_kick_delay_interval       = 5 # delay before kicking from the server to allow the rejection message to be received
 server_travel_kick_delay_interval     = 10 # delay before kicking from the server to allow the travel message to be read
 web_server_reply_wait_interval        = 30 # time to wait for a web server reply before spawning the player
+quit_waiting_interval                 = 3 # waiting interval for the server to signal it is ready for a clean quit
 
 def sq(distance):
   return distance * distance / 100 # get_sq_distance_between_positions always uses fixed point multiplier 100

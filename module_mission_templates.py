@@ -395,6 +395,31 @@ agent_check_attack_loop = (0, 0, 0.2, [], # server: repeatedly check all agents 
     (try_end),
     ])
 
+inactive_agent_check_loop = (0.1, 0, 30, [],
+   [(multiplayer_is_server),
+    (store_mission_timer_a, ":time"),
+    (assign, ":last_valid_slot", 0),
+    (troop_get_slot, ":inactive_agents_last", "trp_inactive_agents_array", slot_array_count),
+    (val_add, ":inactive_agents_last", slot_array_begin),
+    (try_for_range, ":slot", slot_array_begin, ":inactive_agents_last"),
+      (troop_get_slot, ":inactive_agent_id", "trp_inactive_agents_array", ":slot"),
+      (agent_is_active, ":inactive_agent_id"),
+      (agent_is_alive, ":inactive_agent_id"),
+      (agent_get_slot, ":remove_time", ":inactive_agent_id", slot_agent_holding_player_remove_time),
+      (try_begin),
+        (ge, ":time", ":remove_time"),
+        (agent_set_hit_points, ":inactive_agent_id", 0),
+        (agent_deliver_damage_to_agent, ":inactive_agent_id", ":inactive_agent_id", 500),
+        (troop_set_slot, "trp_inactive_agents_array", ":slot", -1),
+      (else_try),
+        (assign, ":last_valid_slot", ":slot"),
+      (try_end),
+    (else_try),
+      (troop_set_slot, "trp_inactive_agents_array", ":slot", -1),
+    (try_end),
+    (troop_set_slot, "trp_inactive_agents_array", slot_array_count, ":last_valid_slot"), # slot_array_begin must be 1 for this to be correct
+    ])
+
 ship_movement_loop = (0, 0, 0.1, # server: update ship movement animations approximately every second
    [(try_begin),
       (multiplayer_is_server),
@@ -904,6 +929,7 @@ def common_triggers(self):
     player_check_loop,
     agent_check_loop,
     agent_check_attack_loop,
+    inactive_agent_check_loop,
     ship_movement_loop,
 
     resource_regrow_check,
