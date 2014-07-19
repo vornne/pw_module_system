@@ -7497,7 +7497,7 @@ scripts.extend([
     (else_try),
       (eq, ":resource_item_id", "itm_salt_sack"),
       (call_script, "script_cf_agent_consume_item", ":agent_id", "itm_salt_sack", 1),
-      (call_script, "script_spawn_processed_resources", ":agent_id", "itm_salt", 16),
+      (call_script, "script_spawn_processed_resources", ":agent_id", "itm_salt", 8),
     (try_end),
     (neq, ":processed_item_id", -1),
     (call_script, "script_cf_agent_consume_items", ":agent_id", "itm_salt", ":resource_item_id", ":resource_item_id", ":resource_item_id"),
