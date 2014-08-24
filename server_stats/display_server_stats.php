@@ -60,13 +60,6 @@ function get_victory_condition($v)
   else return "hold all castles for $v minutes";
 }
 
-function get_loot_rule($v)
-{
-  if ($v == 2) return "commoners and outlaws treated independently";
-  elseif ($v == 1) return "commoners never drop money bags";
-  else return "commoners and outlaws treated as factions";
-}
-
 function get_respawn_health($v)
 {
   if ($v == 0) return "partial based on troop type";
@@ -132,8 +125,6 @@ function display_full_server_stats($address, $port, $display_errors = true)
   echo("<tr class=\"r0\"><td>Number of factions:</td><td>$factions</td></tr>");
   $victory_condition = get_victory_condition($xml->ModuleSetting8);
   echo("<tr class=\"r1\"><td>Victory condition:</td><td>$victory_condition</td></tr>");
-  $loot_rule = get_loot_rule($xml->ModuleSetting9);
-  echo("<tr class=\"r0\"><td>Looting:</td><td>$loot_rule</td></tr>");
   $respawn_health = get_respawn_health($xml->ModuleSetting10);
   echo("<tr class=\"r1\"><td>Respawn health:</td><td>$respawn_health</td></tr>");
   $herd_animals = $xml->ModuleSetting11;
