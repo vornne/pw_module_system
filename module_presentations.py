@@ -444,7 +444,7 @@ presentations.extend([
       (position_set_y, pos1, 1002),
       (overlay_set_size, reg0, pos1),
 
-      (assign, ":cur_y", 20 + (21 * admin_panel_item_height)), # fixed offset plus the number of panel items multiplied by the height
+      (assign, ":cur_y", 20 + (22 * admin_panel_item_height)), # fixed offset plus the number of panel items multiplied by the height
 
       (str_clear, s0),
       (create_text_overlay, reg0, s0, tf_scrollable),
@@ -792,6 +792,24 @@ presentations.extend([
       (overlay_set_position, "$g_presentation_obj_admin_panel_bot_count", pos1),
       (overlay_set_val, "$g_presentation_obj_admin_panel_bot_count", "$g_bot_count"),
 
+      (val_sub, ":cur_y", admin_panel_item_height),
+      (create_text_overlay, reg0, "str_force_default_armor", 0),
+      (position_set_x, pos1, 0),
+      (position_set_y, pos1, ":cur_y"),
+      (overlay_set_position, reg0, pos1),
+
+      (create_combo_button_overlay, "$g_presentation_obj_admin_panel_weather"),
+      (position_set_x, pos1, 800),
+      (position_set_y, pos1, 800),
+      (overlay_set_size, "$g_presentation_obj_admin_panel_weather", pos1),
+      (position_set_x, pos1, 490),
+      (position_set_y, pos1, ":cur_y"),
+      (overlay_set_position, "$g_presentation_obj_admin_panel_weather", pos1),
+      (overlay_add_item, "$g_presentation_obj_admin_panel_weather", "str_always_fine"),
+      (overlay_add_item, "$g_presentation_obj_admin_panel_weather", "str_always_raining"),
+      (overlay_add_item, "$g_presentation_obj_admin_panel_weather", "str_dynamic"),
+      (overlay_set_val, "$g_presentation_obj_admin_panel_weather", "$g_force_weather"),
+
       (set_container_overlay, -1),
 
       (create_button_overlay, "$g_presentation_obj_admin_panel_done", "str_done", tf_center_justify),
@@ -903,6 +921,9 @@ presentations.extend([
       (else_try),
         (eq, ":object", "$g_presentation_obj_admin_panel_bot_count"),
         (multiplayer_send_2_int_to_server, client_event_admin_set_game_rule, command_set_bot_count, ":value"),
+      (else_try),
+        (eq, ":object", "$g_presentation_obj_admin_panel_weather"),
+        (multiplayer_send_2_int_to_server, client_event_admin_set_game_rule, command_set_force_default_armor, ":value"),
       (else_try),
         (eq, ":object", "$g_presentation_obj_admin_panel_done"),
         (presentation_set_duration, 0),

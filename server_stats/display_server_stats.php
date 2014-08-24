@@ -60,6 +60,13 @@ function get_victory_condition($v)
   else return "hold all castles for $v minutes";
 }
 
+function get_weather_control($v)
+{
+  if ($v == 2) return "dynamic";
+  elseif ($v == 1) return "always raining";
+  else return "always fine";
+}
+
 function get_respawn_health($v)
 {
   if ($v == 0) return "partial based on troop type";
@@ -125,6 +132,8 @@ function display_full_server_stats($address, $port, $display_errors = true)
   echo("<tr class=\"r0\"><td>Number of factions:</td><td>$factions</td></tr>");
   $victory_condition = get_victory_condition($xml->ModuleSetting8);
   echo("<tr class=\"r1\"><td>Victory condition:</td><td>$victory_condition</td></tr>");
+  $weather_control = get_weather_control($xml->ModuleSetting9);
+  echo("<tr class=\"r0\"><td>Weather:</td><td>$weather_control</td></tr>");
   $respawn_health = get_respawn_health($xml->ModuleSetting10);
   echo("<tr class=\"r1\"><td>Respawn health:</td><td>$respawn_health</td></tr>");
   $herd_animals = $xml->ModuleSetting11;
