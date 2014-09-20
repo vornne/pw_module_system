@@ -372,9 +372,9 @@ scripts.extend([
    [(store_script_param, ":integer_count", 1),
     (store_script_param, ":string_count", 2),
 
-    (assign, "$g_name_server_enabled", 1),
     (try_begin),
       (ge, ":integer_count", 1),
+      (assign, "$g_name_server_enabled", 1),
       (assign, ":return_code", reg0),
       (try_begin), # negative return codes are internal or configuration errors, not requiring action
         (lt, ":return_code", 0),
