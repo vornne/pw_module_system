@@ -11322,7 +11322,28 @@ mission_templates = [
            (eq, ":my_agent_id", ":agent_no"),
            (ge, ":my_agent_id", 0),
            (agent_get_team, "$my_team_at_start_of_round", ":my_agent_id"),		   
-         (try_end),         
+         (try_end),
+
+         #Equipment cost fix
+         (agent_set_slot, ":agent_no", slot_agent_bought_horse, -1),
+         (try_begin),
+		     (multiplayer_is_server),
+             (neg|agent_is_human, ":agent_no"),  #Spawned agent is horse
+             (agent_get_rider, ":rider_agent_id", ":agent_no"),
+             (agent_is_active, ":rider_agent_id"),
+             (neg|agent_is_non_player, ":rider_agent_id"),
+             (agent_get_player_id, ":rider_player_id", ":rider_agent_id"), 
+             (neg|player_item_slot_is_picked_up, ":rider_player_id", ek_horse),
+             (agent_set_slot, ":rider_agent_id", slot_agent_bought_horse, ":agent_no"),
+
+             #Debugging
+             #(str_store_player_username, s0, ":rider_player_id"), #used in multiplayer mode only
+             #(agent_get_item_id, ":my_mount_type", ":agent_no"), #(works only for horses, returns -1 otherwise)
+             #(str_store_item_name, s1, ":my_mount_type"),
+             #(multiplayer_send_string_to_player, ":rider_player_id", multiplayer_event_show_server_message, "@{s0} bought a {s1}"),
+             ##
+         (try_end),
+         ###
          
          (call_script, "script_calculate_new_death_waiting_time_at_death_mod"),
  
@@ -12052,13 +12073,23 @@ mission_templates = [
 
          (get_max_players, ":num_players"),
          (try_for_range, ":player_no", 0, ":num_players"),
-           (player_is_active, ":player_no"),           
-           (player_get_agent_id, ":player_agent", ":player_no"),
-           (ge, ":player_agent", 0),
-           (agent_is_alive, ":player_agent"),
-           (player_save_picked_up_items_for_next_spawn, ":player_no"),
-           (player_get_value_of_original_items, ":old_items_value", ":player_no"),
-           (player_set_slot, ":player_no", slot_player_last_rounds_used_item_earnings, ":old_items_value"),
+               (neq, ":player_no", -1), ##
+               (player_is_active, ":player_no"),
+               (player_get_agent_id, ":player_agent", ":player_no"),
+               (ge, ":player_agent", 0),
+               (agent_is_alive, ":player_agent"),
+               (player_save_picked_up_items_for_next_spawn, ":player_no"),
+               #(player_get_value_of_original_items, ":old_items_value", ":player_no"),
+               #(player_set_slot, ":player_no", slot_player_last_rounds_used_item_earnings, ":old_items_value"),
+               #Equipment cost fix
+               (assign, reg0, 0),
+               (player_get_troop_id, ":player_no_troop_id", ":player_no"),
+               (call_script, "script_player_get_value_of_original_items", ":player_no", ":player_agent", ":player_no_troop_id"),
+               (assign, ":old_items_value", reg0),
+               (player_set_slot, ":player_no", slot_player_last_rounds_used_item_earnings, ":old_items_value"),
+               #Debugging 
+               #(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@{reg0}g for your old items value added to your total gold"),
+               ###
          (try_end),
 
          #money management
@@ -12089,7 +12120,27 @@ mission_templates = [
              (val_add, ":player_gold", ":additional_gold"),
            (try_end),
            #new money system addition end
-         
+           (get_max_players, ":num_players"),
+	       (try_for_range, ":player_no", 0, ":num_players"),
+             (neq, ":player_no", -1), ##
+             (player_is_active, ":player_no"),
+             (player_set_slot, ":player_no", slot_player_spawned_this_round, 0),
+             (player_get_agent_id, ":player_agent", ":player_no"),
+             (ge, ":player_agent", 0),
+             (agent_is_alive, ":player_agent"),
+             (player_save_picked_up_items_for_next_spawn, ":player_no"),
+             #(player_get_value_of_original_items, ":old_items_value", ":player_no"),
+             #(player_set_slot, ":player_no", slot_player_last_rounds_used_item_earnings, ":old_items_value"),
+             #Equipment cost fix
+             (player_get_agent_id, ":agent_no", ":player_no"),
+             (neq, ":agent_no", -1),
+             (display_message, "@Calculating value of original items!"),
+             (player_get_troop_id, ":player_no_troop_id", ":player_no"),
+             (call_script, "script_player_get_value_of_original_items", ":player_no", ":agent_no", ":player_no_troop_id"),
+             (assign, ":old_items_value", reg0),
+             (player_set_slot, ":player_no", slot_player_last_rounds_used_item_earnings, ":old_items_value"),
+             ###
+         (try_end),
            (player_set_gold, ":player_no", ":player_gold", multi_max_gold_that_can_be_stored),
          (try_end),
 

@@ -19,8 +19,11 @@ try_for_range     = 6 # Works like a for loop from lower-bound up to (upper-boun
 
 try_for_range_backwards = 7	# Same as above but starts from (upper-bound - 1) down-to lower bound.
 				# (try_for_range_backwards,<destination>,<lower_bound>,<upper_bound>),
-try_for_parties   = 11          # (try_for_parties,<destination>),
-try_for_agents    = 12		# (try_for_agents,<destination>),
+try_for_parties   = 11	# (try_for_parties,<destination>),
+try_for_agents    = 12	# (try_for_agents,<destination>),
+try_for_prop_instances = 16 # (try_for_prop_instances, <destination>, [<scene_prop_id>]), # if scene_prop_id is not given, it loops through all prop instances.
+try_for_players  = 17	# (try_for_players, <destination>, [skip_server]),
+
 
 store_script_param_1 = 21       # (store_script_param_1,<destination>),  --(Within a script) stores the first script parameter.
 store_script_param_2 = 22       # (store_script_param_2,<destination>),  --(Within a script) stores the second script parameter.
@@ -39,7 +42,9 @@ is_between   = 33  # (is_between,<value>,<lower_bound>,<upper_bound>), #greater 
 entering_town   = 36 # (entering_town,<town_id>),
 map_free        = 37  # (map_free),
 encountered_party_is_attacker     = 39  # (encountered_party_is_attacker),
+                                         # Checks that the party encountered on the world map was following player (i.e. either player was trying to run away or at the very least this is a head-on clash).
 conversation_screen_is_active     = 42  # (conversation_screen_active), #used in mission template triggers only
+                                         # Checks that the player is currently in dialogue with some agent. Can only be used in triggers of module_mission_templates.py file.
 
 in_meta_mission = 44 # deprecated, do not use.
 
@@ -47,13 +52,17 @@ set_player_troop                = 47 # (set_player_troop,<troop_id>),
 
 store_repeat_object             = 50  # stores the index of a repeated dialog option for repeat_for_factions, etc...
 
+get_operation_set_version       = 55 # (get_operation_set_version, <destination>),
+
 set_result_string               = 60  # sets the result string for game scripts that need one (set_result_string, <string_id>),
+
+game_key_get_mapped_key_name    = 65  # (game_key_get_mapped_key_name, <string_register>, <game_key>),
 
 key_is_down                     = 70  # fails if the key is not currently down (key_is_down, <key_id>),
 key_clicked                     = 71  # fails if the key is not clicked on the specific frame (key_clicked, <key_id>),
 game_key_is_down                = 72  # fails if the game key is not currently down (key_is_down, <game_key_id>),
-game_key_clicked                = 73  # fails if the game key is not clicked on the specific frame (key_clicked, <game_key_id>),
-mouse_get_position	             = 75  # (mouse_get_position, <position_no>), #x and y values of position are filled
+game_key_clicked                = 73  # fails if the game key is not clicked on the specific frame (game_key_clicked, <game_key_id>),
+mouse_get_position	            = 75  # (mouse_get_position, <position_no>), #x and y values of position are filled
 omit_key_once                   = 77  # game omits any bound action for the key once (omit_key_once, <key_id>),
 clear_omitted_keys              = 78  # (clear_omitted_keys),
 
@@ -99,6 +108,8 @@ options_get_campaign_ai         = 266 # (options_get_campaign_ai, <destination>)
 options_set_campaign_ai         = 267 # (options_set_campaign_ai, <value>), #0 = good, 1 = average, 2 = poor
 options_get_combat_speed        = 268 # (options_get_combat_speed, <destination>), #0 = slowest, 1 = slower, 2 = normal, 3 = faster, 4 = fastest
 options_set_combat_speed        = 269 # (options_set_combat_speed, <value>), #0 = slowest, 1 = slower, 2 = normal, 3 = faster, 4 = fastest
+options_get_battle_size         = 270 # (options_get_battle_size, <destination>), # returns battle size slider value in 0-1000 range.
+options_set_battle_size         = 271 # (options_set_battle_size, <value>), # sets battle size slider value in 0-1000 range.
 
 profile_get_banner_id                = 350 # (profile_get_banner_id, <destination>),
 profile_set_banner_id                = 351 # (profile_set_banner_id, <value>),
@@ -144,7 +155,7 @@ multiplayer_is_dedicated_server      = 418 # (multiplayer_is_dedicated_server),
 game_in_multiplayer_mode             = 419 # (game_in_multiplayer_mode),
 multiplayer_make_everyone_enemy      = 420 # (multiplayer_make_everyone_enemy),
 player_control_agent                 = 421 # (player_control_agent, <player_id>, <agent_id>),
-player_get_item_id                   = 422 # (player_get_item_id, <destination>, <player_id>, <item_slot_no>) #only for server
+player_get_item_id                   = 422 # (player_get_item_id, <destination>, <player_id>, <item_slot_no>), #only for server
 player_get_banner_id                 = 423 # (player_get_banner_id, <destination>, <player_id>),
 game_get_reduce_campaign_ai          = 424 # (game_get_reduce_campaign_ai, <destination>), #depreciated, use options_get_campaign_ai instead
 multiplayer_find_spawn_point         = 425 # (multiplayer_find_spawn_point, <destination>, <team_no>, <examine_all_spawn_points>, <is_horseman>), 
@@ -282,17 +293,17 @@ copy_position                   = 700 # copies position_no_2 to position_no_1
 init_position                   = 701 # (init_position,<position_no>),
 get_trigger_object_position     = 702 # (get_trigger_object_position,<position_no>),
 
-get_angle_between_positions     = 705 # (get_angle_between_positions, <destination_fixed_point>, <position_no_1>, <position_no_2>),
-position_has_line_of_sight_to_position = 707 # (position_has_line_of_sight_to_position, <position_no_1>, <position_no_2>),
-get_distance_between_positions  = 710 # gets distance in centimeters. # (get_distance_between_positions,<destination>,<position_no_1>,<position_no_2>),
-get_distance_between_positions_in_meters  = 711 # gets distance in meters. # (get_distance_between_positions_in_meters,<destination>,<position_no_1>,<position_no_2>),
-get_sq_distance_between_positions = 712 # gets squared distance in centimeters # (get_sq_distance_between_positions,<destination>,<position_no_1>,<position_no_2>),
+get_angle_between_positions                 = 705 # (get_angle_between_positions, <destination_fixed_point>, <position_no_1>, <position_no_2>),
+position_has_line_of_sight_to_position      = 707 # (position_has_line_of_sight_to_position, <position_no_1>, <position_no_2>),
+get_distance_between_positions              = 710 # gets distance in centimeters. # (get_distance_between_positions,<destination>,<position_no_1>,<position_no_2>),
+get_distance_between_positions_in_meters    = 711 # gets distance in meters. # (get_distance_between_positions_in_meters,<destination>,<position_no_1>,<position_no_2>),
+get_sq_distance_between_positions           = 712 # gets squared distance in centimeters # (get_sq_distance_between_positions,<destination>,<position_no_1>,<position_no_2>),
 get_sq_distance_between_positions_in_meters = 713 # gets squared distance in meters # (get_sq_distance_between_positions_in_meters,<destination>,<position_no_1>,<position_no_2>),
-position_is_behind_position     = 714 # (position_is_behind_position,<position_no_1>,<position_no_2>),
-get_sq_distance_between_position_heights = 715 # gets squared distance in centimeters # (get_sq_distance_between_position_heights,<destination>,<position_no_1>,<position_no_2>),
+position_is_behind_position                 = 714 # (position_is_behind_position,<position_no_1>,<position_no_2>),
+get_sq_distance_between_position_heights    = 715 # gets squared distance in centimeters # (get_sq_distance_between_position_heights,<destination>,<position_no_1>,<position_no_2>),
 
-position_transform_position_to_parent = 716 # (position_transform_position_to_parent,<dest_position_no>,<position_no>,<position_no_to_be_transformed>),
-position_transform_position_to_local  = 717 # (position_transform_position_to_local, <dest_position_no>,<position_no>,<position_no_to_be_transformed>),
+position_transform_position_to_parent       = 716 # (position_transform_position_to_parent,<dest_position_no>,<position_no>,<position_no_to_be_transformed>),
+position_transform_position_to_local        = 717 # (position_transform_position_to_local, <dest_position_no>,<position_no>,<position_no_to_be_transformed>),
 
 position_copy_rotation          = 718 # (position_copy_rotation,<position_no_1>,<position_no_2>), copies rotation of position_no_2 to position_no_1
 position_copy_origin            = 719 # (position_copy_origin,<position_no_1>,<position_no_2>), copies origin of position_no_2 to position_no_1
@@ -319,6 +330,7 @@ position_get_scale_z            = 737 # (position_get_scale_z,<destination_fixed
 
 position_rotate_x_floating      = 738 # (position_rotate_x_floating,<position_no>,<angle>), #angle in degree * fixed point multiplier 
 position_rotate_y_floating      = 739 # (position_rotate_y_floating,<position_no>,<angle>), #angle in degree * fixed point multiplier 
+position_rotate_z_floating      = 734 # (position_rotate_z_floating,<position_no>,<angle>), #angle in degree * fixed point multiplier 
 
 position_get_rotation_around_z  = 740 # (position_get_rotation_around_z,<destination>,<position_no>), #rotation around z axis is returned as angle
 position_normalize_origin       = 741 # (position_normalize_origin,<destination_fixed_point>,<position_no>),
@@ -333,72 +345,74 @@ position_set_scale_y            = 745 # (position_set_scale_y, <position_no>, <v
 position_set_scale_z            = 746 # (position_set_scale_z, <position_no>, <value_fixed_point>), #z scale in meters / fixed point multiplier is set
 
 position_get_screen_projection  = 750 # (position_get_screen_projection, <position_no_1>, <position_no_2>), returns screen projection of position_no_2 to position_no_1
+mouse_get_world_projection      = 751 # (mouse_get_world_projection, <position_no_1>, <position_no_2>), returns camera position (position_no_1) and mouse projection to back of world (position_no_2)
 
 position_set_z_to_ground_level  = 791 # (position_set_z_to_ground_level, <position_no>), #only works during a mission
-position_get_distance_to_terrain= 792 # (position_get_distance_to_terrain, <destination>, <position_no>), #only works during a mission
+position_get_distance_to_terrain= 792 # (position_get_distance_to_terrain, <destination_fixed_point>, <position_no>), #only works during a mission
 position_get_distance_to_ground_level = 793 # (position_get_distance_to_ground_level, <destination>, <position_no>), #only works during a mission
 
-start_presentation		                      = 900 # (start_presentation, <presentation_id>),
-start_background_presentation	            = 901 # (start_background_presentation, <presentation_id>), #can only be used in game menus
-presentation_set_duration	                = 902 # (presentation_set_duration, <duration-in-1/100-seconds>), #there must be an active presentation
+start_presentation                        = 900 # (start_presentation, <presentation_id>),
+start_background_presentation             = 901 # (start_background_presentation, <presentation_id>), #can only be used in game menus
+presentation_set_duration                 = 902 # (presentation_set_duration, <duration-in-1/100-seconds>), #there must be an active presentation
 is_presentation_active                    = 903 # (is_presentation_active, <presentation_id),
-create_text_overlay	                      = 910 # (create_text_overlay, <destination>, <string_id>), #returns overlay id
-create_mesh_overlay		                     = 911 # (create_mesh_overlay, <destination>, <mesh_id>), #returns overlay id
+create_text_overlay                       = 910 # (create_text_overlay, <destination>, <string_id>), #returns overlay id
+create_mesh_overlay                       = 911 # (create_mesh_overlay, <destination>, <mesh_id>), #returns overlay id
 create_button_overlay                     = 912 # (create_button_overlay, <destination>, <string_id>), #returns overlay id
-create_image_button_overlay	              = 913 # (create_image_button_overlay, <destination>, <mesh_id>, <mesh_id>), #returns overlay id. second mesh is the pressed button mesh
+create_image_button_overlay               = 913 # (create_image_button_overlay, <destination>, <mesh_id>, <mesh_id>), #returns overlay id. second mesh is the pressed button mesh
 create_slider_overlay                     = 914 # (create_slider_overlay, <destination>, <min_value>, <max_value>), #returns overlay id
-create_progress_overlay		                 = 915 # (create_progress_overlay, <destination>, <min_value>, <max_value>), #returns overlay id
-create_combo_button_overlay              	= 916 # (create_combo_button_overlay, <destination>), #returns overlay id
+create_progress_overlay                   = 915 # (create_progress_overlay, <destination>, <min_value>, <max_value>), #returns overlay id
+create_combo_button_overlay               = 916 # (create_combo_button_overlay, <destination>), #returns overlay id
 create_text_box_overlay                   = 917 # (create_text_box_overlay, <destination>), #returns overlay id
 create_check_box_overlay                  = 918 # (create_check_box_overlay, <destination>), #returns overlay id
 create_simple_text_box_overlay            = 919 # (create_simple_text_box_overlay, <destination>), #returns overlay id
-overlay_set_text	                        	= 920 # (overlay_set_text, <overlay_id>, <string_id>),
-overlay_set_color	                       	= 921 # (overlay_set_color, <overlay_id>, <color>), #color in RGB format like 0xRRGGBB (put hexadecimal values for RR GG and BB parts)
+overlay_set_text                          = 920 # (overlay_set_text, <overlay_id>, <string_id>),
+overlay_set_color                         = 921 # (overlay_set_color, <overlay_id>, <color>), #color in RGB format like 0xRRGGBB (put hexadecimal values for RR GG and BB parts)
 overlay_set_alpha                         = 922 # (overlay_set_alpha, <overlay_id>, <alpha>), #alpha in A format like 0xAA (put hexadecimal values for AA part)
-overlay_set_hilight_color	                = 923 # (overlay_set_hilight_color, <overlay_id>, <color>), #color in RGB format like 0xRRGGBB (put hexadecimal values for RR GG and BB parts)
+overlay_set_hilight_color                 = 923 # (overlay_set_hilight_color, <overlay_id>, <color>), #color in RGB format like 0xRRGGBB (put hexadecimal values for RR GG and BB parts)
 overlay_set_hilight_alpha                 = 924 # (overlay_set_hilight_alpha, <overlay_id>, <alpha>), #alpha in A format like 0xAA (put hexadecimal values for AA part)
-overlay_set_size		                        = 925 # (overlay_set_size, <overlay_id>, <position_no>), #position's x and y values are used
-overlay_set_position                     	= 926 # (overlay_set_position, <overlay_id>, <position_no>), #position's x and y values are used
-overlay_set_val                          	= 927 # (overlay_set_val, <overlay_id>, <value>), #can be used for sliders, combo buttons and check boxes
-overlay_set_boundaries                   	= 928 # (overlay_set_boundaries, <overlay_id>, <min_value>, <max_value>),
-overlay_set_area_size                   		= 929 # (overlay_set_area_size, <overlay_id>, <position_no>), #position's x and y values are used
+overlay_set_size                          = 925 # (overlay_set_size, <overlay_id>, <position_no>), #position's x and y values are used
+overlay_set_position                      = 926 # (overlay_set_position, <overlay_id>, <position_no>), #position's x and y values are used
+overlay_set_val                           = 927 # (overlay_set_val, <overlay_id>, <value>), #can be used for sliders, combo buttons and check boxes
+overlay_set_boundaries                    = 928 # (overlay_set_boundaries, <overlay_id>, <min_value>, <max_value>),
+overlay_set_area_size                     = 929 # (overlay_set_area_size, <overlay_id>, <position_no>), #position's x and y values are used
 overlay_set_mesh_rotation                 = 930 # (overlay_set_mesh_rotation, <overlay_id>, <position_no>), #position's rotation values are used for rotations around x, y and z axis
-overlay_add_item	                         = 931 # (overlay_add_item, <overlay_id>, <string_id>), # adds an item to the combo box
+overlay_add_item                          = 931 # (overlay_add_item, <overlay_id>, <string_id>), # adds an item to the combo box
 overlay_animate_to_color                  = 932 # (overlay_animate_to_color, <overlay_id>, <duration-in-1/1000-seconds>, <color>), #alpha value will not be used
-overlay_animate_to_alpha	                 = 933 # (overlay_animate_to_alpha, <overlay_id>, <duration-in-1/1000-seconds>, <color>), #only alpha value will be used
+overlay_animate_to_alpha                  = 933 # (overlay_animate_to_alpha, <overlay_id>, <duration-in-1/1000-seconds>, <color>), #only alpha value will be used
 overlay_animate_to_highlight_color        = 934 # (overlay_animate_to_highlight_color, <overlay_id>, <duration-in-1/1000-seconds>, <color>), #alpha value will not be used
 overlay_animate_to_highlight_alpha        = 935 # (overlay_animate_to_highlight_alpha, <overlay_id>, <duration-in-1/1000-seconds>, <color>), #only alpha value will be used
-overlay_animate_to_size		                 = 936 # (overlay_animate_to_size, <overlay_id>, <duration-in-1/1000-seconds>, <position_no>), #position's x and y values are used as
-overlay_animate_to_position              	= 937 # (overlay_animate_to_position, <overlay_id>, <duration-in-1/1000-seconds>, <position_no>), #position's x and y values are used as
+overlay_animate_to_size                   = 936 # (overlay_animate_to_size, <overlay_id>, <duration-in-1/1000-seconds>, <position_no>), #position's x and y values are used as
+overlay_animate_to_position               = 937 # (overlay_animate_to_position, <overlay_id>, <duration-in-1/1000-seconds>, <position_no>), #position's x and y values are used as
 create_image_button_overlay_with_tableau_material = 938 # (create_image_button_overlay_with_tableau_material, <destination>, <mesh_id>, <tableau_material_id>, <value>), #returns overlay id. value is passed to tableau_material
                                                         # when mesh_id is -1, a default mesh is generated automatically
-create_mesh_overlay_with_tableau_material         = 939 # (create_mesh_overlay_with_tableau_material, <destination>, <mesh_id>, <tableau_material_id>, <value>), #returns overlay id. value is passed to tableau_material
+create_mesh_overlay_with_tableau_material = 939 # (create_mesh_overlay_with_tableau_material, <destination>, <mesh_id>, <tableau_material_id>, <value>), #returns overlay id. value is passed to tableau_material
                                                         # when mesh_id is -1, a default mesh is generated automatically
 create_game_button_overlay                = 940 # (create_game_button_overlay, <destination>, <string_id>), #returns overlay id
 create_in_game_button_overlay             = 941 # (create_in_game_button_overlay, <destination>, <string_id>), #returns overlay id
 create_number_box_overlay                 = 942 # (create_number_box_overlay, <destination>, <min_value>, <max_value>), #returns overlay id
-create_listbox_overlay                    = 943 # (create_list_box_overlay, <destination> #returns overlay id
+create_listbox_overlay                    = 943 # (create_list_box_overlay, <destination>), #returns overlay id
 create_mesh_overlay_with_item_id          = 944 # (create_mesh_overlay_with_item_id, <destination>, <item_id>), #returns overlay id.
 set_container_overlay                     = 945 # (set_container_overlay, <overlay_id>), #sets the container overlay that new overlays will attach to. give -1 to reset
-overlay_get_position                      = 946 # (overlay_get_position, <destination>, <overlay_id>)
+overlay_get_position                      = 946 # (overlay_get_position, <destination>, <overlay_id>),
 overlay_set_display                       = 947 # (overlay_set_display, <overlay_id>, <value>), #shows/hides overlay (1 = show, 0 = hide)
 create_combo_label_overlay                = 948 # (create_combo_label_overlay, <destination>), #returns overlay id
 overlay_obtain_focus                      = 949 # (overlay_obtain_focus, <overlay_id>), #works for textboxes only
 
 overlay_set_tooltip                       = 950 # (overlay_set_tooltip, <overlay_id>, <string_id>),
-overlay_set_container_overlay            	= 951 # (overlay_set_container_overlay, <overlay_id>, <container_overlay_id>) # -1 to reset
-overlay_set_additional_render_height	  = 952 # (overlay_set_additional_render_height, <overlay_id>, <height_adder>),
+overlay_set_container_overlay             = 951 # (overlay_set_container_overlay, <overlay_id>, <container_overlay_id>), # -1 to reset
+overlay_set_additional_render_height      = 952 # (overlay_set_additional_render_height, <overlay_id>, <height_adder>),
+overlay_set_material                      = 956 # (overlay_set_material, <overlay_id>, <string_no>),
 
 show_object_details_overlay               = 960 # (show_object_details_overlay, <value>), #0 = hide, 1 = show
 
-show_item_details                         = 970 # (show_item_details, <item_id>, <position_no>, <show_default_text_or_not>) #show_default_text_or_not should be 1 for showing "default" for default item costs
-close_item_details                        = 971 # (close_item_details)
-show_item_details_with_modifier           = 972 # (show_item_details_with_modifier, <item_id>, <item_modifier>, <position_no>, <show_default_text_or_not>) #show_default_text_or_not should be 1 for showing "default" for default item costs
+show_item_details                         = 970 # (show_item_details, <item_id>, <position_no>, <price_multiplier>), #price_multiplier is percent, usually returned by script_game_get_item_[buy/sell]_price_factor
+close_item_details                        = 971 # (close_item_details),
+show_item_details_with_modifier           = 972 # (show_item_details_with_modifier, <item_id>, <item_modifier>, <position_no>, <price_multiplier>), #price_multiplier is percent, usually returned by script_game_get_item_[buy/sell]_price_factor
 
-context_menu_add_item       = 980 # (right_mouse_menu_add_item, <string_id>, <value>), #must be called only inside script_game_right_mouse_menu_get_buttons
-
-get_average_game_difficulty = 990 # (get_average_game_difficulty, <destination>),
-get_level_boundary = 991 # (get_level_boundary, <destination>, <level_no>),
+context_menu_add_item                     = 980 # (right_mouse_menu_add_item, <string_id>, <value>), #must be called only inside script_game_right_mouse_menu_get_buttons
+auto_save                                 = 985 # (auto_save),
+get_average_game_difficulty               = 990 # (get_average_game_difficulty, <destination>),
+get_level_boundary                        = 991 # (get_level_boundary, <destination>, <level_no>),
 
 
 #-------------------------
@@ -475,7 +489,7 @@ add_quest_note_from_sreg        = 1113 # (add_quest_note_from_sreg,<quest_id>,<n
 add_info_page_note_from_sreg    = 1092 # (add_info_page_note_from_sreg,<info_page_id>,<note_slot_no>,<string_id>, <value>), #There are maximum of 8 slots value = 1 -> shows when the note is added
 
 tutorial_box                    = 1120 # (tutorial_box,<string_id>,<string_id>), #deprecated use dialog_box instead.
-dialog_box                      = 1120 # (tutorial_box,<text_string_id>,<title_string_id>),
+dialog_box                      = 1120 # (dialog_box,<text_string_id>,<title_string_id>),
 question_box                    = 1121 # (question_box,<string_id>, [<yes_string_id>], [<no_string_id>]),
 tutorial_message                = 1122 # (tutorial_message,<string_id>, <color>, <auto_close_time>), #set string_id = -1 for hiding the message
 tutorial_message_set_position   = 1123 # (tutorial_message_set_position, <position_x>, <position_y>), 
@@ -504,7 +518,7 @@ heal_party                      = 1225 # (heal_party,<party_id>),
 
 disable_party                   = 1230 # (disable_party,<party_id>),
 enable_party                    = 1231 # (enable_party,<party_id>),
-remove_party                    = 1232 # (remove_party,<party_id>),
+remove_party                    = 1232 # (remove_party,<party_id>), #remove only active spawned parties or you will corrupt the game! Non-spawned parties may be disabled...
 add_companion_party             = 1233 # (add_companion_party,<troop_id_hero>),
 
 add_troop_to_site               = 1250 # (add_troop_to_site,<troop_id>,<scene_id>,<entry_no>),
@@ -589,10 +603,10 @@ troop_remove_gold                      = 1529	# (troop_remove_gold,<troop_id>,<v
 troop_add_item                         = 1530	# (troop_add_item,<troop_id>,<item_id>,[modifier]),
 troop_remove_item                      = 1531	# (troop_remove_item,<troop_id>,<item_id>),
 troop_clear_inventory                  = 1532	# (troop_clear_inventory,<troop_id>),
-troop_equip_items		       = 1533   # (troop_equip_items,<troop_id>), #equips the items in the inventory automatically
+troop_equip_items                      = 1533   # (troop_equip_items,<troop_id>), #equips the items in the inventory automatically
 troop_inventory_slot_set_item_amount   = 1534   # (troop_inventory_slot_set_item_amount,<troop_id>,<inventory_slot_no>,<value>),
 troop_inventory_slot_get_item_amount   = 1537   # (troop_inventory_slot_get_item_amount,<destination>,<troop_id>,<inventory_slot_no>),
-troop_inventory_slot_get_item_max_amount= 1538  # (troop_inventory_slot_get_item_max_amount,<destination>,<troop_id>,<inventory_slot_no>),
+troop_inventory_slot_get_item_max_amount = 1538  # (troop_inventory_slot_get_item_max_amount,<destination>,<troop_id>,<inventory_slot_no>),
 
 troop_add_items                        = 1535	# (troop_add_items,<troop_id>,<item_id>,<number>),
 troop_remove_items                     = 1536	# puts cost of items to reg0
@@ -617,7 +631,7 @@ item_get_type                          = 1570   # (item_get_type, <destination>,
 party_get_num_companions               = 1601	# (party_get_num_companions,<destination>,<party_id>),
 party_get_num_prisoners                = 1602	# (party_get_num_prisoners,<destination>,<party_id>),
 party_set_flags                        = 1603   # (party_set_flag, <party_id>, <flag>, <clear_or_set>), #sets flags like pf_default_behavior. see header_parties.py for flags.
-party_set_marshall                     = 1604   # (party_set_marshall, <party_id>, <value>)
+party_set_marshal                      = 1604   # (party_set_marshal, <party_id>, <value>)
 party_set_extra_text                   = 1605   # (party_set_extra_text,<party_id>, <string>)
 party_set_aggressiveness               = 1606   # (party_set_aggressiveness, <party_id>, <number>),
 party_set_courage                      = 1607   # (party_set_courage, <party_id>, <number>),
@@ -666,6 +680,8 @@ party_ignore_player                    = 1644   # (party_ignore_player, <party_i
 party_set_bandit_attraction            = 1645   # (party_set_bandit_attraction, <party_id>,<attaraction>), #set how attractive a target the party is for bandits (0..100)
 party_get_helpfulness                  = 1646   # (party_get_helpfulness,<destination>,<party_id>),
 party_set_helpfulness                  = 1647   # (party_set_helpfulness, <party_id>, <number>), #tendency to help friendly parties under attack. (0-10000, 100 default.)
+party_set_ignore_with_player_party     = 1648   # (party_set_ignore_with_player_party, <party_id>, <value>),
+party_get_ignore_with_player_party     = 1649   # (party_get_ignore_with_player_party, <party_id>),
 
 party_get_num_companion_stacks         = 1650   # (party_get_num_companion_stacks,<destination>,<party_id>),
 party_get_num_prisoner_stacks          = 1651   # (party_get_num_prisoner_stacks, <destination>,<party_id>),
@@ -768,7 +784,7 @@ agent_refill_ammo                      = 1728	# (agent_refill_ammo,<agent_id>),
 #agent_refill_wielded_shield_hit_points = 1692   # (agent_refill_wielded_shield_hit_points, <agent_id>),
 agent_has_item_equipped                = 1729	# (agent_has_item_equipped,<agent_id>,<item_id>),
 
-agent_set_scripted_destination         = 1730	# (agent_set_scripted_destination,<agent_id>,<position_no>,<auto_set_z_to_ground_level>), #auto_set_z_to_ground_level can be 0 (false) or 1 (true)
+agent_set_scripted_destination         = 1730	# (agent_set_scripted_destination,<agent_id>,<position_no>,<auto_set_z_to_ground_level>,<no_rethink>), #auto_set_z_to_ground_level can be 0 (false) or 1 (true), no_rethink = 1 to save resources
 agent_get_scripted_destination         = 1731   # (agent_get_scripted_destination,<position_no>,<agent_id>),
 agent_force_rethink                    = 1732 # (agent_force_rethink, <agent_id>),
 agent_set_no_death_knock_down_only     = 1733 # (agent_set_no_death_knock_down_only, <agent_id>, <value>), #0 for disable, 1 for enable
@@ -852,6 +868,7 @@ team_get_order_position                = 1794   # (team_get_order_position, <pos
 team_set_order_listener                = 1795   # (team_set_order_listener, <team_no>, <sub_class>, <value>), #merge with old listeners if value is non-zero #clear listeners if sub_class is less than zero
 team_set_relation                      = 1796   # (team_set_relation, <team_no>, <team_no_2>, <value>), # -1 for enemy, 1 for friend, 0 for neutral
 
+close_order_menu                       = 1789   # (close_order_menu),
 set_rain                               = 1797   # (set_rain,<rain-type>,<strength>), (rain_type: 1= rain, 2=snow ; strength: 0 - 100)
 set_fog_distance                       = 1798   # (set_fog_distance, <distance_in_meters>, [fog_color]),
 get_scene_boundaries                   = 1799   # (get_scene_boundaries, <position_min>, <position_max>),
@@ -917,7 +934,7 @@ prop_instance_animate_to_position      = 1860	# (prop_instance_animate_to_positi
 prop_instance_stop_animating           = 1861	# (prop_instance_stop_animating, <scene_prop_id>),
 prop_instance_is_animating             = 1862   # (prop_instance_is_animating, <destination>, <scene_prop_id>),
 prop_instance_get_animation_target_position = 1863    # (prop_instance_get_animation_target_position, <pos>, <scene_prop_id>)
-prop_instance_enable_physics           = 1864   # (prop_instance_enable_physics, <scene_prop_id>, <value>) #0 for disable, 1 for enable
+prop_instance_enable_physics           = 1864   # (prop_instance_enable_physics, <scene_prop_id>, <value>), #0 for disable, 1 for enable
 prop_instance_rotate_to_position       = 1865	# (prop_instance_rotate_to_position, <scene_prop_id>, position, <duration-in-1/100-seconds>, <total_rotate_angle>),
 prop_instance_initialize_rotation_angles = 1866   # (prop_instance_initialize_rotation_angles, <scene_prop_id>),
 prop_instance_refill_hit_points        = 1870 # (prop_instance_refill_hit_points, <scene_prop_id>), 
@@ -944,6 +961,9 @@ prop_instance_stop_all_particle_systems= 1887 # (prop_instance_stop_all_particle
 replace_prop_instance                  = 1889   # (replace_prop_instance, <scene_prop_id>, <new_scene_prop_id>),
 replace_scene_props                    = 1890   # (replace_scene_props, <old_scene_prop_id>,<new_scene_prop_id>),
 replace_scene_items_with_scene_props   = 1891   # (replace_scene_items_with_scene_props, <old_item_id>,<new_scene_prop_id>),
+
+cast_ray                               = 1900   # (cast_ray, <destination>, <hit_position_register>, <ray_position_register>, [<ray_length_fixed_point>]), #Casts a ray of length [<ray_length_fixed_point>] starting from <ray_position_register> and stores the closest hit position into <hit_position_register> (fails if no hits). If the body hit is a prop instance, its id will be stored into <destination>
+
 #---------------------------
 # Mission Consequence types
 #---------------------------
@@ -973,21 +993,24 @@ particle_system_add_new                = 1965	# (particle_system_add_new,<par_sy
 particle_system_emit                   = 1968	# (particle_system_emit,<par_sys_id>,<value_num_particles>,<value_period>),
 particle_system_burst                  = 1969	# (particle_system_burst,<par_sys_id>,<position_no>,[percentage_burst_strength]),
 
-set_spawn_position                     = 1970   # (set_spawn_position, <position_no>) 
-spawn_item                             = 1971   # (spawn_item, <item_kind_id>, <item_modifier>, [seconds_before_pruning]) #if seconds_before_pruning = 0 then item never gets pruned
+set_spawn_position                     = 1970   # (set_spawn_position, <position_no>), 
+spawn_item                             = 1971   # (spawn_item, <item_kind_id>, <item_modifier>, [seconds_before_pruning]), #if seconds_before_pruning = 0 then item never gets pruned
 spawn_agent                            = 1972	# (spawn_agent,<troop_id>), (stores agent_id in reg0)
-spawn_horse                            = 1973	# (spawn_horse,<item_kind_id>, <item_modifier>)  (stores agent_id in reg0)
-spawn_scene_prop                       = 1974   # (spawn_scene_prop, <scene_prop_id>)  (stores prop_instance_id in reg0) not yet.
+spawn_horse                            = 1973	# (spawn_horse,<item_kind_id>, <item_modifier>),  (stores agent_id in reg0)
+spawn_scene_prop                       = 1974   # (spawn_scene_prop, <scene_prop_id>),  (stores prop_instance_id in reg0) not yet.
 
 particle_system_burst_no_sync		   = 1975	# (particle_system_burst_without_sync,<par_sys_id>,<position_no>,[percentage_burst_strength]),
 
-spawn_item_without_refill              = 1976   # (spawn_item_without_refill, <item_kind_id>, <item_modifier>, [seconds_before_pruning]) #if seconds_before_pruning = 0 then item never gets pruned
+spawn_item_without_refill              = 1976   # (spawn_item_without_refill, <item_kind_id>, <item_modifier>, [seconds_before_pruning]), #if seconds_before_pruning = 0 then item never gets pruned
 agent_get_item_cur_ammo                = 1977	# (agent_get_item_cur_ammo, <destination>, <agent_id>, <slot_no>)
 
+cur_item_add_mesh                      = 1964   # (cur_item_add_mesh, <mesh_name_string_no>, [<lod_begin>], [<lod_end>]), #only call inside ti_on_init_item in module_items # lod values are optional. lod_end is not included.
+cur_item_set_material                  = 1978   # (cur_item_set_material, <string_no>, <sub_mesh_no>, [<lod_begin>], [<lod_end>]), #only call inside ti_on_init_item in module_items # lod values are optional. lod_end is not included.
+
 cur_tableau_add_tableau_mesh           = 1980   # (cur_tableau_add_tableau_mesh, <tableau_material_id>, <value>, <position_register_no>), #value is passed to tableau_material
-cur_item_set_tableau_material          = 1981   # (cur_item_set_tableu_material, <tableau_material_id>, <instance_code>), #only call inside ti_on_init_item in module_items
-cur_scene_prop_set_tableau_material    = 1982   # (cur_scene_prop_set_tableau_material, <tableau_material_id>, <instance_code>), #only call inside ti_on_init_scene_prop in module_scene_props
-cur_map_icon_set_tableau_material      = 1983   # (cur_map_icon_set_tableau_material, <tableau_material_id>, <instance_code>), #only call inside ti_on_init_map_icon in module_scene_props
+cur_item_set_tableau_material          = 1981   # (cur_item_set_tableu_material, <tableau_material_id>, <instance_code>), #only call inside ti_on_init_item in module_items; instance_code is simply passed as a parameter to the tableau
+cur_scene_prop_set_tableau_material    = 1982   # (cur_scene_prop_set_tableau_material, <tableau_material_id>, <instance_code>), #only call inside ti_on_init_scene_prop in module_scene_props; instance_code is simply passed as a parameter to the tableau
+cur_map_icon_set_tableau_material      = 1983   # (cur_map_icon_set_tableau_material, <tableau_material_id>, <instance_code>), #only call inside ti_on_init_map_icon in module_scene_props; instance_code is simply passed as a parameter to the tableau
 cur_tableau_render_as_alpha_mask       = 1984   # (cur_tableau_render_as_alpha_mask)
 cur_tableau_set_background_color       = 1985   # (cur_tableau_set_background_color, <value>),
 cur_agent_set_banner_tableau_material  = 1986   # (cur_agent_set_banner_tableau_material, <tableau_material_id>)
@@ -1012,29 +1035,29 @@ cur_tableau_add_override_item          = 1999   # (cur_tableau_add_override_item
 cur_tableau_add_mesh_with_scale_and_vertex_color = 2000   # (cur_tableau_add_mesh_with_scale_and_vertex_color, <mesh_id>, <position_no>, <position_no>, <value_fixed_point>, <value>),
                                                 # second position_no is x,y,z scale factors (with fixed point values). value fixed point is alpha. value is vertex color. use 0 for default values. scale and vertex_color has no default values.
  
-mission_cam_set_mode                   = 2001   # (mission_cam_set_mode, <mission_cam_mode>, <duration-in-1/1000-seconds>, <value>) # when leaving manual mode, duration defines the animation time from the initial position to the new position. set as 0 for instant camera position update
+mission_cam_set_mode                   = 2001   # (mission_cam_set_mode, <mission_cam_mode>, <duration-in-1/1000-seconds>, <value>), # when leaving manual mode, duration defines the animation time from the initial position to the new position. set as 0 for instant camera position update
                                                                                                                                     # if value = 0, then camera velocity will be linear. else it will be non-linear
 mission_get_time_speed                 = 2002   # (mission_get_time_speed, <destination_fixed_point>),
-mission_set_time_speed                 = 2003   # (mission_set_time_speed, <value_fixed_point>) #this works only when cheat mode is enabled
-mission_time_speed_move_to_value       = 2004   # (mission_speed_move_to_value, <value_fixed_point>, <duration-in-1/1000-seconds>) #this works only when cheat mode is enabled
+mission_set_time_speed                 = 2003   # (mission_set_time_speed, <value_fixed_point>), #this works only when cheat mode is enabled
+mission_time_speed_move_to_value       = 2004   # (mission_speed_move_to_value, <value_fixed_point>, <duration-in-1/1000-seconds>), #this works only when cheat mode is enabled
 mission_set_duel_mode                  = 2006   # (mission_set_duel_mode, <value>), #value: 0 = off, 1 = on
 
 mission_cam_set_screen_color           = 2008   #(mission_cam_set_screen_color, <value>), #value is color together with alpha
 mission_cam_animate_to_screen_color    = 2009   #(mission_cam_animate_to_screen_color, <value>, <duration-in-1/1000-seconds>), #value is color together with alpha
 
-mission_cam_get_position               = 2010   # (mission_cam_get_position, <position_register_no>)
-mission_cam_set_position               = 2011   # (mission_cam_set_position, <position_register_no>)
-mission_cam_animate_to_position        = 2012   # (mission_cam_animate_to_position, <position_register_no>, <duration-in-1/1000-seconds>, <value>) # if value = 0, then camera velocity will be linear. else it will be non-linear
-mission_cam_get_aperture               = 2013   # (mission_cam_get_aperture, <destination>)
-mission_cam_set_aperture               = 2014   # (mission_cam_set_aperture, <value>)
-mission_cam_animate_to_aperture        = 2015   # (mission_cam_animate_to_aperture, <value>, <duration-in-1/1000-seconds>, <value>) # if value = 0, then camera velocity will be linear. else it will be non-linear
-mission_cam_animate_to_position_and_aperture = 2016   # (mission_cam_animate_to_position_and_aperture, <position_register_no>, <value>, <duration-in-1/1000-seconds>, <value>) # if value = 0, then camera velocity will be linear. else it will be non-linear
-mission_cam_set_target_agent           = 2017   # (mission_cam_set_target_agent, <agent_id>, <value>) #if value = 0 then do not use agent's rotation, else use agent's rotation
-mission_cam_clear_target_agent         = 2018   # (mission_cam_clear_target_agent)
+mission_cam_get_position               = 2010   # (mission_cam_get_position, <position_register_no>),
+mission_cam_set_position               = 2011   # (mission_cam_set_position, <position_register_no>),
+mission_cam_animate_to_position        = 2012   # (mission_cam_animate_to_position, <position_register_no>, <duration-in-1/1000-seconds>, <value>), # if value = 0, then camera velocity will be linear. else it will be non-linear
+mission_cam_get_aperture               = 2013   # (mission_cam_get_aperture, <destination>),
+mission_cam_set_aperture               = 2014   # (mission_cam_set_aperture, <value>),
+mission_cam_animate_to_aperture        = 2015   # (mission_cam_animate_to_aperture, <value>, <duration-in-1/1000-seconds>, <value>), # if value = 0, then camera velocity will be linear. else it will be non-linear
+mission_cam_animate_to_position_and_aperture = 2016   # (mission_cam_animate_to_position_and_aperture, <position_register_no>, <value>, <duration-in-1/1000-seconds>, <value>), # if value = 0, then camera velocity will be linear. else it will be non-linear
+mission_cam_set_target_agent           = 2017   # (mission_cam_set_target_agent, <agent_id>, <value>), #if value = 0 then do not use agent's rotation, else use agent's rotation
+mission_cam_clear_target_agent         = 2018   # (mission_cam_clear_target_agent),
 mission_cam_set_animation              = 2019   # (mission_cam_set_animation, <anim_id>),
 
-talk_info_show                         = 2020   # (talk_info_show, <hide_or_show>) :0=hide 1=show
-talk_info_set_relation_bar             = 2021   # (talk_info_set_relation_bar, <value>) :set relation bar to a value between -100 to 100, enter an invalid value to hide the bar.
+talk_info_show                         = 2020   # (talk_info_show, <hide_or_show>), :0=hide 1=show
+talk_info_set_relation_bar             = 2021   # (talk_info_set_relation_bar, <value>), :set relation bar to a value between -100 to 100, enter an invalid value to hide the bar.
 talk_info_set_line                     = 2022   # (talk_info_set_line, <line_no>, <string_no>)
 
 #mesh related
@@ -1046,13 +1069,14 @@ set_game_menu_tableau_mesh             = 2032   # (set_game_menu_tableau_mesh, <
 change_screen_return                   = 2040	# (change_screen_return),
 change_screen_loot                     = 2041	# (change_screen_loot, <troop_id>),
 change_screen_trade                    = 2042	# (change_screen_trade, <troop_id>),
-change_screen_exchange_members         = 2043 # (change_screen_exchange_members, [0,1 = exchange_leader], [party_id]), #if party id is not given, current party will be used
+change_screen_exchange_members         = 2043	# (change_screen_exchange_members, [0,1 = exchange_leader], [party_id]), #if party id is not given, current party will be used
 change_screen_trade_prisoners          = 2044	# (change_screen_trade_prisoners),
 change_screen_buy_mercenaries          = 2045	# (change_screen_buy_mercenaries),
 change_screen_view_character           = 2046	# (change_screen_view_character),
 change_screen_training                 = 2047	# (change_screen_training),
 change_screen_mission                  = 2048	# (change_screen_mission),
 change_screen_map_conversation         = 2049   # (change_screen_map_conversation, <troop_id>),
+                                                # Starts the mission, same as (change_screen_mission). However once the mission starts, player will get into dialog with the specified troop, and once the dialog ends, the mission will automatically end.
 change_screen_exchange_with_party      = 2050   # (change_screen_exchange_with_party, <party_id>),
 change_screen_equip_other              = 2051	# (change_screen_equip_other, <troop_id>),
 change_screen_map                      = 2052
@@ -1062,15 +1086,18 @@ change_screen_give_members             = 2056   # (change_screen_give_members, [
 change_screen_controls                 = 2057   # (change_screen_controls),
 change_screen_options                  = 2058   # (change_screen_options),
 
-
 jump_to_menu                           = 2060	# (jump_to_menu,<menu_id>),
 disable_menu_option                    = 2061   # (disable_menu_option),
 
-store_trigger_param    = 2070  # (store_trigger_param, <destination>, <trigger_param_no>),
-store_trigger_param_1  = 2071  # (store_trigger_param_1,<destination>),
-store_trigger_param_2  = 2072  # (store_trigger_param_2,<destination>),
-store_trigger_param_3  = 2073  # (store_trigger_param_3,<destination>),
-set_trigger_result     = 2075  # (set_trigger_result, <value>),
+store_trigger_param                    = 2070  # (store_trigger_param, <destination>, <trigger_param_no>),
+store_trigger_param_1                  = 2071  # (store_trigger_param_1,<destination>),
+store_trigger_param_2                  = 2072  # (store_trigger_param_2,<destination>),
+store_trigger_param_3                  = 2073  # (store_trigger_param_3,<destination>),
+set_trigger_result                     = 2075  # (set_trigger_result, <value>),
+
+agent_get_bone_position                = 2076 # (agent_get_bone_position, <position_no>, <agent_no>, <bone_no>, [<local_or_global>]), # returns position of bone. Option 0 for local to agent position, 1 for global
+
+agent_ai_set_interact_with_player      = 2077 # (agent_ai_set_interact_with_player, <agent_no>, <value>), # 0 for disable, 1 for enable.
 
 agent_ai_get_look_target               = 2080 # (agent_ai_get_look_target, <destination>, <agent_id>),
 agent_ai_get_move_target               = 2081 # (agent_ai_get_move_target, <destination>, <agent_id>),
@@ -1117,7 +1144,7 @@ val_and                = 2115   #dest, operand ::       dest = dest & operand
 store_or               = 2116   #dest, op1, op2 :      dest = op1 | op2
                                 # (store_or,<destination>,<value>,<value>),
 store_and              = 2117   #dest, op1, op2 :      dest = op1 & op2
-                                # (store_or,<destination>,<value>,<value>),
+                                # (store_and,<destination>,<value>,<value>),
 
 store_mod              = 2119	#dest, op1, op2 :      dest = op1 % op2
 				# (store_mod,<destination>,<value>,<value>),
@@ -1187,9 +1214,13 @@ store_proficiency_level         = 2176	# (store_proficiency_level,<destination>,
 					# (store_troop_health,<destination>,<troop_id>,[absolute]),
 store_relation                  = 2190	# (store_relation,<destination>,<faction_id_1>,<faction_id_2>),
 set_conversation_speaker_troop  = 2197  # (set_conversation_speaker_troop, <troop_id>),
+                                        # Allows to dynamically switch speaking troops during the dialog when developer doesn't know in advance who will be doing the speaking. Should be placed in post-talk code section of dialog entry.
 set_conversation_speaker_agent  = 2198  # (set_conversation_speaker_troop, <agent_id>),
+                                        # Allows to dynamically switch speaking agents during the dialog when developer doesn't know in advance who will be doing the speaking. Should be placed in post-talk code section of dialog entry.
 store_conversation_agent        = 2199 # (store_conversation_agent,<destination>),
+                                        # Stores identifier of agent who is currently speaking.
 store_conversation_troop        = 2200 # (store_conversation_troop,<destination>),
+                                         # Stores identifier of troop who is currently speaking.
 store_partner_faction           = 2201 # (store_partner_faction,<destination>),
 store_encountered_party         = 2202 # (store_encountered_party,<destination>),
 store_encountered_party2        = 2203 # (store_encountered_party2,<destination>),
@@ -1301,17 +1332,81 @@ store_normalized_team_count = 2385 #(store_normalized_team_count,<destination>, 
                                                                                             # and normalizes the result regarding battle_size and advantage.
 set_postfx                  = 2386
 set_river_shader_to_mud     = 2387 #changes river material for muddy env
-show_troop_details          = 2388 #(show_troop_details, <troop_id>, <position>, <troop_price>)
-set_skybox                  = 2389 #(set_skybox, <non_hdr_skybox_index>, <hdr_skybox_index>)	#forces selected skybox for a scene, use -1 to disable 
-set_startup_sun_light       = 2390 #(set_startup_sun_light, <r>, <g>, <b>)	#changes the sun light color
-set_startup_ambient_light   = 2391 #(set_startup_ambient_light, <r>, <g>, <b>)	#changes the ambient light color
-set_startup_ground_ambient_light = 2392 #(set_startup_ground_ambient_light, <r>, <g>, <b>)	#changes the ground ambient light color
-rebuild_shadow_map			= 2393 #(rebuild_shadow_map),
+show_troop_details          = 2388 # (show_troop_details, <troop_id>, <position>, <troop_price>)
+set_skybox                  = 2389 # (set_skybox, <non_hdr_skybox_index>, <hdr_skybox_index>)	#forces selected skybox for a scene, use -1 to disable 
+set_startup_sun_light       = 2390 # (set_startup_sun_light, <r>, <g>, <b>)	#changes the sun light color
+set_startup_ambient_light   = 2391 # (set_startup_ambient_light, <r>, <g>, <b>)	#changes the ambient light color
+set_startup_ground_ambient_light = 2392 # (set_startup_ground_ambient_light, <r>, <g>, <b>)	#changes the ground ambient light color
+rebuild_shadow_map          = 2393 # (rebuild_shadow_map),
 
-set_shader_param_int			= 2400 # (set_shader_param_int, <parameter_name>, <value>),	#Sets the int shader parameter <parameter_name> to <value>
+get_startup_sun_light       = 2394  # (get_startup_sun_light, <position_no>),
+get_startup_ambient_light   = 2395  # (get_startup_ambient_light, <position_no>),
+get_startup_ground_ambient_light = 2396 # (get_startup_ground_ambient_light, <position_no>),
+
+set_shader_param_int        = 2400 # (set_shader_param_int, <parameter_name>, <value>),	#Sets the int shader parameter <parameter_name> to <value>
 set_shader_param_float			= 2401 # (set_shader_param_float, <parameter_name>, <value>),	#Sets the float shader parameter <parameter_name> to <value>
 set_shader_param_float4			= 2402 # (set_shader_param_float4, <parameter_name>, <valuex>, <valuey>, <valuez>, <valuew>),	#Sets the float4 shader parameter <parameter_name> to <valuex/y/z/w>
 set_shader_param_float4x4		= 2403 # (set_shader_param_float4x4, <parameter_name>, [0][0], [0][1], [0][2], [1][0], [1][1], [1][2], [2][0], [2][1], [2][2], [3][0], [3][1], [3][2]),	#Sets the float4x4 shader parameter <parameter_name> to the given values .w components are 0001 by default
+
+prop_instance_deform_to_time              = 2610 # (prop_instance_deform_to_time, <prop_instance_no>, <value>), # value gives the vertex animation time.
+prop_instance_deform_in_range             = 2611 # (prop_instance_deform_in_range, <prop_instance_no>, <start_frame>, <end_frame>, <duration-in-1/1000-seconds>), #play animation from start frame to end frame
+prop_instance_deform_in_cycle_loop        = 2612 # (prop_instance_deform_in_cycle_loop, <prop_instance_no>, <start_frame>, <end_frame>, <duration-in-1/1000-seconds> #cyclical animation within start-end frame
+prop_instance_get_current_deform_progress = 2615 # (prop_instance_get_current_deform_progress, <destination>, <prop_instance_no>), #returns a percentage value between 0 and 100 if animation is still in progress. returns 100 otherwise.
+prop_instance_get_current_deform_frame    = 2616 # (prop_instance_get_current_deform_frame, <destination>, <prop_instance_no>), #returns current frame with round to nearest
+prop_instance_set_material                = 2617 # (prop_instance_set_material, <prop_instance_no>, <sub_mesh_no>, <string_register>), #give sub mesh as -1 to change all meshes' materials.
+
+agent_ai_get_num_cached_enemies       = 2670 # (agent_ai_get_num_cached_enemies, <destination>, <agent_no>),  #nearby enemies, nearest to farthest
+agent_ai_get_cached_enemy             = 2671 # (agent_ai_get_cached_enemy, <destination>, <agent_no>, <cache_index>), #this operation may return -1 if the cached enemy is not active anymore
+
+item_get_weight                       = 2700 # (item_get_weight, <destination_fixed_point>, <item_kind_no>), #Stores <item_kind_no>'s weight into <destination_fixed_point>
+item_get_value                        = 2701 # (item_get_value, <destination>, <item_kind_no>), #Stores <item_kind_no>'s value into <destination>
+item_get_difficulty                   = 2702 # (item_get_difficulty, <destination>, <item_kind_no>), #Stores <item_kind_no>'s difficulty into <destination>
+item_get_head_armor                   = 2703 # (item_get_head_armor, <destination>, <item_kind_no>), #Stores <item_kind_no>'s head armor into <destination>
+item_get_body_armor                   = 2704 # (item_get_body_armor, <destination>, <item_kind_no>), #Stores <item_kind_no>'s body armor into <destination>
+item_get_leg_armor                    = 2705 # (item_get_leg_armor, <destination>, <item_kind_no>), #Stores <item_kind_no>'s leg armor into <destination>
+item_get_hit_points                   = 2706 # (item_get_hit_points, <destination>, <item_kind_no>), #Stores <item_kind_no>'s hit points into <destination>
+item_get_weapon_length                = 2707 # (item_get_weapon_length, <destination>, <item_kind_no>), #Stores <item_kind_no>'s weapon length into <destination>
+item_get_speed_rating                 = 2708 # (item_get_speed_rating, <destination>, <item_kind_no>), #Stores <item_kind_no>'s speed rating into <destination>
+item_get_missile_speed                = 2709 # (item_get_missile_speed, <destination>, <item_kind_no>), #Stores <item_kind_no>'s missile speed into <destination>
+item_get_max_ammo                     = 2710 # (item_get_max_ammo, <destination>, <item_kind_no>), #Stores <item_kind_no>'s max ammo into <destination>
+item_get_accuracy                     = 2711 # (item_get_accuracy, <destination>, <item_kind_no>), #Stores <item_kind_no>'s accuracy into <destination>
+item_get_shield_height                = 2712 # (item_get_shield_height, <destination_fixed_point>, <item_kind_no>), #Stores <item_kind_no>'s shield height into <destination>
+item_get_horse_scale                  = 2713 # (item_get_horse_scale, <destination_fixed_point>, <item_kind_no>), #Stores <item_kind_no>'s horse scale into <destination>
+item_get_horse_speed                  = 2714 # (item_get_horse_speed, <destination>, <item_kind_no>), #Stores <item_kind_no>'s horse speed into <destination>
+item_get_horse_maneuver               = 2715 # (item_get_horse_maneuver, <destination>, <item_kind_no>), #Stores <item_kind_no>'s horse maneuver into <destination>
+item_get_food_quality                 = 2716 # (item_get_food_quality, <destination>, <item_kind_no>), #Stores <item_kind_no>'s food quality into <destination>
+item_get_abundance                    = 2717 # (item_get_abundance, <destination>, <item_kind_no>), #Stores <item_kind_no>'s abundance into <destination>
+item_get_thrust_damage                = 2718 # (item_get_thrust_damage, <destination>, <item_kind_no>), #Stores <item_kind_no>'s thrust damage into <destination>
+item_get_thrust_damage_type           = 2719 # (item_get_thrust_damage_type, <destination>, <item_kind_no>), #Stores <item_kind_no>'s thrust damage type into <destination>
+item_get_swing_damage                 = 2720 # (item_get_swing_damage, <destination>, <item_kind_no>), #Stores <item_kind_no>'s thrust damage into <destination>
+item_get_swing_damage_type            = 2721 # (item_get_swing_damage_type, <destination>, <item_kind_no>), #Stores <item_kind_no>'s thrust damage type into <destination>
+item_get_horse_charge_damage          = 2722 # (item_get_horse_charge_damage, <destination>, <item_kind_no>), #Stores <item_kind_no>'s thrust damage into <destination>
+item_has_property                     = 2723 # (item_has_property, <item_kind_no>, <property>), #Fails if <item_kind_no> doesn't have <property>
+item_has_capability                   = 2724 # (item_has_capability, <item_kind_no>, <capability>), #Fails if <item_kind_no> doesn't have <capability>
+item_has_modifier                     = 2725 # (item_has_modifier, <item_kind_no>, <item_modifier_no>), #Fails if <item_modifier_no> is not a valid modifier for <item_kind_no> # use imod_xxx instead of imodbit_xxx
+item_has_faction                      = 2726 # (item_has_faction, <item_kind_no>, <faction_no>), #Fails if <item_kind_no> doesn't have <faction_no> in its faction list
+
+str_store_player_face_keys            = 2747 # (str_store_player_face_keys, <string_no>, <player_id>), #Stores <player_id>'s face key into string.
+player_set_face_keys                  = 2748 # (player_set_face_keys, <player_id>, <string_no>), #Sets <player_id>'s face keys from string.
+str_store_troop_face_keys             = 2750 # (str_store_troop_face_keys, <string_no>, <troop_no>, [<alt>]), #Stores <troop_no>'s face key into string. if [<alt>] is non-zero the second pair of face keys is stored
+troop_set_face_keys                   = 2751 # (troop_set_face_keys, <troop_no>, <string_no>, [<alt>]), #Sets <troop_no>'s face keys from string. if [<alt>] is non-zero the second pair of face keys is set.
+face_keys_get_hair                    = 2752 # (face_keys_get_hair, <destination>, <string_no>), #Stores face key's hair value into <destination>
+face_keys_set_hair                    = 2753 # (face_keys_set_hair, <string_no>, <value>), #Sets face key's hair value
+face_keys_get_beard                   = 2754 # (face_keys_get_beard, <destination>, <string_no>), #Stores face key's beard value into <destination>
+face_keys_set_beard                   = 2755 # (face_keys_set_beard, <string_no>, <value>), #Sets face key's beard value
+face_keys_get_face_texture            = 2756 # (face_keys_get_face_texture, <destination>, <string_no>), #Stores face key's face texture value into <destination>
+face_keys_set_face_texture            = 2757 # (face_keys_set_face_texture, <string_no>, <value>), #Sets face key's face texture value
+face_keys_get_hair_texture            = 2758 # (face_keys_get_hair_texture, <destination>, <string_no>), #Stores face key's hair texture value into <destination>
+face_keys_set_hair_texture            = 2759 # (face_keys_set_hair_texture, <string_no>, <value>), #Sets face key's hair texture value
+face_keys_get_hair_color              = 2760 # (face_keys_get_hair_color, <destination>, <string_no>), #Stores face key's hair color value into <destination>
+face_keys_set_hair_color              = 2761 # (face_keys_set_hair_color, <string_no>, <value>), #Sets face key's hair color value
+face_keys_get_age                     = 2762 # (face_keys_get_age, <destination>, <string_no>), #Stores face key's age value into <destination>
+face_keys_set_age                     = 2763 # (face_keys_set_age, <string_no>, <value>), #Sets face key's age value
+face_keys_get_skin_color              = 2764 # (face_keys_get_skin_color, <destination>, <string_no>), #Stores face key's skin color value into <destination>
+face_keys_set_skin_color              = 2765 # (face_keys_set_skin_color, <string_no>, <value>), #Sets face key's skin color value
+face_keys_get_morph_key               = 2766 # (face_keys_get_morph_key, <destination>, <string_no>, <key_no>), #Stores face key's morph key value (0-7) into <destination>
+face_keys_set_morph_key               = 2767 # (face_keys_set_morph_key, <string_no>, <key_no>, <value>), #Sets face key's morph key value (0-7)
+
 
 #-------------------------------------------
 
@@ -1320,10 +1415,13 @@ lhs_operations = [try_for_range,
                   try_for_range_backwards,
                   try_for_parties,
                   try_for_agents,
+                  try_for_prop_instances,
+                  try_for_players,
                   store_script_param_1,
                   store_script_param_2,
                   store_script_param,
                   store_repeat_object,
+				  get_operation_set_version,
                   get_global_cloud_amount,
                   get_global_haze_amount,
                   options_get_damage_to_player,
@@ -1331,6 +1429,7 @@ lhs_operations = [try_for_range,
                   options_get_combat_ai,
                   options_get_campaign_ai,
                   options_get_combat_speed,
+				  options_get_battle_size,
                   profile_get_banner_id,
                   get_achievement_stat,
                   get_max_players,
@@ -1433,6 +1532,7 @@ lhs_operations = [try_for_range,
                   troop_get_inventory_slot_modifier,
                   troop_get_upgrade_troop,
                   item_get_type,
+                  item_get_missile_speed,
                   party_get_num_companions,
                   party_get_num_prisoners,
                   party_get_current_terrain,
@@ -1443,6 +1543,7 @@ lhs_operations = [try_for_range,
                   party_get_free_companions_capacity,
                   party_get_free_prisoners_capacity,
                   party_get_helpfulness,
+                  party_get_ignore_with_player_party,
                   party_get_ai_initiative,
                   party_get_num_companion_stacks,
                   party_get_num_prisoner_stacks,
@@ -1504,7 +1605,7 @@ lhs_operations = [try_for_range,
                   agent_get_ammo_for_slot,
                   agent_deliver_damage_to_agent_advanced,
                   team_get_gap_distance,
-                  add_missile,
+                  # add_missile,    MOTO causes local variable unused warnings?
                   scene_item_get_num_instances,
                   scene_item_get_instance,
                   scene_spawned_item_get_num_instances,
@@ -1517,6 +1618,7 @@ lhs_operations = [try_for_range,
                   prop_instance_get_scene_prop_kind,
                   prop_instance_is_animating,
                   prop_instance_get_animation_target_position,
+                  cast_ray,
                   agent_get_item_cur_ammo,
                   mission_get_time_speed,
                   mission_cam_get_aperture,
@@ -1612,6 +1714,44 @@ lhs_operations = [try_for_range,
                   store_defender_count,
                   store_attacker_count,
                   store_normalized_team_count,
+				  prop_instance_get_current_deform_progress,
+				  prop_instance_get_current_deform_frame,
+				  agent_ai_get_num_cached_enemies,
+				  agent_ai_get_cached_enemy,
+                  item_get_weight,
+                  item_get_value,
+                  item_get_difficulty,
+                  item_get_head_armor,
+                  item_get_body_armor,
+                  item_get_leg_armor,
+                  item_get_hit_points,
+                  item_get_weapon_length,
+                  item_get_speed_rating,
+                  item_get_missile_speed,
+                  item_get_max_ammo,
+                  item_get_accuracy,
+                  item_get_shield_height,
+                  item_get_horse_scale,
+                  item_get_horse_speed,
+                  item_get_horse_maneuver,
+                  item_get_food_quality,
+                  item_get_abundance,
+                  item_get_thrust_damage,
+                  item_get_thrust_damage_type,
+                  item_get_swing_damage,
+                  item_get_swing_damage_type,
+                  item_get_horse_charge_damage,
+                  get_startup_sun_light,
+                  get_startup_ambient_light,
+                  get_startup_ground_ambient_light,
+                  face_keys_get_hair,
+                  face_keys_get_beard,
+                  face_keys_get_face_texture,
+                  face_keys_get_hair_texture,
+                  face_keys_get_hair_color,
+                  face_keys_get_age,
+                  face_keys_get_skin_color,
+                  face_keys_get_morph_key
                   ]
 global_lhs_operations = [val_lshift,
                          val_rshift,
@@ -1722,6 +1862,7 @@ can_fail_operations = [ge,
                        scene_item_get_instance,
                        scene_allows_mounted_units,
                        prop_instance_is_valid,
+                       cast_ray,
                        prop_instance_intersects_with_prop_instance,
                        agent_has_item_equipped,
                        map_get_land_position_around_position,
@@ -1729,5 +1870,9 @@ can_fail_operations = [ge,
                        is_zoom_disabled,
                        is_currently_night,
                        store_random_party_of_template,
-                       str_is_empty
+                       str_is_empty,
+					   item_has_property,
+                       item_has_capability,
+                       item_has_modifier,
+                       item_has_faction
                        ]

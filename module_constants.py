@@ -79,6 +79,9 @@ slot_agent_in_duel_with           = 21
 slot_agent_duel_start_time        = 22
 
 slot_agent_walker_occupation      = 25
+#Equipment cost fix
+slot_agent_bought_horse           = 26
+###
     
 ########################################################
 ##  FACTION SLOTS          #############################

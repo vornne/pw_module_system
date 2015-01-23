@@ -113,6 +113,16 @@ ti_on_init_map_icon                   = -70.0 #can only be used in module_map_ic
 ti_on_order_issued					  = -71.0 #can only be used in module_mission_templates triggers
 # Trigger Param 1: order no
 # Trigger Param 2: agent id
+ti_on_switch_to_map                   = -75.0
+ti_scene_prop_deformation_finished    = -76.0 #can only be used in module_scene_props triggers
+# Trigger Param 1: prop instance number
+ti_on_shield_hit                      = -80.0 # can only be used in module_items triggers
+# Trigger Param 1: receiver agent no
+# Trigger Param 2: dealer agent no
+# Trigger Param 3: inflicted damage
+# Trigger Param 4: item kind no
+# Trigger Param 5: missile item kind no
+# Trigger Result: if set, damage dealt to shield
 
 
 ti_once        = 100000000.0
@@ -237,8 +247,8 @@ key_xbox_dpad_right     = 0xf6
 key_xbox_dpad_left      = 0xf7
 key_xbox_start          = 0xf8
 key_xbox_back           = 0xf9
-key_xbox_rbumber        = 0xfa
-key_xbox_lbumber        = 0xfb
+key_xbox_rbumper        = 0xfa
+key_xbox_lbumper        = 0xfb
 key_xbox_ltrigger       = 0xfc
 key_xbox_rtrigger       = 0xfd
 key_xbox_rstick         = 0xfe      
