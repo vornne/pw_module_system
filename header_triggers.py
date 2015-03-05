@@ -37,6 +37,8 @@ ti_on_agent_spawn                                 = -25.0
 ti_on_agent_killed_or_wounded                     = -26.0
 # trigger param 1: dead agent id
 # trigger param 2: killer agent id
+# trigger param 3: 0 = killed, 1 = wounded
+# trigger result: 1 = force kill, 2 = force wounded
 
 ti_on_agent_knocked_down                          = -27.0
 # trigger param 1: knocked down agent id
@@ -46,6 +48,8 @@ ti_on_agent_hit                                   = -28.0
 # trigger param 1: hit agent id
 # trigger param 2: attacker agent id
 # trigger param 3: inflicted damage
+# trigger param 4: hit bone
+# trigger param 5: missile item id
 # reg0: attacker item_id
 # pos0: position of the blow, rotation gives the direction of the blow
 # trigger result: if greater than or equal to zero, inflicted damage is set to the value specified
@@ -63,7 +67,12 @@ ti_on_scene_prop_init                             = -40.0
 
 ti_on_scene_prop_hit                              = -42.0
 # trigger param 1: instance id
-# trigger param 2: hit damage
+# trigger param 2: hit damage (server only)
+# trigger param 3: attacker agent id (server only)
+# trigger param 4: weapon item id (server only)
+# trigger param 5: weapon item modifier (server only)
+# trigger param 6: missile item id (server only)
+# trigger param 7: missile item modifier (server only)
 # pos1: hit position
 # pos2: x holds attacker agent id, use (set_fixed_point_multiplier, 1)
 # trigger result: if greater than or equal to zero, inflicted damage is set to the value specified
@@ -98,6 +107,8 @@ ti_scene_prop_deformation_finished                = -76.0
 # ITEM TRIGGERS
 #-----------------------------------------------------------------------------
 ti_on_init_item                                   = -50.0
+# trigger param 1: agent id
+# trigger param 2: troop id
 
 ti_on_weapon_attack                               = -51.0
 # trigger param 1: attacker agent id
@@ -105,7 +116,7 @@ ti_on_weapon_attack                               = -51.0
 
 ti_on_missile_hit                                 = -52.0
 # trigger param 1: shooter agent id
-# trigger param 2: collision_type: 0 = world, 1 = agent, 2 = dynamic prop, 3 = world, 4 = mission object, 8 = friend, 9 = neutral agent, 10 = under water
+# trigger param 2: collision_type: 0 = world terrain, 1 = hostile agent, 2 = dynamic prop, 3 = world prop (flora), 4 = mission object (scene prop), 8 = friendly agent, 9 = neutral agent, 10 = under water
 # pos1: missile position
 
 ti_on_shield_hit                                  = -80.0

@@ -46,8 +46,10 @@ itp_food                 = 0x0000000000080000
 
 itp_cant_reload_on_horseback = 0x0000000000100000
 itp_two_handed               = 0x0000000000200000
-itp_primary                  = 0x0000000000400000
-itp_secondary                = 0x0000000000800000
+itp_primary                  = 0x0000000000400000 # for weapons
+itp_replaces_helm            = 0x0000000000400000 # for armor, allows body armor items which include helmet
+itp_secondary                = 0x0000000000800000 # for weapons
+itp_replaces_shoes           = 0x0000000000800000 # for armor, allows body armor items which include boots
 itp_covers_legs              = 0x0000000001000000
 itp_doesnt_cover_hair        = 0x0000000001000000
 itp_can_penetrate_shield     = 0x0000000001000000
