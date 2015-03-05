@@ -91,6 +91,9 @@ ti_on_scene_prop_cancel_use                       = -48.0
 # trigger param 1: agent id
 # trigger param 2: instance id
 
+ti_scene_prop_deformation_finished                = -76.0
+# trigger param 1: instance id
+
 #-----------------------------------------------------------------------------
 # ITEM TRIGGERS
 #-----------------------------------------------------------------------------
@@ -104,6 +107,14 @@ ti_on_missile_hit                                 = -52.0
 # trigger param 1: shooter agent id
 # trigger param 2: collision_type: 0 = world, 1 = agent, 2 = dynamic prop, 3 = world, 4 = mission object, 8 = friend, 9 = neutral agent, 10 = under water
 # pos1: missile position
+
+ti_on_shield_hit                                  = -80.0
+# trigger param 1: defender agent id
+# trigger param 2: attacker agent id
+# trigger param 3: inflicted damage
+# trigger param 4: weapon item id
+# trigger param 5: missile item id
+# trigger result: if set, override damage dealt to shield
 
 #-----------------------------------------------------------------------------
 # MISSION TEMPLATE TRIGGERS
@@ -159,10 +170,12 @@ ti_on_presentation_mouse_press                    = -64.0
 # trigger param 2: 0 = left button, 1 = right button, 2 = middle button
 
 #-----------------------------------------------------------------------------
-# MAP ICON TRIGGERS
+# MAP TRIGGERS
 #-----------------------------------------------------------------------------
 ti_on_init_map_icon                               = -70.0
 # trigger param 1: id of the owner party
+
+ti_on_switch_to_map                               = -75.0
 
 trigger_names = dict((trigger, name) for name, trigger in globals().iteritems() if isinstance(trigger, float))
 
@@ -291,8 +304,8 @@ key_xbox_dpad_right = 0xf6
 key_xbox_dpad_left = 0xf7
 key_xbox_start = 0xf8
 key_xbox_back = 0xf9
-key_xbox_rbumber = 0xfa
-key_xbox_lbumber = 0xfb
+key_xbox_rbumper = 0xfa
+key_xbox_lbumper = 0xfb
 key_xbox_ltrigger = 0xfc
 key_xbox_rtrigger = 0xfd
 key_xbox_rstick = 0xfe

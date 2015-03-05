@@ -5,9 +5,9 @@ strings = [
   ("no", "No."),
 # Strings before this point are hardwired.
   ("credits_0", "Persistent World Module^Copyright 2010 Steven Schwartfeger (Vornne)"),
-  ("credits_1", "Mount&Blade: Warband Copyright 2008-2010 Taleworlds Entertainment"),
+  ("credits_1", "Mount&Blade: Warband Copyright 2008-2014 Taleworlds Entertainment"),
   ("credits_2", "Game design:^Armagan Yavuz^Steve Negus^Cem Cimenbicer"),
-  ("credits_3", "Programming:^Armagan Yavuz^Cem Cimenbicer^Serdar Kocdemir^Ozan Gumus"),
+  ("credits_3", "Programming:^Armagan Yavuz^Cem Cimenbicer^Serdar Kocdemir^Ozan Gumus^Mustafa Korkmaz^^Additional Programming:^Gokhan Uras^M. Furkan Yilmaz"),
   ("credits_4", "CG Artists:^Ozgur Saral^Mustafa Ozturk^Pinar Cekic^Ozan Unlu^Yigit Savtur^Umit Singil"),
   ("credits_5", "Concept Artist:^Ganbat Badamkhand"),
   ("credits_6", "Writing:^Steve Negus^Armagan Yavuz^Ryan A. Span"),
@@ -93,6 +93,7 @@ GeN76^\
 General_Hospital^\
 GhosTR^\
 glustrod^\
+Gubbo^\
 guspav^\
 Halcyon^\
 Harn^\
