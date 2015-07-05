@@ -1697,6 +1697,8 @@ scripts.extend([
   ("game_get_skill_modifier_for_troop", []),
   ("game_check_party_sees_party", []),
   ("game_get_party_speed_multiplier", []),
+  ("game_troop_upgrades_button_clicked", []),
+  ("game_character_screen_requested", []),
 
   ("game_missile_launch", # called by the game whenever a missile is shot or thrown
    [#(store_script_param, ":agent_id", 1),
