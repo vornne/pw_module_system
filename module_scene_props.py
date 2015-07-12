@@ -2842,6 +2842,7 @@ scene_props = [
   ("pw_buy_surgeon_scalpel",spr_buy_item_flags(8),"dagger_b_scabbard","bo_pw_weapon_small", spr_buy_item_triggers("itm_surgeon_scalpel", resources=["itm_iron_piece"], engineer=4)),
   ("pw_buy_dagger",spr_buy_item_flags(3),"scab_dagger","bo_pw_weapon_small", spr_buy_item_triggers("itm_dagger", resources=["itm_iron_bar_short"], engineer=3)),
   ("pw_buy_poisoned_dagger",spr_buy_item_flags(20),"scab_dagger","bo_pw_weapon_small", spr_buy_item_triggers("itm_poisoned_dagger", resources=["itm_dagger", "itm_poison_herb"], engineer=4)),
+  ("pw_buy_thin_lance",spr_buy_item_flags(3),"spear_d_2-8m","bo_pw_weapon_big", spr_buy_item_triggers("itm_thin_lance", resources=["itm_wood_pole", "itm_iron_piece"], engineer=2)),
   ("pw_buy_torch",spr_use_time(1),"pw_torch","bo_pw_weapon_small", spr_buy_item_triggers("itm_torch", resources=["itm_stick"], engineer=1)),
   ("pw_buy_banner",spr_use_time(4),"pw_banner_pole_only","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01")),
   ("pw_buy_banner_mercenary",spr_use_time(5),"pw_banner_pole_only","bo_pw_banner_pole", spr_buy_banner_triggers("itm_pw_banner_pole_a01", mercenary=True)),
