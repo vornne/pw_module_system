@@ -20,7 +20,7 @@ function check_player_name_actions($db)
       $stmt->execute(array($id));
       if (!$row = $stmt->fetch(PDO::FETCH_OBJ)) return;
       $stmt = $db->prepare("INSERT INTO admin_permissions (unique_id, server_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE server_id = server_id");
-      $stmt->execute(array($row->unique_id, $_SESSION[server_id]));
+      $stmt->execute(array($row->unique_id, $_SESSION["server_id"]));
     }
   }
   if ($set_permissions)

@@ -393,7 +393,7 @@ scripts.extend([
         (player_get_unique_id, ":player_unique_id", ":player_id"),
         (eq, ":player_unique_id", ":unique_id"),
         (try_begin), # normal name server responses
-          (gt, ":return_code", 0),
+          (ge, ":return_code", 0),
           (try_begin), # admin permissions were received
             (ge, ":integer_count", 4),
             (player_is_admin, ":player_id"),
@@ -429,6 +429,8 @@ scripts.extend([
           (try_end),
           (server_add_message_to_log, "str_name_server_log_s10"),
         (try_end),
+      (else_try),
+        (eq, ":return_code", 0), # reply from server startup check
       (else_try),
         (server_add_message_to_log, "str_name_server_invalid_response"),
       (try_end),
