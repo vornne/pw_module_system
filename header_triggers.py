@@ -37,6 +37,8 @@ ti_on_agent_spawn                                 = -25.0
 ti_on_agent_killed_or_wounded                     = -26.0
 # trigger param 1: dead agent id
 # trigger param 2: killer agent id
+# trigger param 3: 0 = killed, 1 = wounded
+# trigger result: 1 = force kill, 2 = force wounded
 
 ti_on_agent_knocked_down                          = -27.0
 # trigger param 1: knocked down agent id
@@ -72,7 +74,12 @@ ti_on_scene_prop_init                             = -40.0
 
 ti_on_scene_prop_hit                              = -42.0
 # trigger param 1: instance id
-# trigger param 2: hit damage
+# trigger param 2: hit damage (server only)
+# trigger param 3: attacker agent id (server only)
+# trigger param 4: weapon item id (server only)
+# trigger param 5: weapon item modifier (server only)
+# trigger param 6: missile item id (server only)
+# trigger param 7: missile item modifier (server only)
 # pos1: hit position
 # pos2: x holds attacker agent id, use (set_fixed_point_multiplier, 1)
 # trigger result: if greater than or equal to zero, inflicted damage is set to the value specified
@@ -100,6 +107,9 @@ ti_on_scene_prop_cancel_use                       = -48.0
 # trigger param 1: agent id
 # trigger param 2: instance id
 
+ti_scene_prop_deformation_finished                = -76.0
+# trigger param 1: instance id
+
 ti_on_scene_prop_stepped_on                       = -100.0
 # trigger param 1: agent id
 # trigger param 2: prop instance id
@@ -108,6 +118,8 @@ ti_on_scene_prop_stepped_on                       = -100.0
 # ITEM TRIGGERS
 #-----------------------------------------------------------------------------
 ti_on_init_item                                   = -50.0
+# trigger param 1: agent id
+# trigger param 2: troop id
 
 ti_on_weapon_attack                               = -51.0
 # trigger param 1: attacker agent id
@@ -115,8 +127,16 @@ ti_on_weapon_attack                               = -51.0
 
 ti_on_missile_hit                                 = -52.0
 # trigger param 1: shooter agent id
-# trigger param 2: collision_type: 0 = world, 1 = agent, 2 = dynamic prop, 3 = world, 4 = mission object, 8 = friend, 9 = neutral agent, 10 = under water
+# trigger param 2: collision_type: 0 = world terrain, 1 = hostile agent, 2 = dynamic prop, 3 = world prop (flora), 4 = mission object (scene prop), 8 = friendly agent, 9 = neutral agent, 10 = under water
 # pos1: missile position
+
+ti_on_shield_hit                                  = -80.0
+# trigger param 1: defender agent id
+# trigger param 2: attacker agent id
+# trigger param 3: inflicted damage
+# trigger param 4: weapon item id
+# trigger param 5: missile item id
+# trigger result: if set, override damage dealt to shield
 
 ti_on_init_missile                                = -101.0
 # trigger param 1: shooter agent id
@@ -189,10 +209,12 @@ ti_on_presentation_mouse_press                    = -64.0
 # trigger param 2: 0 = left button, 1 = right button, 2 = middle button
 
 #-----------------------------------------------------------------------------
-# MAP ICON TRIGGERS
+# MAP TRIGGERS
 #-----------------------------------------------------------------------------
 ti_on_init_map_icon                               = -70.0
 # trigger param 1: id of the owner party
+
+ti_on_switch_to_map                               = -75.0
 
 trigger_names = dict((trigger, name) for name, trigger in globals().iteritems() if isinstance(trigger, float))
 
@@ -321,8 +343,8 @@ key_xbox_dpad_right = 0xf6
 key_xbox_dpad_left = 0xf7
 key_xbox_start = 0xf8
 key_xbox_back = 0xf9
-key_xbox_rbumber = 0xfa
-key_xbox_lbumber = 0xfb
+key_xbox_rbumper = 0xfa
+key_xbox_lbumper = 0xfb
 key_xbox_ltrigger = 0xfc
 key_xbox_rtrigger = 0xfd
 key_xbox_rstick = 0xfe

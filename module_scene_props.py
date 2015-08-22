@@ -58,20 +58,25 @@ def spr_item_init_trigger(item_id, use_string=None, tableau=None, stockpile=Fals
   if stockpile is True:
     init_trigger[1].extend([
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count_update_time, -1),
-      (prop_instance_get_variation_id_2, ":initial_stock_count", ":instance_id")])
+      (try_begin),
+        (neq, "$g_game_type", "mt_quick_battle"),
+        (prop_instance_get_variation_id_2, ":initial_stock_count", ":instance_id")])
     if resource_stock_count is True:
-      init_trigger[1].extend([(val_mod, ":initial_stock_count", 10),
+      init_trigger[1].extend([
+        (val_mod, ":initial_stock_count", 10),
         (val_mul, ":initial_stock_count", 10),
         (scene_prop_set_slot, ":instance_id", slot_scene_prop_is_resource_stockpile, 1)])
-    init_trigger[1].extend([(val_mul, ":initial_stock_count", "$g_initial_stockpile_multiplier"),
-      (val_div, ":initial_stock_count", 100),
-      (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count, ":initial_stock_count")])
+    init_trigger[1].extend([
+        (val_mul, ":initial_stock_count", "$g_initial_stockpile_multiplier"),
+        (val_div, ":initial_stock_count", 100),
+        (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count, ":initial_stock_count"),
+      (try_end)])
   if price_multiplier is not None:
     init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_multiplier, price_multiplier))
   return init_trigger
 
 # Helper to generate a trigger that just passes the parameters on to a script.
-def spr_call_script_trigger(script_name, trigger_type, *args):
+def spr_call_script_trigger(trigger_type, script_name, *args):
   use_trigger = (trigger_type,
      [(store_trigger_param_1, ":agent_id"),
       (store_trigger_param_2, ":instance_id"),
@@ -83,11 +88,15 @@ def spr_call_script_trigger(script_name, trigger_type, *args):
 
 # Helper to generate a trigger that calls a script after completely using.
 def spr_call_script_use_trigger(script_name, *args):
-  return spr_call_script_trigger(script_name, ti_on_scene_prop_use, *args)
+  return spr_call_script_trigger(ti_on_scene_prop_use, script_name, *args)
+
+# Helper to generate a trigger that calls a script after starting usage.
+def spr_call_script_start_use_trigger(script_name, *args):
+  return spr_call_script_trigger(ti_on_scene_prop_start_use, script_name, *args)
 
 # Helper to generate a trigger that calls a script after canceling usage.
 def spr_call_script_cancel_use_trigger(script_name, *args):
-  return spr_call_script_trigger(script_name, ti_on_scene_prop_cancel_use, *args)
+  return spr_call_script_trigger(ti_on_scene_prop_cancel_use, script_name, *args)
 
 def spr_buy_item_flags(use_time=1):
   use_time = max(use_time, 1)
@@ -157,8 +166,15 @@ def spr_buy_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_strin
     if average_craft_skill > 0:
       init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_average_craft_skill, min(max(average_craft_skill, 1), 10)))
     crafting_data.append([item_id, accepted_skills, resources, resource_list, average_craft_skill])
-    init_trigger[1].append((scene_prop_set_slot, ":instance_id", slot_scene_prop_resources_default_cost, lazy.add(
-        lazy.price(resource_list[0]), lazy.price(resource_list[1]), lazy.price(resource_list[2]), lazy.price(resource_list[3]))))
+    init_trigger[1].extend([
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_resources_default_cost, lazy.add(
+        lazy.price(resource_list[0]), lazy.price(resource_list[1]), lazy.price(resource_list[2]), lazy.price(resource_list[3]))),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_resource_refund_cost, -1),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_crafting_resource_1, resource_list[0]),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_crafting_resource_2, resource_list[1]),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_crafting_resource_3, resource_list[2]),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_crafting_resource_4, resource_list[3]),
+      ])
   return [init_trigger, buy_trigger, craft_trigger]
 
 # Export an item, removing it from the game world in exchange for money.
@@ -176,7 +192,7 @@ def spr_import_item_triggers(item_id, pos_offset=(5,0,2), rotate=(0,0,0), use_st
   buy_trigger[1].append((call_script, "script_cf_buy_item", ":agent_id", ":instance_id"))
   triggers = [spr_item_init_trigger(item_id, use_string=use_string, price_multiplier=price_multiplier), buy_trigger]
   if check_script is not None:
-    triggers.append(spr_call_script_trigger(check_script, ti_on_scene_prop_start_use))
+    triggers.append(spr_call_script_start_use_trigger(check_script))
   return triggers
 
 # Stockpile a resource item: only allows buying and selling, with custom pricing rules.
@@ -242,13 +258,15 @@ def spr_buy_banner_triggers(banner_item_begin, mercenary=False, use_string="str_
   return [init_trigger, spr_call_script_use_trigger("script_cf_buy_banner")]
 
 # Teleport to a linked door of the same scene prop type. 'pos_offset' specifies the relative position from each door that the character will be moved to.
-def spr_teleport_door_triggers(pos_offset=(0,0,0)):
-  return [spr_call_script_cancel_use_trigger("script_cf_lock_teleport_door"),
-    spr_call_script_use_trigger("script_cf_use_teleport_door", pos_offset[0], pos_offset[1], pos_offset[2]),
+def spr_teleport_door_triggers(pos_offset=(0,0,0), pickable=1):
+  triggers = [spr_call_script_use_trigger("script_cf_use_teleport_door", pos_offset[0], pos_offset[1], pos_offset[2], pickable),
     [link_scene_prop, link_scene_prop_self]]
+  if pickable == 1:
+    triggers.append(spr_call_script_cancel_use_trigger("script_cf_lock_teleport_door"))
+  return triggers
 
 def spr_rotate_door_flags(use_time=1):
-  return sokf_static_movement|sokf_destructible|sokf_show_hit_point_bar|spr_use_time(use_time)|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible|spr_use_time(use_time)
 
 # A rotating door, destructable and repairable with the resource class specified. The 'left' setting adjusts which way it will rotate, for matched left and right doors.
 def spr_rotate_door_triggers(hit_points=1000, resource_class=item_class_wood, left=0):
@@ -318,6 +336,12 @@ def spr_lift_platform_triggers(winch):
   return [[link_scene_prop, winch, winch],
     [init_scene_prop, "script_cf_init_lift_platform"]]
 
+# Winch for controlling a sliding door; controlling a linked scene prop of the 'target' kind.
+def spr_sliding_door_winch_triggers(target, move_steps=1, step_size=100, animation_time=100):
+  return [spr_call_script_use_trigger("script_cf_use_winch", move_steps+1, step_size, animation_time, winch_type_sliding_door),
+    [link_scene_prop, target],
+    [init_scene_prop, "script_cf_init_winch", move_steps, step_size, winch_type_sliding_door]]
+
 # Carts attachable to characters or horses. Set 'horse' to 1 to allow attaching to any horse, or the horse item id for restricting to a specific type.
 # The cart mesh should be oriented with the horse or agent position at the origin, and when detached it will be rotated by 'detach_rotation' and moved vertically by 'detach_offset'.
 # The absolute value of 'access_distance' is used for the radius from the origin that will allow attaching, and moved forwards by that value (back if negative) is the center of the radius for accessing.
@@ -344,7 +368,7 @@ def spr_cart_triggers(horse=-1, detach_offset=0, detach_rotation=0, inventory_co
     ]
 
 def spr_tree_flags():
-  return sokf_static_movement|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible
 
 # Tree which will regrow after being cut down for wood. 'resource_imod' sets the mesh variation of branches and blocks.
 # 'fell_hp' is the hit points when the tree will fall over and start producing blocks, and 'resource_hp' is the amount of hit damage needed per resource.
@@ -364,9 +388,25 @@ def spr_tree_triggers(full_hp=1000, fell_hp=500, resource_hp=100, hardness=1, re
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_animation_finished,
      [(store_trigger_param_1, ":instance_id"),
+      (prop_instance_clear_attached_missiles, ":instance_id"),
       (call_script, "script_cf_resource_animation_finished", ":instance_id", resource_hp),
       ]),
     (ti_on_scene_prop_use, [])]
+
+# A tree that produces fruit without any character involvement. Passes parameters on to the spr_tree_triggers function.
+def spr_fruit_tree_triggers(fruit, count, height, width, fruiting_interval=3600, **args):
+  triggers = spr_tree_triggers(**args)
+  assert triggers[0][0] == ti_on_scene_prop_init
+  triggers[0][1].extend([
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_regrow_script, "script_regrow_fruit_tree"),
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_resource_item_id, fruit),
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_fruit_count, count),
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_height, height),
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_width, width),
+    (scene_prop_set_slot, ":instance_id", slot_scene_prop_fruiting_interval, fruiting_interval),
+    ])
+  return triggers
+
 
 # Plant that can be hit to harvest resources, with optional tool class, skill, and attack direction range for optimum damage.
 # The lower digit of 'attack_range' is the beginning direction of agent_get_action_dir, and the upper digit is how many consecutive directions to include. For example, 21 is left and right.
@@ -417,10 +457,10 @@ def spr_use_plant_triggers(resource_item, full_hp=1000, resource_hp=200, regrow_
     ]
 
 def spr_resource_flags():
-  return sokf_static_movement|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible|sokf_missiles_not_attached
 
 def spr_field_flags():
-  return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+  return sokf_destructible|sokf_missiles_not_attached
 
 # A field that is planted with 'plant_item' to produce 'resource_item'. 'plant_spr' is the scene prop type for the growing plants; set 'height' to the height of that mesh.
 def spr_hit_field_triggers(resource_item, plant_item, plant_spr, height=200, full_hp=1000, resource_hp=200, tool_class=-1, regrow_interval=600, use_string="str_harvest"):
@@ -566,7 +606,7 @@ def spr_ferry_winch_triggers(is_platform=0):
   return [spr_call_script_use_trigger("script_cf_use_ferry_winch", is_platform)]
 
 def spr_structure_flags():
-  return sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+  return sokf_static_movement|sokf_destructible
 
 # Destructable and rebuildable bridge: requires linking with two 'footing' scene props for rebuilding on either side.
 def spr_bridge_triggers(footing, hit_points=1000):
@@ -575,6 +615,7 @@ def spr_bridge_triggers(footing, hit_points=1000):
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, hit_points),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_destructible"),
       ]),
     (ti_on_scene_prop_hit,
      [(store_trigger_param_1, ":instance_id"),
@@ -582,16 +623,18 @@ def spr_bridge_triggers(footing, hit_points=1000):
       (call_script, "script_cf_hit_bridge", ":instance_id", ":hit_damage", 0),
       ]),
     (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_use, []),
     [link_scene_prop, footing, footing]]
 
 def spr_build_flags():
-  return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+  return sokf_destructible
 
 # Footings for rebuilding after the bridge is totally destroyed.
 def spr_bridge_footing_triggers():
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", 1000),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_show_linked_hit_points, 1),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_build"),
       ]),
     (ti_on_scene_prop_hit,
@@ -603,7 +646,7 @@ def spr_bridge_footing_triggers():
     (ti_on_scene_prop_use, [])]
 
 def spr_ladder_flags():
-  return sokf_type_ladder|sokf_moveable|sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached
+  return sokf_type_ladder|sokf_static_movement|sokf_destructible
 
 # Buildable walls, also used for ladders: requires a 'build' scene prop for construction when totally destroyed. 'height' should be set to the height of the mesh.
 # 'no_move_physics' disables walking on the prop until the construction animation is completed.
@@ -613,6 +656,7 @@ def spr_wall_triggers(build, hit_points=1000, height=1000, no_move_physics=False
       (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_height, height),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_destructible"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_no_move_physics, int(no_move_physics))
       ]),
     (ti_on_scene_prop_hit,
@@ -621,6 +665,7 @@ def spr_wall_triggers(build, hit_points=1000, height=1000, no_move_physics=False
       (call_script, "script_cf_hit_wall", ":instance_id", ":hit_damage", 0),
       ]),
     (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_use, []),
     [link_scene_prop, build],
     [init_scene_prop, "script_cf_init_wall"]]
   if no_move_physics:
@@ -635,6 +680,7 @@ def spr_build_wall_triggers():
   return [(ti_on_scene_prop_init,
      [(store_trigger_param_1, ":instance_id"),
       (scene_prop_set_hit_points, ":instance_id", 1000),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_show_linked_hit_points, 1),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_build"),
       ]),
     (ti_on_scene_prop_hit,
@@ -645,12 +691,34 @@ def spr_build_wall_triggers():
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_use, [])]
 
+# Construction box which disappears when built, allowing access to stations hidden inside.
+def spr_construction_box_triggers(resource_class=item_class_wood):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, "str_build"),
+      (call_script, "script_initialize_resource_hit_points", ":instance_id", -1),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_state, scene_prop_state_destroyed),
+      (scene_prop_set_hit_points, ":instance_id", 1),
+      ]),
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_construction_box", ":instance_id", ":hit_damage", resource_class),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    (ti_on_scene_prop_use, [])]
+
 # Point to capture castles using a faction banner.
 def spr_capture_castle_triggers():
-  return [spr_call_script_use_trigger("script_cf_capture_castle")]
+  return [spr_call_script_start_use_trigger("script_cf_use_capture_point", 0),
+    (ti_on_scene_prop_cancel_use,
+     [(store_trigger_param_2, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_disabled, 0),
+      ]),
+    spr_call_script_use_trigger("script_cf_use_capture_point", 1)]
 
 def spr_chest_flags(use_time=1):
-  return sokf_destructible|sokf_show_hit_point_bar|sokf_missiles_not_attached|spr_use_time(max(use_time, 1))
+  return sokf_destructible|spr_use_time(max(use_time, 1))
 
 # Money chest that can be linked with a castle to store tax automatically gathered, and allow the lord to control the access.
 # A 'probability' of the default 100 will give 1% chance of successful lock picking per looting skill level, which can be increased up to 10000 for guaranteed success.
@@ -661,6 +729,7 @@ def spr_castle_money_chest_triggers(use_string="str_gold_reg2", hit_points=1000,
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, hit_points),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_use_string, use_string),
+      (neq, "$g_game_type", "mt_no_money"),
       (scene_prop_set_slot, ":instance_id", slot_scene_prop_stock_count_update_time, -1),
       (prop_instance_get_variation_id_2, ":initial_gold_value", ":instance_id"),
       (val_mul, ":initial_gold_value", 1000),
@@ -918,7 +987,7 @@ scene_props = [
   ("destroy_bridge_b",0,"destroy_bridge_b","bo_destroy_bridge_b", []),
 
   ("catapult",0,"Catapult","bo_Catapult", []),
-  ("catapult_destructible",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible,"Catapult","bo_Catapult", []),
+  ("catapult_destructible",sokf_moveable|sokf_destructible,"Catapult","bo_Catapult", []),
 
   ("broom",0,"broom","0", []),
   ("garlic",0,"garlic","0", []),
@@ -1029,7 +1098,7 @@ scene_props = [
   ("tunnel_salt",0,"tunnel_salt","bo_tunnel_salt", []),
   ("salt_a",0,"salt_a","bo_salt_a", []),
 
-  ("door_destructible",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(2),"tutorial_door_a","bo_tutorial_door_a", []),
+  ("door_destructible",sokf_moveable|sokf_destructible|spr_use_time(2),"tutorial_door_a","bo_tutorial_door_a", []),
 
   ("tutorial_door_a",sokf_moveable,"tutorial_door_a","bo_tutorial_door_a", []),
   ("tutorial_door_b",sokf_moveable,"tutorial_door_b","bo_tutorial_door_b", []),
@@ -1082,9 +1151,9 @@ scene_props = [
   ("castle_f_battlement_corner_b",0,"castle_f_battlement_corner_b","bo_castle_f_battlement_corner_b", []),
   ("castle_f_battlement_corner_c",0,"castle_f_battlement_corner_c","bo_castle_f_battlement_corner_c", []),
 
-  ("castle_f_door_a",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"castle_f_door_a","bo_castle_f_door_a", []),
+  ("castle_f_door_a",sokf_moveable|sokf_destructible|spr_use_time(0),"castle_f_door_a","bo_castle_f_door_a", []),
   ("castle_f_doors_top_a",0,"castle_f_doors_top_a","bo_castle_f_doors_top_a", []),
-  ("castle_f_sally_door_a",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"castle_f_sally_door_a","bo_castle_f_sally_door_a", []),
+  ("castle_f_sally_door_a",sokf_moveable|sokf_destructible|spr_use_time(0),"castle_f_sally_door_a","bo_castle_f_sally_door_a", []),
   ("castle_f_stairs_a",sokf_type_ladder,"castle_f_stairs_a","bo_castle_f_stairs_a", []),
   ("castle_f_tower_a",0,"castle_f_tower_a","bo_castle_f_tower_a", []),
   ("castle_f_wall_stairs_a",sokf_type_ladder,"castle_f_wall_stairs_a","bo_castle_f_wall_stairs_a", []),
@@ -1536,7 +1605,7 @@ scene_props = [
   ("castle_e_battlement_a",0,"castle_e_battlement_a","bo_castle_e_battlement_a", []),
   ("castle_e_battlement_c",0,"castle_e_battlement_c","bo_castle_e_battlement_c", []),
   ("castle_e_battlement_a_destroyed",0,"castle_e_battlement_a_destroyed","bo_castle_e_battlement_a_destroyed", []),
-  ("castle_e_sally_door_a",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"castle_e_sally_door_a","bo_castle_e_sally_door_a", []),
+  ("castle_e_sally_door_a",sokf_moveable|sokf_destructible|spr_use_time(0),"castle_e_sally_door_a","bo_castle_e_sally_door_a", []),
   ("castle_e_corner",0,"castle_e_corner","bo_castle_e_corner", []),
   ("castle_e_corner_b",0,"castle_e_corner_b","bo_castle_e_corner_b", []),
   ("castle_e_corner_c",0,"castle_e_corner_c","bo_castle_e_corner_c", []),
@@ -1621,7 +1690,7 @@ scene_props = [
   ("trebuchet_old",0,"trebuchet_old","bo_trebuchet_old", []),
   ("trebuchet_new",0,"trebuchet_new","bo_trebuchet_old", []),
 
-  ("trebuchet_destructible",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible,"trebuchet_new","bo_trebuchet_old", []),
+  ("trebuchet_destructible",sokf_moveable|sokf_destructible,"trebuchet_new","bo_trebuchet_old", []),
 
   ("stone_ball",0,"stone_ball","0", []),
 
@@ -1978,18 +2047,18 @@ scene_props = [
   ("earth_tower_a",0,"earth_tower_a","bo_earth_tower_a", []),
   ("earth_stairs_c",0,"earth_stairs_c","bo_earth_stairs_c", []),
 
-  ("earth_sally_gate_left",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"earth_sally_gate_left","bo_earth_sally_gate_left", []),
-  ("earth_sally_gate_right",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"earth_sally_gate_right","bo_earth_sally_gate_right", []),
+  ("earth_sally_gate_left",sokf_moveable|sokf_destructible|spr_use_time(0),"earth_sally_gate_left","bo_earth_sally_gate_left", []),
+  ("earth_sally_gate_right",sokf_moveable|sokf_destructible|spr_use_time(0),"earth_sally_gate_right","bo_earth_sally_gate_right", []),
 
   ("barrier_box",sokf_invisible|sokf_type_barrier3d,"barrier_box","bo_barrier_box", []),
   ("barrier_capsule",sokf_invisible|sokf_type_barrier3d,"barrier_capsule","bo_barrier_capsule", []),
   ("barrier_cone" ,sokf_invisible|sokf_type_barrier3d,"barrier_cone" ,"bo_barrier_cone" , []),
   ("barrier_sphere" ,sokf_invisible|sokf_type_barrier3d,"barrier_sphere" ,"bo_barrier_sphere" , []),
 
-  ("viking_keep_destroy_sally_door_right",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"viking_keep_destroy_sally_door_right","bo_viking_keep_destroy_sally_door_right", []),
-  ("viking_keep_destroy_sally_door_left",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"viking_keep_destroy_sally_door_left","bo_viking_keep_destroy_sally_door_left", []),
+  ("viking_keep_destroy_sally_door_right",sokf_moveable|sokf_destructible|spr_use_time(0),"viking_keep_destroy_sally_door_right","bo_viking_keep_destroy_sally_door_right", []),
+  ("viking_keep_destroy_sally_door_left",sokf_moveable|sokf_destructible|spr_use_time(0),"viking_keep_destroy_sally_door_left","bo_viking_keep_destroy_sally_door_left", []),
 
-  ("castle_f_door_b",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible|spr_use_time(0),"castle_e_sally_door_a","bo_castle_e_sally_door_a", []),
+  ("castle_f_door_b",sokf_moveable|sokf_destructible|spr_use_time(0),"castle_e_sally_door_a","bo_castle_e_sally_door_a", []),
 
   ("ctf_flag_kingdom_1", sokf_moveable|sokf_face_player, "ctf_flag_kingdom_1", "0", []),
   ("ctf_flag_kingdom_2", sokf_moveable|sokf_face_player, "ctf_flag_kingdom_2", "0", []),
@@ -2165,6 +2234,62 @@ scene_props = [
   ("interior_window_cover",0,"pw_window_cover","bo_pw_window_cover", []),
   ("merchant_shelf_a",0,"merchant_shelf_a","bo_merchant_shelf_a", []),
 
+  ("enterable_church_a",0,"pw_enterable_church_a","bo_pw_enterable_church_a",[]),
+  ("enterable_church_b",0,"pw_enterable_church_b","bo_pw_enterable_church_b",[]),
+  ("enterable_church_b2",0,"pw_enterable_church_b2","bo_pw_enterable_church_b",[]),
+  ("enterable_church_b3",0,"pw_enterable_church_b3","bo_pw_enterable_church_b",[]),
+  ("enterable_castle_house_b",0,"pw_enterable_castle_house_b","bo_pw_enterable_castle_house_b",[]),
+  ("enterable_castle_house_b2",0,"pw_enterable_castle_house_b2","bo_pw_enterable_castle_house_b",[]),
+  ("enterable_castle_house_b3",0,"pw_enterable_castle_house_b3","bo_pw_enterable_castle_house_b",[]),
+  ("enterable_castle_house_c",0,"pw_enterable_castle_house_c","bo_pw_enterable_castle_house_c",[]),
+  ("enterable_castle_h_keep_a",0,"pw_enterable_castle_h_keep_a","bo_pw_enterable_castle_h_keep_a",[]),
+  ("enterable_town_house_o",0,"pw_enterable_town_house_o","bo_pw_enterable_town_house_o",[]),
+  ("enterable_town_house_s",0,"pw_enterable_town_house_s","bo_pw_enterable_town_house_s",[]),
+  ("enterable_town_house_s2",0,"pw_enterable_town_house_s2","bo_pw_enterable_town_house_s",[]),
+  ("enterable_town_house_s3",0,"pw_enterable_town_house_s3","bo_pw_enterable_town_house_s",[]),
+  ("enterable_city_swad_2",0,"pw_enterable_city_swad_2","bo_pw_enterable_city_swad_2",[]),
+  ("enterable_city_swad_5",0,"pw_enterable_city_swad_5","bo_pw_enterable_city_swad_5",[]),
+  ("enterable_village_house_e",0,"pw_enterable_village_house_e","bo_pw_enterable_village_house_e",[]),
+  ("enterable_village_house_e_snowy",0,"pw_enterable_village_house_e_snowy","bo_pw_enterable_village_house_e",[]),
+  ("enterable_village_house_f",0,"pw_enterable_village_house_f","bo_pw_enterable_village_house_f",[]),
+  ("enterable_village_house_f_snowy",0,"pw_enterable_village_house_f_snowy","bo_pw_enterable_village_house_f",[]),
+  ("enterable_village_house_f_ceiling_a",0,"pw_enterable_village_house_f_ceiling_a","bo_pw_enterable_village_house_f_ceiling_a",[]),
+  ("enterable_village_house_f_ceiling_b",0,"pw_enterable_village_house_f_ceiling_b","bo_pw_enterable_village_house_f_ceiling_b",[]),
+  ("enterable_village_house_f_wall_a",0,"pw_enterable_village_house_f_wall_a","bo_pw_enterable_village_house_f_wall_a",[]),
+  ("enterable_village_house_g",0,"pw_enterable_village_house_g","bo_pw_enterable_village_house_g",[]),
+  ("enterable_village_house_h",0,"pw_enterable_village_house_h","bo_pw_enterable_village_house_h",[]),
+  ("enterable_steppe_village_house_a",0,"pw_enterable_steppe_village_house_a","bo_pw_enterable_steppe_village_house_a",[]),
+  ("enterable_steppe_village_house_d",0,"pw_enterable_steppe_village_house_d","bo_pw_enterable_steppe_village_house_d",[]),
+  ("enterable_steppe_village_hut",0,"pw_enterable_steppe_village_hut","bo_pw_enterable_steppe_village_hut",[]),
+  ("enterable_steppe_town_house_g",0,"pw_enterable_steppe_town_house_g","bo_pw_enterable_steppe_town_house_g",[]),
+  ("enterable_arabian_village_house_b",0,"pw_enterable_arabian_village_house_b","bo_pw_enterable_arabian_village_house_b",[]),
+  ("enterable_arabian_village_house_d",0,"pw_enterable_arabian_village_house_d","bo_pw_enterable_arabian_village_house_d",[]),
+  ("enterable_rhodok_house_e",0,"pw_enterable_rhodok_house_e","bo_pw_enterable_rhodok_house_e",[]),
+  ("enterable_earth_house_d",0,"pw_enterable_earth_house_d","bo_pw_enterable_earth_house_d",[]),
+  ("enterable_viking_house_c",0,"pw_enterable_viking_house_c","bo_pw_enterable_viking_house_c",[]),
+  ("enterable_viking_house_e",0,"pw_enterable_viking_house_e","bo_pw_enterable_viking_house_e",[]),
+
+  ("tunnel_chasm",0,"pw_tunnel_chasm","bo_pw_tunnel_chasm",[]),
+  ("tunnel_crossing",0,"pw_tunnel_crossing","bo_pw_tunnel_crossing",[]),
+  ("tunnel_crossing_supports",0,"pw_tunnel_crossing_supports","bo_pw_tunnel_crossing_supports",[]),
+  ("tunnel_curved_left",0,"pw_tunnel_curved_left","bo_pw_tunnel_curved_left",[]),
+  ("tunnel_curved_left_supports",0,"pw_tunnel_curved_left_supports","bo_pw_tunnel_curved_left_supports",[]),
+  ("tunnel_curved_right",0,"pw_tunnel_curved_right","bo_pw_tunnel_curved_right",[]),
+  ("tunnel_curved_right_supports",0,"pw_tunnel_curved_right_supports","bo_pw_tunnel_curved_right_supports",[]),
+  ("tunnel_end",0,"pw_tunnel_end","bo_pw_tunnel_end",[]),
+  ("tunnel_room",0,"pw_tunnel_room","bo_pw_tunnel_room",[]),
+  ("tunnel_room_corner",0,"pw_tunnel_room_corner","bo_pw_tunnel_room_corner",[]),
+  ("tunnel_room_corner_supports",0,"pw_tunnel_room_corner_supports","bo_pw_tunnel_room_corner_supports",[]),
+  ("tunnel_short",0,"pw_tunnel_short","bo_pw_tunnel_short",[]),
+  ("tunnel_short_supports",0,"pw_tunnel_short_supports","bo_pw_tunnel_short_supports",[]),
+  ("tunnel_sloped",0,"pw_tunnel_sloped","bo_pw_tunnel_sloped",[]),
+  ("tunnel_sloped_supports",0,"pw_tunnel_sloped_supports","bo_pw_tunnel_sloped_supports",[]),
+  ("tunnel_split",0,"pw_tunnel_split","bo_pw_tunnel_split",[]),
+  ("tunnel_split_supports",0,"pw_tunnel_split_supports","bo_pw_tunnel_split_supports",[]),
+  ("tunnel_straight",0,"pw_tunnel_straight","bo_pw_tunnel_straight",[]),
+  ("tunnel_straight_supports",0,"pw_tunnel_straight_supports","bo_pw_tunnel_straight_supports",[]),
+  ("tunnel_support",0,"pw_tunnel_support","bo_pw_tunnel_support",[]),
+
   ("rock_1",0,"rock1","bo_rock1", []),
   ("rock_2",0,"rock2","bo_rock2", []),
   ("rock_3",0,"rock3","bo_rock3", []),
@@ -2286,11 +2411,12 @@ scene_props = [
   ("pw_stick_bush_2c",spr_resource_flags(),"bushes02_c","bo_bushes02_a_fixed", spr_hit_plant_triggers("itm_stick", full_hp=1500, resource_hp=50, regrow_interval=120, effect_script="script_hit_bush_effect")),
   ("pw_herb_bush_a",spr_resource_flags(),"pw_herb_a_bush","bo_pw_herb_bush", spr_hit_plant_triggers("itm_healing_herb", full_hp=400, resource_hp=40, regrow_interval=600)),
   ("pw_herb_bush_poison",spr_resource_flags(),"pw_herb_b_bush","bo_pw_herb_bush", spr_hit_plant_triggers("itm_poison_herb", full_hp=600, resource_hp=30, regrow_interval=2000)),
-  ("pw_wheat_field",spr_field_flags(),"pw_wheat_field","bo_pw_wheat_field", spr_hit_field_triggers(resource_item="itm_wheat_sheaf", plant_item="itm_wheat_sack", plant_spr="spr_code_wheat", height=180, full_hp=1000, resource_hp=100, tool_class=item_class_grain_harvesting, regrow_interval=600)),
+  ("pw_wheat_field",spr_field_flags(),"pw_wheat_field","bo_pw_wheat_field", spr_hit_field_triggers(resource_item="itm_wheat_sheaf", plant_item="itm_wheat_sack", plant_spr="spr_code_wheat", height=180, full_hp=2000, resource_hp=50, tool_class=item_class_grain_harvesting, regrow_interval=600)),
   ("code_wheat",0,"pw_wheat","0", spr_field_plant_triggers(seeds=4, water=2)),
-  ("pw_grape_vine",spr_resource_flags(),"pw_grape_vine","bo_pw_grape_vine", spr_hit_vine_triggers("itm_grapes", resources=10, full_hp=300, length=350, height=100, tool_class=item_class_knife, regrow_interval=300)),
+  ("pw_grape_vine",spr_resource_flags(),"pw_grape_vine","bo_pw_grape_vine", spr_hit_vine_triggers("itm_grapes", resources=16, full_hp=300, length=350, height=100, tool_class=item_class_knife, regrow_interval=300)),
   ("pw_grape_vine_stake",0,"pw_grape_vine_stake","bo_pw_grape_vine_stake", []),
   ("pw_flax_plants",spr_field_flags()|spr_use_time(1),"pw_flax_plants","bo_pw_flax_plants", spr_use_plant_triggers("itm_flax_bundle", full_hp=300, resource_hp=50, regrow_interval=300, sound="snd_pull_flax")),
+  ("pw_apple_tree_a",spr_tree_flags(),"pw_apple_tree_a","bo_pw_apple_tree_a", spr_fruit_tree_triggers(fruit="itm_red_apple", count=10, height=350, width=150, fruiting_interval=1200, full_hp=600, fell_hp=100, regrow_interval=1800)),
 
   ("pw_iron_mine",spr_resource_flags(),"pw_iron_vein_a2","bo_pw_iron_vein_a2", spr_hit_mine_triggers("itm_iron_ore", resource_hp=60, hardness=4)),
   ("pw_iron_mine_a",spr_resource_flags(),"pw_iron_vein_a1","bo_pw_iron_vein_a1", spr_hit_mine_triggers("itm_iron_ore", resource_hp=70, hardness=4)),
@@ -2311,6 +2437,7 @@ scene_props = [
   ("pw_stockpile_iron_bar",spr_use_time(1),"pw_chest_c","bo_pw_chest_c", spr_stockpile_resource_triggers("itm_iron_bar")),
   ("pw_stockpile_flour_sack",spr_use_time(1),"mill_flour_sack_desk_a","bo_mill_flour_sack_desk_a_fixed", spr_stockpile_resource_triggers("itm_flour_sack")),
   ("pw_stockpile_salt_sack",spr_use_time(1),"pw_salt_sack","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_salt_sack")),
+  ("pw_stockpile_salt",spr_use_time(1),"pw_salt","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_salt")),
   ("pw_stockpile_salted_fish",spr_use_time(1),"pw_fish","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_salted_fish")),
   ("pw_stockpile_salted_meat",spr_use_time(1),"pw_meat_salted","bo_pw_weapon", spr_stockpile_resource_triggers("itm_salted_meat")),
   ("pw_stockpile_wheat_sheaf",spr_use_time(1),"pw_wheat_sheaf","bo_pw_weapon", spr_stockpile_resource_triggers("itm_wheat_sheaf")),
@@ -2351,7 +2478,7 @@ scene_props = [
   ("pw_process_grind_fast",spr_use_time(3)|sokf_invisible,"pw_invisible_station","bo_pw_invisible_station", spr_process_resource_triggers("script_cf_process_grind", use_string="str_process_grind")),
   ("pw_process_grind_slow",spr_use_time(10),"horse_mill","bo_horse_mill", spr_process_resource_triggers("script_cf_process_grind", use_string="str_process_grind")),
   ("pw_process_cook_fast",spr_use_time(4),"village_oven","bo_village_oven_fixed", spr_process_resource_triggers("script_cf_process_cook", use_string="str_process_cook")),
-  ("pw_process_cook_slow",spr_use_time(11)|sokf_invisible,"pw_invisible_station","bo_pw_invisible_station", spr_process_resource_triggers("script_cf_process_cook", use_string="str_process_cook")),
+  ("pw_process_cook_slow",spr_use_time(5)|sokf_invisible,"pw_invisible_station","bo_pw_invisible_station", spr_process_resource_triggers("script_cf_process_cook", use_string="str_process_cook")),
   ("pw_process_press",spr_use_time(5),"winery_wine_press","bo_winery_wine_press", spr_process_resource_triggers("script_cf_process_press", use_string="str_process_press")),
   ("pw_process_brew",spr_use_time(30),"brewery_pool","bo_brewery_pool", spr_process_resource_triggers("script_cf_process_brew", use_string="str_process_brew")),
   ("pw_process_tavern",spr_use_time(2),"tavern_table_a","bo_tavern_table_a", spr_process_resource_triggers("script_cf_process_tavern", use_string="str_process_tavern")),
@@ -2588,6 +2715,10 @@ scene_props = [
   ("pw_buy_sword_viking_c",spr_buy_item_flags(7),"sword_viking_c","bo_pw_weapon", spr_buy_item_triggers("itm_sword_viking_c", resources=["itm_iron_bar"], engineer=3)),
   ("pw_buy_sword_viking_b_small",spr_buy_item_flags(6),"sword_viking_b_small","bo_pw_weapon", spr_buy_item_triggers("itm_sword_viking_b_small", resources=["itm_iron_bar"], engineer=3)),
   ("pw_buy_sword_viking_a_long",spr_buy_item_flags(8),"sword_viking_a_long","bo_pw_weapon", spr_buy_item_triggers("itm_sword_viking_a_long", resources=["itm_iron_bar"], engineer=3)),
+  ("pw_buy_arabian_sword_a",spr_buy_item_flags(6),"arabian_sword_a","bo_pw_weapon", spr_buy_item_triggers("itm_arabian_sword_a", resources=["itm_iron_bar"], engineer=3)),
+  ("pw_buy_arabian_sword_b",spr_buy_item_flags(7),"arabian_sword_b","bo_pw_weapon", spr_buy_item_triggers("itm_arabian_sword_b", resources=["itm_iron_bar"], engineer=3)),
+  ("pw_buy_arabian_sword_c",spr_buy_item_flags(9),"arabian_sword_c","bo_pw_weapon", spr_buy_item_triggers("itm_arabian_sword_c", resources=["itm_iron_bar"], engineer=4)),
+  ("pw_buy_arabian_sword_d",spr_buy_item_flags(8),"arabian_sword_d","bo_pw_weapon", spr_buy_item_triggers("itm_arabian_sword_d", resources=["itm_iron_bar"], engineer=4)),
   ("pw_buy_scimitar",spr_buy_item_flags(9),"scimitar_a","bo_pw_weapon", spr_buy_item_triggers("itm_scimitar", resources=["itm_iron_bar"], engineer=3)),
   ("pw_buy_scimitar_b",spr_buy_item_flags(10),"scimitar_b","bo_pw_weapon", spr_buy_item_triggers("itm_scimitar_b", resources=["itm_iron_bar"], engineer=4)),
   ("pw_buy_khergit_sword_c",spr_buy_item_flags(8),"khergit_sword_c","bo_pw_weapon", spr_buy_item_triggers("itm_khergit_sword_c", resources=["itm_iron_bar"], engineer=3)),
@@ -2643,7 +2774,7 @@ scene_props = [
   ("pw_buy_barbed_arrows",spr_buy_item_flags(1),"barbed_arrow","bo_pw_weapon", spr_buy_item_triggers("itm_barbed_arrows", resources=[], engineer=1)),
   ("pw_buy_khergit_arrows",spr_buy_item_flags(1),"arrow","bo_pw_weapon", spr_buy_item_triggers("itm_khergit_arrows", resources=[], engineer=1)),
   ("pw_buy_bodkin_arrows",spr_buy_item_flags(1),"piercing_arrow","bo_pw_weapon", spr_buy_item_triggers("itm_bodkin_arrows", resources=[], engineer=1)),
-  ("pw_buy_hunting_crossbow",spr_buy_item_flags(5),"crossbow_a","bo_pw_weapon_small", spr_buy_item_triggers("itm_hunting_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], engineer=3)),
+  ("pw_buy_hunting_crossbow",spr_buy_item_flags(5),"crossbow_a","bo_pw_weapon_small", spr_buy_item_triggers("itm_hunting_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], engineer=2)),
   ("pw_buy_light_crossbow",spr_buy_item_flags(6),"crossbow_b","bo_pw_weapon_small", spr_buy_item_triggers("itm_light_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], engineer=3)),
   ("pw_buy_crossbow",spr_buy_item_flags(8),"crossbow_a","bo_pw_weapon_small", spr_buy_item_triggers("itm_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], engineer=4)),
   ("pw_buy_heavy_crossbow",spr_buy_item_flags(10),"crossbow_c","bo_pw_weapon_small", spr_buy_item_triggers("itm_heavy_crossbow", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], engineer=5)),
@@ -2737,13 +2868,14 @@ scene_props = [
   ("pw_rest_dungeon_bed_b",spr_use_time(15),"dungeon_bed_b","bo_dungeon_bed_b", spr_rest_triggers(8, min_health_pct=70)),
   ("pw_rest_pillow_a",spr_use_time(18),"pillow_a","bo_pillow", spr_rest_triggers(20, min_health_pct=45)),
   ("pw_rest_pillow_b",spr_use_time(24),"pillow_b","bo_pillow", spr_rest_triggers(30, min_health_pct=40)),
+  ("pw_rest_invisible",sokf_invisible|spr_use_time(15),"pw_invisible_door","bo_pw_invisible_door", spr_rest_triggers(10, min_health_pct=60)),
   ("pw_rest_horse_trough",spr_use_time(15),"feeding_trough_a","bo_feeding_trough_a", spr_rest_triggers(30, min_health_pct=30, horse=1, use_string="str_rest_horse")),
   ("pw_rest_horse_hay",spr_use_time(30),"pw_horse_hay","bo_pw_horse_hay", spr_rest_triggers(70, min_health_pct=30, horse=1, use_string="str_rest_horse")),
   ("pw_rest_horse_manger",spr_use_time(22),"wall_manger_a","bo_wall_manger_a", spr_rest_triggers(60, min_health_pct=25, horse=1, use_string="str_rest_horse")),
   ("pw_clean_blood",spr_use_time(3),"cloth_a","bo_cloth_a", spr_clean_blood_triggers()),
 
   ("code_spawn_marker",0,"0","0", []),
-  ("pw_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_peasant", cost=50, after_respawn=True, use_string="str_troop_leave_faction")),
+  ("pw_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_peasant", cost=50, after_respawn=True, use_string="str_troop_become")),
   ("pw_change_troop_serf",spr_use_time(30),"trident","bo_pw_weapon_big", spr_change_troop_triggers("trp_serf", cost=150)),
   ("pw_change_troop_militia",spr_use_time(30),"practice_sword","bo_pw_weapon", spr_change_troop_triggers("trp_militia", cost=500)),
   ("pw_change_troop_huntsman",spr_use_time(30),"short_bow","bo_pw_weapon", spr_change_troop_triggers("trp_huntsman", cost=500)),
@@ -2760,6 +2892,7 @@ scene_props = [
   ("pw_change_troop_doctor",spr_use_time(100),"package","bobaggage", spr_change_troop_triggers("trp_doctor", cost=3500)),
   ("pw_change_troop_sailor",spr_use_time(70),"scimeter","bo_pw_weapon", spr_change_troop_triggers("trp_sailor", cost=2000)),
   ("pw_change_troop_traveler",spr_use_time(70),"quarter_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_traveler", cost=1300, use_string="str_troop_become")),
+  ("pw_change_troop_herdsman",spr_use_time(40),"quarter_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_herdsman", cost=900)),
   ("pw_change_troop_lord",spr_use_time(70),"gothic_chair","bogothic_chair", spr_change_troop_triggers("trp_lord", cost=500, use_string="str_troop_assume_role")),
   ("pw_change_troop_ruffian",spr_use_time(40),"sledgehammer","bo_pw_weapon", spr_change_troop_triggers("trp_ruffian", cost=800, after_respawn=True, use_string="str_troop_become")),
   ("pw_change_troop_brigand",spr_use_time(50),"spiked_club","bo_pw_weapon", spr_change_troop_triggers("trp_brigand", cost=900, after_respawn=True, use_string="str_troop_become")),
@@ -2773,6 +2906,7 @@ scene_props = [
   ("pw_door_teleport_inset_b",spr_use_time(1),"pw_teleport_door_b","bo_pw_teleport_door_a", spr_teleport_door_triggers(pos_offset=(0,50,0))),
   ("pw_door_teleport_inset_c",spr_use_time(1),"pw_teleport_door_c","bo_pw_teleport_door_a", spr_teleport_door_triggers(pos_offset=(0,50,0))),
   ("pw_door_teleport_invisible",sokf_invisible|spr_use_time(1),"pw_invisible_door","bo_pw_invisible_door", spr_teleport_door_triggers(pos_offset=(0,50,0))),
+  ("pw_door_teleport_invisible_not_pickable",sokf_invisible|spr_use_time(1),"pw_invisible_door","bo_pw_invisible_door", spr_teleport_door_triggers(pos_offset=(0,50,0), pickable=0)),
   ("pw_door_rotate_a",spr_rotate_door_flags(1),"castle_f_sally_door_a","bo_castle_f_sally_door_a", spr_rotate_door_triggers(hit_points=5000)),
   ("pw_door_rotate_b",spr_rotate_door_flags(1),"castle_e_sally_door_a","bo_castle_e_sally_door_a_fixed", spr_rotate_door_triggers(hit_points=5000)),
   ("pw_door_rotate_c",spr_rotate_door_flags(1),"castle_f_door_a","bo_castle_f_door_a_fixed", spr_rotate_door_triggers(hit_points=5000)),
@@ -2798,6 +2932,8 @@ scene_props = [
   ("pw_door_rotate_earth_left",spr_rotate_door_flags(2),"earth_sally_gate_left","bo_earth_sally_gate_left", spr_rotate_door_triggers(hit_points=10000, left=1)),
   ("pw_door_rotate_earth_right",spr_rotate_door_flags(2),"earth_sally_gate_right","bo_earth_sally_gate_right", spr_rotate_door_triggers(hit_points=10000)),
   ("pw_door_rotate_stable",spr_rotate_door_flags(1),"pw_full_stable_door_a","bo_pw_full_stable_door_a", spr_rotate_door_triggers(hit_points=1000, left=1)),
+  ("pw_door_rotate_village_a",spr_rotate_door_flags(1),"pw_village_door_a","bo_pw_village_door_a", spr_rotate_door_triggers(hit_points=2000)),
+  ("pw_door_rotate_village_b",spr_rotate_door_flags(1),"pw_village_door_b","bo_pw_village_door_a", spr_rotate_door_triggers(hit_points=2000)),
 
   ("pw_wooden_bridge_a",spr_structure_flags(),"bridge_wooden","bo_bridge_wooden_fixed", spr_bridge_triggers("pw_wooden_bridge_a_footing", hit_points=15000)),
   ("pw_wooden_bridge_a_footing",spr_build_flags(),"pw_build_bridge","bo_pw_build", spr_bridge_footing_triggers()),
@@ -2819,12 +2955,15 @@ scene_props = [
   ("pw_siege_wall_b_build",spr_build_flags(),"pw_build_wall","bo_pw_build", spr_build_wall_triggers()),
   ("pw_siege_shield_a",spr_structure_flags(),"siege_large_shield_a","bo_siege_large_shield_a_fixed", spr_wall_triggers("pw_siege_shield_a_build", hit_points=2000, height=280)),
   ("pw_siege_shield_a_build",spr_build_flags(),"pw_build_wall","bo_pw_build", spr_build_wall_triggers()),
-  ("pw_ladder_6m",spr_ladder_flags(),"siege_ladder_move_6m","bo_siege_ladder_move_6m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=400, height=600, no_move_physics=True)),
-  ("pw_ladder_8m",spr_ladder_flags(),"siege_ladder_move_8m","bo_siege_ladder_move_8m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=440, height=800, no_move_physics=True)),
-  ("pw_ladder_10m",spr_ladder_flags(),"siege_ladder_move_10m","bo_siege_ladder_move_10m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=480, height=1000, no_move_physics=True)),
-  ("pw_ladder_12m",spr_ladder_flags(),"siege_ladder_move_12m","bo_siege_ladder_move_12m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=560, height=1200, no_move_physics=True)),
-  ("pw_ladder_14m",spr_ladder_flags(),"siege_ladder_move_14m","bo_siege_ladder_move_14m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=600, height=2000, no_move_physics=True)),
+  ("pw_siege_ramp_14m",spr_structure_flags(),"pw_siege_ramp_14m","bo_pw_siege_ramp_14m", spr_wall_triggers("pw_siege_ramp_build", hit_points=1500, height=1400, no_move_physics=True)),
+  ("pw_siege_ramp_build",spr_build_flags(),"pw_build_bridge","bo_pw_build", spr_build_wall_triggers()),
+  ("pw_ladder_6m",spr_ladder_flags(),"siege_ladder_move_6m","bo_siege_ladder_move_6m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=600, height=600, no_move_physics=True)),
+  ("pw_ladder_8m",spr_ladder_flags(),"siege_ladder_move_8m","bo_siege_ladder_move_8m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=660, height=800, no_move_physics=True)),
+  ("pw_ladder_10m",spr_ladder_flags(),"siege_ladder_move_10m","bo_siege_ladder_move_10m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=720, height=1000, no_move_physics=True)),
+  ("pw_ladder_12m",spr_ladder_flags(),"siege_ladder_move_12m","bo_siege_ladder_move_12m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=840, height=1200, no_move_physics=True)),
+  ("pw_ladder_14m",spr_ladder_flags(),"siege_ladder_move_14m","bo_siege_ladder_move_14m_fixed", spr_wall_triggers("pw_ladder_build", hit_points=900, height=1400, no_move_physics=True)),
   ("pw_ladder_build",spr_build_flags(),"pw_build_ladder","bo_pw_build_ladder", spr_build_wall_triggers()),
+  ("pw_construction_box",sokf_static_movement|sokf_destructible,"pw_construction_box","bo_pw_construction_box", spr_construction_box_triggers()),
 
   ("pw_winch_frame",0,"winch_stabilizer_a","bo_winch_stabilizer_a", []),
   ("pw_portcullis_winch",spr_use_time(1),"winch","bo_winch_fixed", spr_portcullis_winch_triggers("pw_portcullis")),
@@ -2837,21 +2976,26 @@ scene_props = [
   ("pw_drawbridge_b",sokf_moveable,"castle_drawbridges_open","bo_castle_drawbridges_open", []),
   ("pw_trapdoor_winch_a",spr_use_time(1),"winch","bo_winch_fixed", spr_drawbridge_winch_triggers("pw_trapdoor_a", rotation_steps=2, step_size=45, animation_time=50)),
   ("pw_trapdoor_a",sokf_static_movement,"belfry_b_platform_a","bo_belfry_b_platform_a", []),
+  ("pw_sliding_door_winch_a",spr_use_time(1),"winch","bo_winch_fixed", spr_sliding_door_winch_triggers("pw_sliding_door_a", move_steps=1, step_size=150)),
+  ("pw_sliding_door_a",sokf_moveable,"castle_e_sally_door_a","bo_castle_e_sally_door_a", []),
   ("pw_lift_platform_winch",spr_use_time(1),"winch_b","bo_winch_fixed", spr_lift_platform_winch_triggers()),
   ("pw_lift_platform",sokf_moveable,"pw_lift_platform","bo_pw_lift_platform", spr_lift_platform_triggers("pw_lift_platform_winch")),
 
-  ("pw_cart_a",sokf_moveable|spr_use_time(1),"pw_cart_a","bo_pw_cart_a", spr_cart_triggers(horse="itm_cart_horse", detach_offset=60, detach_rotation=-20, inventory_count=48, max_item_length=250, access_distance=-180)),
-  ("pw_cart_b",sokf_moveable|spr_use_time(1),"pw_cart_b","bo_pw_cart_b", spr_cart_triggers(horse="itm_cart_horse", detach_offset=110, detach_rotation=-6, inventory_count=42, max_item_length=250, access_distance=-170)),
-  ("pw_wheelbarrow",sokf_moveable|spr_use_time(1),"pw_hand_cart_a","bo_pw_hand_cart_a", spr_cart_triggers(detach_offset=47, detach_rotation=15, inventory_count=12, max_item_length=120, access_distance=110)),
-  ("pw_hand_cart",sokf_moveable|spr_use_time(1),"pw_hand_cart_b","bo_pw_hand_cart_b", spr_cart_triggers(detach_offset=90, inventory_count=24, max_item_length=150, access_distance=-170)),
-  ("pw_back_basket",sokf_moveable|spr_use_time(2),"pw_back_basket","bo_pw_back_basket", spr_cart_triggers(detach_offset=-12, inventory_count=5, max_item_length=95, access_distance=-60)),
-  ("pw_back_box",sokf_moveable|spr_use_time(3),"pw_back_box","bo_pw_back_box", spr_cart_triggers(detach_offset=-13, inventory_count=10, max_item_length=80, access_distance=-80)),
-  ("pw_horse_pack",sokf_moveable|spr_use_time(2),"pw_horse_pack","bo_pw_horse_pack", spr_cart_triggers(horse=1, detach_offset=49, inventory_count=20, max_item_length=100, access_distance=90)),
+  ("pw_cart_a",sokf_static_movement|spr_use_time(1),"pw_cart_a","bo_pw_cart_a", spr_cart_triggers(horse="itm_cart_horse", detach_offset=60, detach_rotation=-20, inventory_count=48, max_item_length=250, access_distance=-180)),
+  ("pw_cart_b",sokf_static_movement|spr_use_time(1),"pw_cart_b","bo_pw_cart_b", spr_cart_triggers(horse="itm_cart_horse", detach_offset=110, detach_rotation=-6, inventory_count=42, max_item_length=250, access_distance=-170)),
+  ("pw_wheelbarrow",sokf_static_movement|spr_use_time(1),"pw_hand_cart_a","bo_pw_hand_cart_a", spr_cart_triggers(detach_offset=47, detach_rotation=15, inventory_count=12, max_item_length=120, access_distance=110)),
+  ("pw_hand_cart",sokf_static_movement|spr_use_time(1),"pw_hand_cart_b","bo_pw_hand_cart_b", spr_cart_triggers(detach_offset=90, inventory_count=24, max_item_length=150, access_distance=-170)),
+  ("pw_back_basket",sokf_static_movement|spr_use_time(2),"pw_back_basket","bo_pw_back_basket", spr_cart_triggers(detach_offset=-12, inventory_count=5, max_item_length=95, access_distance=-60)),
+  ("pw_back_box",sokf_static_movement|spr_use_time(3),"pw_back_box","bo_pw_back_box", spr_cart_triggers(detach_offset=-13, inventory_count=10, max_item_length=80, access_distance=-80)),
+  ("pw_horse_pack",sokf_static_movement|spr_use_time(2),"pw_horse_pack","bo_pw_horse_pack", spr_cart_triggers(horse=1, detach_offset=49, inventory_count=20, max_item_length=100, access_distance=90)),
 
   ("pw_ship_a",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_a","bo_pw_ship_a", spr_ship_triggers(hit_points=5000, length=800, width=150, height=-20, speed=6, sail="pw_ship_a_sail", sail_off="pw_ship_a_sail_off", collision="pw_ship_a_cd")),
   ("pw_ship_a_sail",sokf_moveable,"pw_ship_a_sail","bo_pw_ship_a_sail", []),
   ("pw_ship_a_sail_off",sokf_moveable,"pw_ship_a_sail_off","bo_pw_ship_a_sail_off", []),
   ("pw_ship_a_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pw_ship_a_cd", []),
+  ("pw_ship_b",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_b","bo_pw_ship_b", spr_ship_triggers(hit_points=8000, length=1400, width=230, height=100, speed=4, sail="pw_ship_b_sail", collision="pw_ship_b_cd")),
+  ("pw_ship_b_sail",sokf_moveable,"pw_ship_b_sail","bo_pw_ship_b_sail", []),
+  ("pw_ship_b_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pw_ship_b_cd", []),
   ("pw_ship_c",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_c","bo_pw_ship_c", spr_ship_triggers(hit_points=10000, length=1400, width=300, height=300, speed=4, sail="pw_ship_c_sail", sail_off="pw_ship_c_sail_off", ramp="pw_ship_c_ramp", hold="pw_ship_c_hold", collision="pw_ship_c_cd")),
   ("pw_ship_c_sail",sokf_moveable,"pw_ship_c_sail","bo_pw_ship_c_sail", []),
   ("pw_ship_c_sail_off",sokf_moveable,"pw_ship_c_sail_off","bo_pw_ship_c_sail_off", []),
@@ -2870,7 +3014,7 @@ scene_props = [
   ("pw_ferry_chain_30m",0,"pw_ferry_chain_30m","0", []),
 
   ("pw_castle_sign",0,"tree_house_guard_a","bo_tree_house_guard_a", [(ti_on_scene_prop_use, [])]),
-  ("pw_castle_capture_point",spr_use_time(60),"pw_castle_flag_post","bo_pw_castle_flag_post", spr_capture_castle_triggers()),
+  ("pw_castle_capture_point",spr_use_time(20),"pw_castle_flag_post","bo_pw_castle_flag_post", spr_capture_castle_triggers()),
   ("pw_castle_wall_banner",0,"pw_banner_wall_rail","bo_pw_banner_wall_rail", []),
   ("pw_castle_money_chest",spr_chest_flags(2),"pw_chest_b","bo_pw_chest_b", spr_castle_money_chest_triggers(hit_points=6000)),
   ("pw_item_chest_a",spr_chest_flags(1),"pw_chest_c","bo_pw_chest_c", spr_item_chest_triggers(hit_points=7000, inventory_count=48, max_item_length=180)),
@@ -2913,6 +3057,10 @@ scene_props = [
       (add_point_light_to_entity, ":flicker_magnitude", ":flicker_interval"),
       ]),
     ]),
+  ("pw_scene_precipitation",sokf_invisible,"pw_precipitation_area","0", []),
+  ("pw_scene_fog",sokf_invisible,"barrier_box","0", []),
+  ("pw_scene_snow_level",sokf_invisible,"barrier_box","0", []),
+  ("pw_scene_wind_direction",sokf_invisible,"pw_wind_arrow","0", []),
 
   ("pw_fire_wood_heap",sokf_destructible|sokf_missiles_not_attached,"pw_wood_heap_c","bo_pw_wood_heap_c", spr_fire_place_triggers()),
   ("wood_heap_fire",0,"0","0",
@@ -2934,8 +3082,20 @@ scene_props = [
     ]),
   ("pw_herd_animal_spawn",sokf_invisible,"pw_ground_arrow","0", []),
 
+  ("pw_local_wood_price_area",sokf_invisible,"pw_local_wood_price_area","0", []),
+  ("pw_local_iron_price_area",sokf_invisible,"pw_local_iron_price_area","0", []),
+  ("pw_local_cloth_price_area",sokf_invisible,"pw_local_cloth_price_area","0", []),
+  ("pw_local_leather_price_area",sokf_invisible,"pw_local_leather_price_area","0", []),
+  ("pw_local_precious_price_area",sokf_invisible,"pw_local_precious_price_area","0", []),
+
   ("code_freeze_agent",sokf_moveable,"0","bo_pw_freeze_agent", []),
   ("code_freeze_horse_agent",sokf_moveable,"0","bo_pw_freeze_horse_agent", []),
+
+  ("custom_script_trigger_a",sokf_invisible|spr_use_time(1),"pw_invisible_chest","bo_pw_invisible_chest", []),
+  ("custom_script_trigger_b",sokf_invisible|spr_use_time(1),"pw_invisible_chest","bo_pw_invisible_chest", []),
+  ("custom_script_trigger_c",sokf_invisible|spr_use_time(1),"pw_invisible_chest","bo_pw_invisible_chest", []),
+  ("custom_script_trigger_d",sokf_invisible|spr_use_time(1),"pw_invisible_chest","bo_pw_invisible_chest", []),
+  ("custom_script_trigger_e",sokf_invisible|spr_use_time(1),"pw_invisible_chest","bo_pw_invisible_chest", []),
 
 ]
 

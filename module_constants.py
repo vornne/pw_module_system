@@ -103,6 +103,7 @@ slot_agent_died_normally              = 15
 slot_agent_animation_end_time_ms      = 16 # mission time in milliseconds
 slot_agent_last_animation_string_id   = 17
 slot_agent_recent_animations_delay_ms = 18 # interval in milliseconds
+slot_agent_storage_corpse_instance_id = 19 # saved when discarding armor
 
 slot_agent_animal_herd_manager        = 20 # instance id of the herd manager item attached to
 slot_agent_animal_birth_time          = 21 # mission time when the animal was spawned as a child, or extrapolated if spawned as an adult
@@ -188,6 +189,7 @@ slot_scene_prop_height                = 23 # multiple meanings - use with care
 slot_scene_prop_collision_kind        = 24 # collision testing scene prop kind for ships; set to -1 for scene props that should never be checked for collision with ships
 slot_scene_prop_speed_limit           = 25 # used for ships
 slot_scene_prop_no_move_physics       = 26 # whether to disable physics when moving, so agents can't ride on the prop
+slot_scene_prop_capture_faction_id    = 27 # faction that has captured this prop individually, rather than the castle it belongs to
 
 slot_scene_prop_next_resource_hp      = 30 # hit points when the next resource item should be produced
 slot_scene_prop_state                 = 31 # constants below starting with scene_prop_state_
@@ -202,6 +204,17 @@ slot_scene_prop_resources_default_cost = 39
 
 slot_scene_prop_water                 = 40
 slot_scene_prop_seeds                 = 41
+slot_scene_prop_fruiting_interval     = slot_scene_prop_water
+slot_scene_prop_fruit_count           = slot_scene_prop_seeds
+
+slot_scene_prop_show_linked_hit_points = 45
+slot_scene_prop_disabled              = 46
+
+slot_scene_prop_resource_refund_cost  = 50
+slot_scene_prop_crafting_resource_1   = 51
+slot_scene_prop_crafting_resource_2   = 52
+slot_scene_prop_crafting_resource_3   = 53
+slot_scene_prop_crafting_resource_4   = 54
 
 scene_prop_state_active               = 0
 scene_prop_state_destroyed            = 1
@@ -413,6 +426,7 @@ loop_player_check_outlaw_interval     = 60
 loop_agent_check_interval             = 2
 loop_horse_check_interval             = 30
 loop_health_check_interval            = 29
+loop_weather_adjust_interval          = 32
 stock_count_check_interval            = 5 # don't request stock count updates of the scene prop aimed at more often than this
 repeat_action_min_interval            = 5 # prevent players from repeating certain potentially expensive actions more often than this
 carcass_search_min_interval           = 5 # only search for a different animal carcass to process after this interval from the last
@@ -436,6 +450,8 @@ max_distance_to_use                   = 300
 max_distance_to_loot                  = 100
 max_distance_admin_cart               = 2000 # allow admins in their armor to attach carts from greater distances
 max_distance_to_catch_fish            = 2000
+fish_school_max_move_distance         = 500
+fish_school_min_move_distance         = 200
 fish_school_minimum_depth             = 200 # minimum water depth that a fish school will move into
 fish_spawn_time                       = 300 # time before pruning fish items spawned
 max_distance_to_include_in_herd       = 5000 # when searching for a herd for an animal
@@ -462,18 +478,21 @@ hand_armor_accuracy_reduction_factor  = 30
 hand_armor_reload_reduction_factor    = 10
 melee_damage_reduction_factor         = 25
 melee_speed_reduction_factor          = 5
+crossbow_damage_reduction_factor      = 15
 crossbow_speed_reduction_factor       = 5
 crossbow_accuracy_reduction_factor    = 30
 crossbow_reload_reduction_factor      = 30
+bow_thrown_damage_reduction_factor    = 30
 bow_thrown_speed_reduction_factor     = 5
-bow_thrown_accuracy_reduction_factor  = 40
+bow_thrown_accuracy_reduction_factor  = 20
 melee_max_level_difference            = 3 # max strength difference to be able to swing a melee weapon
-crossbow_max_level_difference         = 2 # max strength difference to be able to shoot a crossbow
-bow_ranged_max_level_difference       = 1 # max power draw or power throw difference to be able to shoot a bow or throw a weapon
+crossbow_max_level_difference         = 4 # max strength difference to be able to shoot a crossbow
+bow_ranged_max_level_difference       = 3 # max power draw or power throw difference to be able to shoot a bow or throw a weapon
 
 winch_type_drawbridge                 = 0
 winch_type_portcullis                 = 1
 winch_type_platform                   = 2
+winch_type_sliding_door               = 3
 
 repairable_hit                        = 0
 repairable_destroyed                  = 1
@@ -518,16 +537,24 @@ change_faction_type_respawn           = 0 # changing faction when training
 change_faction_type_no_respawn        = 1 # changing faction by clicking the use control, to the same troop type or one that allows it
 change_faction_type_outlawed          = 2 # being forced to change when outlawed, without respawning
 
+capture_point_type_primary            = 0 # after the required secondary points are captured, take over the castle
+capture_point_type_secondary_all      = 1 # require taking all secondary capture points of this type
+capture_point_type_secondary_one      = 2 # require taking at least one secondary capture point of this type
+
 redraw_all_banners                    = 0 # at mission start on the server
 redraw_castle_banners                 = 1 # when a castle is captured
 redraw_faction_banners                = 2 # when a faction lord changes their banner
 redraw_client_banner_positions        = 3 # at mission start on a client, to work around engine quirks with spawned items
+redraw_single_capture_point_banner    = 4 # when a secondary point is captured
 
 inventory_slots_per_row               = 6
 inventory_slot_spacing                = 100
 inventory_mesh_offset                 = 50
 inventory_container_x_offset          = 190
 inventory_container_y_offset          = 175
+
+scene_prop_hit_points_bar_scale_x     = 6230
+scene_prop_hit_points_bar_scale_y     = 15000
 
 select_agent_max_x                    = 300
 select_agent_max_y                    = 200
@@ -575,6 +602,8 @@ game_type_mission_templates_end = "mt_edit_scene"
 game_type_names_begin = "str_game_type_1"
 game_type_names_end = "str_game_types_end"
 
+game_type_info_strings_begin = "str_game_type_1_info"
+
 banner_meshes_begin = "mesh_banner_a01"
 banner_meshes_end = "mesh_banners_default_a"
 
@@ -605,6 +634,8 @@ profile_options = [ # global flag variables for options stored in a player profi
   "$g_chat_overlay_type_selected",
   "$g_disable_automatic_shadow_recalculation",
   "$g_animation_menu_no_mouse_grab",
+  "$g_mute_global_chat",
+  "$g_disable_rain_snow_particles",
   ]
 if len(profile_options) >= profile_banner_id_option_bits_end - profile_banner_id_option_bits_begin:
   raise Exception("Too many profile options: %d, maximum %d" % (len(profile_options), profile_banner_id_option_bits_end - profile_banner_id_option_bits_begin))

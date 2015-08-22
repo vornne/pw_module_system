@@ -1,5 +1,8 @@
 <?php
-session_start();
+require("database.php");
+$pw = new pw_db("", true);
+require("session.php");
+$session = new pw_session($pw->db);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -23,38 +26,41 @@ session_start();
 <div id="page">
 
 <?php
-require("private/config.php");
-$config = new pw_name_server_config();
-if (!$config->connect_database()) die("Could not connect to database.");
-
-require("log_in.php");
-if (!check_log_in())
+try
 {
-  show_log_in();
-}
-else if (isset($_GET['page']))
-{
-  switch ($_GET['page'])
+  require("log_in.php");
+  if (!check_log_in($pw->db))
   {
-  case 'log_out':
-    session_destroy();
     show_log_in();
-    break;
-  case 'player_names':
-    require("player_names.php");
-    show_player_names();
-    break;
-  case 'admin_permissions':
-    require("admin_permissions.php");
-    show_admin_permissions();
-    break;
-  case 'servers':
-    require("servers.php");
-    show_servers();
-    break;
-  default:
-    echo('<div class="database_error">No such page.</div>');
   }
+  else if (isset($_GET['page']))
+  {
+    switch ($_GET['page'])
+    {
+    case 'log_out':
+      session_destroy();
+      show_log_in($pw->db);
+      break;
+    case 'player_names':
+      require("player_names.php");
+      show_player_names($pw->db);
+      break;
+    case 'admin_permissions':
+      require("admin_permissions.php");
+      show_admin_permissions($pw->db);
+      break;
+    case 'servers':
+      require("servers.php");
+      show_servers($pw->db);
+      break;
+    default:
+      echo('<div class="database_error">No such page.</div>');
+    }
+  }
+}
+catch (PDOException $e)
+{
+  $pw->log_error($e);
 }
 ?>
 

@@ -152,10 +152,10 @@ before_mission_start_setup = (ti_before_mission_start, 0, 0, [], # set up basic 
     (call_script, "script_initialize_scene_globals"),
     (call_script, "script_scene_set_day_time"),
     (call_script, "script_scene_setup_factions_castles"),
+    (call_script, "script_setup_all_linked_scene_props"),
     (try_begin),
       (multiplayer_is_server),
       (call_script, "script_setup_castle_money_chests"),
-      (call_script, "script_setup_all_linked_scene_props"),
     (else_try),
       (call_script, "script_load_profile_options"),
     (try_end),
@@ -167,7 +167,6 @@ after_mission_start_setup = (ti_after_mission_start, 0, 0, [], # spawn and move 
     (assign, "$g_preset_message_display_enabled", 0),
     (multiplayer_is_server),
     (assign, "$g_next_scene", -1),
-    (assign, "$g_next_mission", game_type_mission_templates_begin),
     (call_script, "script_setup_ship_collision_props"),
     (call_script, "script_setup_scene_props_after_mission_start"),
     (init_position, pos1),
@@ -451,23 +450,22 @@ resource_regrow_check = (10, 0, 0, [], # server: call the script to regrow a rem
     (val_add, ":resources_count", slot_array_begin),
     (try_for_range, ":resource_slot", slot_array_begin, ":resources_count"), # loop over all scene props added to the removed list
       (troop_get_slot, ":instance_id", "trp_removed_scene_props", ":resource_slot"),
+      (le, ":instance_id", 0),
+    (else_try),
+      (scene_prop_get_slot, ":regrow_script", ":instance_id", slot_scene_prop_regrow_script),
+      (eq, ":regrow_script", 0),
+      (neg|scene_prop_slot_eq, ":instance_id", slot_scene_prop_state, scene_prop_state_hidden),
+      (troop_set_slot, "trp_removed_scene_props", ":resource_slot", -1),
+    (else_try),
+      (scene_prop_get_slot, ":regen_time", ":instance_id", slot_scene_prop_state_time),
+      (store_mission_timer_a, ":time"),
+      (ge, ":time", ":regen_time"), # if the regeneration time is passed, remove from the list and call the stored script
+      (troop_set_slot, "trp_removed_scene_props", ":resource_slot", -1),
       (try_begin),
-        (le, ":instance_id", 0),
+        (eq, ":regrow_script", 0),
+        (call_script, "script_regrow_resource", ":instance_id"),
       (else_try),
-        (neg|scene_prop_slot_eq, ":instance_id", slot_scene_prop_state, scene_prop_state_hidden),
-        (troop_set_slot, "trp_removed_scene_props", ":resource_slot", -1),
-      (else_try),
-        (scene_prop_get_slot, ":regen_time", ":instance_id", slot_scene_prop_state_time),
-        (store_mission_timer_a, ":time"),
-        (ge, ":time", ":regen_time"), # if the regeneration time is passed, remove from the list and call the stored script
-        (troop_set_slot, "trp_removed_scene_props", ":resource_slot", -1),
-        (scene_prop_get_slot, ":regrow_script", ":instance_id", slot_scene_prop_regrow_script),
-        (try_begin),
-          (eq, ":regrow_script", 0),
-          (call_script, "script_regrow_resource", ":instance_id"),
-        (else_try),
-          (call_script, ":regrow_script", ":instance_id"),
-        (try_end),
+        (call_script, ":regrow_script", ":instance_id"),
       (try_end),
     (try_end),
     ])
@@ -509,17 +507,27 @@ game_ended_check = (1, 5, 0, # server: check for game end from victory or an adm
     (assign, "$g_game_ended", 1),
     ],
    [(try_begin), # after the delay, start the next mission
-      (is_between, "$g_next_scene", scenes_begin, scenes_end),
-      (start_multiplayer_mission, "$g_next_mission", "$g_next_scene", 1),
-    (else_try),
-      (start_multiplayer_mission, "$g_next_mission", 0, 0),
+      (neg|is_between, "$g_next_game_type", game_type_mission_templates_begin, game_type_mission_templates_end),
+      (assign, "$g_next_game_type", game_type_mission_templates_begin),
     (try_end),
+    (assign, ":started_manually", 1),
+    (try_begin),
+      (neg|is_between, "$g_next_scene", scenes_begin, scenes_end),
+      (assign, "$g_next_scene", scenes_begin),
+      (assign, ":started_manually", 0),
+    (try_end),
+    (start_multiplayer_mission, "$g_next_game_type", "$g_next_scene", ":started_manually"),
     (call_script, "script_game_set_multiplayer_mission_end"),
     ])
 
 draw_initial_banners = (0, 0, ti_once, [], # server: calculate and draw all castle banners at mission start
    [(multiplayer_is_server),
     (call_script, "script_redraw_castle_banners", redraw_all_banners, -1),
+    ])
+
+fill_chests_starting_inventory = (8, 0, ti_once, [], # server: wait so the pseudo random number generator can get some entropy
+   [(multiplayer_is_server),
+    (call_script, "script_scene_fill_chests_starting_inventory"),
     ])
 
 fire_place_check = (1, 0, 60, # server: wait 1 second between checks of fire heaps, then 60 seconds after all have been checked
@@ -679,6 +687,11 @@ herd_animal_spawn_check = (60, 0, 0, [], # server: check all herd animal spawner
     (try_end),
     ])
 
+weather_situation_check = (loop_weather_adjust_interval, 0, 0, [], # server: adjust the weather systems in the scene
+   [(multiplayer_is_server),
+    (call_script, "script_scene_adjust_weather_situation"),
+    ])
+
 escape_pressed = (ti_escape_pressed, 0, 0, [], # clients: show escape menu
    [(call_script, "script_cf_no_input_presentation_active"),
     (start_presentation, "prsnt_escape_menu"),
@@ -704,8 +717,12 @@ static_presentations_setup = (ti_battle_window_opened, 0, 0, [], # clients: call
       (gt, "$g_respawn_start_time", 0),
       (start_presentation, "prsnt_respawn_time_counter"),
     (try_end),
-    (start_presentation, "prsnt_gold"),
+    (try_begin),
+      (neq, "$g_game_type", "mt_no_money"),
+      (start_presentation, "prsnt_gold"),
+    (try_end),
     (start_presentation, "prsnt_food_bar"),
+    (start_presentation, "prsnt_scene_prop_hit_points_bar"),
     (try_begin), # if an inventory was being accessed before the presentations were cleared, notify the server to stop sending updates
       (gt, "$g_show_inventory_instance_id", 0),
       (assign, "$g_show_inventory_instance_id", 0),
@@ -819,8 +836,7 @@ animation_menu_pressed = (0, 0.05, 0, [(game_key_clicked, gk_animation_menu),(ca
 
 welcome_message = (0, 0, ti_once, [], # clients: show a welcome message when connecting to a server
    [(neg|multiplayer_is_server),
-    (str_store_welcome_message, s10),
-    (call_script, "script_preset_message", "str_pw_welcome", preset_message_read_object, "str_join_game", 0),
+    (call_script, "script_show_welcome_message"),
     ])
 
 turn_windmill_fans = (0, 0, 4.0, [], # clients: make windmill fans in the scene turn visually (not affecting collision detection)
@@ -854,9 +870,18 @@ shadow_recalculation = (15, 1, 0, # clients: periodically recalculate environmen
     (rebuild_shadow_map),
     ])
 
-mission_templates = [
-  ("conquest", mtf_battle_mode, -1, "Fight for control of the castles.", spawn_points_0_99,
-   [
+adjust_weather_effects = (0, 0, 0.9, [], # clients: calculate weather effects based on server updates
+   [(neg|multiplayer_is_server),
+    (call_script, "script_cf_adjust_weather_effects"),
+    ])
+
+render_weather_effects = (0.1, 0, 0, [], # clients: regularly display weather effects
+   [(neg|multiplayer_is_server),
+    (call_script, "script_cf_render_weather_effects"),
+    ])
+
+def common_triggers(self):
+  return [(ti_before_mission_start, 0, 0, [(assign, "$g_game_type", "mt_" + self)], []),
     before_mission_start_setup,
     after_mission_start_setup,
 
@@ -884,12 +909,14 @@ mission_templates = [
     polls_check,
     game_ended_check,
     draw_initial_banners,
+    fill_chests_starting_inventory,
     fire_place_check,
     fish_school_loop,
     herd_leader_movement_loop,
     herd_follower_movement_loop,
     herd_animal_count_check,
     herd_animal_spawn_check,
+    weather_situation_check,
 
     escape_pressed,
     tab_pressed,
@@ -902,7 +929,6 @@ mission_templates = [
     faction_chat_pressed,
     admin_chat_pressed,
     ship_control_pressed,
-    money_bag_pressed,
     animation_menu_pressed,
 
     welcome_message,
@@ -910,6 +936,33 @@ mission_templates = [
     ambient_sounds_check,
     music_situation_check,
     shadow_recalculation,
+    adjust_weather_effects,
+    render_weather_effects,
+    ]
+
+mission_templates = [
+  ("conquest", mtf_battle_mode, -1, "Conquest.", spawn_points_0_99,
+    common_triggers("conquest") + [
+    money_bag_pressed,
+    ]),
+
+  ("quick_battle", mtf_battle_mode, -1, "Quick battle.", spawn_points_0_99,
+    common_triggers("quick_battle") + [
+    money_bag_pressed,
+    ]),
+
+  ("no_money", mtf_battle_mode, -1, "No money.", spawn_points_0_99,
+    common_triggers("no_money")
+    ),
+
+  ("feudalism", mtf_battle_mode, -1, "Feudalism.", spawn_points_0_99,
+    common_triggers("feudalism") + [
+    money_bag_pressed,
+    ]),
+
+  ("permanent_death", mtf_battle_mode, -1, "Permanent death.", spawn_points_0_99,
+    common_triggers("permanent_death") + [
+    money_bag_pressed,
     ]),
 
   ("edit_scene", 0, -1, "edit_scene", [(0,mtef_visitor_source,0,aif_start_alarmed,1,[])],
@@ -972,6 +1025,18 @@ mission_templates = [
 
     (0, 0, 0, [(key_clicked, key_f2)], # list the meanings of scene prop values adjustable in the editor
      [(call_script, "script_preset_message", "str_pw_editor_values_info", preset_message_read_object, 0, 0),
+      ]),
+
+    (0, 0, 0, [(key_clicked, key_f3)], # list castle names with the corresponding numbers in the editor
+     [(str_clear, s0),
+      (store_sub, reg1, castle_names_end, castle_names_begin),
+      (try_for_range_backwards, ":castle_name_string_id", castle_names_begin, castle_names_end),
+        (val_sub, reg1, 1),
+        (str_store_string, s1, ":castle_name_string_id"),
+        (str_store_string, s0, "str_castle_names_numbers_format"),
+      (try_end),
+      (str_store_string, s2, s0),
+      (call_script, "script_preset_message", "str_pw_editor_castle_names", preset_message_read_object, 0, 0),
       ]),
 
     (0, 0, 0, [(key_clicked, key_f12)], # measure distance between the player agent and the first pointer_arrow scene prop

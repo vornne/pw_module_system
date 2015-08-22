@@ -4,9 +4,10 @@ strings = [
   ("yes", "Yes."),
   ("no", "No."),
 # Strings before this point are hardwired.
-  ("credits_1", "Mount&Blade: Warband Copyright 2008-2010 Taleworlds Entertainment"),
+  ("credits_0", "Persistent World Module^Copyright 2010 Steven Schwartfeger (Vornne)"),
+  ("credits_1", "Mount&Blade: Warband Copyright 2008-2014 Taleworlds Entertainment"),
   ("credits_2", "Game design:^Armagan Yavuz^Steve Negus^Cem Cimenbicer"),
-  ("credits_3", "Programming:^Armagan Yavuz^Cem Cimenbicer^Serdar Kocdemir^Ozan Gumus"),
+  ("credits_3", "Programming:^Armagan Yavuz^Cem Cimenbicer^Serdar Kocdemir^Ozan Gumus^Mustafa Korkmaz^^Additional Programming:^Gokhan Uras^M. Furkan Yilmaz"),
   ("credits_4", "CG Artists:^Ozgur Saral^Mustafa Ozturk^Pinar Cekic^Ozan Unlu^Yigit Savtur^Umit Singil"),
   ("credits_5", "Concept Artist:^Ganbat Badamkhand"),
   ("credits_6", "Writing:^Steve Negus^Armagan Yavuz^Ryan A. Span"),
@@ -92,6 +93,7 @@ GeN76^\
 General_Hospital^\
 GhosTR^\
 glustrod^\
+Gubbo^\
 guspav^\
 Halcyon^\
 Harn^\
@@ -223,6 +225,10 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("use_default_banner", "Use Faction's Banner"),
 
   ("game_type_1", "Conquest"),
+  ("game_type_2", "Quick Battle"),
+  ("game_type_3", "No Money"),
+  ("game_type_4", "Feudalism"),
+  ("game_type_5", "Permanent Death"),
   ("game_types_end", "game_types_end"),
 
   ("fac_1_default_name", "Red Faction"),
@@ -373,7 +379,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("combat_gold_bonus", "Combat gold bonus (%):"),
   ("round_gold_bonus", "round_gold_bonus:"),
   ("player_banners_allowed", "player_banners_allowed:"),
-  ("force_default_armor", "Commoner / outlaw loot rule:"),
+  ("force_default_armor", "Weather:"),
   ("team_points_gained_for_flags", "team_points_gained_for_flags:"),
   ("points_gained_for_capturing_flags", "points_gained_for_capturing_flags:"),
   ("game_time_limit", "Game time limit (minutes):"),
@@ -444,6 +450,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("server_name", "Server name:"),
   ("game_password", "Game password:"),
   ("welcome_message", "Welcome message:"),
+  ("game_type", "Game type:"),
   ("scene", "Scene:"),
   ("start_scene", "Start scene"),
   ("edit_scene", "Edit scene"),
@@ -451,16 +458,17 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("remaining_time_reg0_s0reg1_s1reg2", "Remaining time: {reg0}:{s0}{reg1}:{s1}{reg2}"),
   ("respawning_in_reg0_seconds", "Respawning in {reg0} seconds"),
   ("press_select_spawn_point", "Press 1-5 to select spawn point"),
-  ("press_select_spawn_area", "Press ~ to change area: {s1}"),
+  ("press_select_spawn_area", "Press ~ to change: {s1}"),
+  ("restart_as_peasant_commoner", "restart as a peasant commoner"),
   ("number_of_factions_reg0", "Number of factions: {reg0}"),
   ("victory_condition_none", "No victory condition"),
   ("victory_condition_castles", "Victory: hold all castles for {reg0} minutes"),
-  ("loot_as_factions", "Looting: commoners and outlaws treated as factions"),
-  ("loot_never_commoners", "Looting: commoners never drop money bags"),
-  ("loot_independent", "Looting: commoners and outlaws treated independently"),
   ("respawn_with_partial_health", "Respawn with partial health"),
   ("respawn_with_full_health", "Respawn with full health"),
   ("herd_animal_limit_reg0", "Herd animal limit: {reg0}"),
+  ("always_fine", "Always fine"),
+  ("always_raining", "Always raining"),
+  ("dynamic", "Dynamic"),
   ("player_name", "Player Name"),
   ("class", "Class"),
   ("kills", "Kills"),
@@ -490,8 +498,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("discard_foot", "Discard foot armor"),
   ("toggle_hand", "Toggle hand armor"),
   ("reveal_money_pouch_to_target", "Reveal money pouch to target"),
-  ("toggle_automatic_shadow_recalculation", "Toggle automatic shadow recalculation"),
   ("toggle_clickable_animation_menu", "Toggle clickable animation menu"),
+  ("toggle_muting_global_chat", "Toggle muting global chat"),
   ("action_menu_end", "action_menu_end"),
   ("s0_are_you_sure", "{s0} - are you sure?"),
   ("confirmation", "confirmation"),
@@ -501,7 +509,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("display_chat_overlay", "Display chat overlay"),
   ("overlay_shows_faction_chat", "Overlay shows faction chat instead of local"),
   ("disable_automatic_shadow_recalculation", "Disable automatic shadow recalculation"),
+  ("mute_global_chat", "Mute global chat"),
   ("non_clickable_animation_menu", "Non-clickable animation menu"),
+  ("disable_rain_snow_particles", "Disable rain and snow particles"),
 
   ("reg0__s0", "{!}{reg0}. {s0}"),
   ("menu_guestures", "Guestures"),
@@ -542,7 +552,10 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("done", "Done"),
   ("use", "Use"),
   ("buy", "Buy"),
+  ("buy_sell", "Buy / Sell"),
   ("buy_sell_craft", "Buy / Sell / Craft"),
+  ("take", "Take"),
+  ("take_put_craft", "Take / Put / Craft"),
   ("dont_have_enough_money", "You don't have enough money."),
   ("cant_equip_item", "You can't equip this item."),
   ("collect_reg1_gold", "Collect {reg1} gold"),
@@ -551,6 +564,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("winch_lower", "Lower"),
   ("winch_raise", "Raise"),
   ("winch_drop", "Drop"),
+  ("destructible", "Destructible"),
   ("cut_down", "Cut down"),
   ("mine", "Mine"),
   ("harvest", "Harvest"),
@@ -575,6 +589,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("stockpile_nearly_full", "Stockpile is nearly full"),
   ("stockpile_full", "Stockpile is full"),
   ("export", "Export"),
+  ("export_for_s1", "Export for {s1}"),
   ("import", "Import"),
   ("build", "Build"),
   ("access", "Access"),
@@ -592,6 +607,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("buy_banner_faction", "Buy a banner for the {s1}"),
   ("stock_count_reg0", "Stock count: {reg0}"),
   ("crafting_refund_reg0_reward_reg1", "Crafting refund: {reg0} reward: {reg1}"),
+  ("crafting_reward_reg1", "Crafting reward: {reg1}"),
   ("selling_price_reg0", "Selling price: {reg0}"),
   ("womens_clothes", "Women's clothes"),
   ("item_id", "Item ID:"),
@@ -599,7 +615,6 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 
   ("troop_not_available", "Not available to you^{s0}"),
   ("troop_train", "Train to be {s1} for the {s2}"),
-  ("troop_leave_faction", "Leave your faction and become {s1}"),
   ("troop_assume_role", "Assume the role of {s1} of the {s2}"),
   ("troop_become", "Become {s1} with the {s2}"),
   ("troop_become_for", "Become {s1} for the {s2}"),
@@ -618,6 +633,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("must_leave_s1_first", "You must leave the {s1} first."),
   ("not_a_member_of_s1", "You are not a member of the {s1}."),
   ("s1_captured_s2", "The {s1} have captured {s2}!"),
+  ("your_faction_not_hostile_to_s1", "Your faction is not hostile to the {s1}."),
+  ("your_faction_not_captured_required_points", "Your faction has not captured the required secondary points."),
   ("door_locked_by_s1", "The door is locked by the {s1}."),
   ("door_bolted", "The door is bolted on the other side."),
   ("chest_locked_by_s1", "This chest is locked by the {s1}."),
@@ -678,9 +695,19 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("error_edit_mode_not_enabled", "Edit mode is not enabled in the Warband launcher: you will not be able to edit this scene."),
   ("no_more_unlinked_scene_props", "No more unlinked scene props."),
   ("error_scene_prop_0_pw", "Error: scene prop instance id 0 (kind {reg0}) is scripted (pw), so it might not work correctly."),
-  ("pw_welcome", "{s10}^^\
-General Information\
-^^When you first join the game, you start in the commoners faction as a peasant; to train as another troop type and join a faction at the same time, go to one of the castles and use a training station.\
+  ("error_load_out_id_reg0_not_defined", "Error: the inventory load out id {reg0} is not defined."),
+  ("game_type_1_info", "This is the basic original game type: resources can be gathered to sell or to craft items like weapons, for helping your faction prosper and conquer."),
+  ("game_type_2_info", "Stock piles and crafting are disabled, so unlimited items can be bought without requiring the support of resource gathering or crafting."),
+  ("game_type_3_info", "The concept of money has been removed from this game type, so resource gathering and crafting are the only things required to obtain items."),
+  ("game_type_4_info", "Exporting resources only transfers money to the castle chest, with no personal reward, and resource stockpiles have no cost for buying or selling."),
+  ("game_type_5_info", "After dying or disconnecting, you will be reset to a peasant commoner with no money."),
+  ("pw_welcome", "{s10}\
+^^Game Type: {s11}\
+^-----------------------------------------------------------\
+^{s12}\
+^^General Information\
+^-----------------------------------------------------------\
+^When you first join the game, you start in the commoners faction as a peasant; to train as another troop type and join a faction at the same time, go to one of the castles and use a training station.\
  You can only join another faction as a commoner, or to become a commoner. The outlaws faction can be joined by training as one, but you will also get transferred to it after multiple team kills.\
  Troop type, faction, gold, and outlaw rating are saved if you crash or disconnect from the game, and when you rejoin your previous stats will be given back. At peasant, ruffian, or brigand training stations, clicking use will switch faction to commoners or outlaws without respawning, keeping your previous class until you die; but after that you will respawn as the targeted troop, unless your previous troop type was peasant or serf. You can also switch factions by just clicking use if you are using the targeted troop type already, or at the mercenary training stations (which are enabled only when the faction owns no castles).\
  For a certain period after a player spawns they will be invulnerable to attack, and also unable to attack others; when this period is over the default weapons will be given.\
@@ -710,12 +737,12 @@ General Information\
  When you die, a bag with a small percentage of your money will be dropped, along with all your equipped items.\
 ^^Troops with the wound treatment skill can heal other badly wounded players by hitting them with the surgeon's scalpel, up to a certain percentage of full health, based on skill; while resting on beds can be used by less wounded troops to heal fully - each type of bed can have a different minimum health required - which requires and uses up food eaten.\
  Players hit with a poisoned dagger will lose health slowly over time until they die, unless a doctor treats them with a healing herb leaf.\
-^^Enemy castles can be captured for your faction by using the flag pole (probably on top of the castle keep) while holding a your faction's banner item. The banner and name of a faction can be changed by the lord; when the banner is changed, armor on players of that faction will be updated, but hand banners will not.\
+^^Enemy castles can be captured for your faction by using a primary flag pole (probably on top of the castle keep) while holding a your faction's banner item; some castles might require secondary points to be captured first, either all of them, at least one, or a combination of both. Lords can also give away their own castles peacefully by using the other faction's banner on a primary capture point. The banner and name of a faction can be changed by the lord; when the banner is changed, armor on players of that faction will be updated, but hand banners will not.\
 ^^To shout with the local chat messages, hold down right shift while pressing enter. With faction chat messages, the lord can send messages that are displayed in big letters in the same way, with right shift.\
  A normal player can only send admin chat messages that are visible to other admins on the server; admins can also send messages to specific players after selecting from the list brought up with F11 (press escape to cancel the list and target everyone), and can also hold right shift when sending to send announcements to all players or warnings to a specific player.\
  As admin, holding down right shift while voting overrides the poll. The agent selected by pressing the target key with shift held down (if any) will be used as the target for admin tools and chat."),
   ("pw_editor_welcome", "Press F1 for editing information."),
-  ("pw_editor_info", "-- General editing information^^\
+  ("pw_editor_info", "General editing information^-----------------------------------------------------------^^\
 * Scripted scene props (starting with pw) do not work in this mode, only on a dedicated server.^\
 * Make sure the first few scene props placed are not scripted (start with pw): instance id 0 can't be handled by some scripts.^\
 * Factions are numbered from 0 - 9, with commoners = 0, outlaws = 1, and the 4 castle factions starting from 2.^\
@@ -729,40 +756,49 @@ General Information\
 * Fish schools should be placed somewhere in water, and will move randomly to nearby shallow parts.^\
 * The maximum number of lights in a scene that will be visible is 10: a limitation of the game engine.^\
 * The lift platform must be linked with two corresponding winches, which will determine the vertical movement range: the plaform will be able to move between 1 unit below the upper winch to 1 unit below the lower one.^\
-^-- Edit scene mode keys^\
+^Edit scene mode keys^-----------------------------------------------------------^^\
 F1 = this information^\
 F2 = scene prop editor value information^\
+F3 = list of castle names with numbers^\
 F8 = move agent to the positions of all scene props that can't find the other prop they need to link with.^\
 F9 = spawn new random player agent^\
 F10 = move agent to the positions of all scene props added to the ship collision list when the scene was loaded^\
 F11 = spawn test horse at agent position^\
 F12 = measure distance to the first pointer_arrow prop"),
-  ("pw_editor_values_info", "Scene prop editor values 1 and 2^^\
+  ("pw_editor_values_info", "Scene prop editor values 1 and 2^-----------------------------------------------------------^^\
 pw_buy_*:^value 1 = faction + multiplier^value 2 = design target stock count^^\
-pw_stockpile_*:^value 1 = faction + multiplier^value 2 = 01 - 09: initial and target count / 10;  10 - 120: stock limit / 100^^\
+pw_stockpile_*:^value 1 = faction + multiplier^value 2 = 01 - 09: initial and target count / 10;  10 - 120: stock limit / 10^^\
 pw_export_*:^value 1 = faction + multiplier^value 2 = faction tax multiplier^^\
 pw_import_*:^value 1 = faction + multiplier^^\
+pw_local_*_price_area:^value 1 = multiplier^scale x = scene area of effect (prices of props outside will be interpolated between other areas of this type)^^\
 pw_change_troop_*:^value 1 = faction + multiplier^^\
-pw_door_rotate_*:^value 1 = faction + multiplier^value 2 = options bitfield (0x1 = start open, 0x2 = bolted, 0x4 = not pickable, 0x8 = half hit points)^^\
-pw_door_teleport_*:^value 1 = faction + multiplier^value 2 = linking id with x^^\
+pw_door_rotate_*:^value 1 = faction / castle id^value 2 = options bitfield (0x1 = start open, 0x2 = bolted, 0x4 = not pickable, 0x8 = half hit points, 0x10 = start destroyed)^^\
+pw_door_teleport_*:^value 1 = faction / castle id^value 2 = linking id with x^^\
 pw mines:^value 1 = initial hit points / 1000^value 2 = respawn time multiplier^^\
 pw trees, bushes, plants, fields, vines:^value 2 = respawn time multiplier^^\
 pw bridges:^value 2 = linking id with two x_footing props^^\
 pw walls, ladders:^value 2 = linking id with x_build^^\
+pw_construction_box:^value 1 = hit points multiplier^^\
 pw portcullises, drawbridges, trapdoors:^value 1 = options bitfield (0x1 = start closed)^value 2 = linking id with x_winch^^\
 pw_lift_platform:^value 2 = linking id with two x_winch props^^\
 pw ships:^value 1 = initial ramp position (0 = center, 1 = left, 2 = right)^Only place the hull, the other parts are spawned at mission start.^^\
 pw_ferry_boat:^value 2 = linking id with two pw_ferry_platform props^^\
-pw_castle_capture_point:^value 1 = faction / castle id^^\
-pw_castle_sign:^value 1 = faction / castle id^value 2 = number of the name, listed at the end of strings.txt (name can't be one used by another castle)^^\
+pw_castle_capture_point:^value 1 = faction / castle id^value 2 = capture type (0 = primary, 1 = all secondary, 2 one secondary)^^\
+pw_castle_sign:^value 1 = faction / castle id^value 2 = number of the name, listed in the F3 information window (name can't be used by another castle)^^\
 pw_castle_money_chest:^value 1 = faction / castle id^value 2 = initial gold^^\
-pw_item_chest_*:^value 1 = faction / castle id^^\
+pw_item_chest_*:^value 1 = faction / castle id^value 2 = starting inventory load out id^^\
 pw_scene_day_time:^value 1 = scene hour of day (0 - 23)^^\
 pw_scene_cloud_haze:^value 1 = global cloud (adjusts skybox)^value 2 = global haze^^\
 pw_scene_ambient_sound:^value 1 = sound id offset from snd_fire_loop^value 2 = probability the sound will be played (0 - 100) or 127 = looping^^\
 pw_scene_light:^value 1 = flicker magnitude^value 2 = flicker interval^scale x = red, 1.00 = 100^scale y = green, 1.00 = 100^scale z = blue, 1.00 = 100^^\
+pw_scene_precipitation:^value 1 = minimum precipitation intensity^value 2 = maximum precipitation intensity^scale x = precipitation area size^^\
+pw_scene_fog:^position z (height) = visiblity distance^scale x = red, 1.00 = 255^scale y = green, 1.00 = 255^scale z = blue, 1.00 = 255^^\
+pw_scene_snow_level:^position z (height) = level in scene where rain changes to snow^^\
+pw_scene_wind_direction:^value 1 = minimum wind strength^value 2 = maximum wind strength^^\
+pw_fire_wood_heap:^value 2 = initial wood amount^^\
 pw_fish_school:^value 1 = maximum depth (in meters)^value 2 = maximum fish count^^\
 pw_herd_animal_spawn:^value 1 = animal item offset starting with 1 for deer, 0 or invalid for a random animal^value 2 = approximate time between spawns in hours, minimum 1^^\
+-----------------------------------------------------------^\
 ^The values can be modified in the scene editor panel, scene prop section: the two fields, labelled 'Var No' and 'Var 2 No'. These can each store an integer in the range 0 - 127.^\
 ^The scene props with 'value 1 = faction + multiplier' share the same code for storing a combination of faction id / castle id and gold value multiplier in value 1:^\
 0 is the commoner faction, which normally means the prop is not associated with any faction, 1 for outlaws, and 2 - 9 associate the scene prop with a castle (which starts owned by the corresponding faction id).^\
@@ -771,6 +807,8 @@ The other part is a multiple of 10, representing specific gold value multipliers
 These two separate values are combined: for example, 31 = outlaw faction and 60% value, 116 = castle 5 (starts owned by faction 5, the yellow faction) and 500% value.^\
 ^The scene props with 'value 2 = linking id with x' mean that they are designed to be linked to another scene prop, x representing the first scene prop's name:^\
 On scene load, the props are linked by searching for the nearest prop in the scene of the specified type, with the same value 2, and that hasn't already been linked; so for example, with a teleport door pair on opposite sides of the scene, you could set the value 2 of both to 53 and not use that number for any of the other props of the same type, so they are linked correctly even when not close together, or if someone else adds more props of the same type in between."),
+  ("pw_editor_castle_names", "Castle names with numbers^-----------------------------------------------------------^^{s2}"),
+  ("castle_names_numbers_format", "{reg1} = {s1}^{s0}"),
 
   ("book_of_clothing", "The Book of Tailoring Clothes^^^"),
   ("book_of_weapons", "The Book of Crafting Weaponry^^^"),
@@ -781,6 +819,7 @@ Healing herbs found in certain locations can be cut from the bushes with a knife
 Poisonous herbs can also sometimes be found, which are then applied to the blades of certain weapons used for murderous deeds; they have many brown stalks covered in tiny green leaves."),
 
   ("name_server_error_code_reg0", "Name server: error code {reg0}."),
+  ("name_server_input_error_parameter_s0", "Name server: input error with parameter '{s0}'."),
   ("name_server_invalid_response", "Name server: invalid response '{reg0}|{reg1}|{reg2}|{s0}|{reg3}'."),
   ("name_server_log_s10", "Name server: player {s0} ({reg2}): {s10}"),
   ("kicked_using_other_players_name", "Kicked for using another player's name."),
@@ -871,6 +910,10 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("castle_name_60", "Bredby"),
   ("castle_name_61", "Kildevakt Castle"),
   ("castle_name_62", "Saltklippen"),
+  ("castle_name_63", "Nantes"),
+  ("castle_name_64", "Irontown"),
+  ("castle_name_65", "Halmar"),
+  ("castle_name_66", "Brunwud Castle"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]

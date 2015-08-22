@@ -1,4 +1,4 @@
-USE pw_player_names;
+USE persistent_world;
 
 INSERT INTO warband_servers (name, password) VALUES ("Test server", SHA1("WD915Kyi18"));
 
