@@ -1576,6 +1576,7 @@ scripts.extend([
     #(store_script_param, ":launcher_item_id", 3),
     #(store_script_param, ":launcher_item_modifier", 4),
     #(store_script_param, ":shooter_agent_id", 5),
+    #(store_script_param, ":missile_no", 6),
 
     (try_begin),
       (neg|multiplayer_is_server),
