@@ -939,6 +939,10 @@ scripts.extend([
       (else_try), # chat string received from a client, from a range of event numbers to keep them in order
         (is_between, ":event_type", client_event_chat_message_begin, client_event_chat_message_end),
         (try_begin),
+          (neg|is_vanilla_warband),
+          (str_sanitize, s0),
+        (try_end),
+        (try_begin),
           (player_is_active, ":sender_player_id"),
           (multiplayer_send_int_to_player, ":sender_player_id", server_event_chat_message_recieved, ":event_type"), # confirm to the sending client that the message was received
           (call_script, "script_cf_chat_event_is_new", ":event_type", ":sender_player_id"),
