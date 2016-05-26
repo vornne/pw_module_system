@@ -28,6 +28,7 @@ sokf_enforce_shadows       = 0x0000000000100000
 sokf_dont_move_agent_over  = 0x0000000000200000
 sokf_handle_as_flora       = 0x0000000001000000
 sokf_static_movement       = 0x0000000002000000
+sokf_weapon_knock_back_collision = 0x0000000010000000 # weapon knock back by hit destructible prop
 
 spbf_hit_points_mask       = 0x00000000000000FF
 spbf_hit_points_bits       = 20

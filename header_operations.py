@@ -1353,8 +1353,10 @@ store_xor                                         = 2807 # (store_xor, <destinat
 val_not                                           = 2808 # (val_not, <value>), # Performs a bitwise complement on <value>
 store_not                                         = 2809 # (store_not, <destination>, <value>), # Performs a bitwise complement on <value> and stores the result into <destination>
 
-player_set_banner_id                              = 2900 # (player_set_banner_id, <player_id>, <banner_no>), # Sets <player_id>'s banner to <banner_no>
-player_set_username                               = 2901 # (player_set_username, <player_id>, <string>), # Sets <player_id>'s username to <string>
+player_set_skin                                   = 2900 # (player_set_skin, <player_id>, <skin_no>), # Sets <player_id>'s skin (gender) to <skin_no> (requires network_compatible = 0 in wse_settings.ini)
+player_stop_controlling_agent                     = 2901 # (player_stop_controlling_agent, <player_id>), # Gives <player_id>'s agent back to AI control (requires network_compatible = 0 in wse_settings.ini)
+player_set_banner_id                              = 2902 # (player_set_banner_id, <player_id>, <banner_no>), # Sets <player_id>'s banner to <banner_no>
+player_set_username                               = 2903 # (player_set_username, <player_id>, <string>), # Sets <player_id>'s username to <string>
 
 register_get                                      = 3000 # (register_get, <destination>, <index>), # Stores the value of register <index> into <destination>
 register_set                                      = 3001 # (register_set, <index>, <value>), # Sets the value of register <index> to <value>
@@ -1390,9 +1392,10 @@ sleep_ms                                          = 3026 # (sleep_ms, <time>), #
 timer_reset                                       = 3027 # (timer_reset, <timer_register_no>, [<use_game_time>]),
                                                          # Resets <timer_register_no>. If [<use_game_time>] is non-zero the timer will count game time rather than mission time
 timer_get_elapsed_time                            = 3028 # (timer_get_elapsed_time, <destination>, <timer_register_no>), # Stores <timer_register_no>'s elapsed time into <destination>
-shell_open_url                                    = 3029 # (shell_open_url, <url>), # Open <url> in default browser. Support only http://, https://, ftp:// and ts3server:// urls.
+shell_open_url                                    = 3029 # (shell_open_url, <url>), # Opens <url> in default browser. Support only http://, https://, ftp:// and ts3server:// urls.
 set_main_party                                    = 3030 # (set_main_party, <party_no>), # Sets player's main party to <party_no>. Dynamic spawned party (not listed in module_parties.py) will corrupt the savegame!
 get_main_party                                    = 3031 # (get_main_party, <destination>), # Stores player's main party to <destination>
+make_screenshot                                   = 3032 # (make_screenshot, <format>, <file>), # Make game screenshot. For security reasons, <file> will be saved into a Screenshots directory. Supported <format>s: BMP - 0, JPG - 1, TGA - 2, PNG - 3.
 
 game_key_get_key                                  = 3100 # (game_key_get_key, <destination>, <game_key_no>), # Stores the key mapped to <game_key_no> into <destination>
 key_released                                      = 3101 # (key_released, <key>), # Fails if <key> wasn't released in the current frame
@@ -1439,11 +1442,25 @@ agent_ai_set_simple_behavior                      = 3314 # (agent_ai_set_simple_
                                                          # If [<guaranteed_time>] is not specified or <= 0, it won't be changed until agent_force_rethink is called
 agent_accelerate                                  = 3315 # (agent_accelerate, <agent_id>, <position_register_no>), # Uses x, y, z components of <position_register_no> to apply acceleration to <agent_id>
 agent_set_item_slot_modifier                      = 3316 # (agent_set_item_slot_modifier, <agent_id>, <item_slot_no>, <item_modifier_no>), # Sets <agent_id>'s <item_slot_no> modifier to <item_modifier_no>
+agent_body_meta_mesh_set_vertex_keys_time_point   = 3317 # (agent_body_meta_mesh_set_vertex_keys_time_point, <agent_id>, <body_meta_mesh>, <time_point>), # Sets <agent_id>'s <body_meta_mesh> vertex keys time point to <time_point>
+agent_body_meta_mesh_set_visibility               = 3318 # (agent_body_meta_mesh_set_visibility, <agent_id>, <body_meta_mesh>, <value>), # Shows (<value> = 1) or hides (<value> = 0) <agent_id>'s <body_meta_mesh>
 
 multiplayer_send_chat_message_to_player           = 3400 # (multiplayer_send_chat_message_to_player, <player_id>, <sender_player_id>, <text>, [<type>]),
                                                          # Sends <text> to <player_id> as a (native compatible) chat message by <sender_player_id>. Works only on servers. [<type>]: 0 = chat, 1 = team chat
-multiplayer_get_cur_profile                       = 3401 # (multiplayer_get_cur_profile, <destination>), # Stores the current multiplayer profile into <destination>
-multiplayer_get_num_profiles                      = 3402 # (multiplayer_get_num_profiles, <destination>), # Stores the number of multiplayer profiles into <destination>
+multiplayer_send_composite_message_to_player      = 3401 # (multiplayer_send_composite_message_to_player, <player_id>, <message_type>, <message_register>), # Sends <message_register> with <message_type> to <player_id> (requires network_compatible = 0 in wse_settings.ini)
+multiplayer_send_composite_message_to_server      = 3402 # (multiplayer_send_composite_message_to_server, <message_type>, <message_register>), # Sends <message_register> with <message_type> to the server (requires network_compatible = 0 in wse_settings.ini)
+multiplayer_get_cur_profile                       = 3403 # (multiplayer_get_cur_profile, <destination>), # Stores the current multiplayer profile into <destination>
+multiplayer_get_num_profiles                      = 3404 # (multiplayer_get_num_profiles, <destination>), # Stores the number of multiplayer profiles into <destination>
+multiplayer_message_init                          = 3405 # (multiplayer_message_init, <message_register>), # Initializes (empties) <message_register> (requires network_compatible = 0 in wse_settings.ini)
+multiplayer_message_put_string                    = 3406 # (multiplayer_message_put_string, <message_register>, <string>), # Puts <string> into <message_register> (requires network_compatible = 0 in wse_settings.ini)
+multiplayer_message_put_int                       = 3407 # (multiplayer_message_put_int, <message_register>, <value>, [<num_bits>]), # Puts [<num_bits>] of <value> into <message_register> (requires network_compatible = 0 in wse_settings.ini)
+multiplayer_message_put_position                  = 3408 # (multiplayer_message_put_position, <message_register>, <position_register>, [<local>]), # Puts <position_register> into <9>. Set [<local>] to non-zero for small, relative positions (default: scene positions) (requires network_compatible = 0 in wse_settings.ini)
+multiplayer_message_put_coordinate                = 3409 # (multiplayer_message_put_coordinate, <message_register>, <position_register>, [<local>]), # Puts x, y, z coordinates from <position_register> into <message_register>. Set [<local>] to non-zero for small, relative positions (default: scene positions) (requires network_compatible = 0 in wse_settings.ini)
+multiplayer_cur_message_get_string                = 3410 # (multiplayer_cur_message_get_string, <string_register>), # Stores a string from the current message register into <string_register> (requires network_compatible = 0 in wse_settings.ini)
+multiplayer_cur_message_get_int                   = 3411 # (multiplayer_cur_message_get_int, <destination>, [<num_bits>]), # Stores [<num_bits>] of an int from the current message register into <destination>. [<num_bits>] MUST match the number of bits sent (requires network_compatible = 0 in wse_settings.ini)
+multiplayer_cur_message_get_position              = 3412 # (multiplayer_cur_message_get_position, <position_register>, [<local>]), # Stores a position from the current message register into <position_register>. [<local>] MUST match the type sent (requires network_compatible = 0 in wse_settings.ini)
+multiplayer_cur_message_get_coordinate            = 3413 # (multiplayer_cur_message_get_coordinate, <position_register>, [<local>]), #Stores x, y, z coordinates from the current message register into <position_register>. [<local>] MUST match the type sent (requires network_compatible = 0 in wse_settings.ini)
+
 
 server_set_password_admin                         = 3500 # (server_set_password_admin, <password>), # Sets <password> as server administrator password
 server_set_password_private                       = 3501 # (server_set_password_private, <password>), # Sets <password> as server private player password
@@ -1453,27 +1470,30 @@ server_map_rotation_set_index                     = 3504 # (server_map_rotation_
 server_map_rotation_get_map                       = 3505 # (server_map_rotation_get_map, <destination>, <index>), # Stores the map at <index> into <destination>
 server_map_rotation_add_map                       = 3506 # (server_map_rotation_add_map, <site_no>, [<index>]), # Adds <site_no> to the map rotation at [<index>]
 server_map_rotation_remove_map                    = 3507 # (server_map_rotation_remove_map, [<index>]), # Removes the map at [<index>] from the map rotation (does not work when only one left)
-get_server_option_at_connect                      = 3508 # (get_server_option_at_connect, <destination>, [<index>]), # Stores option [<index>] into <destination>
+server_get_horse_friendly_fire                    = 3508 # (server_get_horse_friendly_fire, <destination>), # Stores horse friendly fire status into <destination> (requires network_compatible = 0 in wse_settings.ini)
+server_set_horse_friendly_fire                    = 3509 # (server_set_horse_friendly_fire, <value>), # Enables or disables horse friendly fire (requires network_compatible = 0 in wse_settings.ini)
+server_get_show_crosshair                         = 3510 # (server_get_show_crosshair, <destination>), # Stores crosshair visibility status into <destination> (requires network_compatible = 0 in wse_settings.ini)
+server_set_show_crosshair                         = 3511 # (server_set_show_crosshair, <value>), # Enables or disables the crosshair (requires network_compatible = 0 in wse_settings.ini)
+get_server_option_at_connect                      = 3512 # (get_server_option_at_connect, <destination>, [<index>]), # Stores option [<index>] into <destination>
+server_set_password_rcon                          = 3513 # (server_set_password_rcon, <password>), # Sets <password> as server RCON password
+execute_server_console_command                    = 3514 # (execute_server_console_command, <string_register>, <command>), # Executes dedicated server console command <command> and stores result string into <string_register>
 
 store_cur_mission_template_no                     = 3600 # (store_cur_mission_template_no, <destination>), # Stores the current mission template into <destination>
-camera_in_first_person                            = 3601 # (camera_in_first_person), # Fails if the camera is not in first person
-set_camera_in_first_person                        = 3602 # (set_camera_in_first_person, <value>), # Sets the camera to first or third person
-set_show_use_tooltip                              = 3603 # (set_show_use_tooltip, <tooltip_type>, [<value>]), # Enables or disables use tooltips. See header_constants_addon.py for possible types
-set_ally_collision_threshold                      = 3604 # (set_ally_collision_threshold, <low_boundary>, <high_boundary>),
+set_show_use_tooltip                              = 3601 # (set_show_use_tooltip, <tooltip_type>, [<value>]), # Enables or disables use tooltips. See header_constants_addon.py for possible types
+set_ally_collision_threshold                      = 3602 # (set_ally_collision_threshold, <low_boundary>, <high_boundary>),
                                                          # Changes the animation progress boundaries (in percents) that determine if attacks on allies will collide (default: 45% <= x <= 60%)
-particle_system_remove                            = 3605 # (particle_system_remove, [<particle_system_no>]),
-                                                         # Removes [<particle_system_no>] (all particle systems if not set or -1) from the current entity (can be used in several in triggers)
-get_spectated_agent_id                            = 3606 # (get_spectated_agent_id, <destination>), # Stores spectated agent id into <destination>
-prop_instance_set_forced_lod                      = 3607 # (prop_instance_set_forced_lod, <prop_instance_id>, <lod_level>), # Forces <prop_instance_id>'s LOD level to <lod_level> (0 = auto)
-prop_instance_set_variation_id                    = 3608 # (prop_instance_set_variation_id, <prop_instance_id>, <value>), # Sets <prop_instance_id>'s variation id to <value>
-prop_instance_set_variation_id_2                  = 3609 # (prop_instance_set_variation_id_2, <prop_instance_id>, <value>), # Sets <prop_instance_id>'s variation id 2 to <value>
-stop_time                                         = 3610 # (stop_time, <value>), # Stops/resumes the mission. Works only in singleplayer with cheat mode enabled.
-missile_get_path_point_position                   = 3611 # (missile_get_path_point_position, <position_register>, <path_point_no>, <missile_no>),
+particle_system_remove                            = 3603 # (particle_system_remove, [<particle_system_no>]), # Removes [<particle_system_no>] (all particle systems if not set or -1) from the current entity (can be used in several in triggers)
+get_spectated_agent_no                            = 3604 # (get_spectated_agent_no, <destination>), # Stores spectated agent id into <destination>
+prop_instance_set_forced_lod                      = 3605 # (prop_instance_set_forced_lod, <prop_instance_id>, <lod_level>), # Forces <prop_instance_id>'s LOD level to <lod_level> (0 = auto)
+prop_instance_set_variation_id                    = 3606 # (prop_instance_set_variation_id, <prop_instance_id>, <value>), # Sets <prop_instance_id>'s variation id to <value>
+prop_instance_set_variation_id_2                  = 3607 # (prop_instance_set_variation_id_2, <prop_instance_id>, <value>), # Sets <prop_instance_id>'s variation id 2 to <value>
+stop_time                                         = 3608 # (stop_time, <value>), # Stops/resumes the mission. Works only in singleplayer with cheat mode enabled.
+missile_get_path_point_position                   = 3609 # (missile_get_path_point_position, <position_register>, <path_point_no>, <missile_no>),
                                                          # Stores the position of the <missile_no>'s <path_point_no> (0-499) into <position_register>
-get_water_level                                   = 3612 # (get_water_level, <destination_fixed_point>), # Stores the water level into <destination_fixed_point>
-missile_remove_on_hit                             = 3613 # (missile_remove_on_hit), # Causes a missile item not to spawn on hit (can be only used inside ti_on_missile_hit)
-missile_is_valid                                  = 3614 # (missile_is_valid, <missile_no>), # Fails if <missile_no> is not valid
-missile_get_cur_position                          = 3615 # (missile_get_cur_position, <position_register>, <missile_no>), # Stores <missile_no>'s current position into <position_register>
+get_water_level                                   = 3610 # (get_water_level, <destination_fixed_point>), # Stores the water level into <destination_fixed_point>
+missile_remove_on_hit                             = 3611 # (missile_remove_on_hit), # Causes a missile item not to spawn on hit (can be only used inside ti_on_missile_hit)
+missile_is_valid                                  = 3612 # (missile_is_valid, <missile_no>), # Fails if <missile_no> is not valid
+missile_get_cur_position                          = 3613 # (missile_get_cur_position, <position_register>, <missile_no>), # Stores <missile_no>'s current position into <position_register>
 
 troop_get_skill_points                            = 3700 # (troop_get_skill_points, <destination>, <troop_no>), # Stores <troop_no>'s unused skill points into <destination>
 troop_set_skill_points                            = 3701 # (troop_set_skill_points, <troop_no>, <value>), # Sets <troop_no>'s unused skill points to <value>
@@ -1485,6 +1505,16 @@ troop_has_flag                                    = 3706 # (troop_has_flag, <tro
 troop_set_skill                                   = 3707 # (troop_set_skill, <troop_no>, <skill_no>, <value>), # Sets <troop_no>'s <skill_no> to <value>
 troop_set_attribute                               = 3708 # (troop_set_attribute, <troop_no>, <attribute>, <value>), # Sets <troop_no>'s <attribute> to <value>
 troop_set_proficiency                             = 3709 # (troop_set_proficiency, <troop_no>, <proficiency>, <value>), # Sets <troop_no>'s <proficiency> to <value>
+
+item_set_thrust_damage                            = 3800 # (item_set_thrust_damage, <item_id>, <value>), # Sets <item_id>'s thrust damage to <value>
+item_set_thrust_damage_type                       = 3801 # (item_set_thrust_damage_type, <item_id>, <value>), # Sets <item_id>'s thrust damage type to <value>
+item_set_swing_damage                             = 3802 # (item_set_swing_damage, <item_id>, <value>), # Sets <item_id>'s thrust damage to <value>
+item_set_swing_damage_type                        = 3803 # (item_set_swing_damage_type, <item_id>, <value>), # Sets <item_id>'s thrust damage type to <value>
+item_set_head_armor                               = 3804 # (item_set_head_armor, <item_id>, <value>), # Sets <item_id>'s head armor to <value>
+item_set_body_armor                               = 3805 # (item_set_body_armor, <item_id>, <value>), # Sets <item_id>'s body armor to <value>
+item_set_leg_armor                                = 3806 # (item_set_leg_armor, <item_id>, <value>), # Sets <item_id>'s leg armor to <value>
+item_set_speed_rating                             = 3807 # (item_set_speed_rating, <item_id>, <value>), # Sets <item_id>'s speed rating to <value>
+item_set_missile_speed                            = 3808 # (item_set_missile_speed, <item_id>, <value>), # Sets <item_id>'s missile speed to <value>
 
 party_stack_get_experience                        = 3900 # (party_stack_get_experience, <destination>, <party_no>, <party_stack_no>), # Stores the experience of <party_no>'s <party_stack_no> into <destination>
 party_stack_get_num_upgradeable                   = 3901 # (party_stack_get_num_upgradeable, <destination>, <party_no>, <party_stack_no>), # Stores the amount of upgradeable troops in <party_no>'s <party_stack_no> into <destination>
@@ -1547,6 +1577,9 @@ str_store_float                                   = 4233 # (str_store_float, <st
 str_sanitize                                      = 4234 # (str_sanitize, <string_register>), # Removes invalid characters from <string_register>
 str_store_item_id                                 = 4235 # (str_store_item_id, <string_register>, <item_no>), # Stores the id of <item_no> into <string_register>
 str_is_integer                                    = 4236 # (str_is_integer, <string_1>), # Fails if <string_1> isn't a valid integer
+str_store_multiplayer_profile_face_keys           = 4237 # (str_store_multiplayer_profile_face_keys, <string_register>, <profile_no>), # Stores <profile_no>'s face keys into <string_register>
+str_store_server_password_rcon                    = 4238 # (str_store_server_password_rcon, <string_register>), # Stores the server RCON password into <string_register>
+str_store_item_mesh_name                          = 4239 # (str_store_item_mesh_name, <string_register>, <item_no>), # Stores the mesh name of <item_no> into <string_register>
 
 options_get_verbose_casualties                    = 4300 # (options_get_verbose_casualties, <destination>), # Stores verbose casualties enabled/disabled into <destination>
 options_set_verbose_casualties                    = 4301 # (options_set_verbose_casualties, <value>), # Enables or disables verbose casualties
@@ -2037,12 +2070,15 @@ lhs_operations = frozenset([
   agent_get_item_slot_flags,
   multiplayer_get_cur_profile,
   multiplayer_get_num_profiles,
+  multiplayer_cur_message_get_int,
   server_map_rotation_get_count,
   server_map_rotation_get_index,
   server_map_rotation_get_map,
+  server_get_horse_friendly_fire,
+  server_get_show_crosshair,
   get_server_option_at_connect,
   store_cur_mission_template_no,
-  get_spectated_agent_id,
+  get_spectated_agent_no,
   get_water_level,
   troop_get_skill_points,
   troop_get_attribute_points,
@@ -2214,7 +2250,6 @@ can_fail_operations = frozenset([
   game_key_released,
   dict_is_empty,
   dict_has_key,
-  camera_in_first_person,
   missile_is_valid,
   troop_has_flag,
   party_has_flag,

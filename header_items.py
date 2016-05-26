@@ -94,6 +94,7 @@ itp_cant_reload_while_moving_mounted = 0x0010000000000000
 itp_has_upper_stab           = 0x0020000000000000
 itp_kill_info_mask           = 0x0700000000000000
 itp_kill_info_bits           = 56
+itp_shield_no_parry          = 0x0000000000004000 # left handed item without shield functionality
 itp_offset_mortschlag        = 0x1000000000000000 # offsets melee weapon to mortschlag grip
 itp_offset_flip              = 0x4000000000000000 # flips melee weapon model 180 degrees on y-axis
 

@@ -55,8 +55,15 @@ ti_on_agent_hit                                   = -28.0
 # trigger param 8: missile item modifier
 # trigger param 9: damage type
 # reg0: attacker item_id
+# reg1: hit bone
 # pos0: position of the blow, rotation gives the direction of the blow
 # trigger result: if greater than or equal to zero, inflicted damage is set to the value specified
+
+ti_on_agent_blocked                               = -103.0
+# trigger param 1: receiver agent id
+# trigger param 2: dealer agent id
+# trigger param 3: item id
+# trigger param 4: missile item id
 
 ti_on_player_exit                                 = -29.0
 # trigger param 1: player id

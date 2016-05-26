@@ -808,6 +808,36 @@ window_inventory = 7
 window_party = 8
 window_character = 11
 
+#Agent body meta meshes
+bmm_head = 0
+bmm_beard = 1
+bmm_hair = 2
+bmm_helmet = 3
+bmm_armor = 4
+bmm_trousers = 5
+bmm_left_foot = 6
+bmm_right_foot = 7
+bmm_armature = 8
+bmm_item_1 = 9
+bmm_item_2 = 10
+bmm_item_3 = 11
+bmm_item_4 = 12
+bmm_missile_1 = 13
+bmm_missile_2 = 14
+bmm_missile_3 = 15
+bmm_missile_4 = 16
+bmm_carry_1 = 17
+bmm_carry_2 = 18
+bmm_carry_3 = 19
+bmm_carry_4 = 20
+bmm_unknown_2 = 21
+bmm_left_hand = 22
+bmm_right_hand = 23
+bmm_left_bracer = 24
+bmm_right_bracer = 25
+bmm_banner = 26
+bmm_name = 27
+
 # Floating point registers
 fp0 = 0
 fp1 = 1

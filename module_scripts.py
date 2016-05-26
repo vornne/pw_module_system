@@ -1739,7 +1739,7 @@ scripts.extend([
     ]),
 
   ("wse_console_command_received", # called by the WSE when a command is entered on the dedicated server console, after parsing standard commands. s0 contains the text; a non zero trigger result means the command succeeded; set the result string for the message to display on success (if empty, the default message will be used)
-   [
+   [#(store_script_param, ":command_type", 1),
 
     ]),
 
