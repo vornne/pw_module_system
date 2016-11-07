@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require("database.php");
 $pw = new pw_db("", true);
 require("session.php");

@@ -522,6 +522,8 @@ scripts.extend([
           (try_end),
         (try_end),
       (else_try),
+        (eq, ":return_code", 0), # reply from server startup check
+      (else_try),
         (server_add_message_to_log, "str_name_server_invalid_response"),
       (try_end),
     (try_end),
