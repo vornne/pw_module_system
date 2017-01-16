@@ -11,6 +11,7 @@ sokf_type_barrier_leave    = 0x000000000000000a
 sokf_type_ladder           = 0x000000000000000b
 sokf_type_barrier3d        = 0x000000000000000c
 sokf_type_player_limiter   = 0x000000000000000d
+sokf_type_ai_limiter3d     = 0x000000000000000e
 sokf_type_mask             = 0x00000000000000FF
 sokf_add_fire              = 0x0000000000000100
 sokf_add_smoke             = 0x0000000000000200

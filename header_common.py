@@ -53,6 +53,33 @@ multiplayer_event_admin_set_anti_cheat                        = 44
 multiplayer_event_open_game_rules                             = 45
 multiplayer_event_offer_duel                                  = 46
 multiplayer_event_admin_set_disallow_ranged_weapons           = 47
+#INVASION MODE START
+multiplayer_event_other_events                                = 48
+
+
+#other client events
+multiplayer_event_other_event_set_bot_purchase                = 0
+multiplayer_event_other_event_ccoop_lock_companions           = 1
+multiplayer_event_coop_set_agent_team_and_group               = 2
+multiplayer_event_other_event_ccoop_count_down_visible		  = 3
+multiplayer_event_other_event_ccoop_count_down_invisible	  = 4
+multiplayer_event_other_spawn_prison_cart					  = 5
+multiplayer_event_other_destroy_prison_cart					  = 6
+
+multiplayer_event_other_event_ccoop_update_spawn_data_1		  = 7
+multiplayer_event_other_event_ccoop_update_spawn_data_2		  = 8
+multiplayer_event_other_event_ccoop_update_spawn_data_3		  = 9
+multiplayer_event_other_event_ccoop_update_spawn_data_4		  = 10
+multiplayer_event_other_event_ccoop_update_spawn_data_5		  = 11
+multiplayer_event_other_event_ccoop_update_spawn_data_6		  = 12
+
+multiplayer_event_other_events_change_companion_level 		  = 13
+multiplayer_event_admin_set_ccoop_difficulty                  = 14
+multiplayer_event_other_event_unequip_item			 		  = 15
+multiplayer_event_other_event_equip_item			 		  = 16
+multiplayer_event_coop_send_drop_assignment_to_server         = 17
+multiplayer_event_coop_set_agent_team_and_group               = 18
+#INVASION MODE END
 
 #server events
 multiplayer_event_return_max_num_players                      = 50
@@ -118,6 +145,20 @@ multiplayer_event_start_duel                                  = 109
 multiplayer_event_cancel_duel                                 = 110
 multiplayer_event_show_server_message                         = 111
 multiplayer_event_return_disallow_ranged_weapons              = 112
+#INVASION MODE START
+multiplayer_event_return_set_bot_selection                    = 113 
+multiplayer_event_return_team_ratio                           = 114
+multiplayer_event_return_squad_size                           = 115
+multiplayer_event_return_disallow_granades                    = 116
+multiplayer_event_return_sound_at_pos                         = 117
+multiplayer_event_return_enable_cbf_squad_ratio				  = 118
+multiplayer_event_return_cbf_squad_ratio					  = 119
+multiplayer_event_coop_drop_item                              = 120
+multiplayer_event_coop_chest_opened                           = 121
+multiplayer_event_return_ccoop_difficulty                     = 122
+multiplayer_event_ccoop_victory_message                       = 123
+multiplayer_event_ccoop_return_of_the_king                    = 124
+#INVASION MODE END
 
 #multiplayer message types
 multiplayer_message_type_auto_team_balance_done      = 2
@@ -147,7 +188,10 @@ multiplayer_game_type_capture_the_flag       = 4
 multiplayer_game_type_headquarters           = 5
 multiplayer_game_type_siege                  = 6
 multiplayer_game_type_duel                   = 7
-multiplayer_num_game_types                   = 8
+#INVASION MODE START
+multiplayer_game_type_captain_coop           = 8
+multiplayer_num_game_types                   = 9
+#INVASION MODE END
 
 #admin panel value ranges
 multiplayer_round_max_seconds_min            = 60
@@ -177,7 +221,13 @@ multi_data_flag_owned_seconds_begin = multi_data_flag_players_around_end
 multi_data_flag_owned_seconds_end = multi_data_flag_owned_seconds_begin + 10 #maximum of 10 flags per scene
 multi_data_flag_pull_code_begin = multi_data_flag_owned_seconds_end
 multi_data_flag_pull_code_end = multi_data_flag_pull_code_begin + 10 #maximum of 10 flags per scene
-multi_data_player_index_list_begin = multi_data_flag_pull_code_end
+#INVASION MODE START
+multi_data_ccoop_wave_spawn_data_begin = multi_data_flag_pull_code_end
+multi_data_ccoop_wave_spawn_data_end = multi_data_ccoop_wave_spawn_data_begin + 16 #maximum of 5 different troop types, amounts and entry points (+ 1 for count)
+multi_data_equipment_holder_begin = multi_data_ccoop_wave_spawn_data_end
+multi_data_equipment_holder_end = multi_data_equipment_holder_begin + 9
+multi_data_player_index_list_begin = multi_data_equipment_holder_end
+#INVASION MODE END
 
 #Entry points 100..109 is used for showing initial points for moveable and usable scene props like siege ladder.
 multi_entry_points_for_usable_items_start = 100
@@ -288,6 +338,14 @@ multiplayer_spawn_above_opt_enemy_dist_point = 32 #while finding most suitable s
 multiplayer_spawn_min_enemy_dist_limit = 45 #while finding most suitable spawn point if nearest enemy is closer than 45 meters give negative points to that spawn point, (squared increase)
 
 multiplayer_poll_disable_period = 900 #15 minutes
+
+#INVASION MODE START
+multi_distance_to_captain_spaw_point = 15*100
+multi_killer_captain_add = 60
+multi_captain_recomended_players_max = 16
+multi_killer_captain_coop_add = 200
+#multi_captain_coop_round_duration_in_sec = 600 # 10 minutes
+#INVASION MODE END
 
 #menu variables
 escape_menu_item_height = 40

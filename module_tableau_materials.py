@@ -494,7 +494,7 @@ tableaus = [
        (cur_tableau_set_ambient_light, 10,11,15),
        (call_script, "script_add_troop_to_cur_tableau_for_character", ":troop_no"),
        ]),
-  
+         
   ("troop_inventory_alpha_mask", 0, "mat_troop_portrait_mask", 1024, 1024, 0, 0, 400, 400,
    [
        (store_script_param, ":troop_no", 1),
@@ -979,5 +979,54 @@ tableaus = [
      (position_set_z, pos1, 200),
      (cur_tableau_add_tableau_mesh, "tableau_retired_troop_alpha_mask", ":type", pos1, 0, 0),
      ]),
-  
+
+
+  ("coop_companion_select_alpha_mask", 0, "mat_troop_portrait_mask", 1024, 1024, 0, 0, 600, 600,
+   [
+       (store_script_param, ":troop_no", 1),
+       (cur_tableau_set_background_color, 0x00888888),
+       (cur_tableau_set_ambient_light, 10,11,15),
+       (cur_tableau_render_as_alpha_mask),
+       (try_begin),
+         (eq, ":troop_no", -1),
+         (call_script, "script_add_player_to_cur_tableau_for_coop", ":troop_no"),
+       (else_try),
+         (call_script, "script_add_troop_to_cur_tableau_for_coop", ":troop_no"),
+       (try_end),
+       ]),
+
+  ("coop_companion_select_color", 0, "mat_troop_portrait_color", 1024, 1024, 0, 0, 600, 600,
+   [
+       (store_script_param, ":troop_no", 1),
+       (cur_tableau_set_background_color, 0x44000000),
+       (cur_tableau_set_ambient_light, 10,11,15),
+       (try_begin),
+         (eq, ":troop_no", -1),
+         (call_script, "script_add_player_to_cur_tableau_for_coop", ":troop_no"),
+         (cur_tableau_set_background_color, 0x44000000),
+       (else_try),
+         (call_script, "script_add_troop_to_cur_tableau_for_coop", ":troop_no"),
+         (cur_tableau_set_background_color, 0x44000000),
+       (try_end),
+       ]),
+
+
+  ("coop_companion_select_0", 0, "tableau_with_transparency", 1024, 1024, 0, 0, 300, 300,
+   [
+     (store_script_param, ":troop_no", 1),
+     (cur_tableau_set_background_color, 0x00888888),
+     (cur_tableau_set_ambient_light, 10,11,15),
+     (set_fixed_point_multiplier, 100),
+     (cur_tableau_set_camera_parameters, 0, 40, 40, 0, 100000),
+
+     (init_position, pos1),
+     (position_set_z, pos1, 100),
+     (position_set_x, pos1, -20),
+     (position_set_y, pos1, -20),
+     (cur_tableau_add_tableau_mesh, "tableau_coop_companion_select_color", ":troop_no", pos1, 0, 0),
+     (position_set_z, pos1, 200),
+     (cur_tableau_add_tableau_mesh, "tableau_coop_companion_select_alpha_mask", ":troop_no", pos1, 0, 0),
+     ]),
+     
+     
 ]

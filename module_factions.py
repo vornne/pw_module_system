@@ -72,4 +72,7 @@ factions = [
   ("slavers","{!}Slavers", 0, 0.1, [], []),
   ("peasant_rebels","{!}Peasant Rebels", 0, 1.0,[("noble_refugees",-1.0),("player_faction",-0.4)], []),
   ("noble_refugees","{!}Noble Refugees", 0, 0.5,[], []),
+#INVASION MODE START
+  ("ccoop_all_stars","All Stars", 0, 0.5,[], []),
+#INVASION MODE END
 ]

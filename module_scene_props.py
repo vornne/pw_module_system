@@ -355,7 +355,6 @@ scene_props = [
   ("destroy_bridge_a",0,"destroy_bridge_a","bo_destroy_bridge_a", []),  
   ("destroy_bridge_b",0,"destroy_bridge_b","bo_destroy_bridge_b", []),  
 
-
   ("catapult",0,"Catapult","bo_Catapult", []),
   
   ("catapult_destructible",sokf_moveable|sokf_show_hit_point_bar|sokf_destructible,"Catapult","bo_Catapult", [
@@ -2996,4 +2995,190 @@ scene_props = [
  ("rock_bridge_a",0,"rock_bridge_a","bo_rock_bridge_a", []),
  ("suspension_bridge_a",0,"suspension_bridge_a","bo_suspension_bridge_a", []),
  ("mine_a",0,"mine_a","bo_mine_a", []),
+ 
+ ("snowy_destroy_house_a",0,"snowy_destroy_house_a","bo_snowy_destroy_house_a", []),
+  ("snowy_destroy_house_b",0,"snowy_destroy_house_b","bo_snowy_destroy_house_b", []),
+  ("snowy_destroy_house_c",0,"snowy_destroy_house_c","bo_snowy_destroy_house_c", []),
+  ("snowy_destroy_heap",0,"snowy_destroy_heap","bo_snowy_destroy_heap", []),
+  ("snowy_destroy_castle_a",0,"snowy_destroy_castle_a","bo_snowy_destroy_castle_a", []),
+  ("snowy_destroy_castle_b",0,"snowy_destroy_castle_b","bo_snowy_destroy_castle_b", []),
+  
+  ("snowy_destroy_castle_c",0,"snowy_destroy_castle_c","bo_snowy_destroy_castle_c", []),
+  
+  ("snowy_destroy_castle_d",0,"snowy_destroy_castle_d","bo_snowy_destroy_castle_d", []),
+  ("snowy_destroy_windmill",0,"snowy_destroy_windmill","bo_snowy_destroy_windmill", []),
+  ("snowy_destroy_tree_a",0,"snowy_destroy_tree_a","bo_snowy_destroy_tree_a", []),
+  ("snowy_destroy_tree_b",0,"snowy_destroy_tree_b","bo_snowy_destroy_tree_b", []),  
+  ("snowy_destroy_bridge_a",0,"snowy_destroy_bridge_a","bo_snowy_destroy_bridge_a", []),  
+  ("snowy_destroy_bridge_b",0,"snowy_destroy_bridge_b","bo_snowy_destroy_bridge_b", []),    
+
+#INVASION MODE START
+#MCA
+#prisoner cart
+("prison_cart", sokf_moveable,"prison_cart","bo_prison_cart", []),
+("prison_cart_door_right", sokf_show_hit_point_bar|sokf_destructible|sokf_moveable,"prison_cart_door_right","bo_prison_cart_door_right",
+ [
+   (ti_on_init_scene_prop,
+    [
+      (store_trigger_param_1, ":instance_no"),
+      (scene_prop_set_hit_points, ":instance_no", 300),
+    ]),
+    
+     (ti_on_scene_prop_hit,
+    [
+      (store_trigger_param_1, ":instance_no"),       
+      (store_trigger_param_2, ":damage"),
+      
+      (try_begin),
+        (scene_prop_get_hit_points, ":hit_points", ":instance_no"),
+        (val_sub, ":hit_points", ":damage"),
+        (gt, ":hit_points", 0),
+        (play_sound, "snd_dummy_hit"),
+      (else_try),
+        (neg|multiplayer_is_server),
+        (play_sound, "snd_dummy_destroyed"),
+      (try_end),
+
+      (try_begin),
+        (this_or_next|multiplayer_is_server),
+		(neg|game_in_multiplayer_mode),
+
+        (particle_system_burst, "psys_dummy_smoke", pos1, 3),
+        (particle_system_burst, "psys_dummy_straw", pos1, 10),
+        (set_fixed_point_multiplier, 1),        
+      (try_end),        
+    ]),
+ ]), # added blank prop_hit trigger so hit point bar is displayed
+  
+("prison_cart_door_left", sokf_show_hit_point_bar|sokf_destructible|sokf_moveable,"prison_cart_door_left","bo_prison_cart_door_left",
+ [
+   (ti_on_init_scene_prop,
+    [
+      (store_trigger_param_1, ":instance_no"),
+      (scene_prop_set_hit_points, ":instance_no", 300),
+    ]),
+    
+     (ti_on_scene_prop_hit,
+    [
+      (store_trigger_param_1, ":instance_no"),       
+      (store_trigger_param_2, ":damage"),
+      
+      (try_begin),
+        (scene_prop_get_hit_points, ":hit_points", ":instance_no"),
+        (val_sub, ":hit_points", ":damage"),
+        (gt, ":hit_points", 0),
+        (play_sound, "snd_dummy_hit"),
+      (else_try),
+        (neg|multiplayer_is_server),
+        (play_sound, "snd_dummy_destroyed"),
+      (try_end),
+
+      (try_begin),
+        (this_or_next|multiplayer_is_server),
+		(neg|game_in_multiplayer_mode),
+
+        (particle_system_burst, "psys_dummy_smoke", pos1, 3),
+        (particle_system_burst, "psys_dummy_straw", pos1, 10),
+        (set_fixed_point_multiplier, 1),        
+      (try_end),        
+    ]),    
+ ]), # added blank prop_hit trigger so hit point bar is displayed
+	
+  ("multiplayer_coop_item_drop", sokf_moveable|sokf_type_player_limiter|spr_use_time(1), "package", "bobaggage", [
+  
+   (ti_on_scene_prop_use,
+    [
+    ]),    
+   (ti_on_scene_prop_start_use,
+    [
+      (store_trigger_param_1, ":agent_id"),
+      (store_trigger_param_2, ":instance_id"),
+      (agent_get_player_id, ":player_no", ":agent_id"),
+
+      (player_is_active, ":player_no"),
+      
+      (assign, ":living_companion_1", -1),
+      (assign, ":living_companion_2", -1),
+      #(assign, reg1, ":agent_id"),
+      #(assign, reg2, ":instance_id"),
+      #(display_message, "@prop use trigger item: {reg0}   agent: {reg1}  instance: {reg2}  "),
+      (try_for_agents, ":agent_id"),
+        #(this_or_next|eq, ":living_companion_1", -1),
+        #(eq, ":living_companion_1", -1),
+        (agent_is_active, ":agent_id"),
+        (agent_is_alive, ":agent_id"),
+        (agent_is_human, ":agent_id"),
+        (agent_is_non_player, ":agent_id"),
+        (agent_get_team, ":team_id", ":agent_id"),
+        (eq, ":team_id", 0),
+        (agent_get_group, ":agent_group", ":agent_id"),
+        (eq, ":agent_group", ":player_no"),
+        (agent_get_troop_id, ":troop_id", ":agent_id"),
+        (this_or_next|player_slot_eq, ":player_no", slot_player_companion_ids_begin, ":troop_id"),
+        (player_slot_eq, ":player_no", slot_player_companion_ids_begin + 1, ":troop_id"),
+        (try_begin),
+          (eq, ":living_companion_1", -1),
+          (assign, ":living_companion_1", ":agent_id"),
+        (else_try),
+          (eq, ":living_companion_2", -1),
+          (assign, ":living_companion_2", ":agent_id"),
+        (try_end),
+      (try_end),
+      #(display_message, "@sending to player"),
+      
+      #(assign, reg1, ":living_companion_1"),
+      #(assign, reg2, ":living_companion_2"),
+      #(display_message,  "@living_companion_1: {reg1}  living_companion_2: {reg2}  "),
+      
+      (assign, ":new_chest", 1),
+      (assign, ":empty_slot", -1),
+      (try_for_range, ":cur_slot", slot_player_coop_opened_chests_begin, slot_player_coop_opened_chests_end),
+        (eq, ":new_chest", 1),
+        (player_get_slot, ":cur_instance", ":player_no", ":cur_slot"),
+        (try_begin),
+          (eq, ":cur_instance", ":instance_id"),
+          (assign, ":new_chest", 0),
+        (try_end),
+      (try_end),
+
+      (try_for_range, ":cur_slot", slot_player_coop_opened_chests_begin, slot_player_coop_opened_chests_end),
+        (eq, ":new_chest", 1),
+        (player_get_slot, ":cur_instance", ":player_no", ":cur_slot"),
+        (try_begin),
+          (eq, ":cur_instance", 0),
+          (eq, ":empty_slot", -1),
+          (assign, ":empty_slot", ":cur_slot"),
+        (try_end),
+      (try_end),
+
+      (try_begin),
+        (eq, ":new_chest", 1),
+        (call_script, "script_coop_generate_item_drop", ":player_no"),
+        (neq, ":empty_slot", -1),
+        (player_set_slot, ":player_no", ":empty_slot", ":instance_id"),
+        (multiplayer_send_2_int_to_player, ":player_no", multiplayer_event_coop_chest_opened, ":empty_slot", ":instance_id"),
+      (try_end),
+      
+      (assign, reg1, ":new_chest"),
+      #(display_message,  "@new chest: {reg1}"),
+      (try_begin),
+        (eq, ":new_chest", 1),
+        (try_begin),
+          (neq, ":player_no", 0),
+          (multiplayer_send_3_int_to_player, ":player_no", multiplayer_event_coop_drop_item, "$g_ccoop_currently_dropping_item", ":living_companion_1", ":living_companion_2"),
+          #(display_message, "@script called"), #debug
+          
+        (else_try),
+          (call_script, "script_coop_drop_item", "$g_ccoop_currently_dropping_item", ":living_companion_1", ":living_companion_2"),
+          #(assign, reg1, ":player_no"),
+          #(display_message,  "@sending to player no: {reg1} "),
+        (try_end),
+      
+      (try_end),
+      (assign, "$g_ccoop_currently_dropping_item", -1),
+    ]),
+  ]),
+#INVASION MODE END
+
+
 ]
