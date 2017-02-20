@@ -42,7 +42,7 @@ for entry in crafting_data:
   item_info.mesh = item[2][0][0]
   item_info.price = item[5]
   item_info.weight = get_weight(item[6])
-  item_info.difficulty = get_difficulty(item[6])
+  item_info.difficulty = item_difficulties_list[item_id]
   item_info.head_armor = get_head_armor(item[6])
   item_info.body_armor = get_body_armor(item[6])
   item_info.leg_armor = get_leg_armor(item[6])
