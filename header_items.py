@@ -76,6 +76,7 @@ itp_covers_hair              = 0x0000008000000000 # remove hair mesh for armors 
 itp_force_show_body          = 0x0000010000000000 # forces showing body (works on body armor items)
 itp_force_show_left_hand     = 0x0000020000000000 # forces showing left hand (works on hand armor items)
 itp_force_show_right_hand    = 0x0000040000000000 # forces showing right hand (works on hand armor items)
+itp_covers_hair_partially    = 0x0000080000000000
 
 itp_extra_penetration        = 0x0000100000000000
 itp_has_bayonet              = 0x0000200000000000
@@ -88,6 +89,8 @@ itp_no_blur                  = 0x0008000000000000
 
 itp_cant_reload_while_moving_mounted = 0x0010000000000000
 itp_has_upper_stab           = 0x0020000000000000
+itp_disable_agent_sounds     = 0x0040000000000000 # disable agent related sounds, but not voices: useful for animals
+
 itp_kill_info_mask           = 0x0700000000000000
 itp_kill_info_bits           = 56
 

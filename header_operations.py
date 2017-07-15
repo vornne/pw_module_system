@@ -17,7 +17,7 @@ try_for_range                                     = 6    # (try_for_range,<desti
 try_for_range_backwards                           = 7    # same as above but starts from (upper-bound - 1) down-to lower bound.
                                                          # (try_for_range_backwards,<destination>,<lower_bound>,<upper_bound>),
 try_for_parties                                   = 11   # (try_for_parties,<destination>),
-try_for_agents                                    = 12   # (try_for_agents,<destination>),
+try_for_agents                                    = 12   # (try_for_agents, <destination>, [position_no], [radius_fixed_point]), avoid using pos0
 try_for_prop_instances                            = 16   # (try_for_prop_instances, <destination>, [<scene_prop_id>]), if scene_prop_id is not given, it loops through all prop instances
 try_for_players                                   = 17   # (try_for_players, <destination>, [skip_server]),
 
@@ -49,7 +49,12 @@ store_repeat_object                               = 50   # (store_repeat_object,
 
 get_operation_set_version                         = 55   # (get_operation_set_version, <destination>),
 
+set_physics_delta_time                            = 58   # (set_physics_delta_time, <fixed_value>), default is 0.025 (40 fps)
+
 set_result_string                                 = 60   # (set_result_string, <string_id>), sets the result string for game scripts that need one
+
+is_camera_in_first_person                         = 61   # (is_camera_in_first_person),
+set_camera_in_first_person                        = 62   # (set_camera_in_first_person, <value>), 1 = first, 0 = third person
 
 game_key_get_mapped_key_name                      = 65   # (game_key_get_mapped_key_name, <string_register>, <game_key>),
 
@@ -132,7 +137,7 @@ player_is_active                                  = 401  # (player_is_active, <p
 player_get_team_no                                = 402  # (player_get_team_no, <destination>, <player_id>),
 player_set_team_no                                = 403  # (player_get_team_no, <destination>, <player_id>),
 player_get_troop_id                               = 404  # (player_get_troop_id, <destination>, <player_id>),
-player_set_troop_id                               = 405  # (player_get_troop_id, <destination>, <player_id>),
+player_set_troop_id                               = 405  # (player_set_troop_id, <destination>, <player_id>),
 player_get_agent_id                               = 406  # (player_get_agent_id, <destination>, <player_id>),
 player_get_gold                                   = 407  # (player_get_gold, <destination>, <player_id>),
 player_set_gold                                   = 408  # (player_set_gold, <player_id>, <value>, <max_value>), set max_value to 0 if no limit is wanted
@@ -400,6 +405,7 @@ show_item_details_with_modifier                   = 972  # (show_item_details_wi
 
 context_menu_add_item                             = 980  # (right_mouse_menu_add_item, <string_id>, <value>), must be called only inside script_game_right_mouse_menu_get_buttons
 auto_save                                         = 985  # (auto_save),
+allow_ironman                                     = 988  # (allow_ironman, <value>), 1 = allow, 0 = disallow
 get_average_game_difficulty                       = 990  # (get_average_game_difficulty, <destination>),
 get_level_boundary                                = 991  # (get_level_boundary, <destination>, <level_no>),
 
@@ -593,7 +599,7 @@ item_get_type                                     = 1570 # (item_get_type, <dest
 
 party_get_num_companions                          = 1601 # (party_get_num_companions,<destination>,<party_id>),
 party_get_num_prisoners                           = 1602 # (party_get_num_prisoners,<destination>,<party_id>),
-party_set_flags                                   = 1603 # (party_set_flag, <party_id>, <flag>, <clear_or_set>), sets flags like pf_default_behavior. see header_parties.py for flags.
+party_set_flags                                   = 1603 # (party_set_flags, <party_id>, <flag>, <clear_or_set>), sets flags like pf_default_behavior. see header_parties.py for flags.
 party_set_marshall                                = 1604 # (party_set_marshall, <party_id>, <value>)
 party_set_extra_text                              = 1605 # (party_set_extra_text,<party_id>, <string>)
 party_set_aggressiveness                          = 1606 # (party_set_aggressiveness, <party_id>, <number>),
@@ -672,7 +678,7 @@ party_set_banner_icon                             = 1677 # (party_set_banner_ico
 party_add_particle_system                         = 1678 # (party_add_particle_system, <party_id>, <particle_system_id>),
 party_clear_particle_systems                      = 1679 # (party_clear_particle_systems, <party_id>),
 
-party_get_battle_opponent                         = 1680 # (party_get_battle_opponent, <destination>, <party_id>)
+party_get_battle_opponent                         = 1680 # (party_get_battle_opponent, <destination>, <party_id>),
 party_get_icon                                    = 1681 # (party_get_icon, <destination>, <party_id>),
 party_set_extra_icon                              = 1682 # (party_set_extra_icon, <party_id>, <map_icon_id>, <up_down_distance_fixed_point>, <up_down_frequency_fixed_point>, <rotate_frequency_fixed_point>, <fade_in_out_frequency_fixed_point>), frequencies are in number of revolutions per second
 
@@ -778,8 +784,8 @@ agent_get_action_dir                              = 1767 # (agent_get_action_dir
 agent_get_animation                               = 1768 # (agent_get_animation, <destination>, <agent_id>, <body_part), 0 = lower body part, 1 = upper body part
 agent_is_in_parried_animation                     = 1769 # (agent_is_in_parried_animation, <agent_id>),
 
-agent_get_team                                    = 1770 # (agent_get_team  ,<destination>, <agent_id>),
-agent_set_team                                    = 1771 # (agent_set_team  , <agent_id>, <value>),
+agent_get_team                                    = 1770 # (agent_get_team, <destination>, <agent_id>),
+agent_set_team                                    = 1771 # (agent_set_team, <agent_id>, <value>),
 
 agent_get_class                                   = 1772 # (agent_get_class ,<destination>, <agent_id>),
 agent_get_division                                = 1773 # (agent_get_division ,<destination>, <agent_id>),
@@ -793,7 +799,7 @@ agent_add_offer_with_timeout                      = 1777 # (agent_add_offer_with
                                                          # second agent_id is offerer, 0 value for duration is an infinite offer
 agent_check_offer_from_agent                      = 1778 # (agent_check_offer_from_agent, <agent_id>, <agent_id>), second agent_id is offerer
 
-agent_equip_item                                  = 1779 # (agent_equip_item, <agent_id>, <item_id>, [weapon_slot_no]), for weapons, agent needs to have an empty weapon slot.
+agent_equip_item                                  = 1779 # (agent_equip_item, <agent_id>, <item_id>, [weapon_slot_no], [modifier]), for weapons, agent needs to have an empty weapon slot.
                                                          # weapon_slot_no is optional, and can be between 1-4 (used only for weapons, not armor).
 
 entry_point_get_position                          = 1780 # (entry_point_get_position, <position_no>, <entry_no>),
@@ -924,9 +930,10 @@ add_reinforcements_to_entry                       = 1930 # (add_reinforcements_t
 mission_enable_talk                               = 1935 # (mission_enable_talk), can talk with troops during battles
 mission_disable_talk                              = 1936 # (mission_disable_talk), disables talk option for the mission
 
-mission_tpl_entry_set_override_flags              = 1940 # (mission_entry_set_override_flags, <mission_template_id>, <entry_no>, <value>),
-mission_tpl_entry_clear_override_items            = 1941 # (mission_entry_clear_override_items, <mission_template_id>, <entry_no>),
-mission_tpl_entry_add_override_item               = 1942 # (mission_entry_add_override_item, <mission_template_id>, <entry_no>, <item_kind_id>),
+mission_tpl_entry_set_override_flags              = 1940 # (mission_tpl_entry_set_override_flags, <mission_template_id>, <entry_no>, <value>),
+mission_tpl_entry_clear_override_items            = 1941 # (mission_tpl_entry_clear_override_items, <mission_template_id>, <entry_no>),
+mission_tpl_entry_add_override_item               = 1942 # (mission_tpl_entry_add_override_item, <mission_template_id>, <entry_no>, <item_kind_id>),
+mission_tpl_are_all_agents_spawned                = 1943 # (mission_tpl_are_all_agents_spawned), agents >300 may keep spawning after ti_after_mission_start (still fires .1 second too early)
 
 set_current_color                                 = 1950 # (set_current_color,<red>,<green>,<blue>), a value of 255 means 100%
 set_position_delta                                = 1955 # (set_position_delta,<x_value>,<y_value>,<z_value>),
@@ -1037,6 +1044,12 @@ change_screen_options                             = 2058 # (change_screen_option
 jump_to_menu                                      = 2060 # (jump_to_menu,<menu_id>),
 disable_menu_option                               = 2061 # (disable_menu_option),
 
+agent_get_damage_modifier                         = 2065 # (agent_get_damage_modifier, <destination>, <agent_id>), output value is in percentage, 100 is default
+agent_get_accuracy_modifier                       = 2066 # (agent_get_accuracy_modifier, <destination>, <agent_id>), output value is in percentage, 100 is default, value can be between [0..1000]
+agent_get_speed_modifier                          = 2067 # (agent_get_speed_modifier, <destination>, <agent_id>), output value is in percentage, 100 is default, value can be between [0..1000]
+agent_get_reload_speed_modifier                   = 2068 # (agent_get_reload_speed_modifier, <destination>, <agent_id>), output value is in percentage, 100 is default, value can be between [0..1000]
+agent_get_use_speed_modifier                      = 2069 # (agent_get_use_speed_modifier, <destination>, <agent_id>), output value is in percentage, 100 is default, value can be between [0..1000]
+
 store_trigger_param                               = 2070 # (store_trigger_param, <destination>, <trigger_param_no>),
 store_trigger_param_1                             = 2071 # (store_trigger_param_1,<destination>),
 store_trigger_param_2                             = 2072 # (store_trigger_param_2,<destination>),
@@ -1060,8 +1073,8 @@ agent_set_speed_modifier                          = 2093 # (agent_set_speed_modi
 agent_set_reload_speed_modifier                   = 2094 # (agent_set_reload_speed_modifier, <agent_id>, <value>), value is in percentage, 100 is default, value can be between [0..1000]
 agent_set_use_speed_modifier                      = 2095 # (agent_set_use_speed_modifier, <agent_id>, <value>), value is in percentage, 100 is default, value can be between [0..1000]
 agent_set_visibility                              = 2096 # (agent_set_visibility, <agent_id>, <value>),  0 for invisible, 1 for visible.
-agent_get_crouch_mode                             = 2097 # (agent_ai_get_crouch_mode, <destination>, <agent_id>),
-agent_set_crouch_mode                             = 2098 # (agent_ai_set_crouch_mode, <agent_id>, <value>), 0 for false, 1 for true.
+agent_get_crouch_mode                             = 2097 # (agent_get_crouch_mode, <destination>, <agent_id>),
+agent_set_crouch_mode                             = 2098 # (agent_set_crouch_mode, <agent_id>, <value>), 0 for false, 1 for true.
 agent_set_ranged_damage_modifier                  = 2099 # (agent_set_ranged_damage_modifier, <agent_id>, <value>), value is in percentage, 100 is default
 
 val_lshift                                        = 2100 # (val_lshift, <destination>, <value>), shifts the bits of destination to left by value amount.
@@ -1190,7 +1203,7 @@ store_random_party_of_template                    = 2311 # (store_random_party_o
 str_is_empty                                      = 2318 # (str_is_empty, <string_register>),
 str_clear                                         = 2319 # (str_clear, <string_register>)
 str_store_string                                  = 2320 # (str_store_string,<string_register>,<string_id>),
-str_store_string_reg                              = 2321 # (str_store_string,<string_register>,<string_id>), copies one string register to another.
+str_store_string_reg                              = 2321 # (str_store_string_reg,<string_register>,<string_register>), copies one string register to another.
 str_store_troop_name                              = 2322 # (str_store_troop_name,<string_register>,<troop_id>),
 str_store_troop_name_plural                       = 2323 # (str_store_troop_name_plural,<string_register>,<troop_id>),
 str_store_troop_name_by_count                     = 2324 # (str_store_troop_name_by_count,<string_register>,<troop_id>,<number>),
@@ -1564,6 +1577,11 @@ lhs_operations = frozenset([
   agent_get_item_cur_ammo,
   mission_get_time_speed,
   mission_cam_get_aperture,
+  agent_get_damage_modifier,
+  agent_get_accuracy_modifier,
+  agent_get_speed_modifier,
+  agent_get_reload_speed_modifier,
+  agent_get_use_speed_modifier,
   store_trigger_param,
   store_trigger_param_1,
   store_trigger_param_2,
@@ -1812,6 +1830,7 @@ can_fail_operations = frozenset([
   agent_has_item_equipped,
   map_get_land_position_around_position,
   map_get_water_position_around_position,
+  mission_tpl_are_all_agents_spawned,
   is_zoom_disabled,
   is_currently_night,
   store_random_party_of_template,

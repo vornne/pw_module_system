@@ -786,3 +786,15 @@ hrsb_r_back_hoof             = 25
 hrsb_tail_1                  = 26
 hrsb_tail_2                  = 27
 
+# parameters for try_for_prop_instances
+somt_object = 1
+somt_entry = 2
+somt_item = 3
+somt_baggage = 4
+somt_flora = 5
+somt_passage = 6
+somt_spawned_item = 7
+somt_spawned_single_ammo_item = 8
+somt_spawned_unsheathed_item = 9
+somt_shield = 10
+somt_temporary_object = 11
